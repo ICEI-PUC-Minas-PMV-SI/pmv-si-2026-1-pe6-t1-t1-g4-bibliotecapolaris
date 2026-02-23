@@ -1,27 +1,34 @@
 # Introdução
 
-Texto descritivo com a visão geral do projeto abordado. Inclui o contexto, o problema, os objetivos, a justificativa e o público-alvo do projeto.
+A Biblioteca da Universidade Polaris constitui um dos principais pilares de apoio às atividades acadêmicas e científicas da instituição, disponibilizando acesso a livros físicos, materiais digitais, periódicos e serviços de empréstimo e consulta ao acervo. Com o avanço das tecnologias da informação e o crescimento da comunidade acadêmica, torna-se imprescindível a modernização dos processos de gestão da biblioteca, de modo a garantir maior eficiência operacional, integração sistêmica e acessibilidade aos usuários.
+
+Nesse contexto, este projeto propõe o desenvolvimento de um sistema distribuído para a Biblioteca Polaris, fundamentado nos princípios da Arquitetura de Sistemas Distribuídos. A solução contemplará a documentação de contexto, o planejamento e desenvolvimento de APIs e Web Services, a implementação de uma aplicação Web para gestão administrativa e uma aplicação Mobile voltada ao usuário final.
 
 ## Problema
-Nesse momento você deve apresentar o problema que a sua aplicação deve  resolver. No entanto, não é a hora de comentar sobre a aplicação.
 
-Descreva também o contexto em que essa aplicação será usada, se  houver: empresa, tecnologias, etc. Novamente, descreva apenas o que de  fato existir, pois ainda não é a hora de apresentar requisitos  detalhados ou projetos.
+A Biblioteca Polaris enfrenta desafios relacionados à eficiência e à integração de seus processos internos. Observa-se baixa eficiência no gerenciamento do acervo, dificuldades no controle de empréstimos e devoluções, ausência de notificações automatizadas para prazos e reservas, bem como limitações no acesso remoto aos serviços oferecidos.
 
-Nesse momento, o grupo pode optar por fazer uso  de ferramentas como Design Thinking, que permite um olhar de ponta a ponta para o problema.
+Adicionalmente, a inexistência de uma arquitetura distribuída compromete a escalabilidade do sistema e dificulta sua manutenção e evolução tecnológica. A falta de integração entre os diferentes setores e sistemas institucionais também impacta negativamente a experiência dos usuários e a gestão administrativa.
 
-> **Links Úteis**:
-> - [Objetivos, Problema de pesquisa e Justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
-> - [Matriz Certezas, Suposições e Dúvidas](https://medium.com/educa%C3%A7%C3%A3o-fora-da-caixa/matriz-certezas-suposi%C3%A7%C3%B5es-e-d%C3%BAvidas-fa2263633655)
-> - [Brainstorming](https://www.euax.com.br/2018/09/brainstorming/)
+Dessa forma, identifica-se a necessidade de uma solução tecnológica integrada, escalável e orientada a serviços, capaz de suprir as demandas atuais e futuras da biblioteca universitária.
 
 ## Objetivos
 
-Aqui você deve descrever os objetivos do trabalho indicando que o objetivo geral é desenvolver um software para solucionar o problema apresentado acima. 
+### Objetivo Geral
 
-Apresente também alguns (pelo menos 2) objetivos específicos dependendo de onde você vai querer concentrar a sua prática investigativa, ou como você vai aprofundar no seu trabalho.
- 
-> **Links Úteis**:
-> - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
+Desenvolver um sistema distribuído para a Biblioteca da Universidade Polaris, com o propósito de modernizar a gestão do acervo, integrar serviços por meio de APIs e Web Services e oferecer aplicações Web e Mobile que atendam às necessidades dos diferentes perfis de usuários.
+
+### Objetivos Específicos
+
+Elaborar a documentação de contexto da solução, identificando atores, stakeholders e limites do sistema;
+
+Planejar e implementar APIs para integração entre os módulos da aplicação;
+
+Desenvolver uma aplicação Web destinada à gestão administrativa do acervo e dos usuários;
+
+Desenvolver uma aplicação Mobile para consulta, reserva e renovação de materiais;
+
+Definir e aplicar requisitos funcionais e não funcionais relacionados à segurança, desempenho e escalabilidade.
 
 ## Justificativa
 
