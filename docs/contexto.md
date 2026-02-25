@@ -2,33 +2,33 @@
 
 A Biblioteca da Universidade Polaris constitui um dos principais pilares de apoio às atividades acadêmicas e científicas da instituição, disponibilizando acesso a livros físicos, materiais digitais, periódicos e serviços de empréstimo e consulta ao acervo. Com o avanço das tecnologias da informação e o crescimento da comunidade acadêmica, torna-se imprescindível a modernização dos processos de gestão da biblioteca, de modo a garantir maior eficiência operacional, integração sistêmica e acessibilidade aos usuários.
 
-Nesse contexto, este projeto propõe o desenvolvimento de um sistema distribuído para a Biblioteca Polaris, fundamentado nos princípios da Arquitetura de Sistemas Distribuídos. A solução contemplará a documentação de contexto, o planejamento e desenvolvimento de APIs e Web Services, a implementação de uma aplicação Web para gestão administrativa e uma aplicação Mobile voltada ao usuário final.
-
 ## Problema
 
-A Biblioteca Polaris enfrenta desafios relacionados à eficiência e à integração de seus processos internos. Observa-se baixa eficiência no gerenciamento do acervo, dificuldades no controle de empréstimos e devoluções, ausência de notificações automatizadas para prazos e reservas, bem como limitações no acesso remoto aos serviços oferecidos.
+A Biblioteca Polaris enfrenta como desafio central a ineficiência na gestão integrada de seus processos operacionais e informacionais. O crescimento da comunidade acadêmica e a ampliação do acervo físico e digital intensificaram a complexidade das atividades relacionadas a empréstimos, devoluções, reservas e controle de disponibilidade de materiais.
 
-Adicionalmente, a inexistência de uma arquitetura distribuída compromete a escalabilidade do sistema e dificulta sua manutenção e evolução tecnológica. A falta de integração entre os diferentes setores e sistemas institucionais também impacta negativamente a experiência dos usuários e a gestão administrativa.
+Atualmente, observam-se falhas no acompanhamento de prazos, ausência de mecanismos automatizados de comunicação com os usuários e dificuldades na consolidação de informações administrativas. Essas limitações impactam diretamente a experiência da comunidade acadêmica, que enfrenta obstáculos no acesso ágil à informação, e afetam a equipe responsável pela gestão do acervo, que lida com retrabalho e inconsistências operacionais.
 
-Dessa forma, identifica-se a necessidade de uma solução tecnológica integrada, escalável e orientada a serviços, capaz de suprir as demandas atuais e futuras da biblioteca universitária.
+A relevância do problema torna-se ainda mais evidente diante da crescente demanda por acesso remoto, serviços digitais e maior autonomia por parte dos usuários. Sem a modernização de seus processos e estruturas informacionais, a biblioteca tende a enfrentar aumento de inconsistências operacionais, sobrecarga administrativa e insatisfação da comunidade acadêmica.
+
+Dessa forma, o problema identificado não se limita a falhas pontuais de processo, mas refere-se a uma limitação estrutural na gestão integrada da biblioteca universitária, com impactos operacionais, estratégicos e institucionais.
 
 ## Objetivos
 
 ### Objetivo Geral
 
-Desenvolver um sistema distribuído para a Biblioteca da Universidade Polaris, com o propósito de modernizar a gestão do acervo, integrar serviços por meio de APIs e Web Services e oferecer aplicações Web e Mobile que atendam às necessidades dos diferentes perfis de usuários.
+Desenvolver um sistema de gestão integrada para a Biblioteca Polaris.
 
 ### Objetivos Específicos
 
-Elaborar a documentação de contexto da solução, identificando atores, stakeholders e limites do sistema;
+Analisar os processos atuais de gestão do acervo.
 
-Planejar e implementar APIs para integração entre os módulos da aplicação;
+Projetar uma arquitetura escalável e integrada.
 
-Desenvolver uma aplicação Web destinada à gestão administrativa do acervo e dos usuários;
+Estruturar um modelo centralizado de controle do acervo.
 
-Desenvolver uma aplicação Mobile para consulta, reserva e renovação de materiais;
+Implementar mecanismos automatizados de empréstimo, devolução e notificação.
 
-Definir e aplicar requisitos funcionais e não funcionais relacionados à segurança, desempenho e escalabilidade.
+Disponibilizar consulta online ao catálogo da biblioteca.
 
 ## Justificativa
 
