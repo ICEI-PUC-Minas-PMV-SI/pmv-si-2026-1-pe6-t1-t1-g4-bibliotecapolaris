@@ -38,15 +38,25 @@ O desenvolvimento de uma Biblioteca Digital Distribuída justifica-se pela neces
 
 ## Público-Alvo
 
-Público-alvo
+O sistema proposto é destinado a diferentes perfis de usuários da Universidade Polaris, tanto a comunidade acadêmica quanto a equipe administrativa da biblioteca.
 
-O sistema proposto é destinado a diferentes perfis de usuários da Universidade Polaris, tanto a comunidade acadêmica quanto a equipe administrativa da biblioteca. O público-alvo é composto por:
-Estudantes de graduação e pós-graduação, que utilizarão a aplicação Mobile e Web para consulta ao acervo, realização de reservas, empréstimos, renovações e acompanhamento de prazos;
-Professores e pesquisadores, que necessitam de acesso rápido e organizado aos materiais bibliográficos para apoio às atividades de ensino e pesquisa;
-Bibliotecários e equipe administrativa, responsáveis pelo cadastro, gerenciamento e controle do acervo, dos usuários e dos processos de empréstimo e devolução por meio da aplicação Web administrativa;
-Gestores da instituição, que poderão se beneficiar de informações para apoio à tomada de decisão e planejamento estratégico dos serviços da biblioteca.
 
-<img width="1536" height="1024" alt="diagramas de personas e mapa de stakeholders" src="https://github.com/user-attachments/assets/2a1a6ecf-e4da-43cb-aaff-bd8bbaf36c55" />
+**O público-alvo é composto por:**
+
+
+**Estudantes de graduação e pós-graduação**, que utilizarão a aplicação Mobile e Web para consulta ao acervo, realização de reservas, empréstimos, renovações e acompanhamento de prazos;
+
+
+**Professores e pesquisadores**, que necessitam de acesso rápido e organizado aos materiais bibliográficos para apoio às atividades de ensino e pesquisa;
+
+
+**Bibliotecários e equipe administrativa**, responsáveis pelo cadastro, gerenciamento e controle do acervo, dos usuários e dos processos de empréstimo e devolução por meio da aplicação Web administrativa;
+
+
+**Gestores da instituição**, que poderão se beneficiar de informações para apoio à tomada de decisão e planejamento estratégico dos serviços da biblioteca.
+
+<img width="1536" height="1024" alt="diagramas de personas e mapa de stakeholders" src="https://github.com/user-attachments/assets/9c75057c-e8cd-4b1c-908f-3ca470064a7e" />
+
 
 
 # Especificações do Projeto
