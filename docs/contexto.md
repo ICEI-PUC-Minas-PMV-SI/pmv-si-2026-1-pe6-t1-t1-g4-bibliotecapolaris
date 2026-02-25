@@ -32,25 +32,22 @@ Definir e aplicar requisitos funcionais e não funcionais relacionados à segura
 
 ## Justificativa
 
-Descreva a importância ou a motivação para trabalhar com esta aplicação que você escolheu. Indique as razões pelas quais você escolheu seus objetivos específicos ou as razões para aprofundar em certos aspectos do software.
+A crescente digitalização dos serviços acadêmicos e o aumento da demanda por acesso remoto à informação tornam indispensável a modernização dos sistemas de bibliotecas universitárias. A Biblioteca da Universidade Polaris, como unidade de apoio ao ensino, pesquisa e extensão, necessita de uma solução tecnológica que acompanhe a evolução das necessidades de seus usuários e da própria instituição.
 
-O grupo de trabalho pode fazer uso de questionários, entrevistas e dados estatísticos, que podem ser apresentados, com o objetivo de esclarecer detalhes do problema que será abordado pelo grupo.
-
-> **Links Úteis**:
-> - [Como montar a justificativa](https://guiadamonografia.com.br/como-montar-justificativa-do-tcc/)
+O desenvolvimento de uma Biblioteca Digital Distribuída justifica-se pela necessidade de melhorar a eficiência operacional no gerenciamento do acervo, otimizar o controle de empréstimos e devoluções e ampliar o acesso aos serviços oferecidos, independentemente de localização ou horário. A adoção de uma arquitetura distribuída possibilita maior escalabilidade, disponibilidade e integração entre os diferentes módulos do sistema, além de facilitar sua manutenção e evolução futura.
 
 ## Público-Alvo
 
-Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. O objetivo aqui não é definir quem serão os clientes ou quais serão os papéis dos usuários na aplicação. A ideia é, dentro do possível, conhecer um pouco mais sobre o perfil dos usuários: conhecimentos prévios, relação com a tecnologia, relações
-hierárquicas, etc.
+Público-alvo
 
-Adicione informações sobre o público-alvo por meio de uma descrição textual, diagramas de personas e mapa de stakeholders.
+O sistema proposto é destinado a diferentes perfis de usuários da Universidade Polaris, tanto a comunidade acadêmica quanto a equipe administrativa da biblioteca. O público-alvo é composto por:
+Estudantes de graduação e pós-graduação, que utilizarão a aplicação Mobile e Web para consulta ao acervo, realização de reservas, empréstimos, renovações e acompanhamento de prazos;
+Professores e pesquisadores, que necessitam de acesso rápido e organizado aos materiais bibliográficos para apoio às atividades de ensino e pesquisa;
+Bibliotecários e equipe administrativa, responsáveis pelo cadastro, gerenciamento e controle do acervo, dos usuários e dos processos de empréstimo e devolução por meio da aplicação Web administrativa;
+Gestores da instituição, que poderão se beneficiar de informações para apoio à tomada de decisão e planejamento estratégico dos serviços da biblioteca.
 
-> **Links Úteis**:
-> - [Público-alvo](https://blog.hotmart.com/pt-br/publico-alvo/)
-> - [Como definir o público alvo](https://exame.com/pme/5-dicas-essenciais-para-definir-o-publico-alvo-do-seu-negocio/)
-> - [Público-alvo: o que é, tipos, como definir seu público e exemplos](https://klickpages.com.br/blog/publico-alvo-o-que-e/)
-> - [Qual a diferença entre público-alvo e persona?](https://rockcontent.com/blog/diferenca-publico-alvo-e-persona/)
+<img width="1536" height="1024" alt="diagramas de personas e mapa de stakeholders" src="https://github.com/user-attachments/assets/2a1a6ecf-e4da-43cb-aaff-bd8bbaf36c55" />
+
 
 # Especificações do Projeto
 
