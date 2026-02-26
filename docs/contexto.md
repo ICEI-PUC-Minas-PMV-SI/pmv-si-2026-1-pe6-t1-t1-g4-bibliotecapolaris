@@ -60,42 +60,46 @@ O sistema proposto é destinado a diferentes perfis de usuários da Universidade
 
 
 # Especificações do Projeto
-
 ## Requisitos
+A técnica de priorização de requisitos adotada foi o método MoSCoW, um modelo qualitativo que organiza os requisitos de acordo com sua essencialidade para o sistema. Essa abordagem permite estruturar os requisitos de forma clara, evidenciando quais funcionalidades são críticas para o funcionamento do sistema, quais são importantes, quais são desejáveis e quais não serão implementadas neste ciclo.
 
-As tabelas que se seguem apresentam os requisitos funcionais e não funcionais que detalham o escopo do projeto. Para determinar a prioridade de requisitos, aplicar uma técnica de priorização de requisitos e detalhar como a técnica foi aplicada.
+O princípio da técnica consiste em analisar cada requisito quanto à sua importância para o sistema e impacto no funcionamento geral. Com base nessa análise, cada requisito é classificado em uma das quatro categorias do MoSCoW:
+* **M – Must have (Essencial)**: requisitos críticos, sem os quais o sistema não pode funcionar.
+* **S – Should have (Importante)**: requisitos relevantes, mas cuja ausência não inviabiliza a operação imediata do sistema.
+* **C – Could have (Desejável)**: requisitos que agregam valor, mas que podem ser implementados em fases futuras.
+* **W – Won’t have (Não terá neste ciclo)**: requisitos que não serão implementados no escopo atual, podendo ser considerados em futuras versões.
 
 ### Requisitos Funcionais
-
-|ID    | Descrição do Requisito  | Prioridade |
-|------|-----------------------------------------|----|
-|RF-001| Permitir que o usuário cadastre tarefas | ALTA | 
-|RF-002| Emitir um relatório de tarefas no mês   | MÉDIA |
+| ID    | Descrição do Requisito                                                                 | Prioridade |
+|-------|----------------------------------------------------------------------------------------|-----------|
+| RF01  | O sistema deve permitir o cadastro de livros                                           | M |
+| RF02  | O sistema deve disponibilizar listas com requisições de empréstimo para aprovação ou reprovação | M |
+| RF03  | O sistema deve disponibilizar lista de empréstimos realizados, com seus respectivos status | M |
+| RF04  | O sistema deve permitir o cadastro de usuários, incluindo nome e e-mail, com envio de notificação ao administrador do sistema | M |
+| RF05  | O sistema deve disponibilizar lista de livros para download e retirada, com opções de filtro por nome, categoria ou autor | M |
+| RF06  | O sistema deve bloquear o empréstimo de novos livros caso o aluno esteja com pendência | M |
+| RF07  | O sistema deve disponibilizar a criação de empréstimo manual              | S |
+| RF08  | O sistema deve permitir o agendamento de retirada do livro na biblioteca               | S |
+| RF09  | O sistema deve permitir o download de conteúdos eletrônicos                             | S |
+| RF10  | O sistema deve disponibilizar visualização do status do empréstimo, com possibilidade de justificar atraso, antecipar entrega ou solicitar adiamento | S |
+| RF11  | O sistema deve permitir visualização de livros emprestados, conteúdos baixados e livros desejados | C |
+| RF12  | O sistema deve oferecer recomendações baseadas nos livros emprestados ou baixados pelo usuário | C |
 
 ### Requisitos não Funcionais
-
-|ID     | Descrição do Requisito  |Prioridade |
+|ID     | Descrição do Requisito  | Prioridade |
 |-------|-------------------------|----|
-|RNF-001| O sistema deve ser responsivo para rodar em um dispositivos móvel | MÉDIA | 
-|RNF-002| Deve processar requisições do usuário em no máximo 3s |  BAIXA | 
+| RNF01  | O sistema deve responder às requisições em até 3 segundos                               | M |
+| RNF02  | O sistema deve suportar no mínimo 6.000 usuários simultâneos                            | M |
+| RNF03  | O sistema deve exigir autenticação por login e senha                                    | M |
+| RNF04  | O sistema deve armazenar senhas de forma criptografada                                  | M |
+| RNF05  | O sistema deve restringir funcionalidades administrativas por perfil                   | M |
+| RNF06  | O sistema deve registrar logs de ações críticas                                         | S |
+| RNF07  | O sistema deve possuir interface intuitiva, compatível com navegadores modernos e otimizado para cada tela | S |
+| RNF08  | O sistema deve apresentar mensagens de erro claras e objetivas                           | C |
 
-Com base nas Histórias de Usuário, enumere os requisitos da sua solução. Classifique esses requisitos em dois grupos:
 
-- [Requisitos Funcionais
- (RF)](https://pt.wikipedia.org/wiki/Requisito_funcional):
- correspondem a uma funcionalidade que deve estar presente na
-  plataforma (ex: cadastro de usuário).
-- [Requisitos Não Funcionais
-  (RNF)](https://pt.wikipedia.org/wiki/Requisito_n%C3%A3o_funcional):
-  correspondem a uma característica técnica, seja de usabilidade,
-  desempenho, confiabilidade, segurança ou outro (ex: suporte a
-  dispositivos iOS e Android).
-Lembre-se que cada requisito deve corresponder à uma e somente uma
-característica alvo da sua solução. Além disso, certifique-se de que
-todos os aspectos capturados nas Histórias de Usuário foram cobertos.
 
 ## Restrições
-
 O projeto está restrito pelos itens apresentados na tabela a seguir.
 
 |ID| Restrição                                             |
