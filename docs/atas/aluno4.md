@@ -6,7 +6,7 @@
 |:-------:|:---------------:|:--------:|:------------------:|:-------------------:|
 | 09/02 - 15/02 | Gestão de Serviços de TI - Unidade 1 | ✅ |   |   |
 | 16/02 - 22/02 | Gestão de Serviços de TI - Unidade 2 | ✅ |  |  |
-| 23/02 - 01/03 | Arquitetura de Software Distribuído - Unidade 1 e 2 | ⬜ | Justificativa e Publico alvo | **Justificativa do projeto**, contextualizando o problema que motivou o desenvolvimento da solução. O foco esteve na necessidade de uma aplicação distribuída, capaz de atender múltiplos usuários simultaneamente. **Público-alvo**, descrição textual, caracterizando o perfil geral dos usuários. **Personas**, representando usuários típicos com objetivos, necessidades e dificuldades. **Mapa de stakeholders**, identificando os principais envolvidos direta e indiretamente no sistema. |
+| 23/02 - 01/03 | Arquitetura de Software Distribuído - Unidade 1 e 2 | ⬜ | Justificativa e Publico alvo | **Justificativa do projeto**, contextualizando o problema que motivou o desenvolvimento da solução. O foco esteve na necessidade de uma aplicação distribuída, capaz de atender múltiplos usuários simultaneamente. **Público-alvo**, descrição textual, caracterizando o perfil geral dos usuários. **Personas** representando usuários típicos com objetivos, necessidades e dificuldades. **Mapa de stakeholders** identificando os principais envolvidos direta e indiretamente no sistema. |
 | 02/03 - 08/03 | Arquitetura de Software Distribuído - Unidade 3 | ⬜ |  |  |
 | 09/03 - 15/03 | APIs e Web Services - Unidade 1 | ⬜ |  |  |
 | 16/03 - 22/03 | APIs e Web Services - Unidade 2 | ⬜ |  |  |
