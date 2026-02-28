@@ -171,13 +171,13 @@ Os serviços estão organizados conforme o perfil de acesso (Aluno e Administrad
 * Aplicação de restrições automáticas
 * Registro de irregularidades
 
-**Arquitetura de Dados e Integração**
+# Arquitetura e Tecnologia
 
 A arquitetura do sistema fundamenta-se em uma estrutura de **Camadas Desacopladas**. O ecossistema é dividido entre uma base de dados centralizada, um núcleo de serviços (*Backend*) e interfaces multiplataforma (*Frontend* e *Mobile*).
 
 A persistência das informações é gerenciada por um banco de dados unificado **MariaDB**, utilizando o modelo relacional para garantir a consistência e a atomicidade das operações.
 
-Tabelas:
+### Tabelas:
 
 *   Aluno (matrícula, nome, nada consta)
 *   Livros (Autor, título, editora, ano, estoque, empréstimos(MAX=estoque)
@@ -192,7 +192,7 @@ O sistema provê suporte multiplataforma para os usuários finais, consumindo a 
 *   **Aplicação Web:** Desenvolvida em **React** utilizando **Tailwind CSS** para uma interface responsiva e performática.
 *   **Aplicação Mobile:** Desenvolvida em **React Native**.
 
-**Hospedagem e Deploy Contínuo (CI/CD)**
+# Hospedagem e Deploy Contínuo (CI/CD)
 
 O workflow de software segue práticas de *DevOps*:
 
