@@ -104,8 +104,11 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 
 |ID| Restrição                                             |
 |--|-------------------------------------------------------|
-|01| O projeto deverá ser entregue até o final do semestre |
-|02| Não pode ser desenvolvido um módulo de backend        |
+|01| O escopo da solução está limitado às funcionalidades descritas neste documento |
+|02| A implementação deverá priorizar os requisitos classificados como “Must Have”, conforme o método MoSCoW|
+|03| A solução deverá seguir o modelo de arquitetura distribuída definido no projeto|
+|04| O projeto deverá ser concluído até o final do semestre|
+|05| A validação prática da solução ocorrerá em ambiente acadêmico e de demonstração|
 
 Enumere as restrições à sua solução. Lembre-se de que as restrições geralmente limitam a solução candidata.
 
