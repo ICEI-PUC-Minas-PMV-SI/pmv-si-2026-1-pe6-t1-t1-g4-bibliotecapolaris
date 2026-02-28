@@ -115,7 +115,53 @@ Enumere as restrições à sua solução. Lembre-se de que as restrições geral
 
 # Catálogo de Serviços
 
-Descreva aqui todos os serviços que serão disponibilizados pelo seu projeto, detalhando suas características e funcionalidades.
+## Serviços destinados ao Aluno
+1. Serviço de Cadastro e Login de Usuário
+* Permite que os usuários criem uma conta com nome, email;
+* Validação de informações obrigatórias para login;
+* Envio automático de notificação ao administrador, em caso de cadastro.
+
+2. Serviço de Consulta ao Catálogo
+* Listagem de livros físicos e digitais
+* Filtros por nome, autor ou categoria
+* Visualização de disponibilidade
+
+3. Serviço de Solicitação e Agendamento de Empréstimo
+* Envio de solicitação de empréstimo
+* Escolha de data para retirada
+* Acompanhamento do status da solicitação
+
+4. Serviço de Download de Conteúdo Digital
+* Acesso a conteúdos digitais
+* Download direto pelo sistema
+* Registro do histórico de downloads
+
+5. Serviço de Acompanhamento de Empréstimos
+* Visualização de status
+* Solicitação de adiamento
+* Justificativa de atraso
+* Consulta de pendências
+
+6. Serviço de Recomendações
+* Análise de empréstimos anteriores
+* Sugestão automatizada de novos títulos
+
+## Serviços destinados ao Administrador
+7. Serviço de Gestão de Acervo
+* Cadastro de novos livros
+* Atualização de informações
+* Controle de disponibilidade
+
+8. Serviço de Gestão de Empréstimos
+* Aprovação ou reprovação de solicitações
+* Criação manual de empréstimos
+* Visualização de todos os empréstimos
+* Controle de status
+
+9. Serviço de Controle de Pendências
+* Identificação de atrasos
+* Aplicação de restrições automáticas
+* Registro de irregularidades
 
 # Arquitetura da Solução
 
