@@ -114,6 +114,9 @@ Enumere as restrições à sua solução. Lembre-se de que as restrições geral
 > - [O que são requisitos funcionais e requisitos não funcionais?](https://analisederequisitos.com.br/requisitos-funcionais-e-requisitos-nao-funcionais-o-que-sao/)
 
 # Catálogo de Serviços
+O catálogo de serviços apresenta os serviços disponibilizados pelo sistema de biblioteca universitária, descrevendo suas finalidades, funcionalidades e o público ao qual se destinam. Cada serviço representa uma entrega concreta do sistema aos seus usuários, estruturando as operações relacionadas à gestão de livros, empréstimos e conteúdos digitais.
+
+Os serviços estão organizados conforme o perfil de acesso (Aluno e Administrador), refletindo as permissões e responsabilidades de cada tipo de usuário.
 
 ## Serviços destinados ao Aluno
 1. Serviço de Cadastro e Login de Usuário
