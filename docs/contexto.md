@@ -16,19 +16,21 @@ Dessa forma, o problema identificado não se limita a falhas pontuais de process
 
 ### Objetivo Geral
 
-Desenvolver um sistema de gestão integrada para a Biblioteca Polaris.
+Desenvolver um sistema integrado de gestão para a Biblioteca da Universidade Polaris, com o objetivo de modernizar seus processos operacionais, facilitar o acesso da comunidade acadêmica aos materiais disponíveis e fornecer suporte estratégico à administração por meio de informações consolidadas e em tempo real.
 
 ### Objetivos Específicos
 
-Analisar os processos atuais de gestão do acervo.
+Analisar os fluxos atuais de empréstimo e devolução da biblioteca.
 
-Projetar uma arquitetura escalável e integrada.
+Projetar uma arquitetura integrada que permita centralização e escalabilidade da gestão do acervo.
 
-Estruturar um modelo centralizado de controle do acervo.
+Automatizar os processos de solicitação, aprovação e registro de empréstimos.
 
-Implementar mecanismos automatizados de empréstimo, devolução e notificação.
+Reduzir o tempo médio de atendimento nas operações de retirada e devolução de livros.
 
-Disponibilizar consulta online ao catálogo da biblioteca.
+Disponibilizar consulta online ao catálogo, ampliando o acesso remoto aos serviços da biblioteca.
+
+Melhorar a experiência do usuário por meio de notificações automatizadas e acompanhamento em tempo real do status dos empréstimos.
 
 ## Justificativa
 
