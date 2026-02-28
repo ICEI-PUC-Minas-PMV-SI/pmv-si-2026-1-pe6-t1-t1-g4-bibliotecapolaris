@@ -171,19 +171,31 @@ Os serviços estão organizados conforme o perfil de acesso (Aluno e Administrad
 * Aplicação de restrições automáticas
 * Registro de irregularidades
 
-# Arquitetura da Solução
+**Arquitetura de Dados e Integração**
 
-Definição de como o software é estruturado em termos dos componentes que fazem parte da solução e do ambiente de hospedagem da aplicação.
+A arquitetura do sistema fundamenta-se em uma estrutura de **Camadas Desacopladas**. O ecossistema é dividido entre uma base de dados centralizada, um núcleo de serviços (*Backend*) e interfaces multiplataforma (*Frontend* e *Mobile*).
 
-![arq](https://github.com/user-attachments/assets/b9402e05-8445-47c3-9d47-f11696e38a3d)
+A persistência das informações é gerenciada por um banco de dados unificado **MariaDB**, utilizando o modelo relacional para garantir a consistência e a atomicidade das operações.
 
+Tabelas:
 
-## Tecnologias Utilizadas
+*   Aluno (matrícula, nome, nada consta)
+*   Livros (Autor, título, editora, ano, estoque, empréstimos(MAX=estoque)
+*   Empréstimos (prazo, multa, livro)
+*   Multas (valor, pagamento)
+*   Pagamentos (multa, pago ou não)
 
-Descreva aqui qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas.
+Nenhuma interface de usuário possui permissão de conexão direta com o SGDB; toda e qualquer interação é realizada exclusivamente através de uma **API RESTful** desenvolvida em **TypeScript + Node.js** com o framework **Express**. Esta API é hospedada em uma instância dedicada,
 
-Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
+O sistema provê suporte multiplataforma para os usuários finais, consumindo a API centralizada:
 
-## Hospedagem
+*   **Aplicação Web:** Desenvolvida em **React** utilizando **Tailwind CSS** para uma interface responsiva e performática.
+*   **Aplicação Mobile:** Desenvolvida em **React Native**.
 
-Explique como a hospedagem e o lançamento da plataforma foi feita.
+**Hospedagem e Deploy Contínuo (CI/CD)**
+
+O workflow de software segue práticas de *DevOps*:
+
+*   **Database:** Nossa base de dados estará hospedada em uma instância do Amazon RDS(?), acessível pelo backend por meio de subrede e de protocolo CORS(?)
+*   **Monorepo de Interfaces:** As aplicações *Web* e *Mobile* residem no mesmo repositório, facilitando a padronização visual, manutenção e reusabilidade de código. O processo de *build* e distribuição é automatizado via **GitHub Actions**.
+*   **Serviços Backend:** O servidor de API possui seu próprio pipeline de entrega, também automatizada pelo **GitHub Action.**
