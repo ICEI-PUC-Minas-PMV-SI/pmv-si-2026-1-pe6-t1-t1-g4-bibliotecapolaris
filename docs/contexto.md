@@ -112,8 +112,6 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 |04| O projeto deverá ser concluído até o final do semestre|
 |05| A validação prática da solução ocorrerá em ambiente acadêmico e de demonstração|
 
-Enumere as restrições à sua solução. Lembre-se de que as restrições geralmente limitam a solução candidata.
-
 > **Links Úteis**:
 > - [O que são Requisitos Funcionais e Requisitos Não Funcionais?](https://codificar.com.br/requisitos-funcionais-nao-funcionais/)
 > - [O que são requisitos funcionais e requisitos não funcionais?](https://analisederequisitos.com.br/requisitos-funcionais-e-requisitos-nao-funcionais-o-que-sao/)
