@@ -1,57 +1,49 @@
 # 📊 Relatório de Contribuições do Projeto
 
-**Última atualização:** Aguardando primeira execução automática
+**Última atualização:** 02/03/2026 13:46
 
 ---
 
 ## 📈 Resumo Geral de Contribuições
 
-Este relatório é gerado automaticamente toda segunda-feira e rastreia as contribuições individuais de cada membro da equipe.
+| Aluno                 |   Commits |   Linhas+ |   Linhas- |   Arquivos |   Docs Commits |   Docs Arquivos |
+|-----------------------|-----------|-----------|-----------|------------|----------------|-----------------|
+| Davih Duque           |         8 |        94 |        45 |          3 |              8 |               3 |
+| Fabiana               |         5 |        10 |         9 |          2 |              5 |               2 |
+| Filipeacacio1         |         8 |        42 |        35 |          3 |              8 |               3 |
+| Lucas Fonseca         |         6 |        44 |        35 |          2 |              6 |               2 |
+| github-classroom[bot] |         1 |      2152 |         0 |         45 |              1 |              13 |
+| vcrfrancisco          |         4 |        28 |        16 |          2 |              4 |               2 |
 
-| Aluno | Commits | Linhas+ | Linhas- | Arquivos | Docs Commits | Docs Arquivos |
-| --- | --- | --- | --- | --- | --- | --- |
-| _Aguardando dados..._ | - | - | - | - | - | - |
 
-## 📅 Contribuições Semanais 
+## 📅 Contribuições Semanais (Todo o Semestre)
 
-_Os dados semanais serão atualizados automaticamente após a primeira execução. O sistema rastreia as últimas 24 semanas (aproximadamente 6 meses = 1 semestre)._
+**2026-02-23**: Davih Duque: 8, Fabiana: 5, Filipeacacio1: 8, Lucas Fonseca: 6, vcrfrancisco: 4
+
+**2026-02-16**: github-classroom[bot]: 1
+
+
 
 ## 📊 Visualização Gráfica
 
-_Os gráficos serão gerados automaticamente após commits serem feitos no projeto._
+![Contribuições Semanais](img/contribution-weekly.png)
+
+
 
 ## ℹ️ Observações
 
 - **Commits**: Número total de commits realizados
+
 - **Linhas+**: Linhas de código adicionadas
+
 - **Linhas-**: Linhas de código removidas
+
 - **Arquivos**: Número de arquivos únicos modificados
+
 - **Docs Commits**: Commits em arquivos de documentação
+
 - **Docs Arquivos**: Arquivos de documentação modificados
 
-### Como funciona?
-
-O relatório de contribuições é atualizado automaticamente através de GitHub Actions:
-
-1. **Execução Automática**: Toda segunda-feira às 00:00 UTC
-2. **Execução Manual**: Pode ser executada manualmente na aba "Actions" do GitHub
-3. **Execução por Push**: Também executa quando há commits em `src/` ou `docs/`
-
-### Métricas Rastreadas
-
-- ✅ Commits por autor e por semana
-- ✅ Linhas de código adicionadas/removidas
-- ✅ Arquivos modificados
-- ✅ Contribuições específicas em documentação
-- ✅ Visualizações gráficas (linha e pizza)
-
-### Para Professores
-
-Este relatório facilita a avaliação individual dos alunos, mostrando:
-- Distribuição do trabalho entre os membros
-- Consistência de contribuições ao longo do tempo
-- Participação em documentação vs. código
-- Padrões de atividade semanal
 
 ---
 
