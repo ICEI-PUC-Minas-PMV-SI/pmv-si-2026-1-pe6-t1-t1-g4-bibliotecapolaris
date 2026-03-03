@@ -1,6 +1,6 @@
 # 📊 Relatório de Contribuições do Projeto
 
-**Última atualização:** 03/03/2026 23:19
+**Última atualização:** 03/03/2026 23:21
 
 ---
 
@@ -11,16 +11,16 @@
 | Davih Duque           |         8 |        94 |        45 |          3 |              8 |               3 |
 | Fabiana               |         5 |        10 |         9 |          2 |              5 |               2 |
 | Filipeacacio1         |         8 |        42 |        35 |          3 |              8 |               3 |
-| Leonardo Junior       |         4 |        21 |         8 |          1 |              4 |               1 |
+| Leonardo Junior       |         5 |        22 |        14 |          1 |              5 |               1 |
 | Lucas Fonseca         |         6 |        44 |        35 |          2 |              6 |               2 |
-| github-actions[bot]   |         4 |        36 |        42 |          3 |              4 |               1 |
+| github-actions[bot]   |         5 |        40 |        46 |          3 |              5 |               1 |
 | github-classroom[bot] |         1 |      2152 |         0 |         45 |              1 |              13 |
 | vcrfrancisco          |         4 |        28 |        16 |          2 |              4 |               2 |
 
 
 ## 📅 Contribuições Semanais (Todo o Semestre)
 
-**2026-02-24**: Davih Duque: 7, Fabiana: 5, Filipeacacio1: 8, Leonardo Junior: 4, Lucas Fonseca: 4, github-actions[bot]: 4, vcrfrancisco: 4
+**2026-02-24**: Davih Duque: 7, Fabiana: 5, Filipeacacio1: 8, Leonardo Junior: 5, Lucas Fonseca: 4, github-actions[bot]: 5, vcrfrancisco: 4
 
 **2026-02-17**: Davih Duque: 1, Lucas Fonseca: 2, github-classroom[bot]: 1
 
