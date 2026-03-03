@@ -173,11 +173,7 @@ A persistência das informações é gerenciada por um banco de dados unificado 
 
 ### Tabelas:
 
-*   Aluno (matrícula, nome, nada consta)
-*   Livros (Autor, título, editora, ano, estoque, empréstimos(MAX=estoque)
-*   Empréstimos (prazo, multa, livro)
-*   Multas (valor, pagamento)
-*   Pagamentos (multa, pago ou não)
+<img width="1600" height="360" alt="image" src="https://github.com/user-attachments/assets/69728941-2de0-4ee4-a5fb-6c5744ec00b7" />
 
 Nenhuma interface de usuário possui permissão de conexão direta com o SGDB; toda e qualquer interação é realizada exclusivamente através de uma **API RESTful** desenvolvida em **TypeScript + Node.js** com o framework **Express**. Esta API é hospedada em uma instância dedicada,
 
@@ -185,7 +181,6 @@ O sistema provê suporte multiplataforma para os usuários finais, consumindo a 
 
 *   **Aplicação Web:** Desenvolvida em **React** utilizando **Tailwind CSS** para uma interface responsiva e performática.
 *   **Aplicação Mobile:** Desenvolvida em **React Native**.
-<img width="1600" height="360" alt="image" src="https://github.com/user-attachments/assets/69728941-2de0-4ee4-a5fb-6c5744ec00b7" />
 
 # Hospedagem e Deploy Contínuo (CI/CD)
 
