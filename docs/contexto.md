@@ -198,9 +198,10 @@ O workflow de software segue práticas de *DevOps*:
 
 Para a construção e manutenção do ecossistema, o projeto adota a seguinte stack tecnológica:
 
-* **Banco de Dados**: -
-* **Backend (API)**: -
-* **Frontend Web**: -
-* **Frontend Mobile**: -
+* **Banco de Dados**: Maria DB
+* **Backend (API)**: Node.js + Typescript & Express
+* **Frontend Web**: React utilizando Tailwind CSS
+* **Frontend Mobile**: React Native
 * **Infraestrutura e Cloud**: Amazon Web Services (AWS RDS e VPC)
 * **Automação e CI/CD**: GitHub Actions
+<img width="1600" height="360" alt="image" src="https://github.com/user-attachments/assets/69728941-2de0-4ee4-a5fb-6c5744ec00b7" />
