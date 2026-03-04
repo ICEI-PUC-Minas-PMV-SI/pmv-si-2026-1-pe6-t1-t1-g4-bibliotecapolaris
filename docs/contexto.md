@@ -59,8 +59,6 @@ O sistema proposto é destinado a diferentes perfis de usuários da Universidade
 
 <img width="1536" height="1024" alt="diagramas de personas e mapa de stakeholders" src="https://github.com/user-attachments/assets/9c75057c-e8cd-4b1c-908f-3ca470064a7e" />
 
-
-
 # Especificações do Projeto
 ## Requisitos
 A técnica de priorização de requisitos adotada foi o método MoSCoW, um modelo qualitativo que organiza os requisitos de acordo com sua essencialidade para o sistema. Essa abordagem permite estruturar os requisitos de forma clara, evidenciando quais funcionalidades são críticas para o funcionamento do sistema, quais são importantes, quais são desejáveis e quais não serão implementadas neste ciclo.
@@ -172,7 +170,8 @@ A arquitetura do sistema fundamenta-se em uma estrutura de **Camadas Desacoplada
 A persistência das informações é gerenciada por um banco de dados unificado **MariaDB**, utilizando o modelo relacional para garantir a consistência e a atomicidade das operações.
 
 ### Tabelas:
-  <img width="2624" height="640" alt="image" src="https://github.com/user-attachments/assets/9a572661-53a0-4a34-9602-fe2a0df6a4d2" />
+<img width="2624" height="640" alt="image" src="https://github.com/user-attachments/assets/0f893c29-98a8-498a-9b49-8b4d5076222e" />
+
 
 
 Nenhuma interface de usuário possui permissão de conexão direta com o SGDB; toda e qualquer interação é realizada exclusivamente através de uma **API RESTful** desenvolvida em **TypeScript + Node.js** com o framework **Express**. Esta API é hospedada em uma instância dedicada,
