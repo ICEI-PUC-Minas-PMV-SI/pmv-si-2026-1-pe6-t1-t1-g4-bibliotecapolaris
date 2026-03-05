@@ -11,11 +11,11 @@ Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo de
 ## Integrantes
 
 * [Davih Gonçalves Duque](docs/atas/aluno1.md)
-* [Fabiana Santos Soares](docs/atas/aluno2.md)
+* [Fabiana Santos Soares](docs/atas/aluno6.md)
 * [Filipe Acacio Costa](docs/atas/aluno3.md)
 * [Leonardo Guedes Gomes Junior](docs/atas/aluno4.md)
 * [Lucas de Oliveira Fonseca](docs/atas/aluno5.md)
-* [Vítor César Reis Francisco](docs/atas/aluno6.md)
+* [Vítor César Reis Francisco](docs/atas/aluno2.md)
 
 ## Orientador
 
