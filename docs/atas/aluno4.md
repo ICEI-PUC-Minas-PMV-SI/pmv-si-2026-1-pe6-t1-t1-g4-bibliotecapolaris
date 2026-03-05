@@ -4,8 +4,8 @@
 
 | Período | Microfundamento | Estudou? | Atividade Prevista | Atividade Realizada |
 |:-------:|:---------------:|:--------:|:------------------:|:-------------------:|
-| 09/02 - 15/02 | Gestão de Serviços de TI - Unidade 1 | ⬜ |  |  |
-| 16/02 - 22/02 | Gestão de Serviços de TI - Unidade 2 | ⬜ |  |  |
+| 09/02 - 15/02 | Gestão de Serviços de TI - Unidade 1 | ✅ |  |  |
+| 16/02 - 22/02 | Gestão de Serviços de TI - Unidade 2 | ✅ |  |  |
 | 23/02 - 01/03 | Arquitetura de Software Distribuído - Unidade 1 e 2 | ⬜ |  |  |
 | 02/03 - 08/03 | Arquitetura de Software Distribuído - Unidade 3 | ⬜ | Adição dos matériais sobre Arquitetura e Tecnologia, Hospedagem e Deploy Contínuo (CI/CD) e Tecnologias Utilizadas, complementando e alterando algumas informações já levantadas. Complemento também do material relacionado as tabelas que serão utilizadas. | ✅ |
 | 09/03 - 15/03 | APIs e Web Services - Unidade 1 | ⬜ |  |  |
