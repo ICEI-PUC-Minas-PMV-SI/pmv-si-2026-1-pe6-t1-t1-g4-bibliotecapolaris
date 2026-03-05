@@ -169,11 +169,6 @@ A arquitetura do sistema fundamenta-se em uma estrutura de **Camadas Desacoplada
 
 A persistência das informações é gerenciada por um banco de dados unificado **MariaDB**, utilizando o modelo relacional para garantir a consistência e a atomicidade das operações.
 
-### Tabelas:
-<img width="2624" height="640" alt="image" src="https://github.com/user-attachments/assets/0f893c29-98a8-498a-9b49-8b4d5076222e" />
-
-
-
 Nenhuma interface de usuário possui permissão de conexão direta com o SGDB; toda e qualquer interação é realizada exclusivamente através de uma **API RESTful** desenvolvida em **TypeScript + Node.js** com o framework **Express**. Esta API é hospedada em uma instância dedicada,
 
 O sistema provê suporte multiplataforma para os usuários finais, consumindo a API centralizada:
