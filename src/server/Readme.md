@@ -24,8 +24,9 @@ npm install
 Este projeto utiliza Prisma como ORM. Configure o arquivo `.env` na raiz do projeto:
 
 ```bash
+NODE_ENV="development | production"
 DATABASE_URL="file:./dev.db"
-port="3333"
+PORT="3333"
 ```
 
 - Para desenvolvimento local, utilizamos SQLite.
