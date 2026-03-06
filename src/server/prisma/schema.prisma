@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum UserType {
+  student
+  administrator
+}
+
+model User {
+  id        String   @id @default(uuid())
+  slug      String   @unique
+  name      String
+  email     String   @unique
+  password  String
+  isBlocked Boolean  @default(false) @map("is_blocked")
+  type      UserType
+
+  loans Loan[]
+
+  @@map("users")
+}
+
+model Book {
+  id                String @id @default(uuid())
+  slug              String @unique
+  name              String
+  author            String
+  publisher         String
+  description       String
+  categories        String
+  quantityAvailable Int    @map("quantity_available")
+
+  @@map("books")
+}
+
+enum LoanStatus {
+  in_progress
+  returned
+  canceled
+  overdue
+}
+
+model Loan {
+  id         String     @id @default(uuid())
+  studentId  String     @map("student_id")
+  bookId     String     @map("book_id")
+  loanDate   DateTime   @map("loan_date")
+  dueDate    DateTime   @map("due_date")
+  returnDate DateTime?  @map("return_date")
+  status     LoanStatus
+
+  student User @relation(fields: [studentId], references: [id])
+
+  @@map("loans")
+}
