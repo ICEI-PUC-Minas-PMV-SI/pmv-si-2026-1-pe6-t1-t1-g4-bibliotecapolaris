@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import type { Response } from 'express';
-import { sendFailure } from '@/utils/apiResponse';
+import { sendFailure } from '@/utils';
 
 export function handleError(res: Response, error: unknown) {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
