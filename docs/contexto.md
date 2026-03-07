@@ -165,16 +165,17 @@ Os serviços estão organizados conforme o perfil de acesso (Aluno e Administrad
 
 # Arquitetura e Tecnologia
 
-A arquitetura do sistema fundamenta-se em uma estrutura de **Camadas Desacopladas**. O ecossistema é dividido entre uma base de dados centralizada, um núcleo de serviços (*Backend*) e interfaces multiplataforma (*Frontend* e *Mobile*).
+A arquitetura do sistema fundamenta-se em uma estrutura de Camadas Desacopladas. O ecossistema é dividido entre uma base de dados centralizada, um núcleo de serviços (Backend) e interfaces multiplataforma (Frontend e Mobile).
 
-A persistência das informações é gerenciada por um banco de dados unificado **MariaDB**, utilizando o modelo relacional para garantir a consistência e a atomicidade das operações.
+A persistência das informações é gerenciada por um banco de dados unificado MariaDB, utilizando o modelo relacional para garantir a consistência e a atomicidade das operações.
 
-Nenhuma interface de usuário possui permissão de conexão direta com o SGDB; toda e qualquer interação é realizada exclusivamente através de uma **API RESTful** desenvolvida em **TypeScript + Node.js** com o framework **Express**. Esta API é hospedada em uma instância dedicada,
+Nenhuma interface de usuário possui permissão de conexão direta com o SGDB; toda e qualquer interação é realizada exclusivamente através de uma API RESTful. Esta API atua como o único ponto de entrada lógico do sistema, centralizando o processamento das regras de negócio e garantindo a integridade dos dados transitados.
 
 O sistema provê suporte multiplataforma para os usuários finais, consumindo a API centralizada:
 
-*   **Aplicação Web:** Desenvolvida em **React** utilizando **Tailwind CSS** para uma interface responsiva e performática.
-*   **Aplicação Mobile:** Desenvolvida em **React Native**.
+* **Aplicação Web**: Desenvolvida em React utilizando Tailwind CSS para uma interface responsiva e performática.
+
+* **Aplicação Mobile**: Desenvolvida em React Native.
 
 # Hospedagem e Deploy Contínuo (CI/CD)
 
