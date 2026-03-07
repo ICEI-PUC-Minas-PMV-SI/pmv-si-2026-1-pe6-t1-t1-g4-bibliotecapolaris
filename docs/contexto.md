@@ -171,11 +171,7 @@ A persistência das informações é gerenciada por um banco de dados unificado 
 
 Nenhuma interface de usuário possui permissão de conexão direta com o SGDB; toda e qualquer interação é realizada exclusivamente através de uma API RESTful. Esta API atua como o único ponto de entrada lógico do sistema, centralizando o processamento das regras de negócio e garantindo a integridade dos dados transitados.
 
-O sistema provê suporte multiplataforma para os usuários finais, consumindo a API centralizada:
-
-* **Aplicação Web**: Desenvolvida em React utilizando Tailwind CSS para uma interface responsiva e performática.
-
-* **Aplicação Mobile**: Desenvolvida em React Native.
+O sistema provê suporte multiplataforma para os usuários finais, consumindo a API centralizada.
 
 # Hospedagem e Deploy Contínuo (CI/CD)
 
