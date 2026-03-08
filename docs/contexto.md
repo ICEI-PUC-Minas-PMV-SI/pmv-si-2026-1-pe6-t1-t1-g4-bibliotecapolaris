@@ -169,7 +169,7 @@ A arquitetura do sistema fundamenta-se em uma estrutura de Camadas Desacopladas.
 
 A persistência das informações é gerenciada por um banco de dados unificado MariaDB, utilizando o modelo relacional para garantir a consistência e a atomicidade das operações.
 
-Nenhuma interface de usuário possui permissão de conexão direta com o SGDB; toda e qualquer interação é realizada exclusivamente através de uma API RESTful. Esta API atua como o único ponto de entrada lógico do sistema, centralizando o processamento das regras de negócio e garantindo a integridade dos dados transitados.
+Nenhuma interface de usuário possui permissão de conexão direta com o SGDB; toda e qualquer interação é realizada exclusivamente através de uma API RESTful, usando protocolo HTTP. Esta API atua como o único ponto de entrada lógico do sistema, centralizando o processamento das regras de negócio e garantindo a integridade dos dados transitados.
 
 O sistema provê suporte multiplataforma para os usuários finais, consumindo a API centralizada.
 
