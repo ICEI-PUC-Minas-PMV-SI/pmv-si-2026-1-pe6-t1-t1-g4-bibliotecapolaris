@@ -165,11 +165,11 @@ Os serviços estão organizados conforme o perfil de acesso (Aluno e Administrad
 
 # Arquitetura e Tecnologia
 
-A arquitetura do sistema fundamenta-se em uma estrutura de Camadas Desacopladas. O ecossistema é dividido entre uma base de dados centralizada, um núcleo de serviços (Backend) e interfaces multiplataforma (Frontend e Mobile).
+A arquitetura do sistema fundamenta-se em uma estrutura de Camadas Desacopladas, estruturado garantindo a separação de interesses e um formato modular que permite escalabilidade da aplicação, tanto vertical quanto horizontal. O ecossistema é dividido entre uma base de dados centralizada, um núcleo de serviços (Backend) e interfaces multiplataforma (Frontend e Mobile).
 
 A persistência das informações é gerenciada por um banco de dados unificado MariaDB, utilizando o modelo relacional para garantir a consistência e a atomicidade das operações.
 
-Nenhuma interface de usuário possui permissão de conexão direta com o SGDB; toda e qualquer interação é realizada exclusivamente através de uma API RESTful, usando protocolo HTTP. Esta API atua como o único ponto de entrada lógico do sistema, centralizando o processamento das regras de negócio e garantindo a integridade dos dados transitados.
+Nenhuma interface de usuário possui permissão de conexão direta com o SGDB; toda e qualquer interação é realizada exclusivamente através de uma API RESTful. Esta API atua como o único ponto de entrada lógico do sistema, centralizando o processamento em um modelo Cliente-Servidor, utilizando-se estrutura de **middlewares** para garantir aspectos como os de segurança, confidencialidade  e resistência contra falhas. Essa mediação cliente-servidor será feita por meio de protocolo HTTP, uma convenção para sistemas dessa natureza que garante modificabilidade e permite Interação Sem Estado(_Stateless_).
 
 O sistema provê suporte multiplataforma para os usuários finais, consumindo a API centralizada.
 
