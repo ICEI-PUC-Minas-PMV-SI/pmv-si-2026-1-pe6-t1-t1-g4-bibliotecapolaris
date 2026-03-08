@@ -177,8 +177,8 @@ O sistema provê suporte multiplataforma para os usuários finais, consumindo a 
 
 O workflow de software segue práticas de *DevOps*:
 
-*   **Database:** Nossa base de dados será hospedada em uma instância do Amazon RDS (Relational Database Service), o que garante alta disponibilidade, escalabilidade e backups automatizados. Por questões de segurança, o banco ficará isolado em uma sub-rede privada (VPC), sendo acessível de forma exclusiva pelo servidor backend através dos protocolos nativos do banco de dados, sem qualquer exposição direta à internet pública.
-*   **Monorepo de Interfaces:** As aplicações voltadas ao usuário final residem no mesmo repositório, facilitando a padronização visual, a manutenção e a reusabilidade de código entre as plataformas. Todo o processo de testes, build e distribuição é automatizado via **GitHub Actions**, agilizando o envio de atualizações para os ambientes de produção.
+*   **Database:** Nossa base de dados será hospedada em uma instância do Amazon RDS (Relational Database Service), o que garante alta disponibilidade, escalabilidade e backups automatizados. Por questões de segurança, o banco ficará isolado em uma sub-rede privada (VPC), sendo acessível de forma exclusiva pelo servidor backend através apenas dos protocolos nativos do banco de dados.
+*   **Monorepo de Interfaces:** As aplicações voltadas ao usuário final ficarão no mesmo repositório, facilitando a padronização visual, a manutenção e a reusabilidade de código entre as plataformas. Todo o processo de testes, build e distribuição é automatizado via **GitHub Actions**, garantindo o _deploy_ contínuo das mudanças.
 *   **Serviços Backend:** O servidor de API possui seu próprio pipeline de entrega contínua, automatizado pelo **GitHub Actions**. Esta API atua como a ponte entre o banco de dados e as interfaces, processando as regras de negócio e aplicando políticas de CORS (Cross-Origin Resource Sharing) para garantir que apenas as nossas aplicações oficiais (Web e Mobile) tenham permissão para consumir os dados.
 
 # Tecnologias Utilizadas
