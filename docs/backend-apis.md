@@ -4,24 +4,49 @@ O planejamento de uma aplicação de APIS Web é uma etapa fundamental para o su
 
 Aqui estão algumas etapas importantes que devem ser consideradas no planejamento de uma aplicação de APIS Web.
 
-[Inclua uma breve descrição do projeto.]
+Este projeto consiste no desenvolvimento de uma API de back-end para o sistema de gestão da Biblioteca da Universidade Polaris, responsável por centralizar e gerenciar as operações relacionadas ao acervo, usuários, empréstimos, devoluções e reservas. A aplicação terá como objetivo fornecer uma base robusta e escalável para integração com diferentes interfaces e serviços, automatizando processos da biblioteca e garantindo acesso estruturado às informações por meio de endpoints bem definidos.
 
 ## Objetivos da API
 
-O primeiro passo é definir os objetivos da sua API. O que você espera alcançar com ela? Você quer que ela seja usada por clientes externos ou apenas por aplicações internas? Quais são os recursos que a API deve fornecer?
+Antes de definir os objetivos da API, é importante destacar que o contexto de desenvolvimento considera o uso de um ORM, responsável por intermediar a comunicação entre a aplicação e o banco de dados. Dessa forma, a API não interage diretamente com consultas SQL, mas sim por meio de modelos e operações abstraídas pelo ORM, o que facilita a organização do código, a manutenção do sistema e a possível transição entre diferentes bancos de dados durante a evolução do projeto.
 
-[Inclua os objetivos da sua api.]
+Com isso, os objetivos são:
+- Prover uma API RESTful centralizada responsável por intermediar toda a comunicação entre as aplicações cliente e o banco de dados do sistema da Biblioteca Polaris, atuando como o único ponto de entrada para acesso e manipulação das informações.
 
+- Estruturar os recursos da biblioteca em endpoints bem definidos, permitindo o gerenciamento de entidades fundamentais como usuários, materiais do acervo, empréstimos, devoluções e reservas.
+
+- Garantir a separação entre camadas da aplicação, isolando a lógica de negócio no backend e impedindo que interfaces cliente realizem acesso direto ao banco de dados.
+
+- Permitir a integração com múltiplas interfaces (web e mobile), oferecendo um serviço padronizado de acesso às informações da biblioteca.
+
+- Garantir consistência, segurança e confiabilidade das operações, utilizando validações, tratamento de erros e padronização nas respostas da API.
+
+- Facilitar a manutenção e evolução do sistema, permitindo a expansão de funcionalidades e integração com novos serviços sem comprometer a estrutura existente. 
 
 ## Modelagem da Aplicação
-[Descreva a modelagem da aplicação, incluindo a estrutura de dados, diagramas de classes ou entidades, e outras representações visuais relevantes.]
+A modelagem da aplicação segue uma estrutura relacional simples, composta pelas entidades Usuários, Livros e Empréstimos. A entidade Empréstimos atua como uma tabela intermediária responsável por registrar cada operação de retirada de um livro por um usuário. Dessa forma, estabelece-se uma relação 1:N entre usuários e empréstimos, bem como entre livros e empréstimos, o que, na prática, caracteriza uma relação N:N entre usuários e livros ao longo do tempo.
+
+Além disso, a entidade Usuários contempla diferentes perfis, como estudante e administrador, permitindo distinguir níveis de acesso e responsabilidades dentro do sistema.
+
+![Modelagem_Dos_Dados](./img/schema.png)
+
 
 
 ## Tecnologias Utilizadas
 
 Existem muitas tecnologias diferentes que podem ser usadas para desenvolver APIs Web. A tecnologia certa para o seu projeto dependerá dos seus objetivos, dos seus clientes e dos recursos que a API deve fornecer.
 
-[Lista das tecnologias principais que serão utilizadas no projeto.]
+- Node.js como ambiente de execução do backend.
+
+- Express.js para a construção da API RESTful e gerenciamento das rotas da aplicação.
+
+- TypeScript para adicionar tipagem estática ao projeto, aumentando a segurança e a manutenibilidade do código.
+
+- Prisma ORM para a abstração da camada de persistência e gerenciamento das operações com o banco de dados.
+
+- SQLite como banco de dados no ambiente de desenvolvimento local, facilitando a configuração e execução do projeto.
+
+- MariaDB utilizado no ambiente de produção, hospedado em uma instância na AWS, garantindo maior robustez e disponibilidade para o sistema.
 
 ## API Endpoints
 
