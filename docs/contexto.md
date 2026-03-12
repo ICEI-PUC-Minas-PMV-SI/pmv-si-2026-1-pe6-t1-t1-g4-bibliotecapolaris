@@ -103,67 +103,59 @@ O catálogo de serviços apresenta os serviços disponibilizados pelo sistema de
 Os serviços estão organizados conforme o perfil de acesso (Aluno e Administrador), refletindo as permissões e responsabilidades de cada tipo de usuário.
 
 ## Serviços destinados ao Aluno
-1. Serviço de Cadastro e Login de Usuário
+### Serviço de Cadastro e Login de Usuário<br/>
 Responsável por permitir que novos usuários se registrem no sistema e realizem autenticação para acessar as funcionalidades da plataforma.
-
 * Permite que os usuários criem uma conta com nome, email;
 * Validação de informações obrigatórias para login;
 * Envio automático de notificação ao administrador, em caso de cadastro.
 
-2. Serviço de Consulta ao Catálogo
+### Serviço de Consulta ao Catálogo<br/>
 Disponibiliza aos usuários a visualização do acervo da biblioteca, permitindo buscar e filtrar livros conforme diferentes critérios.
-
 * Listagem de livros físicos e digitais
 * Filtros por nome, autor ou categoria
 * Visualização de disponibilidade
 
-3. Serviço de Solicitação e Agendamento de Empréstimo
+### Serviço de Solicitação e Agendamento de Empréstimo<br/>
 Permite que os usuários solicitem o empréstimo de livros e escolham a data para retirada, acompanhando o andamento da solicitação.
-
 * Envio de solicitação de empréstimo
 * Escolha de data para retirada
 * Acompanhamento do status da solicitação
 
-4. Serviço de Download de Conteúdo Digital
+### Serviço de Download de Conteúdo Digital<br/>
 Oferece acesso a materiais digitais disponíveis no acervo, permitindo que os usuários realizem downloads diretamente pelo sistema.
-
 * Acesso a conteúdos digitais
 * Download direto pelo sistema
 * Registro do histórico de downloads
 
-5. Serviço de Acompanhamento de Empréstimos
+### Serviço de Acompanhamento de Empréstimos<br/>
 Permite que os usuários monitorem seus empréstimos ativos e resolvam possíveis pendências relacionadas a atrasos ou prorrogações.
-
 * Visualização de status
 * Solicitação de adiamento
 * Justificativa de atraso
 * Consulta de pendências
 
-6. Serviço de Recomendações
+### Serviço de Recomendações<br/>
 Utiliza o histórico de empréstimos dos usuários para sugerir novos títulos que possam ser de seu interesse.
-
 * Análise de empréstimos anteriores
 * Sugestão automatizada de novos títulos
 
 ## Serviços destinados ao Administrador
-7. Serviço de Gestão de Acervo
-Permite que administradores realizem o gerenciamento completo do catálogo de livros disponíveis no sistema.
 
+### Serviço de Gestão de Acervo<br/>
+Permite que administradores realizem o gerenciamento completo do catálogo de livros disponíveis no sistema.
 * Cadastro de novos livros
 * Atualização de informações
 * Controle de disponibilidade
 
-8. Serviço de Gestão de Empréstimos
+### Serviço de Gestão de Empréstimos<br/>
 Responsável pelo controle administrativo das solicitações e registros de empréstimos realizados pelos usuários.
-
 * Aprovação ou reprovação de solicitações
 * Criação manual de empréstimos
 * Visualização de todos os empréstimos
 * Controle de status
 
-9. Serviço de Controle de Pendências
+### Serviço de Controle de Pendências<br/>
 Permite monitorar atrasos e irregularidades nos empréstimos, aplicando restrições quando necessário.
-
 * Identificação de atrasos
 * Aplicação de restrições automáticas
 * Registro de irregularidades
