@@ -19,17 +19,11 @@ Dessa forma, o problema identificado não se limita a falhas pontuais de process
 Desenvolver um sistema integrado de gestão para a Biblioteca da Universidade Polaris, com o objetivo de modernizar seus processos operacionais, facilitar o acesso da comunidade acadêmica aos materiais disponíveis e fornecer suporte estratégico à administração por meio de informações consolidadas e em tempo real.
 
 ### Objetivos Específicos
-
 Analisar os fluxos atuais de empréstimo e devolução da biblioteca.
-
 Projetar uma arquitetura integrada que permita centralização e escalabilidade da gestão do acervo.
-
 Automatizar os processos de solicitação, aprovação e registro de empréstimos.
-
 Reduzir o tempo médio de atendimento nas operações de retirada e devolução de livros.
-
 Disponibilizar consulta online ao catálogo, ampliando o acesso remoto aos serviços da biblioteca.
-
 Melhorar a experiência do usuário por meio de notificações automatizadas e acompanhamento em tempo real do status dos empréstimos.
 
 ## Justificativa
@@ -42,18 +36,13 @@ O desenvolvimento de uma Biblioteca Digital Distribuída justifica-se pela neces
 
 O sistema proposto é destinado a diferentes perfis de usuários da Universidade Polaris, tanto a comunidade acadêmica quanto a equipe administrativa da biblioteca.
 
-
 **O público-alvo é composto por:**
-
 
 **Estudantes de graduação e pós-graduação**, que utilizarão a aplicação Mobile e Web para consulta ao acervo, realização de reservas, empréstimos, renovações e acompanhamento de prazos;
 
-
 **Professores e pesquisadores**, que necessitam de acesso rápido e organizado aos materiais bibliográficos para apoio às atividades de ensino e pesquisa;
 
-
 **Bibliotecários e equipe administrativa**, responsáveis pelo cadastro, gerenciamento e controle do acervo, dos usuários e dos processos de empréstimo e devolução por meio da aplicação Web administrativa;
-
 
 **Gestores da instituição**, que poderão se beneficiar de informações para apoio à tomada de decisão e planejamento estratégico dos serviços da biblioteca.
 
@@ -81,7 +70,7 @@ O princípio da técnica consiste em analisar cada requisito quanto à sua impor
 | RF07  | O sistema deve disponibilizar a criação de empréstimo manual              | S |
 | RF08  | O sistema deve permitir o agendamento de retirada do livro na biblioteca               | S |
 | RF09  | O sistema deve permitir o download de conteúdos eletrônicos                             | S |
-| RF10  | O sistema deve disponibilizar visualização do status do empréstimo, com possibilidade de justificar atraso, antecipar entrega ou solicitar adiamento | S |
+| RF10  | O sistema deve disponibilizar visualização do status do empréstimo, com possibilidade de justificar atraso, antecipar entrega ou solicitar adiamento |S |
 | RF11  | O sistema deve permitir visualização de livros emprestados, conteúdos baixados e livros desejados | C |
 | RF12  | O sistema deve oferecer recomendações baseadas nos livros emprestados ou baixados pelo usuário | C |
 
@@ -96,8 +85,6 @@ O princípio da técnica consiste em analisar cada requisito quanto à sua impor
 | RNF06  | O sistema deve registrar logs de ações críticas                                         | S |
 | RNF07  | O sistema deve possuir interface intuitiva, compatível com navegadores modernos e otimizado para cada tela | S |
 | RNF08  | O sistema deve apresentar mensagens de erro claras e objetivas                           | C |
-
-
 
 ## Restrições
 O projeto está restrito pelos itens apresentados na tabela a seguir.
@@ -117,48 +104,66 @@ Os serviços estão organizados conforme o perfil de acesso (Aluno e Administrad
 
 ## Serviços destinados ao Aluno
 1. Serviço de Cadastro e Login de Usuário
+Responsável por permitir que novos usuários se registrem no sistema e realizem autenticação para acessar as funcionalidades da plataforma.
+
 * Permite que os usuários criem uma conta com nome, email;
 * Validação de informações obrigatórias para login;
 * Envio automático de notificação ao administrador, em caso de cadastro.
 
 2. Serviço de Consulta ao Catálogo
+Disponibiliza aos usuários a visualização do acervo da biblioteca, permitindo buscar e filtrar livros conforme diferentes critérios.
+
 * Listagem de livros físicos e digitais
 * Filtros por nome, autor ou categoria
 * Visualização de disponibilidade
 
 3. Serviço de Solicitação e Agendamento de Empréstimo
+Permite que os usuários solicitem o empréstimo de livros e escolham a data para retirada, acompanhando o andamento da solicitação.
+
 * Envio de solicitação de empréstimo
 * Escolha de data para retirada
 * Acompanhamento do status da solicitação
 
 4. Serviço de Download de Conteúdo Digital
+Oferece acesso a materiais digitais disponíveis no acervo, permitindo que os usuários realizem downloads diretamente pelo sistema.
+
 * Acesso a conteúdos digitais
 * Download direto pelo sistema
 * Registro do histórico de downloads
 
 5. Serviço de Acompanhamento de Empréstimos
+Permite que os usuários monitorem seus empréstimos ativos e resolvam possíveis pendências relacionadas a atrasos ou prorrogações.
+
 * Visualização de status
 * Solicitação de adiamento
 * Justificativa de atraso
 * Consulta de pendências
 
 6. Serviço de Recomendações
+Utiliza o histórico de empréstimos dos usuários para sugerir novos títulos que possam ser de seu interesse.
+
 * Análise de empréstimos anteriores
 * Sugestão automatizada de novos títulos
 
 ## Serviços destinados ao Administrador
 7. Serviço de Gestão de Acervo
+Permite que administradores realizem o gerenciamento completo do catálogo de livros disponíveis no sistema.
+
 * Cadastro de novos livros
 * Atualização de informações
 * Controle de disponibilidade
 
 8. Serviço de Gestão de Empréstimos
+Responsável pelo controle administrativo das solicitações e registros de empréstimos realizados pelos usuários.
+
 * Aprovação ou reprovação de solicitações
 * Criação manual de empréstimos
 * Visualização de todos os empréstimos
 * Controle de status
 
 9. Serviço de Controle de Pendências
+Permite monitorar atrasos e irregularidades nos empréstimos, aplicando restrições quando necessário.
+
 * Identificação de atrasos
 * Aplicação de restrições automáticas
 * Registro de irregularidades
