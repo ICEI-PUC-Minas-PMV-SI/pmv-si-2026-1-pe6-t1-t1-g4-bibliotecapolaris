@@ -170,6 +170,9 @@ Nenhuma interface de usuário possui permissão de conexão direta com o SGDB; t
 
 O sistema provê suporte multiplataforma para os usuários finais, consumindo a API centralizada.
 
+<img width="1600" height="1030" alt="image" src="https://github.com/user-attachments/assets/2e289b0e-3f1d-4f8a-a7d6-9eed0e46bb36" />
+
+
 # Hospedagem e Deploy Contínuo (CI/CD)
 
 O workflow de software segue práticas de *DevOps*:
