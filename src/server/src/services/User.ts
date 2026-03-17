@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import type { CreateUserInput, UpdateUserInput } from '@/models/UserModel';
+import { generateSlug, hashPassword, verifyPassword } from '@/utils';
 
 export async function getAllUsers() {
   return prisma.user.findMany();
@@ -16,26 +18,21 @@ export async function createMockUser() {
   });
 }
 
-// Precisamos avisar ao TypeScript quais dados vamos receber
-interface CreateUserData {
-  name: string;
-  email: string;
-  password: string;
-  type: 'student' | 'administrator';
-}
+export async function createUser(data: CreateUserInput) {
+  let baseSlug = generateSlug(data.name);
+  let slug = baseSlug;
+  let count = 1;
 
-export async function createUser(data: CreateUserData) {
-  // Criamos o slug automaticamente tirando os espaços do nome
-  const slug = data.name.toLowerCase().replace(/\s+/g, '-');
+  while (await prisma.user.findUnique({ where: { slug } })) {
+    slug = `${baseSlug}-${count++}`;
+  }
 
   console.log(`[SISTEMA] Notificando administrador: Novo usuário ${data.name} cadastrado!`);
+
   return prisma.user.create({
     data: {
-      name: data.name,
-      email: data.email,
-      password: data.password, // criptografar isso depois!
-      type: data.type,
-      slug: slug,
+      ...data,
+      slug,
     },
   });
 }
@@ -43,62 +40,49 @@ export async function createUser(data: CreateUserData) {
 export async function getUserById(id: string) {
   // findUnique procura exatamente uma linha que tenha esse ID
   return prisma.user.findUnique({
-    where: { 
-      id: id 
+    where: {
+      id: id,
     },
   });
 }
 
-// A interface continua igual
-interface UpdateUserData {
-  name?: string;
-  email?: string;
-  password?: string;
-  type?: 'student' | 'administrator';
-  isBlocked?: boolean;
-}
+export async function updateUser(id: string, data: any) {
+  const user = await prisma.user.findUnique({ where: { id } });
+  if (!user) throw new Error('Usuário não encontrado');
 
-export async function updateUser(id: string, data: UpdateUserData) {
-  // 1. Criamos um objeto "caixa vazia" para colocar só o que vai mudar
-  const dadosParaAtualizar: any = {};
-
-  // 2. Só colocamos na caixa aquilo que realmente veio na requisição
-  if (data.name) {
-    dadosParaAtualizar.name = data.name;
-    dadosParaAtualizar.slug = data.name.toLowerCase().replace(/\s+/g, '-');
-  }
-  
-  if (data.email) {
-    dadosParaAtualizar.email = data.email;
-  }
-  
   if (data.password) {
-    dadosParaAtualizar.password = data.password;
-  }
-  
-  if (data.type) {
-    dadosParaAtualizar.type = data.type;
-  }
-  
-  // Como o boolean pode ser "false", a checagem é um pouco diferente
-  if (data.isBlocked !== undefined) {
-    dadosParaAtualizar.isBlocked = data.isBlocked;
+    if (!data.lastPassword) throw new Error('É necessário informar a senha atual');
+    const isValid = await verifyPassword(data.lastPassword, user.password);
+    if (!isValid) throw new Error('Senha atual incorreta');
+
+    data.password = await hashPassword(data.password);
   }
 
-  // 3. Mandamos a caixa "limpinha" pro Prisma, sem nenhum undefined
+  if (data.name) {
+    let baseSlug = generateSlug(data.name);
+    let slug = baseSlug;
+    let count = 1;
+
+    while (await prisma.user.findUnique({ where: { slug } })) {
+      slug = `${baseSlug}-${count++}`;
+    }
+
+    data.slug = slug;
+  }
+
+  const { lastPassword, ...prismaInput } = data;
+
   return prisma.user.update({
-    where: { 
-      id: id 
-    },
-    data: dadosParaAtualizar,
+    where: { id },
+    data: prismaInput,
   });
 }
 
 export async function deleteUser(id: string) {
   // O Prisma faz o trabalho sujo de achar o ID e apagar a linha da tabela
   return prisma.user.delete({
-    where: { 
-      id: id 
+    where: {
+      id: id,
     },
   });
 }

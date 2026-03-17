@@ -1,7 +1,8 @@
 import type { Request, Response } from 'express';
 
-import { handleError, sendSuccess } from '@/utils';
+import { handleError, hashPassword, sendSuccess, verifyPassword } from '@/utils';
 import { getAllUsers, createMockUser, createUser, getUserById, updateUser, deleteUser } from '@/services';
+import { CreateUserSchema, UpdateUserSchema, type UpdateUserInput } from '@/models/UserModel';
 
 export async function getAllUsersController(req: Request, res: Response) {
   try {
@@ -27,16 +28,14 @@ export async function createMockUserController(_req: Request, res: Response) {
 
 export async function createUserController(req: Request, res: Response) {
   try {
-    // 1. Pegamos os dados que vieram do Frontend
-    const { name, email, password, type } = req.body;
+    const data = CreateUserSchema.parse(req.body);
 
-    // 2. Mandamos para o Service salvar no banco
-    const newUser = await createUser({ name, email, password, type });
+    const hashedPassword = await hashPassword(data.password);
 
-    // 3. Respondemos usando a padronização de sucesso do projeto
-    return sendSuccess(res, `Usuário ${newUser.name} criado com sucesso!`, 201);
+    const newUser = await createUser({ ...data, password: hashedPassword });
+
+    return sendSuccess(res, `Usuário ${newUser.id} criado com sucesso!`, 201);
   } catch (error: any) {
-    // Se der algum erro (ex: e-mail duplicado), o utilitário cuida disso
     return handleError(res, error);
   }
 }
@@ -44,8 +43,8 @@ export async function createUserController(req: Request, res: Response) {
 export async function getUserByIdController(req: Request, res: Response) {
   try {
     // Pegamos o ID que vem na URL (chamamos de params)
-    const { id } = req.params; 
-    
+    const { id } = req.params;
+
     // Mandamos o serviço buscar no banco
     const user = await getUserById(id as string);
 
@@ -63,17 +62,22 @@ export async function getUserByIdController(req: Request, res: Response) {
 
 export async function updateUserController(req: Request, res: Response) {
   try {
-    // Pegamos o ID na URL
     const { id } = req.params;
-    
-    // Pegamos os novos dados que vieram no Body
-    const updateData = req.body; 
 
-    // Mandamos para o serviço atualizar
-    const updatedUser = await updateUser(id as string, updateData);
+    if (!id || Array.isArray(id)) {
+      throw new Error('ID do usuário inválido.');
+    }
 
-    return res.status(200).json({ error: false, message: 'Usuário atualizado com sucesso!', data: updatedUser });
-  } catch (error: any) {
+    const updateData = UpdateUserSchema.parse(req.body);
+
+    const updatedUser = await updateUser(id, updateData);
+
+    return res.status(200).json({
+      error: false,
+      message: 'Usuário atualizado com sucesso!',
+      data: updatedUser,
+    });
+  } catch (error: unknown) {
     return handleError(res, error);
   }
 }
@@ -82,7 +86,7 @@ export async function deleteUserController(req: Request, res: Response) {
   try {
     // Pegamos o ID na URL
     const { id } = req.params;
-    
+
     // Mandamos para o serviço apagar
     await deleteUser(id as string);
 
