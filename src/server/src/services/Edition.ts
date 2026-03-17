@@ -21,7 +21,7 @@ export async function updateEdition(id: string, data: any) {
 }
 
 export async function deleteEdition(id: string) {
-  return prisma.user.delete({
+  return prisma.edition.delete({
     where: {
       id,
     },

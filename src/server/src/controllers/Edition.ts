@@ -41,9 +41,9 @@ export async function updateEditionController(req: Request, res: Response) {
 
     const data = UpdateEditionSchema.parse(req.body);
 
-    const edition = await updateEdition(id as string, data);
+    await updateEdition(id as string, data);
 
-    return sendSuccess(res, `Edição atualizada com sucesso ${edition}`, 201);
+    return sendSuccess(res, `Edição atualizada com sucesso`, 201);
   } catch (error: any) {
     return handleError(res, error, 'Edição');
   }
@@ -53,9 +53,9 @@ export async function deleteEditionController(req: Request, res: Response) {
   try {
     const { id } = req.params;
 
-    const edition = await deleteEdition(id as string);
+    await deleteEdition(id as string);
 
-    return sendSuccess(res, `Edição deletada com sucesso ${edition}`, 201);
+    return sendSuccess(res, `Edição deletada com sucesso`, 201);
   } catch (error: any) {
     return handleError(res, error, 'Edição');
   }
