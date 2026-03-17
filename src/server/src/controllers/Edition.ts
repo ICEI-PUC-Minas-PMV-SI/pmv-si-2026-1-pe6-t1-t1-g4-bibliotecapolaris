@@ -26,13 +26,9 @@ export async function getEditionByIdController(req: Request, res: Response) {
 
     const edition = await getEditionById(id as string);
 
-    if (!edition) {
-      return sendFailure(res, '404', 'Usuário não encontrado!');
-    }
-
     return sendSuccess(res, edition, 200);
   } catch (error: any) {
-    return handleError(res, error);
+    return handleError(res, error, 'Edição');
   }
 }
 
@@ -49,7 +45,7 @@ export async function updateEditionController(req: Request, res: Response) {
 
     return sendSuccess(res, `Edição atualizada com sucesso ${edition}`, 201);
   } catch (error: any) {
-    return handleError(res, error);
+    return handleError(res, error, 'Edição');
   }
 }
 
@@ -61,6 +57,6 @@ export async function deleteEditionController(req: Request, res: Response) {
 
     return sendSuccess(res, `Edição deletada com sucesso ${edition}`, 201);
   } catch (error: any) {
-    return handleError(res, error);
+    return handleError(res, error, 'Edição');
   }
 }
