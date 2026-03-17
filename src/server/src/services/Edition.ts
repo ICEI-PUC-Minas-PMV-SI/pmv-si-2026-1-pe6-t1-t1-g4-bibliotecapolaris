@@ -1,9 +1,16 @@
 import { prisma } from '@/lib/prisma';
-import type { CreateEditionInput, UpdateEditionInput } from '@/models/EditionModel';
+import type { CreateEditionInput } from '@/models/EditionModel';
 
 export async function createEdition(data: CreateEditionInput) {
   return await prisma.edition.create({
     data,
+    select: {
+      book: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
 }
 
@@ -13,7 +20,7 @@ export async function getEditionById(id: string) {
   });
 }
 
-export async function updateEdition(id: string, data: UpdateEditionInput) {
+export async function updateEdition(id: string, data: any) {
   return prisma.edition.update({
     where: { id },
     data,

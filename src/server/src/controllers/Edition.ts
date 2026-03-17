@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 
 import { CreateEditionSchema, UpdateEditionSchema } from '@/models/EditionModel';
-import { handleError, sendFailure, sendSuccess } from '@/utils';
+import { handleError, sendSuccess } from '@/utils';
 import { createEdition, deleteEdition, getEditionById, updateEdition } from '@/services';
 
 export async function createEditionController(req: Request, res: Response) {
@@ -10,11 +10,7 @@ export async function createEditionController(req: Request, res: Response) {
 
     const newEdition = await createEdition({ ...data });
 
-    return sendSuccess(
-      res,
-      `Edição de ID ${newEdition.id} Criada com Sucesso e Vinculada ao Livro de ID ${newEdition.bookId}`,
-      201,
-    );
+    return sendSuccess(res, `Edição do livro *${newEdition.book.name}* criada com Sucesso`, 201);
   } catch (error: any) {
     return handleError(res, error);
   }
