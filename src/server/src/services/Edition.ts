@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import type { CreateEditionInput } from '@/models/EditionModel';
+import type { CreateEditionInput, UpdateEditionInput } from '@/models/EditionModel';
 
 export async function createEdition(data: CreateEditionInput) {
   return await prisma.edition.create({
@@ -13,7 +13,7 @@ export async function getEditionById(id: string) {
   });
 }
 
-export async function updateEdition(id: string, data: any) {
+export async function updateEdition(id: string, data: UpdateEditionInput) {
   return prisma.edition.update({
     where: { id },
     data,
