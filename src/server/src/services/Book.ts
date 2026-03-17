@@ -1,6 +1,16 @@
 import { prisma } from '@/lib/prisma';
-import type { CreateBookInput, UpdateBookInput } from '@/models/BookModel';
+import type { CreateBookInput } from '@/models/BookModel';
 import { generateSlug } from '@/utils';
+
+function normalizeCategories(categories: string): string {
+  const normalized = categories
+    .split(',')
+    .map((c) => c.trim().toLowerCase())
+    .filter(Boolean)
+    .join(',');
+
+  return `${normalized}`;
+}
 
 export async function createBook(data: CreateBookInput) {
   let baseSlug = generateSlug(data.name);
@@ -14,6 +24,7 @@ export async function createBook(data: CreateBookInput) {
   return prisma.book.create({
     data: {
       ...data,
+      categories: normalizeCategories(data.categories),
       slug,
     },
     include: {
@@ -57,11 +68,7 @@ export async function getBookBySlug(slug: string) {
   });
 }
 
-export async function listBooks(filters?: {
-  name?: string;
-  authorName?: string;
-  categories?: string;
-}) {
+export async function listBooks(filters?: { name?: string; authorName?: string; categories?: string }) {
   return prisma.book.findMany({
     where: {
       ...(filters?.name && {
@@ -71,7 +78,7 @@ export async function listBooks(filters?: {
         author: { name: { contains: filters.authorName } },
       }),
       ...(filters?.categories && {
-        categories: { contains: filters.categories },
+        categories: { contains: `${filters.categories.toLowerCase()}` },
       }),
     },
     include: {
@@ -91,7 +98,7 @@ export async function listBooks(filters?: {
   });
 }
 
-export async function updateBook(id: string, data: UpdateBookInput) {
+export async function updateBook(id: string, data: any) {
   const book = await prisma.book.findUnique({ where: { id } });
   if (!book) throw new Error('Livro não encontrado');
 
