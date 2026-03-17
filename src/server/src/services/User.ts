@@ -1,22 +1,6 @@
 import { prisma } from '@/lib/prisma';
-import type { CreateUserInput, UpdateUserInput } from '@/models/UserModel';
+import type { CreateUserInput } from '@/models/UserModel';
 import { generateSlug, hashPassword, verifyPassword } from '@/utils';
-
-export async function getAllUsers() {
-  return prisma.user.findMany();
-}
-
-export async function createMockUser() {
-  return prisma.user.create({
-    data: {
-      name: 'John Doe',
-      email: 'johndoe@admin.uni.polaris',
-      password: '123456',
-      slug: 'usuario_teste',
-      type: 'administrator',
-    },
-  });
-}
 
 export async function createUser(data: CreateUserInput) {
   let baseSlug = generateSlug(data.name);
@@ -38,7 +22,6 @@ export async function createUser(data: CreateUserInput) {
 }
 
 export async function getUserById(id: string) {
-  // findUnique procura exatamente uma linha que tenha esse ID
   return prisma.user.findUnique({
     where: {
       id: id,
@@ -79,7 +62,6 @@ export async function updateUser(id: string, data: any) {
 }
 
 export async function deleteUser(id: string) {
-  // O Prisma faz o trabalho sujo de achar o ID e apagar a linha da tabela
   return prisma.user.delete({
     where: {
       id: id,
