@@ -17,4 +17,4 @@ export const CreateEditionSchema = z.object({
 export const UpdateEditionSchema = CreateEditionSchema.partial();
 
 export type CreateEditionInput = z.infer<typeof CreateEditionSchema>;
-export type UpdateEditionSchema = z.infer<typeof UpdateEditionSchema>;
+export type UpdateEditionInput = z.infer<typeof UpdateEditionSchema>;
