@@ -22,16 +22,13 @@ export async function createUser(data: CreateUserInput) {
 }
 
 export async function getUserById(id: string) {
-  return prisma.user.findUnique({
-    where: {
-      id: id,
-    },
+  return prisma.user.findUniqueOrThrow({
+    where: { id },
   });
 }
 
 export async function updateUser(id: string, data: any) {
-  const user = await prisma.user.findUnique({ where: { id } });
-  if (!user) throw new Error('Usuário não encontrado');
+  const user = await prisma.user.findUniqueOrThrow({ where: { id } });
 
   if (data.password) {
     if (!data.lastPassword) throw new Error('É necessário informar a senha atual');
@@ -62,12 +59,7 @@ export async function updateUser(id: string, data: any) {
 }
 
 export async function deleteUser(id: string) {
-  const user = await prisma.user.findUnique({ where: { id } });
-  if (!user) throw new Error('Usuário não encontrado');
-
   return prisma.user.delete({
-    where: {
-      id: id,
-    },
+    where: { id },
   });
 }
