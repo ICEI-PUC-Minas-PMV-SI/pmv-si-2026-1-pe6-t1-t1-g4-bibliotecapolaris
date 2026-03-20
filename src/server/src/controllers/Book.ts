@@ -12,7 +12,7 @@ export async function createBookController(req: Request, res: Response) {
 
     return sendSuccess(res, `Livro ${newBook.id} criado com sucesso!`, 201);
   } catch (error: any) {
-    return handleError(res, error);
+    return handleError(res, error, 'Livro');
   }
 }
 
@@ -21,14 +21,10 @@ export async function getBookByIdController(req: Request, res: Response) {
     const { id } = req.params;
 
     const book = await getBookById(id as string);
-
-    if (!book) {
-      return sendFailure(res, '404', 'Livro não encontrado!');
-    }
-
+    
     return sendSuccess(res, book, 200);
   } catch (error: any) {
-    return handleError(res, error);
+    return handleError(res, error, 'Livro');
   }
 }
 
@@ -38,13 +34,9 @@ export async function getBookBySlugController(req: Request, res: Response) {
 
     const book = await getBookBySlug(slug as string);
 
-    if (!book) {
-      return sendFailure(res, '404', 'Livro não encontrado!');
-    }
-
     return sendSuccess(res, book, 200);
   } catch (error: any) {
-    return handleError(res, error);
+    return handleError(res, error, 'Livro');
   }
 }
 
@@ -61,7 +53,7 @@ export async function listBooksController(req: Request, res: Response) {
 
     return sendSuccess(res, books, 200);
   } catch (error: any) {
-    return handleError(res, error);
+    return handleError(res, error, 'Livro');
   }
 }
 
@@ -79,7 +71,7 @@ export async function updateBookController(req: Request, res: Response) {
 
     return sendSuccess(res, `Livro - ${updatedBook.name} atualizado com sucesso!`, 202);
   } catch (error: unknown) {
-    return handleError(res, error);
+    return handleError(res, error, 'Livro');
   }
 }
 
@@ -91,6 +83,6 @@ export async function deleteBookController(req: Request, res: Response) {
 
     return sendSuccess(res, 'Livro deletado com sucesso', 202);
   } catch (error: any) {
-    return handleError(res, error);
+    return handleError(res, error, 'Livro');
   }
 }

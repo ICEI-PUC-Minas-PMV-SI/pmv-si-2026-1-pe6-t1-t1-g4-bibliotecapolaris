@@ -35,7 +35,7 @@ export async function createBook(data: CreateBookInput) {
 }
 
 export async function getBookById(id: string) {
-  return prisma.book.findUnique({
+  return prisma.book.findUniqueOrThrow({
     where: { id },
     include: {
       author: true,
@@ -52,7 +52,7 @@ export async function getBookById(id: string) {
 }
 
 export async function getBookBySlug(slug: string) {
-  return prisma.book.findUnique({
+  return prisma.book.findUniqueOrThrow({
     where: { slug },
     include: {
       author: true,
@@ -99,7 +99,7 @@ export async function listBooks(filters?: { name?: string; authorName?: string; 
 }
 
 export async function updateBook(id: string, data: any) {
-  const book = await prisma.book.findUnique({ where: { id } });
+  const book = await prisma.book.findUniqueOrThrow({ where: { id } });
   if (!book) throw new Error('Livro não encontrado');
 
   if (data.name) {
@@ -107,7 +107,7 @@ export async function updateBook(id: string, data: any) {
     let slug = baseSlug;
     let count = 1;
 
-    while (await prisma.book.findUnique({ where: { slug } })) {
+    while (await prisma.book.findUniqueOrThrow({ where: { slug } })) {
       slug = `${baseSlug}-${count++}`;
     }
 
@@ -125,7 +125,7 @@ export async function updateBook(id: string, data: any) {
 }
 
 export async function deleteBook(id: string) {
-  const book = await prisma.book.findUnique({ where: { id } });
+  const book = await prisma.book.findUniqueOrThrow({ where: { id } });
   if (!book) throw new Error('Livro não encontrado');
 
   return prisma.book.delete({
