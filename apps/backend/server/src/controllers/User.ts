@@ -20,7 +20,7 @@ export async function createMockUserController(_req: Request, res: Response) {
     const user = await createMockUser();
 
     return sendSuccess(res, `Usuário criado com sucesso com ID ${user.id}`, 201);
-  } catch (error: any) {
+  } catch (error: unknown) {
     return handleError(res, error);
   }
 }
