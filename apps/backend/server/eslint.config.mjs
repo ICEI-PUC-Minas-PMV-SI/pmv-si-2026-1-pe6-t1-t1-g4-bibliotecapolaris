@@ -1,3 +1,5 @@
+import { warn } from 'node:console';
+
 import globals from 'globals';
 import pluginJs from '@eslint/js';
 import jsdoc from 'eslint-plugin-jsdoc';
@@ -40,6 +42,7 @@ export default [
       'node/no-unpublished-import': 'off', // To avoid issues with TypeScript path mappings
       'import/no-named-as-default': 0,
       'import/no-named-as-default-member': 0,
+      '@typescript-eslint/no-unused-vars': 'warn',
     },
   },
   {
