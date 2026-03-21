@@ -1,5 +1,7 @@
 import 'dotenv/config';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+
+// eslint-disable-next-line import/no-unresolved
 import { PrismaClient } from '../../../prisma/generated/prisma/client';
 
 const connectionString = `${process.env.DATABASE_URL}`;

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { getAllUsersController, createMockUserController } from '@/controllers';
 
 const router = Router();
