@@ -1,8 +1,3 @@
-/**
- * For a detailed explanation regarding each configuration property, visit:
- * https://jestjs.io/docs/configuration
- */
-
 import type { Config } from 'jest';
 
 const config: Config = {
@@ -24,7 +19,6 @@ const config: Config = {
 
   preset: 'ts-jest',
 
-  // The test environment that will be used for testing
   testEnvironment: 'node',
 
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
@@ -42,4 +36,4 @@ const config: Config = {
   },
 };
 
-export default config;
+module.exports = config;
