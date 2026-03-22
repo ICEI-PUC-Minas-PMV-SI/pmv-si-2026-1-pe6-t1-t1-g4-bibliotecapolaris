@@ -1,17 +1,15 @@
 import type { Response } from 'express';
 
-// eslint-disable-next-line import/no-unresolved
-import { Prisma } from '../../prisma/generated/prisma/client';
-
 import { sendFailure } from '@/utils';
 
 export function handleError(res: Response, error: unknown) {
-  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+  if (error && typeof error === 'object' && 'code' in error && 'message' in error && typeof error.message === 'string') {
+    const err = error as { code: string; message: string };
     // UNIQUE
-    if (error.code === 'P2002') {
+    if (err.code === 'P2002') {
       let fields: string[] = [];
 
-      const match = error.message.match(/\(`(.+?)`\)/);
+      const match = err.message.match(/\(`(.+?)`\)/);
       if (match) {
         fields = [match[1]!];
       }
