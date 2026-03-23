@@ -21,23 +21,27 @@ model User {
   isBlocked Boolean  @default(false) @map("is_blocked")
   type      UserType
 
-  loans   Loan[]
-  reviews Review[]
+  loans     Loan[]
+  reviews   Review[]
+  wishlists Wishlist[]
 
   @@map("users")
 }
 
 model Book {
-  id          String    @id @default(uuid())
-  slug        String    @unique
-  name        String
-  authorId    String    @map("author_id")
-  description String
-  categories  String
-  editions    Edition[]
+  id             String @id @default(uuid())
+  slug           String @unique
+  isbn           String @unique
+  name           String
+  authorId       String @map("author_id")
+  description    String
+  categories     String
+  totalQuantity  Int    @map("total_quantity")
+  totalAvailable Int    @map("total_available")
 
-  author  Author   @relation(fields: [authorId], references: [id])
-  reviews Review[]
+  author    Author     @relation(fields: [authorId], references: [id])
+  reviews   Review[]
+  wishlists Wishlist[]
 
   @@map("books")
 }
@@ -58,8 +62,7 @@ model Loan {
   returnDate DateTime?  @map("return_date")
   status     LoanStatus
 
-  student User    @relation(fields: [studentId], references: [id])
-  edition Edition @relation(fields: [editionId], references: [id])
+  student User @relation(fields: [studentId], references: [id])
 
   @@map("loans")
 }
@@ -72,20 +75,15 @@ model Author {
   @@map("authors")
 }
 
-model Edition {
-  id        String @id @default(uuid())
+model Wishlist {
+  studentId String @map("student_id")
   bookId    String @map("book_id")
-  year      Int
-  publisher String
-  ISBN      String
 
-  totalQuantity     Int @map("total_quantity")
-  quantityAvailable Int @map("quantity_available")
+  student User @relation(fields: [studentId], references: [id])
+  book    Book @relation(fields: [bookId], references: [id])
 
-  book  Book   @relation(fields: [bookId], references: [id])
-  loans Loan[]
-
-  @@map("editions")
+  @@id([studentId, bookId])
+  @@map("wishlists")
 }
 
 model Review {
