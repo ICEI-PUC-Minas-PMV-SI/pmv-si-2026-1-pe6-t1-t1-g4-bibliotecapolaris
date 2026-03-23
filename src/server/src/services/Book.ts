@@ -99,8 +99,7 @@ export async function listBooks(filters?: { name?: string; authorName?: string; 
 }
 
 export async function updateBook(id: string, data: any) {
-  const book = await prisma.book.findUniqueOrThrow({ where: { id } });
-  if (!book) throw new Error('Livro não encontrado');
+  await prisma.book.findUniqueOrThrow({ where: { id } });
 
   if (data.name) {
     let baseSlug = generateSlug(data.name);
@@ -125,9 +124,6 @@ export async function updateBook(id: string, data: any) {
 }
 
 export async function deleteBook(id: string) {
-  const book = await prisma.book.findUniqueOrThrow({ where: { id } });
-  if (!book) throw new Error('Livro não encontrado');
-
   return prisma.book.delete({
     where: { id },
   });
