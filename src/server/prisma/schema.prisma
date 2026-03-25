@@ -21,20 +21,26 @@ model User {
   isBlocked Boolean  @default(false) @map("is_blocked")
   type      UserType
 
-  loans Loan[]
+  loans     Loan[]
+  wishlists Wishlist[]
 
   @@map("users")
 }
 
 model Book {
-  id                String @id @default(uuid())
-  slug              String @unique
-  name              String
-  author            String
-  publisher         String
-  description       String
-  categories        String
-  quantityAvailable Int    @map("quantity_available")
+  id             String @id @default(uuid())
+  slug           String @unique
+  isbn           String @unique
+  name           String
+  authorId       String @map("author_id")
+  description    String
+  categories     String
+  totalQuantity  Int    @map("total_quantity")
+  totalAvailable Int    @map("total_available")
+
+  author    Author     @relation(fields: [authorId], references: [id])
+  wishlists Wishlist[]
+  loans     Loan[]
 
   @@map("books")
 }
@@ -55,7 +61,40 @@ model Loan {
   returnDate DateTime?  @map("return_date")
   status     LoanStatus
 
-  student User @relation(fields: [studentId], references: [id])
+  student User     @relation(fields: [studentId], references: [id])
+  book    Book     @relation(fields: [bookId], references: [id])
+  reviews Review[]
 
   @@map("loans")
+}
+
+model Author {
+  id    String @id @default(uuid())
+  name  String
+  books Book[]
+
+  @@map("authors")
+}
+
+model Wishlist {
+  studentId String @map("student_id")
+  bookId    String @map("book_id")
+
+  student User @relation(fields: [studentId], references: [id])
+  book    Book @relation(fields: [bookId], references: [id])
+
+  @@id([studentId, bookId])
+  @@map("wishlists")
+}
+
+model Review {
+  id          String   @id @default(uuid())
+  rating      Int
+  loanId      String   @unique @map("loan_id")
+  description String?
+  date        DateTime
+
+  loan Loan @relation(fields: [loanId], references: [id])
+
+  @@map("reviews")
 }

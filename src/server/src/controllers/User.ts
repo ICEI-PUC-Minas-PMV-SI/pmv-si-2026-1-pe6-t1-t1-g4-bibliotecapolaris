@@ -1,26 +1,61 @@
 import type { Request, Response } from 'express';
 
-import { getAllUsers, createMockUser } from '@/services';
-import { handleError, sendSuccess } from '@/utils';
+import { handleError, hashPassword, sendSuccess, verifyPassword } from '@/utils';
+import { createUser, getUserById, updateUser, deleteUser } from '@/services';
+import { CreateUserSchema, UpdateUserSchema } from '@/models/UserModel';
 
-export async function getAllUsersController(req: Request, res: Response) {
+export async function createUserController(req: Request, res: Response) {
   try {
-    const users = await getAllUsers();
-    return res.status(200).json({
-      error: false,
-      data: users,
-    });
-  } catch (error) {
-    return res.status(500).json({ error: true, errorCode: 'ERR_SEARCH_USERS', message: 'Erro ao buscar usuários' });
+    const data = CreateUserSchema.parse(req.body);
+
+    const hashedPassword = await hashPassword(data.password);
+
+    const newUser = await createUser({ ...data, password: hashedPassword });
+
+    return sendSuccess(res, `Usuário ${newUser.id} criado com sucesso!`, 201);
+  } catch (error: any) {
+    return handleError(res, error, 'Usuário');
   }
 }
 
-export async function createMockUserController(_req: Request, res: Response) {
+export async function getUserByIdController(req: Request, res: Response) {
   try {
-    const user = await createMockUser();
+    const { id } = req.params;
 
-    return sendSuccess(res, `Usuário criado com sucesso com ID ${user.id}`, 201);
+    const user = await getUserById(id as string);
+
+    return sendSuccess(res, user, 200);
   } catch (error: any) {
-    return handleError(res, error);
+    return handleError(res, error, 'Usuário');
+  }
+}
+
+export async function updateUserController(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+
+    if (!id || Array.isArray(id)) {
+      throw new Error('ID do usuário inválido.');
+    }
+
+    const updateData = UpdateUserSchema.parse(req.body);
+
+    const updatedUser = await updateUser(id as string, updateData);
+
+    return sendSuccess(res, `Usuário - ${updatedUser.name} atualizado com sucesso!`, 201);
+  } catch (error: unknown) {
+    return handleError(res, error, 'Usuário');
+  }
+}
+
+export async function deleteUserController(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+
+    await deleteUser(id as string);
+
+    return sendSuccess(res, 'Usuário Deletado com Sucesso', 201);
+  } catch (error: any) {
+    return handleError(res, error, 'Usuário');
   }
 }
