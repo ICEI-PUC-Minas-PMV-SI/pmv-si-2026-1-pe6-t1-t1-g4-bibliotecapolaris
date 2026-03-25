@@ -1,0 +1,31 @@
+import { Router } from 'express';
+
+import {
+  getAllUsersController,
+  createMockUserController,
+  getAllLoansController,
+  getLoanByIdControllerById,
+  createLoanController,
+  updateLoanController,
+  deleteLoanControllerById,
+  getLoansByStudentControllerById,
+  getLoansByStatusControllerByStatus,
+} from '@/controllers';
+import { validateBody } from '@/utils/validation';
+import { LoanCreateSchema, LoanUpdateSchema } from '@/services/loan/schema';
+
+const router = Router();
+
+router.get('/users', getAllUsersController);
+router.post('/users', createMockUserController);
+
+//LOANS
+router.get('/loans', getAllLoansController);
+router.get('/loans/:id', (req, res) => getLoanByIdControllerById(req.params.id, res));
+router.post('/loans', validateBody(LoanCreateSchema), createLoanController);
+router.put('/loans/:id', validateBody(LoanUpdateSchema), updateLoanController);
+router.delete('/loans/:id', (req, res) => deleteLoanControllerById(req.params.id, res));
+router.get('/loans/student/:studentId', (req, res) => getLoansByStudentControllerById(req.params.studentId, res));
+router.get('/loans/status/:status', (req, res) => getLoansByStatusControllerByStatus(req.params.status, res));
+
+export default router;
