@@ -24,12 +24,13 @@ Com isso, os objetivos são:
 - Facilitar a manutenção e evolução do sistema, permitindo a expansão de funcionalidades e integração com novos serviços sem comprometer a estrutura existente. 
 
 ## Modelagem da Aplicação
-A modelagem da aplicação segue uma estrutura relacional simples, composta pelas entidades Usuários, Livros e Empréstimos. A entidade Empréstimos atua como uma tabela intermediária responsável por registrar cada operação de retirada de um livro por um usuário. Dessa forma, estabelece-se uma relação 1:N entre usuários e empréstimos, bem como entre livros e empréstimos, o que, na prática, caracteriza uma relação N:N entre usuários e livros ao longo do tempo.
+A modelagem da aplicação segue uma estrutura relacional simples, composta pelas entidades Usuários, Livros, Edições, Autores, Avaliações e Empréstimos. A entidade Empréstimos atua como uma tabela intermediária responsável por registrar cada operação de retirada de uma edição de livro por um usuário. Dessa forma, estabelece-se uma relação 1:N entre usuários e empréstimos, bem como entre edições e empréstimos, o que, na prática, caracteriza uma relação N:N entre usuários e livros ao longo do tempo.
 
-Além disso, a entidade Usuários contempla diferentes perfis, como estudante e administrador, permitindo distinguir níveis de acesso e responsabilidades dentro do sistema.
+Além disso, a entidade Livros representa a obra em si, enquanto Edições registra diferentes versões ou atualizações de um mesmo livro. A entidade Autores armazena informações sobre os responsáveis pelas obras, e Avaliações permite que usuários registrem comentários e classificações sobre os livros disponíveis no sistema.
 
-![Modelagem_Dos_Dados](./img/schema.png)
+Por fim, a entidade Usuários contempla diferentes perfis, como estudante e administrador, permitindo distinguir níveis de acesso e responsabilidades dentro do sistema.
 
+<h4 align="center"> <img width="1240" height="640" alt="Modelagem de dados" src="./img/schema.png" /> </h4>
 
 
 ## Tecnologias Utilizadas

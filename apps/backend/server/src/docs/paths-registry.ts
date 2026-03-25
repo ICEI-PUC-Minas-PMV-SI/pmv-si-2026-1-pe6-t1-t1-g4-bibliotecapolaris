@@ -1,7 +1,10 @@
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
 
 import { z } from '../lib/zod';
+<<<<<<< HEAD:apps/backend/server/src/docs/paths-registry.ts
 import { LoanCreateSchema, LoanUpdateSchema, LoanSchema } from '../services/loan/schema';
+=======
+>>>>>>> server:src/server/src/docs/paths-registry.ts
 
 const registry = new OpenAPIRegistry();
 
@@ -34,6 +37,7 @@ registry.registerPath({
   },
 });
 
+<<<<<<< HEAD:apps/backend/server/src/docs/paths-registry.ts
 registry.registerPath({
   method: 'get',
   path: '/loans',
@@ -165,4 +169,6 @@ registry.registerPath({
   },
 });
 
+=======
+>>>>>>> server:src/server/src/docs/paths-registry.ts
 export default registry;
