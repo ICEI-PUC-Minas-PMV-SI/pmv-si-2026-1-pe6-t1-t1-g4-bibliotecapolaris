@@ -36,10 +36,11 @@ export default [
       ...securityPlugin.configs.recommended.rules,
       'prettier/prettier': ['error', { printWidth: 120, endOfLine: 'auto' }],
       'import/order': ['error', { 'newlines-between': 'always' }],
-      'node/no-unsupported-features/es-syntax': 'off', // Allow modern ES syntax
-      'node/no-unpublished-import': 'off', // To avoid issues with TypeScript path mappings
+      'node/no-unsupported-features/es-syntax': 'off',
+      'node/no-unpublished-import': 'off',
       'import/no-named-as-default': 0,
       'import/no-named-as-default-member': 0,
+      '@typescript-eslint/no-unused-vars': 'warn',
     },
   },
   {

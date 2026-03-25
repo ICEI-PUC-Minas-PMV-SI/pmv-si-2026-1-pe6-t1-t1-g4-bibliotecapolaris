@@ -21,7 +21,7 @@ export async function getBookByIdController(req: Request, res: Response) {
     const { id } = req.params;
 
     const book = await getBookById(id as string);
-    
+
     return sendSuccess(res, book, 200);
   } catch (error: any) {
     return handleError(res, error, 'Livro');
