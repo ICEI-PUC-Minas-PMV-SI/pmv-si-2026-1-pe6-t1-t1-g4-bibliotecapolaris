@@ -52,3 +52,39 @@ export async function deleteReview(id: string) {
     where: { id },
   });
 }
+
+export async function getReviewsByUserId(userId: string) {
+  return prisma.review.findMany({
+    where: {
+      loan: {
+        studentId: userId,
+      },
+    },
+    include: {
+      loan: {
+        include: {
+          student: true,
+          book: true,
+        },
+      },
+    },
+  });
+}
+
+export async function getReviewsByBookId(bookId: string) {
+  return prisma.review.findMany({
+    where: {
+      loan: {
+        bookId: bookId,
+      },
+    },
+    include: {
+      loan: {
+        include: {
+          student: true,
+          book: true,
+        },
+      },
+    },
+  });
+}

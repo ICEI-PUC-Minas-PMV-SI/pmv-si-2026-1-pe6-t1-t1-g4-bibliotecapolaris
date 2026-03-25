@@ -6,6 +6,8 @@ import {
   getReviews,
   getReviewById,
   deleteReview,
+  getReviewsByUserId,
+  getReviewsByBookId,
 } from '@/services';
 import { handleError, sendSuccess } from '@/utils';
 
@@ -68,6 +70,38 @@ export async function deleteReviewController(req: Request, res: Response) {
     await deleteReview(id);
 
     return sendSuccess(res, 'Review removida com sucesso', 202);
+  } catch (error: any) {
+    return handleError(res, error, 'Review');
+  }
+}
+
+export async function getReviewsByUserIdController(req: Request, res: Response) {
+  try {
+    const id = getSingleString(req.params.userId);
+
+    if (!id) {
+      throw new Error('Id do usuário é obrigatório');
+    }
+
+    const reviews = await getReviewsByUserId(id);
+
+    return sendSuccess(res, reviews, 200);
+  } catch (error: any) {
+    return handleError(res, error, 'Review');
+  }
+}
+
+export async function getReviewsByBookIdController(req: Request, res: Response) {
+  try {
+    const id = getSingleString(req.params.bookId);
+
+    if (!id) {
+      throw new Error('Id do livro é obrigatório');
+    }
+
+    const reviews = await getReviewsByBookId(id);
+
+    return sendSuccess(res, reviews, 200);
   } catch (error: any) {
     return handleError(res, error, 'Review');
   }
