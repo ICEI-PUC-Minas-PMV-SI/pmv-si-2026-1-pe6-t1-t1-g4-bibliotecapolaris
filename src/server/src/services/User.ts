@@ -3,7 +3,7 @@ import type { CreateUserInput } from '@/models/UserModel';
 import { generateSlug, hashPassword, verifyPassword } from '@/utils';
 
 export async function createUser(data: CreateUserInput) {
-  let baseSlug = generateSlug(data.name);
+  const baseSlug = generateSlug(data.name);
   let slug = baseSlug;
   let count = 1;
 
@@ -39,7 +39,7 @@ export async function updateUser(id: string, data: any) {
   }
 
   if (data.name) {
-    let baseSlug = generateSlug(data.name);
+    const baseSlug = generateSlug(data.name);
     let slug = baseSlug;
     let count = 1;
 

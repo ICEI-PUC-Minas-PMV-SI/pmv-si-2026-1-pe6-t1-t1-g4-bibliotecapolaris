@@ -1,6 +1,13 @@
 import { Router } from 'express';
 
-import { createBookController, deleteBookController, getBookByIdController, getBookBySlugController, listBooksController, updateBookController } from '@/controllers';
+import {
+  createBookController,
+  deleteBookController,
+  getBookByIdController,
+  getBookBySlugController,
+  listBooksController,
+  updateBookController,
+} from '@/controllers';
 
 const BookRouter = Router();
 

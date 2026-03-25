@@ -13,7 +13,7 @@ function normalizeCategories(categories: string): string {
 }
 
 export async function createBook(data: CreateBookInput) {
-  let baseSlug = generateSlug(data.name);
+  const baseSlug = generateSlug(data.name);
   let slug = baseSlug;
   let count = 1;
 
@@ -102,7 +102,7 @@ export async function updateBook(id: string, data: any) {
   await prisma.book.findUniqueOrThrow({ where: { id } });
 
   if (data.name) {
-    let baseSlug = generateSlug(data.name);
+    const baseSlug = generateSlug(data.name);
     let slug = baseSlug;
     let count = 1;
 
