@@ -1,8 +1,6 @@
 import { Router } from 'express';
 
 import {
-  getAllUsersController,
-  createMockUserController,
   getAllLoansController,
   getLoanByIdControllerById,
   createLoanController,
@@ -16,10 +14,6 @@ import { LoanCreateSchema, LoanUpdateSchema } from '@/services/loan/schema';
 
 const router = Router();
 
-router.get('/users', getAllUsersController);
-router.post('/users', createMockUserController);
-
-//LOANS
 router.get('/loans', getAllLoansController);
 router.get('/loans/:id', (req, res) => getLoanByIdControllerById(req.params.id, res));
 router.post('/loans', validateBody(LoanCreateSchema), createLoanController);
