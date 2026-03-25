@@ -22,7 +22,6 @@ model User {
   type      UserType
 
   loans     Loan[]
-  reviews   Review[]
   wishlists Wishlist[]
 
   @@map("users")
@@ -40,8 +39,8 @@ model Book {
   totalAvailable Int    @map("total_available")
 
   author    Author     @relation(fields: [authorId], references: [id])
-  reviews   Review[]
   wishlists Wishlist[]
+  loans     Loan[]
 
   @@map("books")
 }
@@ -56,13 +55,15 @@ enum LoanStatus {
 model Loan {
   id         String     @id @default(uuid())
   studentId  String     @map("student_id")
-  editionId  String     @map("edition_id")
+  bookId     String     @map("book_id")
   loanDate   DateTime   @map("loan_date")
   dueDate    DateTime   @map("due_date")
   returnDate DateTime?  @map("return_date")
   status     LoanStatus
 
-  student User @relation(fields: [studentId], references: [id])
+  student User     @relation(fields: [studentId], references: [id])
+  book    Book     @relation(fields: [bookId], references: [id])
+  reviews Review[]
 
   @@map("loans")
 }
@@ -89,13 +90,11 @@ model Wishlist {
 model Review {
   id          String   @id @default(uuid())
   rating      Int
-  studentId   String   @map("student_id")
-  bookId      String   @map("book_id")
+  loanId      String   @unique @map("loan_id")
   description String?
   date        DateTime
 
-  student User @relation(fields: [studentId], references: [id])
-  book    Book @relation(fields: [bookId], references: [id])
+  loan Loan @relation(fields: [loanId], references: [id])
 
   @@map("reviews")
 }
