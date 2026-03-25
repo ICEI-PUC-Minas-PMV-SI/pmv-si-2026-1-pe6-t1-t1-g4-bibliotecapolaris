@@ -1,0 +1,1 @@
+Use zod V4 for schema validation in the backend, according to https://zod.dev/v4. Ensure that all validation schemas are defined using zod and that the validation middleware is properly integrated into the routes.

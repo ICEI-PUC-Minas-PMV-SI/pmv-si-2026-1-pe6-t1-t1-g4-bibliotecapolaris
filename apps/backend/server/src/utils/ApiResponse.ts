@@ -7,7 +7,13 @@ export function sendSuccess<T>(res: Response, data: T, status = 200) {
   });
 }
 
-export function sendFailure(res: Response, errorCode: string, message: string, field?: string[], status = 400) {
+export function sendFailure(
+  res: Response,
+  errorCode: string,
+  message: string,
+  field?: string[] | Record<string, string[]>,
+  status = 400,
+) {
   return res.status(status).json({
     error: true,
     errorCode,
