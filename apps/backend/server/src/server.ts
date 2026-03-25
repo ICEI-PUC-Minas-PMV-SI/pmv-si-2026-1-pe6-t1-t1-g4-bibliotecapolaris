@@ -2,10 +2,13 @@ import express from 'express';
 import cors from 'cors';
 
 import 'dotenv/config';
+<<<<<<< HEAD:apps/backend/server/src/server.ts
 
 import { generateOpenApiDocuments } from './lib/zod-to-openapi';
 import { swaggerRoute } from './lib/swagger';
 
+=======
+>>>>>>> server:src/server/src/server.ts
 import router from '@/routes';
 
 const app = express();
