@@ -8,13 +8,9 @@ export const LoanCreateSchema = z.object({
   status: z.enum(['in_progress', 'returned', 'canceled', 'overdue']),
 });
 
-export const LoanUpdateSchema = z.object({
-  studentId: z.uuid().optional(),
-  bookId: z.uuid().optional(),
-  loanDate: z.date().optional(),
-  dueDate: z.date().optional(),
-  returnDate: z.date().optional(),
-  status: z.enum(['in_progress', 'returned', 'canceled', 'overdue']).optional(),
+export const LoanUpdateSchema = LoanCreateSchema.partial().extend({
+  id: z.uuid(),
+  returnDate: z.date().nullable(),
 });
 
 export const LoanSchema = z.object({
@@ -28,9 +24,11 @@ export const LoanSchema = z.object({
 });
 
 export const LoanWithUserSchema = LoanSchema.extend({
-  student: z.object({
-    id: z.uuid(),
-    name: z.string(),
-    email: z.string().email(),
-  }).optional(),
+  student: z
+    .object({
+      id: z.uuid(),
+      name: z.string(),
+      email: z.string().email(),
+    })
+    .optional(),
 });

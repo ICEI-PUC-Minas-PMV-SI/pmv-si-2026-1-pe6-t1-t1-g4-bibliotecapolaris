@@ -1,6 +1,8 @@
-import { prisma } from '@/lib/prisma';
-import { LoanCreateSchema, LoanUpdateSchema } from './schema';
 import type { z } from 'zod';
+
+import { LoanCreateSchema, LoanUpdateSchema } from './schema';
+
+import { prisma } from '@/lib/prisma';
 
 type LoanCreateInput = z.infer<typeof LoanCreateSchema>;
 type LoanUpdateInput = z.infer<typeof LoanUpdateSchema>;
@@ -12,7 +14,7 @@ export async function getAllLoans() {
 }
 
 export async function getLoanById(id: string) {
-  return prisma.loan.findUnique({
+  return prisma.loan.findUniqueOrThrow({
     where: { id },
     include: { student: true },
   });
