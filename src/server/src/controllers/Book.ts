@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 
-import { handleError, sendFailure, sendSuccess } from '@/utils';
+import { handleError, sendSuccess } from '@/utils';
 import { createBook, getBookById, getBookBySlug, listBooks, updateBook, deleteBook } from '@/services';
 import { CreateBookSchema, UpdateBookSchema } from '@/models/BookModel';
 
@@ -10,7 +10,10 @@ export async function createBookController(req: Request, res: Response) {
 
     const newBook = await createBook(data);
 
-    return sendSuccess(res, `Livro ${newBook.id} criado com sucesso!`, 201);
+    return sendSuccess(res, {
+      message: `Livro "${newBook.name}" criado com sucesso!`,
+      book: newBook
+    }, 201);
   } catch (error: any) {
     return handleError(res, error, 'Livro');
   }
@@ -21,7 +24,7 @@ export async function getBookByIdController(req: Request, res: Response) {
     const { id } = req.params;
 
     const book = await getBookById(id as string);
-    
+
     return sendSuccess(res, book, 200);
   } catch (error: any) {
     return handleError(res, error, 'Livro');
@@ -42,12 +45,19 @@ export async function getBookBySlugController(req: Request, res: Response) {
 
 export async function listBooksController(req: Request, res: Response) {
   try {
-    const { name, authorName, categories } = req.query;
+    const { name, authorName, categories, wishlistId } = req.query;
 
-    const filters: { name?: string; authorName?: string; categories?: string } = {};
+    const filters: { 
+      name?: string; 
+      authorName?: string; 
+      categories?: string;
+      wishlistId?: string;
+    } = {};
+
     if (typeof name === 'string') filters.name = name;
     if (typeof authorName === 'string') filters.authorName = authorName;
     if (typeof categories === 'string') filters.categories = categories;
+    if (typeof wishlistId === 'string') filters.wishlistId = wishlistId;
 
     const books = await listBooks(filters);
 
@@ -69,7 +79,10 @@ export async function updateBookController(req: Request, res: Response) {
 
     const updatedBook = await updateBook(id, data);
 
-    return sendSuccess(res, `Livro - ${updatedBook.name} atualizado com sucesso!`, 202);
+    return sendSuccess(res, {
+      message: `Livro "${updatedBook.name}" atualizado com sucesso!`,
+      book: updatedBook
+    }, 202);
   } catch (error: unknown) {
     return handleError(res, error, 'Livro');
   }

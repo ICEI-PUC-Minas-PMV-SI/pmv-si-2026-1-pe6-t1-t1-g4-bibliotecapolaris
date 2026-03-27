@@ -28,16 +28,20 @@ model User {
 }
 
 model Book {
-  id          String    @id @default(uuid())
-  slug        String    @unique
-  name        String
-  authorId    String    @map("author_id")
-  description String
-  categories  String
-  editions    Edition[]
+  id             String @id @default(uuid())
+  slug           String @unique
+  isbn           String @unique
+  name           String
+  year           Int    @map("year")
+  authorId       String @map("author_id")
+  description    String
+  categories     String
+  totalQuantity  Int    @map("total_quantity")
+  totalAvailable Int    @map("total_available")
 
-  author  Author   @relation(fields: [authorId], references: [id])
-  reviews Review[]
+  author    Author     @relation(fields: [authorId], references: [id])
+  wishlists Wishlist[]
+  loans     Loan[]
 
   @@map("books")
 }
