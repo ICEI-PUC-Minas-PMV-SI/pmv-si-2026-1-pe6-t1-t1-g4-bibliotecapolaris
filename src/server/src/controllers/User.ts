@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 
-import { handleError, hashPassword, sendFailure, sendSuccess, verifyPassword } from '@/utils';
+import { handleError, hashPassword, sendSuccess, verifyPassword } from '@/utils';
 import { createUser, getUserById, updateUser, deleteUser } from '@/services';
 import { CreateUserSchema, UpdateUserSchema } from '@/models/UserModel';
 
@@ -14,7 +14,7 @@ export async function createUserController(req: Request, res: Response) {
 
     return sendSuccess(res, `Usuário ${newUser.id} criado com sucesso!`, 201);
   } catch (error: any) {
-    return handleError(res, error);
+    return handleError(res, error, 'Usuário');
   }
 }
 
@@ -24,13 +24,9 @@ export async function getUserByIdController(req: Request, res: Response) {
 
     const user = await getUserById(id as string);
 
-    if (!user) {
-      return sendFailure(res, '404', 'Usuário não encontrado!');
-    }
-
-    return sendSuccess(res, user, 202);
+    return sendSuccess(res, user, 200);
   } catch (error: any) {
-    return handleError(res, error);
+    return handleError(res, error, 'Usuário');
   }
 }
 
@@ -44,11 +40,11 @@ export async function updateUserController(req: Request, res: Response) {
 
     const updateData = UpdateUserSchema.parse(req.body);
 
-    const updatedUser = await updateUser(id, updateData);
+    const updatedUser = await updateUser(id as string, updateData);
 
-    return sendSuccess(res, `Usuário - ${updatedUser.name} atualizado com sucesso!`, 202);
+    return sendSuccess(res, `Usuário - ${updatedUser.name} atualizado com sucesso!`, 201);
   } catch (error: unknown) {
-    return handleError(res, error);
+    return handleError(res, error, 'Usuário');
   }
 }
 
@@ -58,8 +54,8 @@ export async function deleteUserController(req: Request, res: Response) {
 
     await deleteUser(id as string);
 
-    return sendSuccess(res, 'Usuário Deletado com Sucesso', 202);
+    return sendSuccess(res, 'Usuário Deletado com Sucesso', 201);
   } catch (error: any) {
-    return handleError(res, error);
+    return handleError(res, error, 'Usuário');
   }
 }
