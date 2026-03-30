@@ -12,8 +12,9 @@ export const generateOpenApiDocuments = () => {
     info: {
       version: '1.0.0',
       title: 'RESTAPI Biblioteca POLARIS',
-      description: 'Essa é a API que será consumida pelo frontend da Biblioteca POLARIS. Ela é responsável por gerenciar os dados dos usuários, livros, empréstimos e outras funcionalidades relacionadas à biblioteca.',
+      description:
+        'Essa é a API que será consumida pelo frontend da Biblioteca POLARIS. Ela é responsável por gerenciar os dados dos usuários, livros, empréstimos e outras funcionalidades relacionadas à biblioteca.',
     },
-    servers: [{ url: 'v1' }],
+    servers: [{ url: '/api' }],
   });
 };

@@ -10,6 +10,6 @@ const WishlistRouter = Router();
 
 WishlistRouter.post('/wishlist/register', addBookToWishlistController);
 WishlistRouter.get('/wishlist/:id', getWishlistByUserIdController);
-WishlistRouter.delete('/wishlist', deleteBookFromWishlistController);
+WishlistRouter.delete('/students/:studentId/wishlist/:bookId', deleteBookFromWishlistController);
 
 export default WishlistRouter;
