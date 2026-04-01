@@ -4,10 +4,10 @@ import {
   createReviewController,
   getReviewsController,
   getReviewByIdController,
+  updateReviewController,
   deleteReviewController,
   getReviewsByUserIdController,
   getReviewsByBookIdController,
-  updateReviewController,
 } from '@/controllers/Review';
 
 const ReviewRouter = Router();

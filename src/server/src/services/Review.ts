@@ -47,6 +47,24 @@ export async function getReviewById(id: string) {
   });
 }
 
+export async function updateReview(id: string, data: UpdateReviewInput) {
+  return prisma.review.update({
+    where: { id },
+    data: {
+      rating: data.rating,
+      description: data.description ?? null,
+    },
+    include: {
+      loan: {
+        include: {
+          student: true,
+          book: true,
+        },
+      },
+    },
+  });
+}
+
 export async function deleteReview(id: string) {
   return prisma.review.delete({
     where: { id },
@@ -113,24 +131,6 @@ export async function getReviewsByBookId(bookId: string) {
               name: true,
             },
           },
-        },
-      },
-    },
-  });
-}
-
-export async function updateReview(id: string, data: UpdateReviewInput) {
-  return prisma.review.update({
-    where: { id },
-    data: {
-      rating: data.rating,
-      description: data.description ?? null,
-    },
-    include: {
-      loan: {
-        include: {
-          student: true,
-          book: true,
         },
       },
     },
