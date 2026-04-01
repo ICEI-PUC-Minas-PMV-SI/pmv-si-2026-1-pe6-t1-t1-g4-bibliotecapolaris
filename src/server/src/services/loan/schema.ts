@@ -3,14 +3,14 @@ import { z } from 'zod';
 export const LoanCreateSchema = z.object({
   studentId: z.uuid(),
   bookId: z.uuid(),
-  loanDate: z.date(),
-  dueDate: z.date(),
+  loanDate: z.string(),
+  dueDate: z.string(),
   status: z.enum(['in_progress', 'returned', 'canceled', 'overdue']),
 });
 
 export const LoanUpdateSchema = LoanCreateSchema.partial().extend({
   id: z.uuid(),
-  returnDate: z.date().nullable(),
+  returnDate: z.string().optional(),
 });
 
 export const LoanSchema = z.object({
@@ -19,7 +19,7 @@ export const LoanSchema = z.object({
   bookId: z.uuid(),
   loanDate: z.date(),
   dueDate: z.date(),
-  returnDate: z.date().nullable(),
+  returnDate: z.date().optional(),
   status: z.enum(['in_progress', 'returned', 'canceled', 'overdue']),
 });
 

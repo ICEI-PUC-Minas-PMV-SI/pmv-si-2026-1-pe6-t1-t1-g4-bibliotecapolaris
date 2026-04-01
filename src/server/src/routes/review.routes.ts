@@ -4,6 +4,7 @@ import {
   createReviewController,
   getReviewsController,
   getReviewByIdController,
+  updateReviewController,
   deleteReviewController,
   getReviewsByUserIdController,
   getReviewsByBookIdController,
@@ -16,6 +17,7 @@ ReviewRouter.get('/review', getReviewsController);
 ReviewRouter.get('/review/user/:userId', getReviewsByUserIdController);
 ReviewRouter.get('/review/book/:bookId', getReviewsByBookIdController);
 ReviewRouter.get('/review/:id', getReviewByIdController);
+ReviewRouter.put('/review/:id', updateReviewController);
 ReviewRouter.delete('/review', deleteReviewController);
 
 export default ReviewRouter;

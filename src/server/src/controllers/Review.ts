@@ -1,31 +1,25 @@
 import type { Request, Response } from 'express';
 
-import { CreateReviewSchema } from '@/models/ReviewModel';
+import { CreateReviewSchema, UpdateReviewSchema } from '@/models/ReviewModel';
 import {
   createReview,
   getReviews,
   getReviewById,
+  updateReview,
   deleteReview,
   getReviewsByUserId,
   getReviewsByBookId,
 } from '@/services';
 import { handleError, sendSuccess } from '@/utils';
 
-function getSingleString(value: unknown): string | null {
-  if (typeof value === 'string') return value;
-  if (Array.isArray(value) && typeof value[0] === 'string') return value[0];
-  return null;
-}
-
 export async function createReviewController(req: Request, res: Response) {
   try {
     const data = CreateReviewSchema.parse(req.body);
-
     const review = await createReview(data);
 
     return sendSuccess(
       res,
-      `${review.loan.student.name} avaliou o livro ${review.loan.book.name}`,
+      `${review.loan.student.name} avaliou o livro ${review.loan.book.name} com nota ${review.rating}`,
       201,
     );
   } catch (error: any) {
@@ -36,7 +30,6 @@ export async function createReviewController(req: Request, res: Response) {
 export async function getReviewsController(req: Request, res: Response) {
   try {
     const reviews = await getReviews();
-
     return sendSuccess(res, reviews, 200);
   } catch (error: any) {
     return handleError(res, error, 'Review');
@@ -45,13 +38,29 @@ export async function getReviewsController(req: Request, res: Response) {
 
 export async function getReviewByIdController(req: Request, res: Response) {
   try {
-    const id = getSingleString(req.params.id);
+    const { id } = req.params;
 
-    if (!id) {
-      throw new Error('Id da review é obrigatório');
+    if (!id || Array.isArray(id)) {
+      throw new Error('ID da avaliação inválido.');
     }
 
     const review = await getReviewById(id);
+    return sendSuccess(res, review, 200);
+  } catch (error: any) {
+    return handleError(res, error, 'Review');
+  }
+}
+
+export async function updateReviewController(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+
+    if (!id || Array.isArray(id)) {
+      throw new Error('ID da avaliação inválido.');
+    }
+
+    const data = UpdateReviewSchema.parse(req.body);
+    const review = await updateReview(id, data);
 
     return sendSuccess(res, review, 200);
   } catch (error: any) {
@@ -61,14 +70,13 @@ export async function getReviewByIdController(req: Request, res: Response) {
 
 export async function deleteReviewController(req: Request, res: Response) {
   try {
-    const id = getSingleString(req.query.id);
+    const { id } = req.query;
 
-    if (!id) {
-      throw new Error('Id da review é obrigatório');
+    if (!id || Array.isArray(id)) {
+      throw new Error('ID da avaliação inválido.');
     }
 
-    await deleteReview(id);
-
+    await deleteReview(id as string);
     return sendSuccess(res, 'Review removida com sucesso', 202);
   } catch (error: any) {
     return handleError(res, error, 'Review');
@@ -77,14 +85,13 @@ export async function deleteReviewController(req: Request, res: Response) {
 
 export async function getReviewsByUserIdController(req: Request, res: Response) {
   try {
-    const id = getSingleString(req.params.userId);
+    const { userId } = req.params;
 
-    if (!id) {
-      throw new Error('Id do usuário é obrigatório');
+    if (!userId || Array.isArray(userId)) {
+      throw new Error('ID do usuário inválido.');
     }
 
-    const reviews = await getReviewsByUserId(id);
-
+    const reviews = await getReviewsByUserId(userId);
     return sendSuccess(res, reviews, 200);
   } catch (error: any) {
     return handleError(res, error, 'Review');
@@ -93,14 +100,13 @@ export async function getReviewsByUserIdController(req: Request, res: Response) 
 
 export async function getReviewsByBookIdController(req: Request, res: Response) {
   try {
-    const id = getSingleString(req.params.bookId);
+    const { bookId } = req.params;
 
-    if (!id) {
-      throw new Error('Id do livro é obrigatório');
+    if (!bookId || typeof bookId !== 'string') {
+      return handleError(res, new Error('Id do livro é obrigatório'), 'Review');
     }
 
-    const reviews = await getReviewsByBookId(id);
-
+    const reviews = await getReviewsByBookId(bookId);
     return sendSuccess(res, reviews, 200);
   } catch (error: any) {
     return handleError(res, error, 'Review');
