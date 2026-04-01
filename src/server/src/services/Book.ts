@@ -40,14 +40,11 @@ export async function getBookById(id: string) {
     where: { id },
     include: {
       author: true,
-      reviews: {
+      loans: {
         include: {
-          loan: {
-            include: {
-              student: {
-                select: { id: true, name: true, slug: true },
-              },
-            },
+          reviews: true,
+          student: {
+            select: { id: true, name: true, slug: true },
           },
         },
       },
@@ -60,14 +57,11 @@ export async function getBookBySlug(slug: string) {
     where: { slug },
     include: {
       author: true,
-      reviews: {
+      loans: {
         include: {
-          loan: {
-            include: {
-              student: {
-                select: { id: true, name: true, slug: true },
-              },
-            },
+          reviews: true,
+          student: {
+            select: { id: true, name: true, slug: true },
           },
         },
       },
@@ -75,9 +69,9 @@ export async function getBookBySlug(slug: string) {
   });
 }
 
-export async function listBooks(filters?: { 
-  name?: string; 
-  authorName?: string; 
+export async function listBooks(filters?: {
+  name?: string;
+  authorName?: string;
   categories?: string;
   wishlistId?: string;
 }) {
@@ -95,9 +89,9 @@ export async function listBooks(filters?: {
       ...(filters?.wishlistId && {
         wishlists: {
           some: {
-            id: filters.wishlistId // Filtro via nova entidade intermediária
-          }
-        }
+            studentId: filters.wishlistId, // Filtro via studentId na relação
+          },
+        },
       }),
     },
     include: {
@@ -110,7 +104,7 @@ export async function listBooks(filters?: {
 export async function updateBook(id: string, data: UpdateBookInput) {
   await prisma.book.findUniqueOrThrow({ where: { id } });
 
-  const updatedData: any = { ...data };
+  const updatedData: Record<string, unknown> = { ...data };
 
   if (data.name) {
     const baseSlug = generateSlug(data.name);
