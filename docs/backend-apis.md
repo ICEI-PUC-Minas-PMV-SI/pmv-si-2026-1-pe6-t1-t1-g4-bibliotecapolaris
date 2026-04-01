@@ -51,32 +51,16 @@ Existem muitas tecnologias diferentes que podem ser usadas para desenvolver APIs
 
 ## API Endpoints
 
-[Liste os principais endpoints da API, incluindo as operações disponíveis, os parâmetros esperados e as respostas retornadas.]
+Os endpoints da aplicação podem ser avaliados executando o projeto conforme descrito na documentação localizada em [`./src/server/Readme.md`](../src/server/Readme.md).
 
-### Endpoint 1
-- Método: GET
-- URL: /endpoint1
-- Parâmetros:
-  - param1: [descrição]
-- Resposta:
-  - Sucesso (200 OK)
-    ```
-    {
-      "message": "Success",
-      "data": {
-        ...
-      }
-    }
-    ```
-  - Erro (4XX, 5XX)
-    ```
-    {
-      "message": "Error",
-      "error": {
-        ...
-      }
-    }
-    ```
+Após iniciar o servidor, acesse a interface interativa da API pelo seguinte link: [http://localhost:3333/docs](http://localhost:3333/docs)
+
+Nessa página, você poderá visualizar todos os endpoints disponíveis, organizados por tipo, além de testá-los diretamente de forma prática.
+
+Para uma visão inicial, também disponibilizamos uma visão geral dos endpoints disponíveis na documentação.
+
+### Visão Geral dos Endpoints
+![alt ](./img/endpoints.png)
 
 ## Considerações de Segurança
 
