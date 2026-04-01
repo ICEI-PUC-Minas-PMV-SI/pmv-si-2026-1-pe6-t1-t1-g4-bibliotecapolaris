@@ -10,8 +10,8 @@
 | 02/03 - 08/03 | Arquitetura de Software Distribuído - Unidade 3 | ✅ | Revisão da Introdução, Problema e Objetivos | OK |
 | 09/03 - 15/03 | APIs e Web Services - Unidade 1 | ✅ | Desenvolvimento dos Endpoints dos Livros | OK |
 | 16/03 - 22/03 | APIs e Web Services - Unidade 2 | ✅ | Revisão dos Endpoints e schema | OK |
-| 23/03 - 29/03 | APIs e Web Services - Unidade 2 | ✅ | Criação dos testes e documentação dos Endpoints dos Livros |  |
-| 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ⬜ |  |  |
+| 23/03 - 29/03 | APIs e Web Services - Unidade 2 | ✅ | Atualizacão dos Endpoints dos Livros de acordo com novo CRUD | OK |
+| 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ⬜ | Criação dos testes e documentação dos Endpoints dos Livros |  |
 | 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ⬜ |  |  |
 | 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ⬜ |  |  |
 | 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ⬜ |  |  |
