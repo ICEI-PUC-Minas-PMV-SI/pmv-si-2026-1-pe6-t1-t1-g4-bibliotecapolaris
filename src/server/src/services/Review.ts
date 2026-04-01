@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import type { CreateReviewInput } from '@/models/ReviewModel';
+import type { CreateReviewInput, UpdateReviewInput } from '@/models/ReviewModel';
 
 export async function createReview(data: CreateReviewInput) {
   return prisma.review.create({
@@ -60,11 +60,26 @@ export async function getReviewsByUserId(userId: string) {
         studentId: userId,
       },
     },
-    include: {
+    select: {
+      id: true,
+      rating: true,
+      description: true,
+      date: true,
       loan: {
-        include: {
-          student: true,
-          book: true,
+        select: {
+          id: true,
+          student: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          book: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
         },
       },
     },
@@ -77,6 +92,39 @@ export async function getReviewsByBookId(bookId: string) {
       loan: {
         bookId: bookId,
       },
+    },
+    select: {
+      id: true,
+      rating: true,
+      description: true,
+      date: true,
+      loan: {
+        select: {
+          id: true,
+          student: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          book: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+export async function updateReview(id: string, data: UpdateReviewInput) {
+  return prisma.review.update({
+    where: { id },
+    data: {
+      rating: data.rating,
+      description: data.description ?? null,
     },
     include: {
       loan: {

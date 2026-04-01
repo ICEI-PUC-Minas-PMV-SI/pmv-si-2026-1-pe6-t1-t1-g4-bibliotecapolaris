@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 
-import { CreateReviewSchema } from '@/models/ReviewModel';
+import { CreateReviewSchema, UpdateReviewSchema } from '@/models/ReviewModel';
 import {
   createReview,
   getReviews,
@@ -8,6 +8,7 @@ import {
   deleteReview,
   getReviewsByUserId,
   getReviewsByBookId,
+  updateReview,
 } from '@/services';
 import { handleError, sendSuccess } from '@/utils';
 
@@ -102,6 +103,24 @@ export async function getReviewsByBookIdController(req: Request, res: Response) 
     const reviews = await getReviewsByBookId(id);
 
     return sendSuccess(res, reviews, 200);
+  } catch (error: any) {
+    return handleError(res, error, 'Review');
+  }
+}
+
+export async function updateReviewController(req: Request, res: Response) {
+  try {
+    const id = getSingleString(req.params.id);
+
+    if (!id) {
+      throw new Error('Id da review é obrigatório');
+    }
+
+    const data = UpdateReviewSchema.parse(req.body);
+
+    const review = await updateReview(id, data);
+
+    return sendSuccess(res, review, 200);
   } catch (error: any) {
     return handleError(res, error, 'Review');
   }
