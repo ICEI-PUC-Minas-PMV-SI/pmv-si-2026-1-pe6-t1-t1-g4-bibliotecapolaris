@@ -1,35 +1,12 @@
 import { z } from 'zod';
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
 
-import { CreateBookSchema, UpdateBookSchema } from '@/models/BookModel';
-
-// NOTA: Se NotFoundErrorSchema existir em @/models/ErrorModel, importe de lá futuramente
-const NotFoundErrorSchema = z.object({
-  message: z.string(),
-  error: z.string().optional(),
-});
+import { CreateBookSchema, UpdateBookSchema, BookSchema } from '@/models/BookModel';
+import { NotFoundErrorSchema } from '@/models/ErrorModel';
 
 export const bookRegistry = new OpenAPIRegistry();
 
 // ESQUEMAS DE RESPOSTA
-export const BookSchema = z.object({
-  id: z.string().uuid().describe('ID único do livro'),
-  slug: z.string().describe('URL-friendly slug do livro'),
-  isbn: z.string().describe('ISBN único do livro'),
-  name: z.string().describe('Título do livro'),
-  year: z.number().int().describe('Ano de lançamento'),
-  authorId: z.string().uuid().describe('ID do autor relacionado'),
-  description: z.string().describe('Resumo do livro'),
-  categories: z.string().describe('Categorias (separadas por vírgula)'),
-  totalQuantity: z.number().int().describe('Estoque total'),
-  totalAvailable: z.number().int().describe('Quantidade disponível para empréstimo'),
-  author: z
-    .object({
-      id: z.string().uuid(),
-      name: z.string(),
-    })
-    .optional(),
-});
 
 export const BookDetailSchema = BookSchema.extend({
   loans: z.array(
