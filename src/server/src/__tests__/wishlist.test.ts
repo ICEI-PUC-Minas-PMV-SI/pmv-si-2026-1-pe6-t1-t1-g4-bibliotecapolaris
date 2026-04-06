@@ -7,7 +7,12 @@ import test from './server.test';
 import { createAuthor, createUser, createBook, MOCK_USER_ID, MOCK_BOOK_ID } from './wishlist.factory';
 
 describe('Wishlist Tests', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
+    await prisma.wishlist.deleteMany();
+    await prisma.book.deleteMany();
+    await prisma.author.deleteMany();
+    await prisma.user.deleteMany();
+
     const author = await createAuthor();
     await createUser();
     await createBook(author.id);
@@ -59,6 +64,10 @@ describe('Wishlist Tests', () => {
   // // --- OPERAÇÃO 2: LEITURA (GET) ---
   describe('GET /api/wishlist/:id', () => {
     it('deve retornar a lista de desejos quando houver livros', async () => {
+      await prisma.wishlist.create({
+        data: { studentId: MOCK_USER_ID, bookId: MOCK_BOOK_ID },
+      });
+
       const res = await request(test).get(`/api/wishlist/${MOCK_USER_ID}`);
 
       expect(res.status).toBe(200);
