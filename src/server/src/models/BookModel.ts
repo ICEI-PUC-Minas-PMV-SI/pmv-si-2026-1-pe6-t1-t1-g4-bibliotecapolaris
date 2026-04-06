@@ -20,5 +20,9 @@ export const UpdateBookSchema = CreateBookSchema.partial().extend({
   slug: z.string().optional().describe('Slug gerado a partir do título do livro'),
 });
 
+export const GetBooksArray = z.object({
+  books: z.array(CreateBookSchema),
+});
+
 export type CreateBookInput = z.infer<typeof CreateBookSchema>;
 export type UpdateBookInput = z.infer<typeof UpdateBookSchema>;

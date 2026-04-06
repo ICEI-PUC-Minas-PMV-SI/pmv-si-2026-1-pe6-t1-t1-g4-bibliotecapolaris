@@ -1,45 +1,36 @@
-/**
- * For a detailed explanation regarding each configuration property, visit:
- * https://jestjs.io/docs/configuration
- */
-
 import type { Config } from 'jest';
 
 const config: Config = {
+  preset: 'ts-jest/presets/default-esm',
+  testEnvironment: 'node',
+  extensionsToTreatAsEsm: ['.ts'],
+
   clearMocks: true,
-
-  collectCoverage: true,
-
-  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/server.ts'],
-
+  collectCoverage: false,
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/server.ts', '!src/lib/prisma.ts'],
   coverageDirectory: 'coverage',
-
   coverageProvider: 'v8',
 
   moduleFileExtensions: ['js', 'ts', 'json'],
-
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+    '^@prisma/client$': '<rootDir>/prisma/generated/prisma/client',
   },
-
-  preset: 'ts-jest',
-
-  // The test environment that will be used for testing
-  testEnvironment: 'node',
-
-  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
 
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',
       {
+        useESM: true,
         tsconfig: {
           esModuleInterop: true,
-          module: 'commonjs',
         },
       },
     ],
   },
+
+  testMatch: ['**/__tests__/**/*.test.[jt]s', '**/__tests__/**/*.spec.[jt]s'],
 };
 
 export default config;
