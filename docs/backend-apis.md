@@ -78,13 +78,31 @@ Para uma visão inicial, também disponibilizamos uma visão geral dos endpoints
 
 ## Testes
 
-[Descreva a estratégia de teste, incluindo os tipos de teste a serem realizados (unitários, integração, carga, etc.) e as ferramentas a serem utilizadas.]
+A estratégia de testes da aplicação combina validações manuais e automatizadas para garantir o correto funcionamento do sistema.
 
-1. Crie casos de teste para cobrir todos os requisitos funcionais e não funcionais da aplicação.
-2. Implemente testes unitários para testar unidades individuais de código, como funções e classes.
-3. Realize testes de integração para verificar a interação correta entre os componentes da aplicação.
-4. Execute testes de carga para avaliar o desempenho da aplicação sob carga significativa.
-5. Utilize ferramentas de teste adequadas, como frameworks de teste e ferramentas de automação de teste, para agilizar o processo de teste.
+Os endpoints podem ser testados diretamente via Swagger, permitindo validar rapidamente as requisições e respostas da API.
+
+Além disso, foram implementados testes automatizados de integração utilizando Jest e Supertest, cobrindo os principais módulos da aplicação, como wishlist, user, book, author, review e loan. Esses testes simulam requisições HTTP reais, validando tanto os fluxos de sucesso quanto cenários de erro, incluindo validações e integridade dos dados.
+
+Durante a execução, o banco de dados é gerenciado com Prisma, garantindo isolamento dos testes por meio da limpeza e recriação dos dados antes de cada execução.
+
+### Testes Relacionados ao WishList
+Por se tratar de uma lista de desejos diretamente relacionada a entidades como usuário e livro, sendo este também vinculado a um autor, foi necessária a criação prévia desses registros antes da execução dos testes.
+
+Essa preparação pode ser observada no arquivo de testes em [`__tests__`](../src/server/src/__tests__/wishlist.test.ts)
+
+```ts
+ beforeEach(async () => {
+    await prisma.wishlist.deleteMany();
+    await prisma.book.deleteMany();
+    await prisma.author.deleteMany();
+    await prisma.user.deleteMany();
+
+    const author = await createAuthor();
+    await createUser();
+    await createBook(author.id);
+  });
+```
 
 # Referências
 
