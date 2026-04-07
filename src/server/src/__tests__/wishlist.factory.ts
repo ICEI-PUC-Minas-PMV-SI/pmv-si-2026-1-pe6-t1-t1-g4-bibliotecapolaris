@@ -38,6 +38,7 @@ export async function createBook(authorId: string) {
       isbn: `ISBN-${Date.now()}`,
       totalQuantity: 12,
       totalAvailable: 10,
+      year: 2014,
     },
   });
 }

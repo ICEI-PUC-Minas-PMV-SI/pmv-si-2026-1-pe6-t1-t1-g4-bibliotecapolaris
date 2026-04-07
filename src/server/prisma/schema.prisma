@@ -32,6 +32,7 @@ model Book {
   slug           String @unique
   isbn           String @unique
   name           String
+  year           Int    @map("year")
   authorId       String @map("author_id")
   description    String
   categories     String
