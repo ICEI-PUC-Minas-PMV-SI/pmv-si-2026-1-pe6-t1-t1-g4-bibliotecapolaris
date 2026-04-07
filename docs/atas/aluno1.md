@@ -8,11 +8,11 @@
 | 16/02 - 22/02 | Gestão de Serviços de TI - Unidade 2 | ✅ | Criação do Grupo & Compartilhamento com os demais colegas | ✅ |
 | 23/02 - 01/03 | Arquitetura de Software Distribuído - Unidade 1 e 2 | ✅ |  Ficarei responsável pela adição dos requisitos funcionais e não funcionais, bem como pela criação do catálogo de serviços | ✅  |
 | 02/03 - 08/03 | Arquitetura de Software Distribuído - Unidade 3 | ✅ | Ficarei responsável pela revisão das atividades realizadas anteriormente, e auxiliar os demais colegas. |  |
-| 09/03 - 15/03 | APIs e Web Services - Unidade 1 |  ⬜  | Ficarei responsável pela inicialização do projeto, contemplando a modelagem de dados e a organização da estrutura de pastas. Além disso, realizarei a documentação dos objetivos da API, da modelagem da aplicação e das tecnologias adotadas no desenvolvimento. | ✅ |
-| 16/03 - 22/03 | APIs e Web Services - Unidade 2 | ⬜ | Ficarei responsável pela criação dos endpoints relacionados a Edição dos Livros com Documentação e Testes |  |
-| 23/03 - 29/03 | APIs e Web Services - Unidade 2 | ⬜ |  |  |
-| 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ⬜ |  |  |
-| 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ⬜ |  |  |
+| 09/03 - 15/03 | APIs e Web Services - Unidade 1 |  ✅  | Ficarei responsável pela inicialização do projeto, contemplando a modelagem de dados e a organização da estrutura de pastas. Além disso, realizarei a documentação dos objetivos da API, da modelagem da aplicação e das tecnologias adotadas no desenvolvimento. | ✅ |
+| 16/03 - 22/03 | APIs e Web Services - Unidade 2 | ✅ | Ficarei responsável pela criação dos endpoints relacionados a Edição dos Livros com Documentação e Testes | ✅ |
+| 23/03 - 29/03 | APIs e Web Services - Unidade 2 | ✅ | Ficarei responsável pela criação dos endpoints relacionados a Edição dos Livros com Documentação e Testes  | ✅ |
+| 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ✅ | Ficarei responsável pela revisão dos endpoints e adição da documentação inicial do Github | ✅ |
+| 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ✅ | Ficarei responsável pela revisão geral da parte de documentação | ✅ |
 | 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ⬜ |  |  |
 | 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ⬜ |  |  |
 | 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ⬜ |  |  |
