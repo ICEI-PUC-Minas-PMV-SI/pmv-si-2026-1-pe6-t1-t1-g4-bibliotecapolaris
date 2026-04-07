@@ -10,9 +10,9 @@
 | 02/03 - 08/03 | Arquitetura de Software Distribuído - Unidade 3 | ✅ | **Público-alvo**, caracterizando o perfil geral dos usuários. | ✅ |
 | 09/03 - 15/03 | APIs e Web Services - Unidade 1 | ✅ | Desenvolvimento de Endpoints de **Usuários** | ✅ |
 | 16/03 - 22/03 | APIs e Web Services - Unidade 2 | ✅ | Testes e padronização de Endpoints de **Usuários** | ✅ |
-| 23/03 - 29/03 | APIs e Web Services - Unidade 2 | ⬜ | Adaptação dos Endpoints/CRUD de **Usuários** para o novo modelo de projeto |  |
-| 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ⬜ |  |  |
-| 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ⬜ |  |  |
+| 23/03 - 29/03 | APIs e Web Services - Unidade 2 | ✅ | Adaptação dos Endpoints/CRUD de **Usuários** para o novo modelo de projeto | ✅ |
+| 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ✅ | Documentação interativa da **API** de **Usuários** **(Swagger/OpenAPI)** | ✅ |
+| 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ✅ | Testes automatizados de integração **(Jest)** para o **CRUD** de **Usuários** | ✅ |
 | 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ⬜ |  |  |
 | 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ⬜ |  |  |
 | 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ⬜ |  |  |
