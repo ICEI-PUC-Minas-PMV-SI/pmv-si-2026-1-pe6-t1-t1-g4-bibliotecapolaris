@@ -2,7 +2,6 @@ import type { Request, Response } from 'express';
 
 import { createAuthor, getAllAuthors, updateAuthor, getBooksByAuthorId, deleteAuthor } from '@/services';
 import { handleError, sendSuccess } from '@/utils';
-import { CreateAuthorSchema, UpdateAuthorSchema } from '@/models/AuthorModel';
 
 export async function createAuthorsController(req: Request, res: Response) {
   try {
