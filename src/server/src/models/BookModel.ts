@@ -11,7 +11,7 @@ const bookBase = {
 
 export const CreateBookObject = z.object({
   ...bookBase,
-  categories: z.array(z.string()).min(1, 'Pelo menos uma categoria é obrigatória').describe('Categorias do Livro'),
+  categories: z.string().min(1, 'Pelo menos uma categoria é obrigatória').describe('Categorias do Livro'),
   availableQuantity: z.number().int().nonnegative().describe('Quantidade Disponível'),
 });
 

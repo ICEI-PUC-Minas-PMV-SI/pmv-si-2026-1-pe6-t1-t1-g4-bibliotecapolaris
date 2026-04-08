@@ -2,13 +2,12 @@ import { prisma } from '@/lib/prisma';
 import type { CreateBookInput, UpdateBookInput } from '@/models/BookModel';
 import { generateSlug } from '@/utils';
 
-function normalizeCategories(categories: string[]): string {
-  const normalized = categories
+function normalizeCategories(categories: string): string {
+  return categories
+    .split(',')
     .map((c) => c.trim().toLowerCase())
     .filter(Boolean)
     .join(',');
-
-  return `${normalized}`;
 }
 
 export async function createBook(data: CreateBookInput) {
