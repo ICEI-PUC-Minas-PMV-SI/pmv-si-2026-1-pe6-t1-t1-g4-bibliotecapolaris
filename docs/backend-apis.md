@@ -35,7 +35,7 @@ Por fim, a entidade Usuários contempla diferentes perfis, como estudante e admi
 
 ## Tecnologias Utilizadas
 
-Existem muitas tecnologias diferentes que podem ser usadas para desenvolver APIs Web. A tecnologia certa para o seu projeto dependerá dos seus objetivos, dos seus clientes e dos recursos que a API deve fornecer.
+Como mencionado anteriormente, possuímos uma separação entre os serviços que compõem o sistema como um todo. No contexto de API/Backend, estamos utilizando a seguinte stack tecnológica, escolhida com base em critérios de escalabilidade e facilidade de manutenção:
 
 - Node.js como ambiente de execução do backend.
 
