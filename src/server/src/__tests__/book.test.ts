@@ -21,36 +21,32 @@ describe('Book Service Tests', () => {
 
   describe('POST /api/books/register', () => {
     it('deve registrar um livro com sucesso', async () => {
-      const res = await request(testServer)
-        .post('/api/books/register')
-        .send({
-          isbn: '9780132350884',
-          name: 'Clean Code: A Handbook of Agile Software Craftsmanship',
-          year: 2008,
-          authorId: MOCK_AUTHOR_ID,
-          description: 'Noted software expert Robert C. Martin presents a revolutionary paradigm...',
-          categories: ['Programming', 'Agile'],
-          totalQuantity: 5,
-          availableQuantity: 5,
-        });
+      const res = await request(testServer).post('/api/books/register').send({
+        isbn: '9780132350884',
+        name: 'Clean Code: A Handbook of Agile Software Craftsmanship',
+        year: 2008,
+        authorId: MOCK_AUTHOR_ID,
+        description: 'Noted software expert Robert C. Martin presents a revolutionary paradigm...',
+        categories: 'Programming, Agile',
+        totalQuantity: 5,
+        availableQuantity: 5,
+      });
 
       expect(res.status).toBe(201);
       expect(res.body.data).toContain('criado com sucesso');
     });
 
     it('deve retornar 401 VALIDATION_ERROR se a quantidade disponível for maior que a total', async () => {
-      const res = await request(testServer)
-        .post('/api/books/register')
-        .send({
-          isbn: 'ISBN-ERROR',
-          name: 'Error Book',
-          year: 2024,
-          authorId: MOCK_AUTHOR_ID,
-          description: 'Should fail',
-          categories: ['Test'],
-          totalQuantity: 5,
-          availableQuantity: 10,
-        });
+      const res = await request(testServer).post('/api/books/register').send({
+        isbn: 'ISBN-ERROR',
+        name: 'Error Book',
+        year: 2024,
+        authorId: MOCK_AUTHOR_ID,
+        description: 'Should fail',
+        categories: 'Test',
+        totalQuantity: 5,
+        availableQuantity: 10,
+      });
 
       expect(res.status).toBe(401);
       expect(res.body.errorCode).toBe('VALIDATION_ERROR');
