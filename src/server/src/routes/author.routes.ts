@@ -1,8 +1,9 @@
 import { Router } from 'express';
 
 import {
-  createAuthorsController,
-  getAllAuthorsController,
+  createAuthorController,
+  getAllAuthorController,
+  getAuthorByIdController,
   getBooksByAuthorIdController,
   updateAuthorController,
   deleteAuthorController,
@@ -10,9 +11,11 @@ import {
 
 const AuthorRouter = Router();
 
-AuthorRouter.post('/author', createAuthorsController);
+AuthorRouter.post('/author', createAuthorController);
 
-AuthorRouter.get('/author', getAllAuthorsController);
+AuthorRouter.get('/author', getAllAuthorController);
+
+AuthorRouter.get('/author/:id', getAuthorByIdController);
 
 AuthorRouter.get('/author/:id/books', getBooksByAuthorIdController);
 
