@@ -116,6 +116,22 @@ A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidencia
 
 <img width="794" height="288" alt="image" src="https://github.com/user-attachments/assets/7d4127bf-4a98-4d45-9a54-c0f55e576b20" />
 
+
+### Testes Relacionados a Usuários
+
+A entidade de Usuários possui um papel central no sistema, exigindo validações rigorosas tanto para a criação de novos cadastros quanto para a atualização de dados sensíveis.
+
+Os testes de integração desenvolvidos para esta funcionalidade cobrem o fluxo completo de CRUD (Create, Read, Update, Delete).
+
+Assim como nas outras entidades, o isolamento dos testes foi garantido utilizando as funções beforeAll e afterAll do Prisma para limpar a base de dados do SQLite, evitando que usuários de teste persistam na aplicação e gerem conflitos.
+
+A imagem a seguir apresenta o sucesso da execução de testes de Usuários, validando o tratamento de dados incompletos (Erro 401), buscas inexistentes (Erro 404) e as operações de sucesso (200 e 201).
+
+<img width="938" height="333" alt="pass" src="https://github.com/user-attachments/assets/aeac3526-57dc-46aa-9a83-fc4e43919ff8" />
+
+
+
+
 # Referências
 
 Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvolvimento do trabalho.
