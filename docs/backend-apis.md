@@ -24,11 +24,17 @@ Com isso, os objetivos são:
 - Facilitar a manutenção e evolução do sistema, permitindo a expansão de funcionalidades e integração com novos serviços sem comprometer a estrutura existente. 
 
 ## Modelagem da Aplicação
-A modelagem da aplicação segue uma estrutura relacional simples, composta pelas entidades Usuários, Livros, Edições, Autores, Avaliações e Empréstimos. A entidade Empréstimos atua como uma tabela intermediária responsável por registrar cada operação de retirada de uma edição de livro por um usuário. Dessa forma, estabelece-se uma relação 1:N entre usuários e empréstimos, bem como entre edições e empréstimos, o que, na prática, caracteriza uma relação N:N entre usuários e livros ao longo do tempo.
+A modelagem da aplicação segue uma estrutura relacional composta pelas entidades Usuários, Livros, Autores, Empréstimos, Avaliações e Lista de Desejos, organizadas de forma a garantir consistência e rastreabilidade das operações no sistema.
 
-Além disso, a entidade Livros representa a obra em si, enquanto Edições registra diferentes versões ou atualizações de um mesmo livro. A entidade Autores armazena informações sobre os responsáveis pelas obras, e Avaliações permite que usuários registrem comentários e classificações sobre os livros disponíveis no sistema.
+A entidade **Empréstimos** atua como uma tabela intermediária responsável por registrar cada operação de retirada de um livro por um usuário. Dessa forma, estabelece-se uma relação 1:N entre usuários e empréstimos, bem como entre livros e empréstimos, caracterizando, ao longo do tempo, uma relação N:N entre usuários e livros.
 
-Por fim, a entidade Usuários contempla diferentes perfis, como estudante e administrador, permitindo distinguir níveis de acesso e responsabilidades dentro do sistema.
+Já a entidade **Avaliações** possibilita que os usuários registrem comentários e classificações; entretanto, essas avaliações estão associadas à entidade Empréstimos, e não diretamente aos livros. Essa abordagem garante que apenas usuários que efetivamente realizaram um empréstimo possam avaliar uma obra, reforçando a confiabilidade dos feedbacks registrados no sistema.
+
+A entidade **Livros** representa as obras disponíveis no sistema, enquanto Autores armazena as informações dos responsáveis por essas obras, permitindo a associação entre livros e seus respectivos criadores.
+
+Além disso, a entidade **Lista de Desejos** permite que os usuários salvem livros de interesse para acesso futuro, funcionando como um mecanismo de organização pessoal dentro da plataforma.
+
+Por fim, a entidade Usuários contempla diferentes perfis, como estudante e administrador, possibilitando a definição de níveis de acesso e responsabilidades distintas dentro do sistema.
 
 <h4 align="center"> <img width="1240" height="640" alt="Modelagem de dados" src="./img/schema.png" /> </h4>
 
@@ -86,10 +92,11 @@ Além disso, foram implementados testes automatizados de integração utilizando
 
 Durante a execução, o banco de dados é gerenciado com Prisma, garantindo isolamento dos testes por meio da limpeza e recriação dos dados antes de cada execução.
 
-### Testes Relacionados ao WishList
-Por se tratar de uma lista de desejos diretamente relacionada a entidades como usuário e livro, sendo este também vinculado a um autor, foi necessária a criação prévia desses registros antes da execução dos testes.
+### Testes Relacionados à Lista de Desejos
 
-Essa preparação pode ser observada no arquivo de testes em [`__tests__`](../src/server/src/__tests__/wishlist.test.ts)
+Por se tratar de uma funcionalidade diretamente dependente de outras entidades do sistema, como Usuários, Livros e Autores, foi necessária a criação prévia desses registros antes da execução dos testes. Essa etapa garante que o ambiente esteja devidamente preparado, respeitando as dependências e relações existentes no modelo de dados.
+
+Essa preparação pode ser observada no arquivo de testes localizado em [`__tests__`](../src/server/src/__tests__/wishlist.test.ts)
 
 ```ts
  beforeEach(async () => {
@@ -103,6 +110,11 @@ Essa preparação pode ser observada no arquivo de testes em [`__tests__`](../sr
     await createBook(author.id);
   });
 ```
+A partir dessa configuração inicial, são definidos diferentes cenários de teste que cobrem os principais comportamentos da funcionalidade de Lista de Desejos. Esses cenários incluem desde operações básicas até validações de regras de negócio e possíveis falhas.
+
+A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidenciando os cenários mapeados e validados. Esse conjunto de testes contribui para aumentar a confiabilidade da aplicação, assegurando o correto funcionamento dos endpoints relacionados à Lista de Desejos em um contexto de integração.
+
+<img width="794" height="288" alt="image" src="https://github.com/user-attachments/assets/7d4127bf-4a98-4d45-9a54-c0f55e576b20" />
 
 # Referências
 
