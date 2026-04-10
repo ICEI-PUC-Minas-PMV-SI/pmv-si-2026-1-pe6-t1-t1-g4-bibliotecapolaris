@@ -11,8 +11,8 @@
 | 09/03 - 15/03 | APIs e Web Services - Unidade 1 | ✅ | Finalização e revisão de Tecnologias, arquitetura e hospedagem | ✅ |
 | 16/03 - 22/03 | APIs e Web Services - Unidade 2 | ✅ | Revisar arquitetura e convenções de backend, bem como iniciar modelos de testes e documentação. | ✅ |
 | 23/03 - 29/03 | APIs e Web Services - Unidade 2 | ✅ | Fiquei responsável pela criação dos endpoints relacionados aos Autores. | ✅ |
-| 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ⬜ |  |  |
-| 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ⬜ |  |  |
+| 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ✅ | Finalização do desenvolvimento da lógica e arquitetura da branch feat-autores, preparando a base para os testes. | ✅ |
+| 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ✅ | Configuração do ambiente de testes de integração (Jest + Supertest), ajustes de scripts de execução (tsx) e resolução de conflitos e cache no Git. | ✅ |
 | 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ⬜ |  |  |
 | 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ⬜ |  |  |
 | 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ⬜ |  |  |
