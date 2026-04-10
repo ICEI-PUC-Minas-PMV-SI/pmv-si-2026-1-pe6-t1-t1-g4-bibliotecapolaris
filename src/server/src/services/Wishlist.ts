@@ -12,7 +12,7 @@ export async function addBookToWishlist(data: AddBookToWishlistInput) {
 }
 
 export async function getWishlistByUserId(studentId: string) {
-  return prisma.wishlist.findMany({
+  const wishlist = await prisma.wishlist.findMany({
     where: {
       studentId,
     },
@@ -20,6 +20,10 @@ export async function getWishlistByUserId(studentId: string) {
       book: true,
     },
   });
+
+  return {
+    books: wishlist.map((item) => item.book),
+  };
 }
 
 export async function deleteBookFromWishlist(studentId: string, bookId: string) {
@@ -29,6 +33,9 @@ export async function deleteBookFromWishlist(studentId: string, bookId: string) 
         studentId,
         bookId,
       },
+    },
+    include: {
+      book: true,
     },
   });
 }

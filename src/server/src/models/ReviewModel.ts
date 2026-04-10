@@ -7,10 +7,7 @@ export const CreateReviewSchema = z.object({
   date: z.coerce.date(),
 });
 
-export const UpdateReviewSchema = z.object({
-  rating: z.number().min(1).max(5),
-  description: z.string().optional(),
-});
+export const UpdateReviewSchema = CreateReviewSchema.partial();
 
 export type CreateReviewInput = z.infer<typeof CreateReviewSchema>;
 export type UpdateReviewInput = z.infer<typeof UpdateReviewSchema>;

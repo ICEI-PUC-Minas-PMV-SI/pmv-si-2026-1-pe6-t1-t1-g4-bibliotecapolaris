@@ -32,6 +32,7 @@ model Book {
   slug           String @unique
   isbn           String @unique
   name           String
+  year           Int    @map("year")
   authorId       String @map("author_id")
   description    String
   categories     String
@@ -56,9 +57,9 @@ model Loan {
   id         String     @id @default(uuid())
   studentId  String     @map("student_id")
   bookId     String     @map("book_id")
-  loanDate   DateTime   @map("loan_date")
-  dueDate    DateTime   @map("due_date")
-  returnDate DateTime?  @map("return_date")
+  loanDate   String     @map("loan_date")
+  dueDate    String     @map("due_date")
+  returnDate String?    @map("return_date")
   status     LoanStatus
 
   student User     @relation(fields: [studentId], references: [id])

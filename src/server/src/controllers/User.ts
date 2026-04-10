@@ -22,6 +22,10 @@ export async function getUserByIdController(req: Request, res: Response) {
   try {
     const { id } = req.params;
 
+    if (!id || Array.isArray(id)) {
+      throw new Error('ID do usuário inválido.');
+    }
+
     const user = await getUserById(id as string);
 
     return sendSuccess(res, user, 200);

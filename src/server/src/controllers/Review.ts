@@ -61,6 +61,7 @@ export async function updateReviewController(req: Request, res: Response) {
 
     const data = UpdateReviewSchema.parse(req.body);
     const review = await updateReview(id, data);
+
     return sendSuccess(res, review, 200);
   } catch (error: any) {
     return handleError(res, error, 'Review');
@@ -75,7 +76,7 @@ export async function deleteReviewController(req: Request, res: Response) {
       return sendFailure(res, 'VALIDATION_ERROR', 'Id da review é obrigatório', undefined, 400);
     }
 
-    await deleteReview(id);
+    await deleteReview(id as string);
     return sendSuccess(res, 'Review removida com sucesso', 202);
   } catch (error: any) {
     return handleError(res, error, 'Review');

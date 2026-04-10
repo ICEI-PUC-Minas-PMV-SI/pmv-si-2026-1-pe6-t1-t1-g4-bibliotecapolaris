@@ -1,7 +1,8 @@
-import { Prisma } from '@prisma/client';
 import type { Response } from 'express';
-import { sendFailure } from '@/utils';
 import { ZodError } from 'zod';
+
+import { Prisma } from '@prisma/client';
+import { sendFailure } from '@/utils';
 
 export function handleError(res: Response, error: unknown, entity = 'Registro') {
   // Zod
@@ -14,7 +15,7 @@ export function handleError(res: Response, error: unknown, entity = 'Registro') 
       fields[path].push(issue.message);
     }
 
-    return sendFailure(res, 'VALIDATION_ERROR', 'Erro de validação', fields, 400);
+    return sendFailure(res, 'VALIDATION_ERROR', 'Erro de validação', fields, 401);
   }
 
   if (error instanceof Prisma.PrismaClientKnownRequestError) {

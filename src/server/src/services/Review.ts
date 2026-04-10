@@ -47,20 +47,12 @@ export async function getReviewById(id: string) {
   });
 }
 
-export async function updateReview(id: string, data: UpdateReviewInput) {
+export async function updateReview(id: string, data: any) {
   return prisma.review.update({
     where: { id },
     data: {
       rating: data.rating,
-      description: data.description ?? null,
-    },
-    include: {
-      loan: {
-        include: {
-          student: true,
-          book: true,
-        },
-      },
+      description: data.description,
     },
   });
 }

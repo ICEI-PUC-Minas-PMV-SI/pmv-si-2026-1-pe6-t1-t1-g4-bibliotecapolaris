@@ -1,19 +1,17 @@
 import { prisma } from '@/lib/prisma';
-import type { CreateBookInput } from '@/models/BookModel';
+import type { CreateBookInput, UpdateBookInput } from '@/models/BookModel';
 import { generateSlug } from '@/utils';
 
 function normalizeCategories(categories: string): string {
-  const normalized = categories
+  return categories
     .split(',')
     .map((c) => c.trim().toLowerCase())
     .filter(Boolean)
     .join(',');
-
-  return `${normalized}`;
 }
 
 export async function createBook(data: CreateBookInput) {
-  let baseSlug = generateSlug(data.name);
+  const baseSlug = generateSlug(data.name);
   let slug = baseSlug;
   let count = 1;
 
@@ -21,15 +19,17 @@ export async function createBook(data: CreateBookInput) {
     slug = `${baseSlug}-${count++}`;
   }
 
+  const { availableQuantity, ...rest } = data;
+
   return prisma.book.create({
     data: {
-      ...data,
+      ...rest,
+      totalAvailable: availableQuantity,
       categories: normalizeCategories(data.categories),
       slug,
     },
     include: {
       author: true,
-      editions: true,
     },
   });
 }
@@ -39,9 +39,9 @@ export async function getBookById(id: string) {
     where: { id },
     include: {
       author: true,
-      editions: true,
-      reviews: {
+      loans: {
         include: {
+          reviews: true,
           student: {
             select: { id: true, name: true, slug: true },
           },
@@ -56,9 +56,9 @@ export async function getBookBySlug(slug: string) {
     where: { slug },
     include: {
       author: true,
-      editions: true,
-      reviews: {
+      loans: {
         include: {
+          reviews: true,
           student: {
             select: { id: true, name: true, slug: true },
           },
@@ -68,7 +68,12 @@ export async function getBookBySlug(slug: string) {
   });
 }
 
-export async function listBooks(filters?: { name?: string; authorName?: string; categories?: string }) {
+export async function listBooks(filters?: {
+  name?: string;
+  authorName?: string;
+  categories?: string;
+  wishlistId?: string;
+}) {
   return prisma.book.findMany({
     where: {
       ...(filters?.name && {
@@ -80,45 +85,57 @@ export async function listBooks(filters?: { name?: string; authorName?: string; 
       ...(filters?.categories && {
         categories: { contains: `${filters.categories.toLowerCase()}` },
       }),
+      ...(filters?.wishlistId && {
+        wishlists: {
+          some: {
+            studentId: filters.wishlistId,
+          },
+        },
+      }),
     },
     include: {
       author: true,
-      editions: {
-        select: {
-          id: true,
-          year: true,
-          publisher: true,
-          ISBN: true,
-          totalQuantity: true,
-          quantityAvailable: true,
-        },
-      },
     },
     orderBy: { name: 'asc' },
   });
 }
 
-export async function updateBook(id: string, data: any) {
+export async function updateBook(id: string, data: UpdateBookInput) {
   await prisma.book.findUniqueOrThrow({ where: { id } });
 
+  const updatedData: Record<string, unknown> = { ...data };
+
   if (data.name) {
-    let baseSlug = generateSlug(data.name);
+    const baseSlug = generateSlug(data.name);
     let slug = baseSlug;
     let count = 1;
 
-    while (await prisma.book.findUniqueOrThrow({ where: { slug } })) {
-      slug = `${baseSlug}-${count++}`;
+    // Check if new slug is needed
+    const existing = await prisma.book.findUnique({ where: { slug } });
+    if (existing && existing.id !== id) {
+      while (await prisma.book.findUnique({ where: { slug } })) {
+        slug = `${baseSlug}-${count++}`;
+      }
+      updatedData.slug = slug;
+    } else if (!existing) {
+      updatedData.slug = slug;
     }
+  }
 
-    (data as any).slug = slug;
+  if (data.categories) {
+    updatedData.categories = normalizeCategories(data.categories);
+  }
+
+  if (typeof data.availableQuantity !== 'undefined') {
+    updatedData.totalAvailable = data.availableQuantity;
+    delete updatedData.availableQuantity;
   }
 
   return prisma.book.update({
     where: { id },
-    data,
+    data: updatedData,
     include: {
       author: true,
-      editions: true,
     },
   });
 }
