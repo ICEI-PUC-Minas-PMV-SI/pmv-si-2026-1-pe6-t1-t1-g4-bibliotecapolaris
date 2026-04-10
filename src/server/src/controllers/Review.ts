@@ -70,7 +70,7 @@ export async function updateReviewController(req: Request, res: Response) {
 
 export async function deleteReviewController(req: Request, res: Response) {
   try {
-    const { id } = req.query;
+    const { id } = req.params;
 
     if (!id || Array.isArray(id)) {
       throw new Error('ID da avaliação inválido.');
