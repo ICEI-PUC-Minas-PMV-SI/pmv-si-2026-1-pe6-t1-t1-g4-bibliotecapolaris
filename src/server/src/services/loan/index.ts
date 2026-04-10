@@ -24,8 +24,8 @@ export async function createLoan(data: LoanCreateInput) {
   return prisma.loan.create({
     data: {
       ...data,
-      loanDate: new Date(data.loanDate),
-      dueDate: new Date(data.dueDate),
+      loanDate: data.loanDate,
+      dueDate: data.dueDate,
       returnDate: null,
     },
     include: { student: true },
@@ -35,9 +35,9 @@ export async function createLoan(data: LoanCreateInput) {
 export async function updateLoan(id: string, data: LoanUpdateInput) {
   const updateData: any = { ...data };
 
-  if (data.loanDate) updateData.loanDate = new Date(data.loanDate);
-  if (data.dueDate) updateData.dueDate = new Date(data.dueDate);
-  if (data.returnDate) updateData.returnDate = new Date(data.returnDate);
+  if (data.loanDate) updateData.loanDate = data.loanDate;
+  if (data.dueDate) updateData.dueDate = data.dueDate;
+  if (data.returnDate) updateData.returnDate = data.returnDate;
 
   return prisma.loan.update({
     where: { id },

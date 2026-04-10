@@ -4,7 +4,7 @@ export const CreateReviewSchema = z.object({
   rating: z.number().min(1).max(5),
   loanId: z.uuid(),
   description: z.string().optional(),
-  date: z.coerce.date(),
+  date: z.string(),
 });
 
 export const UpdateReviewSchema = CreateReviewSchema.partial();

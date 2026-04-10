@@ -89,11 +89,11 @@ model Wishlist {
 }
 
 model Review {
-  id          String   @id @default(uuid())
+  id          String  @id @default(uuid())
   rating      Int
-  loanId      String   @unique @map("loan_id")
+  loanId      String  @unique @map("loan_id")
   description String?
-  date        DateTime
+  date        String
 
   loan Loan @relation(fields: [loanId], references: [id])
 

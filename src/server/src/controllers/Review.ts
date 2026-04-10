@@ -70,7 +70,7 @@ export async function updateReviewController(req: Request, res: Response) {
 
 export async function deleteReviewController(req: Request, res: Response) {
   try {
-    const { id } = req.query;
+    const { id } = req.params;
 
     if (!id || typeof id !== 'string') {
       return sendFailure(res, 'VALIDATION_ERROR', 'Id da review é obrigatório', undefined, 400);
