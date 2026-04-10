@@ -70,7 +70,88 @@ Para uma visão inicial, também disponibilizamos uma visão geral dos endpoints
 
 ## Considerações de Segurança
 
-[Discuta as considerações de segurança relevantes para a aplicação distribuída, como autenticação, autorização, proteção contra ataques, etc.]
+A aplicação adota um conjunto de práticas e mecanismos de segurança ao longo da sua camada de backend, abrangendo desde o armazenamento seguro de credenciais até a validação rigorosa de entradas. As seções a seguir detalham cada aspecto implementado e as decisões que os motivaram.
+
+### Hashing de Senhas
+
+As senhas dos usuários nunca são armazenadas em texto simples no banco de dados. Ao criar ou atualizar uma conta, a senha é processada com **bcrypt** antes de ser persistida, utilizando um fator de custo (*salt rounds*) de **10**, valor que equilibra segurança e desempenho.
+
+```ts
+// src/server/src/utils/Password.ts
+const SALT_ROUNDS = 10;
+
+export async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, SALT_ROUNDS);
+}
+
+export async function verifyPassword(password: string, hash: string): Promise<boolean> {
+  return bcrypt.compare(password, hash);
+}
+```
+
+Adicionalmente, qualquer alteração de senha exige que o usuário informe a senha atual antes de definir uma nova, prevenindo modificações não autorizadas em caso de sessão comprometida.
+
+### Validação de Entrada com Zod
+
+Toda entrada de dados proveniente do cliente é validada antes de chegar à camada de serviço, utilizando a biblioteca **Zod** com mensagens localizadas em português. Um middleware centralizado (`validateBody`) intercepta requisições e retorna erros padronizados caso o corpo não esteja conforme o schema esperado.
+
+```ts
+// src/server/src/utils/validation.ts
+export const validateBody = (schema: ZodTypeAny) =>
+  (req: Request, res: Response, next: NextFunction) => {
+    try {
+      req.body = schema.parse(req.body);
+      next();
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return res.status(400).json({
+          error: true,
+          errorCode: 'ERR_VALIDATION',
+          message: 'Request validation failed',
+          details: error.format(),
+        });
+      }
+    }
+  };
+```
+
+As regras de validação incluem, entre outras:
+
+- **E-mail institucional**: aceito somente o padrão `nome.sobrenome@unipolaris.br`, rejeitando cadastros com domínios externos.
+- **Senha robusta**: mínimo de 6 caracteres, obrigatório ao menos uma letra maiúscula e um caractere especial (`!@#$%^&*`).
+- **Tipos e formatos**: campos numéricos, datas e enumerações são verificados no schema antes de qualquer operação no banco.
+
+### Proteção Contra Injeção via ORM
+
+A aplicação utiliza o **Prisma ORM** como única camada de acesso ao banco de dados. O Prisma utiliza internamente consultas parametrizadas, eliminando a possibilidade de ataques de **SQL Injection** por interpolação direta de strings em queries.
+
+### Perfis de Acesso (Controle por Função)
+
+O modelo de dados prevê dois perfis de usuário — `student` e `administrator` — e o campo `isBlocked` permite restringir o acesso de contas comprometidas ou inadimplentes. Essa estrutura serve de base para a implementação futura de um sistema completo de autorização baseado em papéis (*RBAC*).
+
+### Tratamento de Erros e Não-Exposição de Dados Internos
+
+Um handler centralizado (`ErrorHandler`) captura exceções geradas pelo Prisma e pelo Zod, traduzindo-as em respostas HTTP padronizadas. Erros inesperados retornam a mensagem genérica `"Erro interno do servidor"`, evitando que stack traces ou detalhes de infraestrutura sejam expostos ao cliente.
+
+### CORS
+
+O middleware **CORS** está habilitado globalmente na aplicação. No ambiente de desenvolvimento atual, permite requisições de qualquer origem, facilitando testes locais entre frontend e backend. Para o ambiente de produção, a configuração deverá ser restringida às origens conhecidas (domínios das aplicações web e mobile), conforme a política de segurança da implantação.
+
+### Variáveis de Ambiente
+
+Informações sensíveis — como a URL de conexão com o banco de dados — são gerenciadas por meio de variáveis de ambiente carregadas via **dotenv**, mantendo-as fora do código-fonte versionado e do repositório. O arquivo `.env` não é rastreado pelo Git (`.gitignore`).
+
+### Melhorias Previstas
+
+As seguintes práticas de segurança foram identificadas como próximos passos prioritários para elevar o nível de proteção da API:
+
+| Melhoria | Descrição |
+|---|---|
+| Autenticação JWT | Emissão e validação de tokens para identificar e autorizar requisições de usuários autenticados |
+| Autorização por papel | Middleware que restringe endpoints a perfis específicos (`administrator`, `student`) |
+| Rate Limiting | Limitação de requisições por IP para mitigar ataques de força bruta e abuso de endpoints |
+| Headers de segurança HTTP | Uso do **Helmet.js** para configurar cabeçalhos como `Content-Security-Policy`, `X-Frame-Options` e `Strict-Transport-Security` |
+| Restrição de CORS | Whitelisting de origens específicas no ambiente de produção |
 
 ## Implantação
 
