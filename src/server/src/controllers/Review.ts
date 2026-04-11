@@ -10,7 +10,7 @@ import {
   getReviewsByUserId,
   getReviewsByBookId,
 } from '@/services';
-import { handleError, sendSuccess } from '@/utils';
+import { handleError, sendSuccess, sendFailure } from '@/utils';
 
 export async function createReviewController(req: Request, res: Response) {
   try {
@@ -40,8 +40,8 @@ export async function getReviewByIdController(req: Request, res: Response) {
   try {
     const { id } = req.params;
 
-    if (!id || Array.isArray(id)) {
-      throw new Error('ID da avaliação inválido.');
+    if (!id || typeof id !== 'string') {
+      return sendFailure(res, 'VALIDATION_ERROR', 'Id da review é obrigatório', undefined, 400);
     }
 
     const review = await getReviewById(id);
@@ -55,8 +55,8 @@ export async function updateReviewController(req: Request, res: Response) {
   try {
     const { id } = req.params;
 
-    if (!id || Array.isArray(id)) {
-      throw new Error('ID da avaliação inválido.');
+    if (!id || typeof id !== 'string') {
+      return sendFailure(res, 'VALIDATION_ERROR', 'Id da review é obrigatório', undefined, 400);
     }
 
     const data = UpdateReviewSchema.parse(req.body);
@@ -72,8 +72,8 @@ export async function deleteReviewController(req: Request, res: Response) {
   try {
     const { id } = req.params;
 
-    if (!id || Array.isArray(id)) {
-      throw new Error('ID da avaliação inválido.');
+    if (!id || typeof id !== 'string') {
+      return sendFailure(res, 'VALIDATION_ERROR', 'Id da review é obrigatório', undefined, 400);
     }
 
     await deleteReview(id as string);
@@ -87,8 +87,8 @@ export async function getReviewsByUserIdController(req: Request, res: Response) 
   try {
     const { userId } = req.params;
 
-    if (!userId || Array.isArray(userId)) {
-      throw new Error('ID do usuário inválido.');
+    if (!userId || typeof userId !== 'string') {
+      return sendFailure(res, 'VALIDATION_ERROR', 'Id do usuário é obrigatório', undefined, 400);
     }
 
     const reviews = await getReviewsByUserId(userId);
@@ -103,7 +103,7 @@ export async function getReviewsByBookIdController(req: Request, res: Response) 
     const { bookId } = req.params;
 
     if (!bookId || typeof bookId !== 'string') {
-      return handleError(res, new Error('Id do livro é obrigatório'), 'Review');
+      return sendFailure(res, 'VALIDATION_ERROR', 'Id do livro é obrigatório', undefined, 400);
     }
 
     const reviews = await getReviewsByBookId(bookId);
