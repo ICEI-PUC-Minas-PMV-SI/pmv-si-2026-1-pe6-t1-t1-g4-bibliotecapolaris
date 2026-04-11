@@ -41,6 +41,7 @@ export default [
       'import/no-named-as-default': 0,
       'import/no-named-as-default-member': 0,
       '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
     },
   },
   {
