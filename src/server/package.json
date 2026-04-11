@@ -5,7 +5,7 @@
   "main": "index.js",
 "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsup src/server.ts --format cjs --clean --platform node --no-external",
+    "build": "tsup src/server.ts --format cjs --clean --platform node",
     "start": "node dist/server.js",
     "postinstall": "prisma generate",
     "lint": "eslint .",
