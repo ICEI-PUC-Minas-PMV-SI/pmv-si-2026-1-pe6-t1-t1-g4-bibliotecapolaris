@@ -42,8 +42,8 @@ jobs:
       - name: Validar dist build
         working-directory: src/server
         run: |
-          if [ ! -f dist/server.mjs ]; then
-            echo "❌ Erro: dist/server.mjs não encontrado!"
+          if [ ! -f dist/server.js ]; then
+            echo "❌ Erro: dist/server.js não encontrado!"
             exit 1
           fi
 
@@ -94,8 +94,8 @@ jobs:
             
             # Inicia a API com o PM2 (ou reinicia se já estiver rodando)
             pm2 delete api-polaris || true
-            pm2 restart api-polaris || pm2 start dist/server.mjs --name "api-polaris" || exit 1
-
+            
+            pm2 restart api-polaris || pm2 start dist/server.js --name "api-polaris" --node-args="-r tsconfig-paths/register" || exit 1
             # Log de sucesso
             echo "✅ Deploy concluído com sucesso!"
             pm2 logs api-polaris --lines 20

@@ -1,25 +1,16 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "./src", 
-    "baseUrl": ".",
+    "rootDir": "src",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "target": "es2022",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
     "paths": {
       "@/*": ["src/*"]
-    },
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "target": "esnext",
-    "esModuleInterop": true,
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "strict": true,
-    "jsx": "react-jsx",
-    "isolatedModules": true,
-    "skipLibCheck": true
+    }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*"]
 }
