@@ -42,8 +42,8 @@ jobs:
       - name: Validar dist build
         working-directory: src/server
         run: |
-          if [ ! -f dist/src/server.js ]; then
-            echo "❌ Erro: dist/src/server.js não encontrado!"
+          if [ ! -f dist/server.js ]; then
+            echo "❌ Erro: dist/server.js não encontrado!"
             exit 1
           fi
 
@@ -92,7 +92,7 @@ jobs:
             npm run build || exit 1
             
             # Inicia a API com o PM2 (ou reinicia se já estiver rodando)
-            pm2 restart api-polaris || pm2 start dist/src/server.js --name "api-polaris" || exit 1            
+            pm2 restart api-polaris || pm2 start dist/server.js --name "api-polaris" || exit 1            
             
             # Log de sucesso
             echo "✅ Deploy concluído com sucesso!"

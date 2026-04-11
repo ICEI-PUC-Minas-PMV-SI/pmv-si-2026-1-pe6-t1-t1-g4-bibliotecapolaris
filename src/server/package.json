@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "O site em HTML/CSS/JS é um projeto estático, logo pode ser utilizado tanto em servidores...",
   "main": "index.js",
-  "scripts": {
+"scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc --noEmit false",
+    "build": "tsup src/server.ts --format esm --clean",
     "start": "node dist/server.js",
     "postinstall": "prisma generate",
     "lint": "eslint .",
@@ -37,6 +37,7 @@
     "lint-staged": "^16.4.0",
     "prisma": "^7.5.0",
     "ts-node-dev": "^2.0.0",
+    "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.1",
