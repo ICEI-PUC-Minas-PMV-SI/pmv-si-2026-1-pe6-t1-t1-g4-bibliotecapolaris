@@ -10,6 +10,7 @@ function normalizeCategories(categories: string): string {
     .join(',');
 }
 
+// --- OPERAÇÃO 1: CRIAÇÃO ---
 export async function createBook(data: CreateBookInput) {
   const baseSlug = generateSlug(data.name);
   let slug = baseSlug;
@@ -34,6 +35,7 @@ export async function createBook(data: CreateBookInput) {
   });
 }
 
+// --- OPERAÇÃO 2: LEITURA ---
 export async function getBookById(id: string) {
   return prisma.book.findUniqueOrThrow({
     where: { id },
@@ -100,6 +102,7 @@ export async function listBooks(filters?: {
   });
 }
 
+// --- OPERAÇÃO 3: ATUALIZAÇÃO ---
 export async function updateBook(id: string, data: UpdateBookInput) {
   await prisma.book.findUniqueOrThrow({ where: { id } });
 
@@ -140,6 +143,7 @@ export async function updateBook(id: string, data: UpdateBookInput) {
   });
 }
 
+// --- OPERAÇÃO 4: DELETAR ---
 export async function deleteBook(id: string) {
   return prisma.book.delete({
     where: { id },

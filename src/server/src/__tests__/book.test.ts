@@ -2,6 +2,7 @@ import { describe, expect, it, afterAll, beforeAll } from '@jest/globals';
 import request from 'supertest';
 
 import { prisma } from '../lib/prisma';
+
 import testServer from './server.test';
 import { createAuthor, MOCK_AUTHOR_ID } from './wishlist.factory';
 
@@ -19,6 +20,7 @@ describe('Book Service Tests', () => {
     await prisma.$disconnect();
   });
 
+  // --- OPERAÇÃO 1: REGISTRO (POST) ---
   describe('POST /api/books/register', () => {
     it('deve registrar um livro com sucesso', async () => {
       const res = await request(testServer).post('/api/books/register').send({
@@ -53,6 +55,7 @@ describe('Book Service Tests', () => {
     });
   });
 
+  // --- OPERAÇÃO 2: SELEÇÃO (GET) ---
   describe('GET /api/books', () => {
     it('deve listar os livros cadastrados', async () => {
       const res = await request(testServer).get('/api/books');
@@ -87,6 +90,7 @@ describe('Book Service Tests', () => {
     });
   });
 
+  // --- OPERAÇÃO 3: ATUALIZAÇÃO (PUT) ---
   describe('PUT /api/books/:id', () => {
     it('deve atualizar o nome de um livro e seu slug correspondente', async () => {
       const list = await request(testServer).get('/api/books');
@@ -101,6 +105,7 @@ describe('Book Service Tests', () => {
     });
   });
 
+  // --- OPERAÇÃO 4: DELEÇÃO (DELETE) ---
   describe('DELETE /api/books/:id', () => {
     it('deve remover um livro com sucesso', async () => {
       const list = await request(testServer).get('/api/books');
