@@ -1,7 +1,7 @@
 import type { Response } from 'express';
 import { ZodError } from 'zod';
-
 import { Prisma } from '@prisma/client';
+
 import { sendFailure } from '@/utils';
 
 export function handleError(res: Response, error: unknown, entity = 'Registro') {
