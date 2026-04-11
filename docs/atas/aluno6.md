@@ -11,8 +11,8 @@
 | 09/03 - 15/03 | APIs e Web Services - Unidade 1 | ✅ | Revisão das atividades anteriores e início do desenvolvimento dos endpoints de avaliação | ✅ |
 | 16/03 - 22/03 | APIs e Web Services - Unidade 2 | ✅ | Desenvolvimento dos endpoints de avaliação | ✅ |
 | 23/03 - 29/03 | APIs e Web Services - Unidade 2 | ✅ | Desenvolvimento dos endpoints de avaliação | ✅ |
-| 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ✅ | Testes e documentação do endpoint de avaliação | ✅ |
-| 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ⬜ |  |  |
+| 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ✅ | Testes do endpoint de avaliação | ✅ |
+| 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ✅ | Testes e documentação do endpoint de avaliação | ✅ |
 | 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ⬜ |  |  |
 | 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ⬜ |  |  |
 | 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ⬜ |  |  |
