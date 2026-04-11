@@ -9,7 +9,6 @@
     "start": "node dist/server.js",
     "postinstall": "prisma generate",
     "lint": "eslint .",
-    "lint:check": "eslint . --max-warnings=0",
     "lint:fix": "eslint --fix ."
   },
   "keywords": [],

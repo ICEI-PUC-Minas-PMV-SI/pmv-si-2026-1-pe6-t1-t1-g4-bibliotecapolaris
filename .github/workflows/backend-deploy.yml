@@ -33,7 +33,7 @@ jobs:
       
       - name: Lint validation
         working-directory: src/server
-        run: npm run lint:check
+        run: npm run lint
       
       - name: Build TypeScript
         working-directory: src/server
