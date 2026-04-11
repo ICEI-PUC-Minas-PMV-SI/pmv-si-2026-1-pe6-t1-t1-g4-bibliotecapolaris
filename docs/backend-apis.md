@@ -211,6 +211,32 @@ A imagem a seguir apresenta o sucesso da execução de testes de Usuários, vali
 <img width="938" height="333" alt="pass" src="https://github.com/user-attachments/assets/aeac3526-57dc-46aa-9a83-fc4e43919ff8" />
 
 
+### Testes Relacionados a Avaliações
+
+A entidade de Avaliações possui dependência direta com outras entidades do sistema, como Usuários, Livros, Autores e Empréstimos. Por isso, foi necessária a criação prévia desses registros antes da execução dos testes, garantindo que o ambiente esteja devidamente preparado e respeitando as relações existentes no modelo de dados.
+
+Essa preparação pode ser observada no arquivo de testes.
+
+```ts beforeEach(async () => {
+  await prisma.review.deleteMany();
+  await prisma.loan.deleteMany();
+  await prisma.wishlist.deleteMany();
+  await prisma.book.deleteMany();
+  await prisma.author.deleteMany();
+  await prisma.user.deleteMany();
+
+  const author = await createAuthor();
+  await createUser();
+  await createBook(author.id);
+  await createLoan();
+  await createReview();
+});
+```
+A partir dessa configuração inicial, são definidos diferentes cenários de teste que cobrem os principais comportamentos da funcionalidade de Avaliações. Esses cenários incluem desde operações básicas de CRUD até validações de regras de negócio, como a restrição de rating entre 1 e 5 estrelas.
+
+A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidenciando os cenários mapeados e validados:
+
+<img width="684" height="397" alt="image" src="https://github.com/user-attachments/assets/82385b97-fb74-49af-a482-b6b690979bb9" />
 
 
 # Referências
