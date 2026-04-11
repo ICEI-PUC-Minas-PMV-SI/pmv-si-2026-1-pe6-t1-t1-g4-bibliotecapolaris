@@ -2,6 +2,7 @@ import { describe, expect, it, beforeAll, afterAll } from '@jest/globals';
 import request from 'supertest';
 
 import { prisma } from '../lib/prisma';
+
 import test from './server.test';
 
 const mockUser = {
@@ -35,11 +36,11 @@ describe('User CRUD Tests', () => {
       expect(res.status).toBe(201);
       expect(res.body.error).toBe(false);
       expect(res.body.data).toContain('criado com sucesso');
-      
+
       const userInDb = await prisma.user.findUnique({
         where: { email: mockUser.email },
       });
-      createdUserId = userInDb!.id; 
+      createdUserId = userInDb!.id;
     });
 
     it('deve retornar erro 401 se faltarem dados obrigatórios', async () => {

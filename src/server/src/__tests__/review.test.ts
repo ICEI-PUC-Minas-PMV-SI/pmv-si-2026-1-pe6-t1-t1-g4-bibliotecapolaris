@@ -5,14 +5,7 @@ import { prisma } from '../lib/prisma';
 
 import test from './server.test';
 import { createAuthor, createUser, createBook } from './wishlist.factory';
-import {
-  createLoan,
-  createReview,
-  MOCK_USER_ID,
-  MOCK_BOOK_ID,
-  MOCK_LOAN_ID,
-  MOCK_REVIEW_ID,
-} from './review.factory';
+import { createLoan, createReview, MOCK_USER_ID, MOCK_BOOK_ID, MOCK_LOAN_ID, MOCK_REVIEW_ID } from './review.factory';
 
 describe('Review Tests', () => {
   beforeAll(async () => {
@@ -41,7 +34,7 @@ describe('Review Tests', () => {
     await prisma.$disconnect();
   });
 
-// --- OPERAÇÃO 1: CRIAÇÃO (POST) ---
+  // --- OPERAÇÃO 1: CRIAÇÃO (POST) ---
   describe('POST /api/review', () => {
     it('deve criar uma review com sucesso', async () => {
       await prisma.review.deleteMany();

@@ -1,5 +1,6 @@
-import { prisma } from '@/lib/prisma';
 import { MOCK_USER_ID, MOCK_BOOK_ID } from './wishlist.factory';
+
+import { prisma } from '@/lib/prisma';
 
 export const MOCK_LOAN_ID = '5a6e1234-7b8c-4d9e-bf10-112233445566';
 export const MOCK_REVIEW_ID = 'c1d2e3f4-a5b6-7890-cdef-112233445566';

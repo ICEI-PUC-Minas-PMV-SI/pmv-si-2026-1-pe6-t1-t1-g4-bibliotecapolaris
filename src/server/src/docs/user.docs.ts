@@ -53,7 +53,7 @@ userRegistry.registerPath({
   responses: {
     200: {
       description: 'Usuário encontrado!',
-      content: { 'application/json': { schema: z.any() } }, 
+      content: { 'application/json': { schema: z.any() } },
     },
     404: {
       description: 'Usuário não encontrado!',
