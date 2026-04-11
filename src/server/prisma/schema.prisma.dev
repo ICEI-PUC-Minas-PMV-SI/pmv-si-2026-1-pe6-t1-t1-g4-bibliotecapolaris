@@ -1,11 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
   output   = "./generated/prisma"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
 }
 
 enum UserType {
@@ -40,9 +39,9 @@ model Book {
   totalQuantity  Int    @map("total_quantity")
   totalAvailable Int    @map("total_available")
 
-  author         Author     @relation(fields: [authorId], references: [id])
-  wishlists      Wishlist[]
-  loans          Loan[]
+  author    Author     @relation(fields: [authorId], references: [id])
+  wishlists Wishlist[]
+  loans     Loan[]
 
   @@map("books")
 }
@@ -63,9 +62,9 @@ model Loan {
   returnDate String?    @map("return_date")
   status     LoanStatus
 
-  student    User     @relation(fields: [studentId], references: [id])
-  book       Book     @relation(fields: [bookId], references: [id])
-  reviews    Review[]
+  student User     @relation(fields: [studentId], references: [id])
+  book    Book     @relation(fields: [bookId], references: [id])
+  reviews Review[]
 
   @@map("loans")
 }
@@ -82,8 +81,8 @@ model Wishlist {
   studentId String @map("student_id")
   bookId    String @map("book_id")
 
-  student   User @relation(fields: [studentId], references: [id])
-  book      Book @relation(fields: [bookId], references: [id])
+  student User @relation(fields: [studentId], references: [id])
+  book    Book @relation(fields: [bookId], references: [id])
 
   @@id([studentId, bookId])
   @@map("wishlists")
@@ -96,7 +95,7 @@ model Review {
   description String?
   date        String
 
-  loan        Loan @relation(fields: [loanId], references: [id])
+  loan Loan @relation(fields: [loanId], references: [id])
 
   @@map("reviews")
 }
