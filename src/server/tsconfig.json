@@ -6,8 +6,8 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "target": "esnext",
     "esModuleInterop": true,
     "sourceMap": true,
