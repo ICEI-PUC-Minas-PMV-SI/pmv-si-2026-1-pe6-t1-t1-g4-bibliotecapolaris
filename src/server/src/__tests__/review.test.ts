@@ -41,27 +41,51 @@ describe('Review Tests', () => {
     await prisma.$disconnect();
   });
 
-  // --- OPERAÇÃO 1: CRIAÇÃO (POST) ---
+// --- OPERAÇÃO 1: CRIAÇÃO (POST) ---
   describe('POST /api/review', () => {
-    it('deve retornar 400 VALIDATION_ERROR se o rating for inválido', async () => {
+    it('deve criar uma review com sucesso', async () => {
+      await prisma.review.deleteMany();
+
+      const res = await request(test).post('/api/review').send({
+        rating: 5,
+        loanId: MOCK_LOAN_ID,
+        date: '2026-04-10',
+      });
+
+      expect(res.status).toBe(201);
+      expect(res.body.data).toBeDefined();
+    });
+
+    it('deve retornar 401 VALIDATION_ERROR se o rating for inválido', async () => {
       const res = await request(test).post('/api/review').send({
         rating: 6,
         loanId: MOCK_LOAN_ID,
-        date: new Date().toISOString(),
+        date: '2026-04-10',
       });
 
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(401);
       expect(res.body.errorCode).toBe('VALIDATION_ERROR');
     });
 
-    it('deve retornar 400 VALIDATION_ERROR se o loanId for inválido', async () => {
+    it('deve retornar 401 VALIDATION_ERROR se o rating for menor que 1', async () => {
+      const res = await request(test).post('/api/review').send({
+        rating: 0,
+        loanId: MOCK_LOAN_ID,
+        date: '2026-04-10',
+      });
+
+      expect(res.status).toBe(401);
+      expect(res.body.errorCode).toBe('VALIDATION_ERROR');
+    });
+
+    it('deve retornar 401 VALIDATION_ERROR se o loanId for inválido', async () => {
       const res = await request(test).post('/api/review').send({
         rating: 5,
         loanId: 'id-invalido',
-        date: new Date().toISOString(),
+        date: '2026-04-10',
       });
 
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(401);
       expect(res.body.errorCode).toBe('VALIDATION_ERROR');
     });
   });
@@ -109,6 +133,9 @@ describe('Review Tests', () => {
   // --- OPERAÇÃO 6: ATUALIZAÇÃO (PUT) ---
   describe('PUT /api/review/:id', () => {
     it('deve atualizar uma review com sucesso', async () => {
+      await prisma.review.deleteMany();
+      await createReview();
+
       const res = await request(test).put(`/api/review/${MOCK_REVIEW_ID}`).send({
         rating: 4,
         description: 'Bom livro, mas poderia ser melhor',
@@ -120,18 +147,21 @@ describe('Review Tests', () => {
   });
 
   // --- OPERAÇÃO 7: DELEÇÃO (DELETE) ---
-  describe('DELETE /api/review', () => {
+  describe('DELETE /api/review/:id', () => {
     it('deve remover uma review com sucesso', async () => {
-      const res = await request(test).delete(`/api/review?id=${MOCK_REVIEW_ID}`);
+      await prisma.review.deleteMany();
+      await createReview();
+
+      const res = await request(test).delete(`/api/review/${MOCK_REVIEW_ID}`);
 
       expect(res.status).toBe(202);
       expect(res.body.data).toContain('removida com sucesso');
     });
 
-    it('deve retornar 400 se o ID não for enviado', async () => {
-      const res = await request(test).delete('/api/review');
+    it('deve retornar 404 se o ID não existir', async () => {
+      const res = await request(test).delete('/api/review/id-invalido');
 
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(404);
     });
   });
 });

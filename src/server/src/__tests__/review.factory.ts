@@ -12,8 +12,8 @@ export async function createLoan() {
       id: MOCK_LOAN_ID,
       studentId: MOCK_USER_ID,
       bookId: MOCK_BOOK_ID,
-      loanDate: new Date(),
-      dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      loanDate: '2026-04-10',
+      dueDate: '2026-04-17',
       status: 'in_progress',
     },
   });
@@ -26,7 +26,7 @@ export async function createReview() {
       rating: 5,
       loanId: MOCK_LOAN_ID,
       description: 'Ótimo livro!',
-      date: new Date(),
+      date: '2026-04-10',
     },
   });
 }
