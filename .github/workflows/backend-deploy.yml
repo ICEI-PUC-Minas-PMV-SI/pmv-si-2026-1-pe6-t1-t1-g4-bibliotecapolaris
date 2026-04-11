@@ -74,7 +74,8 @@ jobs:
             cd $PROJECT_DIR || exit 1
             
             # Puxa o código mais recente do GitHub (branch server)
-            git pull origin server || exit 1
+            git fetch origin server || exit 1
+            git reset --hard origin/server || exit 1
             
             # Exporta variáveis de ambiente
             export DATABASE_URL="$DATABASE_URL"
