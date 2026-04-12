@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "local:setup": "npx prisma generate --config=prisma.config.test.ts && npx prisma db push --config=prisma.config.test.ts",
-    "dev": "tsx watch src/server.ts",
+    "dev": "npm run local:setup && tsx watch src/server.ts",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "test": "npx prisma db push --config=prisma.config.test.ts && jest --no-coverage",
+    "test": "npm run local:setup && npx prisma db push --config=prisma.config.test.ts && jest --no-coverage",
     "build": "tsc",
     "start": "node dist/server.js",
     "postinstall": "prisma generate"
