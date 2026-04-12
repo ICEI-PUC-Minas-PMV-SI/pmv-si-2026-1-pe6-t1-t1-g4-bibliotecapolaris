@@ -84,6 +84,13 @@ jobs:
             export NODE_ENV="$NODE_ENV"
             export PORT="$PORT"
             
+            # Escreve .env para o PM2/dotenv ler
+            cat > .env <<EOF
+            DATABASE_URL=$DATABASE_URL
+            NODE_ENV=$NODE_ENV
+            PORT=$PORT
+            EOF
+            
             # Instala bibliotecas novas (se houver) e atualiza o Prisma
             npm ci --include=dev || exit 1
             npx prisma generate || exit 1
@@ -100,9 +107,6 @@ jobs:
             # Inicia a API com o PM2 (ou reinicia se já estiver rodando)
             pm2 restart api-polaris --update-env || pm2 start dist/server.js --name "api-polaris" || exit 1
             
-            # Aguarda o servidor iniciar
-            sleep 3
-            
             # Log de sucesso
             echo "✅ Deploy concluído com sucesso!"
-            pm2 logs api-polaris --lines 10 --nostream
+            pm2 status api-polaris

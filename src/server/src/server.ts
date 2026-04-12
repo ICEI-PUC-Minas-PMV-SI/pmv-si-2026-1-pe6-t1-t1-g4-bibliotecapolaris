@@ -25,6 +25,10 @@ app.get('/api/health', (req, res) => {
 app.get('/api/docs.raw', (req, res) => res.json(open_api_documents));
 app.use('/api/docs', swaggerRoute());
 
+app.use((req: import('express').Request, res: import('express').Response) => {
+  res.status(404).json({ status: 'ERROR', message: `Rota ${req.method} ${req.path} não encontrada` });
+});
+
 const PORT = Number(process.env.PORT) || 3333;
 
 app.listen(PORT, () => {
