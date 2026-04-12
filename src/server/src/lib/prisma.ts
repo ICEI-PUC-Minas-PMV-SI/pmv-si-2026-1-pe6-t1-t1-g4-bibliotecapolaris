@@ -1,9 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
+import { readFileSync } from 'fs';
 
 import 'dotenv/config';
 
 const url = new URL(process.env.DATABASE_URL!);
+const sslCert = url.searchParams.get('sslcert');
 
 const adapter = new PrismaMariaDb({
   host: url.hostname,
@@ -11,6 +13,7 @@ const adapter = new PrismaMariaDb({
   user: decodeURIComponent(url.username),
   password: decodeURIComponent(url.password),
   database: url.pathname.slice(1),
+  ssl: sslCert ? { ca: readFileSync(sslCert) } : { rejectUnauthorized: true },
 });
 
 export const prisma = new PrismaClient({ adapter });

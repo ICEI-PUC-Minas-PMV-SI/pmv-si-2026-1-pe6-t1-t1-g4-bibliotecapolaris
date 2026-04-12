@@ -85,11 +85,9 @@ jobs:
             export PORT="$PORT"
             
             # Escreve .env para o PM2/dotenv ler
-            cat > .env <<EOF
-            DATABASE_URL=$DATABASE_URL
-            NODE_ENV=$NODE_ENV
-            PORT=$PORT
-            EOF
+            echo "DATABASE_URL=$DATABASE_URL" > .env
+            echo "NODE_ENV=$NODE_ENV" >> .env
+            echo "PORT=$PORT" >> .env
             
             # Instala bibliotecas novas (se houver) e atualiza o Prisma
             npm ci --include=dev || exit 1
