@@ -1,9 +1,9 @@
 import path from 'path';
 import { readFileSync } from 'fs';
 
-import { PrismaClient } from '@prisma/client';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import type { PrismaClient } from '@prisma/client';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 
 import 'dotenv/config';
 
@@ -12,12 +12,14 @@ const isLocal = env === 'development' || env === 'test';
 
 function createPrismaClient(): PrismaClient {
   if (isLocal) {
+    const { PrismaClient } = require('../../prisma/generated/test/client');
     const dbPath = path.resolve(__dirname, '..', '..', 'prisma', 'test.db');
     const adapter = new PrismaBetterSqlite3({ url: dbPath });
 
     return new PrismaClient({ adapter });
   }
 
+  const { PrismaClient } = require('@prisma/client');
   const url = new URL(process.env.DATABASE_URL!);
   const sslCert = url.searchParams.get('sslcert');
 
