@@ -94,8 +94,15 @@ jobs:
             # Compila o TypeScript
             npm run build || exit 1
             
+            # Limpa logs antigos do PM2
+            pm2 flush api-polaris
+            
             # Inicia a API com o PM2 (ou reinicia se já estiver rodando)
             pm2 restart api-polaris --update-env || pm2 start dist/server.js --name "api-polaris" || exit 1
+            
+            # Aguarda o servidor iniciar
+            sleep 3
+            
             # Log de sucesso
             echo "✅ Deploy concluído com sucesso!"
-            pm2 logs api-polaris --lines 20
+            pm2 logs api-polaris --lines 10 --nostream
