@@ -9,7 +9,7 @@ export const LoanCreateSchema = z.object({
 });
 
 export const LoanUpdateSchema = LoanCreateSchema.partial().extend({
-  id: z.uuid(),
+  status: z.enum(['in_progress', 'returned', 'canceled', 'overdue']),
   returnDate: z.string().optional(),
 });
 

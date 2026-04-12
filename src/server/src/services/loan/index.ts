@@ -33,7 +33,7 @@ export async function createLoan(data: LoanCreateInput) {
 }
 
 export async function updateLoan(id: string, data: LoanUpdateInput) {
-  const updateData: any = { ...data };
+  const { ...updateData }: any = data;
 
   if (data.loanDate) updateData.loanDate = data.loanDate;
   if (data.dueDate) updateData.dueDate = data.dueDate;

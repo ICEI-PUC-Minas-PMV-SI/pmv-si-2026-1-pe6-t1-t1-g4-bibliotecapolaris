@@ -170,7 +170,6 @@ describe('Loan Tests', () => {
   describe('PUT /api/loans/:id', () => {
     it('deve atualizar um empréstimo com sucesso', async () => {
       const res = await request(test).put(`/api/loans/${createdLoanId}`).send({
-        id: createdLoanId,
         status: 'returned',
         returnDate: '2026-04-15',
       });
@@ -182,7 +181,6 @@ describe('Loan Tests', () => {
     it('deve retornar 404 ao tentar atualizar um empréstimo inexistente', async () => {
       const ghostId = '0c90a069-3a1f-4888-94af-c798f6f07d0a';
       const res = await request(test).put(`/api/loans/${ghostId}`).send({
-        id: ghostId,
         status: 'returned',
       });
 
