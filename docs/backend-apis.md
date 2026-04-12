@@ -267,6 +267,16 @@ A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidencia
 
  <img width="733" height="365" alt="image" src="https://github.com/user-attachments/assets/544a72c7-041c-4e98-8d6f-21689108e84d" />
 
+### Testes relacionados aos Empréstimos
+
+<img width="722" height="526" alt="image" src="https://github.com/user-attachments/assets/7071f3a1-849c-455a-9f28-42188b0bf139" />
+
+
+### Testes Relacionados à wishlist
+
+<img width="665" height="218" alt="image" src="https://github.com/user-attachments/assets/d4a9d959-8b09-4a70-9827-9ffcf48f5de9" />
+
+
 # Referências
 
 Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvolvimento do trabalho.
