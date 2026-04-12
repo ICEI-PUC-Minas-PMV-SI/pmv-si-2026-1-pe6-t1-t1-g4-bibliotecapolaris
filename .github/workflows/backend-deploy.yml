@@ -10,6 +10,7 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    environment: prod
     env: 
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
@@ -50,6 +51,7 @@ jobs:
   deploy:
     needs: validate
     runs-on: ubuntu-latest
+    environment: prod
     steps:
       - name: Deploy para EC2
         uses: appleboy/ssh-action@master
