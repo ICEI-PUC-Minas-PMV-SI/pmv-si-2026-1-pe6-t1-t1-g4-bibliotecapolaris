@@ -12,6 +12,8 @@ const isLocal = env === 'development' || env === 'test';
 
 function createPrismaClient(): PrismaClient {
   if (isLocal) {
+    // Usamos SQLite para desenvolvimento e testes locais
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
     const { PrismaClient } = require('../../prisma/generated/test/client');
     const dbPath = path.resolve(__dirname, '..', '..', 'prisma', 'test.db');
     const adapter = new PrismaBetterSqlite3({ url: dbPath });
@@ -19,6 +21,7 @@ function createPrismaClient(): PrismaClient {
     return new PrismaClient({ adapter });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
   const { PrismaClient } = require('@prisma/client');
   const url = new URL(process.env.DATABASE_URL!);
   const sslCert = url.searchParams.get('sslcert');

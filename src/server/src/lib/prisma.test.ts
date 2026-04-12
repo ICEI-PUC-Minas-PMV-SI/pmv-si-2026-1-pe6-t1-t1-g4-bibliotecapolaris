@@ -1,7 +1,8 @@
 import path from 'path';
 
-import { PrismaClient } from '../../prisma/generated/test/client';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+
+import { PrismaClient } from '../../prisma/generated/test/client';
 
 const testDbPath = path.resolve(__dirname, '..', '..', 'prisma', 'test.db');
 
