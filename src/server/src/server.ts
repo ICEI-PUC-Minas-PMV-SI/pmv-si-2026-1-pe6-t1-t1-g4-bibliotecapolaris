@@ -25,7 +25,7 @@ app.get('/api/health', (req, res) => {
 app.get('/api/docs.raw', (req, res) => res.json(open_api_documents));
 app.use('/api/docs', swaggerRoute());
 
-const PORT = process.env.PORT;
+const PORT = Number(process.env.PORT) || 3333;
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT} 🚨🚨🚨`);
