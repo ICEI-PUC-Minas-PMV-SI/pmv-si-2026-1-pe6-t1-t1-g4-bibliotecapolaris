@@ -238,6 +238,35 @@ A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidencia
 
 <img width="684" height="397" alt="image" src="https://github.com/user-attachments/assets/82385b97-fb74-49af-a482-b6b690979bb9" />
 
+### Testes Relacionados aos Livros
+
+A entidade de Livros é um dos pilares do sistema, gerenciando o acervo principal da biblioteca. Ela exige um controle confiável das operações de criação, leitura, atualização e exclusão (CRUD), bem como a validação de regras de negócio cruciais, como a consistência entre quantidades totais e disponíveis do livro.
+
+Para assegurar o isolamento na execução dos testes, foram utilizadas as funções `beforeAll` e `afterAll` do Prisma para limpar a base de dados apropriadamente. Nessa configuração, são criados antecipadamente apenas os registros de Autores fundamentais, evitando qualquer quebra de integridade referencial.
+
+Essa preparação pode ser observada no respectivo arquivo de testes:
+
+```ts
+  beforeAll(async () => {
+    await prisma.book.deleteMany();
+    await prisma.author.deleteMany();
+
+    await createAuthor();
+  });
+  afterAll(async () => {
+    await prisma.loan.deleteMany();
+    await prisma.book.deleteMany();
+    await prisma.author.deleteMany();
+    await prisma.$disconnect();
+  });
+```
+
+A partir dessa configuração, os cenários contemplam desde o registro do livro até validações de falhas, buscas filtradas (listagem ou identificador inexato), atualização correta e deleção do recurso.
+
+A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidenciando os cenários validados:
+
+<img width="938" height="333" alt="book-test-pass" src="<img width="733" height="365" alt="image" src="https://github.com/user-attachments/assets/544a72c7-041c-4e98-8d6f-21689108e84d" />
+" />
 
 # Referências
 
