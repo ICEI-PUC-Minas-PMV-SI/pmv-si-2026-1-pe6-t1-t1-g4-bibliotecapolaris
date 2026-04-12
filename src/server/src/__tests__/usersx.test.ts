@@ -35,7 +35,7 @@ describe('User CRUD Tests', () => {
 
       expect(res.status).toBe(201);
       expect(res.body.error).toBe(false);
-      expect(res.body.data).toContain('criado com sucesso');
+      expect(res.body.data).toContain('Usuário criado com sucesso');
 
       const userInDb = await prisma.user.findUnique({
         where: { email: mockUser.email },
@@ -82,9 +82,9 @@ describe('User CRUD Tests', () => {
         lastPassword: mockUser.password,
       });
 
-      expect(res.status).toBe(201);
+      expect(res.status).toBe(202);
       expect(res.body.error).toBe(false);
-      expect(res.body.data).toContain('atualizado com sucesso');
+      expect(res.body.data).toContain('Usuário atualizado com sucesso');
     });
   });
 
@@ -93,9 +93,9 @@ describe('User CRUD Tests', () => {
     it('deve deletar o usuário do sistema com sucesso', async () => {
       const res = await request(test).delete(`/api/users/${createdUserId}`);
 
-      expect(res.status).toBe(201);
+      expect(res.status).toBe(202);
       expect(res.body.error).toBe(false);
-      expect(res.body.data).toContain('Deletado com Sucesso');
+      expect(res.body.data).toContain('Usuário deletado com sucesso');
     });
   });
 });

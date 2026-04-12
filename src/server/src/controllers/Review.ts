@@ -17,11 +17,7 @@ export async function createReviewController(req: Request, res: Response) {
     const data = CreateReviewSchema.parse(req.body);
     const review = await createReview(data);
 
-    return sendSuccess(
-      res,
-      `${review.loan.student.name} avaliou o livro ${review.loan.book.name} com nota ${review.rating}`,
-      201,
-    );
+    return sendSuccess(res, `Livro ${review.loan.book.name} avaliado com a nota ${review.rating}`, 201);
   } catch (error: any) {
     return handleError(res, error, 'Review');
   }
@@ -62,7 +58,7 @@ export async function updateReviewController(req: Request, res: Response) {
     const data = UpdateReviewSchema.parse(req.body);
     const review = await updateReview(id, data);
 
-    return sendSuccess(res, review, 200);
+    return sendSuccess(res, 'Avaliação atualizada com sucesso', 202);
   } catch (error: any) {
     return handleError(res, error, 'Review');
   }
@@ -77,7 +73,7 @@ export async function deleteReviewController(req: Request, res: Response) {
     }
 
     await deleteReview(id as string);
-    return sendSuccess(res, 'Review removida com sucesso', 202);
+    return sendSuccess(res, 'Avaliação removida com sucesso', 202);
   } catch (error: any) {
     return handleError(res, error, 'Review');
   }

@@ -46,7 +46,7 @@ describe('Review Tests', () => {
       });
 
       expect(res.status).toBe(201);
-      expect(res.body.data).toBeDefined();
+      expect(res.body.data).toContain('avaliado com a nota');
     });
 
     it('deve retornar 401 VALIDATION_ERROR se o rating for inválido', async () => {
@@ -134,8 +134,8 @@ describe('Review Tests', () => {
         description: 'Bom livro, mas poderia ser melhor',
       });
 
-      expect(res.status).toBe(200);
-      expect(res.body.data).toBeDefined();
+      expect(res.status).toBe(202);
+      expect(res.body.data).toContain('Avaliação atualizada com sucesso');
     });
   });
 
@@ -148,7 +148,7 @@ describe('Review Tests', () => {
       const res = await request(test).delete(`/api/review/${MOCK_REVIEW_ID}`);
 
       expect(res.status).toBe(202);
-      expect(res.body.data).toContain('removida com sucesso');
+      expect(res.body.data).toContain('Avaliação removida com sucesso');
     });
 
     it('deve retornar 404 se o ID não existir', async () => {

@@ -36,7 +36,7 @@ describe('Wishlist Tests', () => {
       });
 
       expect(res.status).toBe(201);
-      expect(res.body.data).toContain('adicionou o livro');
+      expect(res.body.data).toContain('Livro adicionado');
     });
 
     it('deve retornar 401 VALIDATION_ERROR se o UUID for inválido', async () => {
@@ -95,7 +95,7 @@ describe('Wishlist Tests', () => {
       const res = await request(test).delete(`/api/wishlist/${MOCK_USER_ID}/${MOCK_BOOK_ID}`);
 
       expect(res.status).toBe(202);
-      expect(res.body.data).toContain('removido da lista de desejos');
+      expect(res.body.data).toContain('Livro removido');
     });
 
     it('deve retornar erro se o ID for inválido ou ausente', async () => {

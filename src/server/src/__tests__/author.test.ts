@@ -31,7 +31,7 @@ describe('Author Tests', () => {
         name: 'J.R.R. Tolkien',
       });
       expect(res.status).toBe(201);
-      expect(res.body.data).toContain('criado com sucesso');
+      expect(res.body.data).toContain('Autor criado com sucesso');
     });
 
     it('deve retornar erro VALIDATION_ERROR se o nome for inválido (menor que 3 caracteres)', async () => {
@@ -78,7 +78,7 @@ describe('Author Tests', () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.body.data).toContain('Autor alterado com sucesso para');
+      expect(res.body.data).toContain('Autor alterado com sucesso');
     });
 
     it('deve retornar erro 404 ao tentar atualizar um autor inexistente', async () => {

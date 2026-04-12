@@ -28,7 +28,7 @@ export async function createLoan(data: LoanCreateInput) {
       dueDate: data.dueDate,
       returnDate: null,
     },
-    include: { student: true },
+    include: { book: true },
   });
 }
 

@@ -12,9 +12,9 @@ export async function createAuthorController(req: Request, res: Response) {
       return sendFailure(res, 'VALIDATION_ERROR', 'Erro de validação', undefined, 401);
     }
 
-    const newAuthor = await createAuthor({ name });
+    await createAuthor({ name });
 
-    return sendSuccess(res, `Autor ${newAuthor.id} criado com sucesso!`, 201);
+    return sendSuccess(res, `Autor criado com sucesso!`, 201);
   } catch (error: unknown) {
     return handleError(res, error, 'Autor');
   }
@@ -64,9 +64,9 @@ export async function updateAuthorController(req: Request, res: Response) {
 
     const { name } = req.body;
 
-    const updatedAuthor = await updateAuthor(id as string, { name });
+    await updateAuthor(id as string, { name });
 
-    return sendSuccess(res, `Autor alterado com sucesso para ${updatedAuthor.name}`, 200);
+    return sendSuccess(res, `Autor alterado com sucesso`, 200);
   } catch (error: unknown) {
     return handleError(res, error, 'Autor');
   }
@@ -78,7 +78,7 @@ export async function deleteAuthorController(req: Request, res: Response) {
 
     const deletedAuthor = await deleteAuthor(id as string);
 
-    return sendSuccess(res, `Autor ${deletedAuthor.name} deletado com sucesso`, 200);
+    return sendSuccess(res, `Autor deletado com sucesso`, 200);
   } catch (error: unknown) {
     return handleError(res, error, 'Autor');
   }

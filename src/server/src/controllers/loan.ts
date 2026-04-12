@@ -68,7 +68,7 @@ export async function updateLoanController(req: Request, res: Response) {
 
     const parsed = LoanUpdateSchema.parse(req.body);
     const loan = await updateLoan(id, parsed);
-    return sendSuccess(res, `Empréstimo atualizado com sucesso`, 200);
+    return sendSuccess(res, `Empréstimo atualizado com sucesso`, 202);
   } catch (error) {
     handleError(res, error, 'Empréstimo');
   }

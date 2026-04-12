@@ -46,7 +46,7 @@ describe('Loan Tests', () => {
       });
 
       expect(res.status).toBe(201);
-      expect(res.body.data).toContain('criado com sucesso');
+      expect(res.body.data).toContain('Empréstimo criado com sucesso ');
 
       const match = res.body.data.match(/ID\s+(\S+)/);
       if (match) createdLoanId = match[1];
@@ -174,8 +174,8 @@ describe('Loan Tests', () => {
         returnDate: '2026-04-15',
       });
 
-      expect(res.status).toBe(200);
-      expect(res.body.data).toContain('atualizado com sucesso');
+      expect(res.status).toBe(202);
+      expect(res.body.data).toContain('Empréstimo atualizado com sucesso');
     });
 
     it('deve retornar 404 ao tentar atualizar um empréstimo inexistente', async () => {

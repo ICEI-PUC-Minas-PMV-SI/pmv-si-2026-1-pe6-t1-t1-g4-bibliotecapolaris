@@ -12,7 +12,7 @@ export async function createUserController(req: Request, res: Response) {
 
     const newUser = await createUser({ ...data, password: hashedPassword });
 
-    return sendSuccess(res, `Usuário ${newUser.id} criado com sucesso!`, 201);
+    return sendSuccess(res, `Usuário criado com sucesso!`, 201);
   } catch (error: any) {
     return handleError(res, error, 'Usuário');
   }
@@ -44,9 +44,9 @@ export async function updateUserController(req: Request, res: Response) {
 
     const updateData = UpdateUserSchema.parse(req.body);
 
-    const updatedUser = await updateUser(id as string, updateData);
+    await updateUser(id as string, updateData);
 
-    return sendSuccess(res, `Usuário - ${updatedUser.name} atualizado com sucesso!`, 201);
+    return sendSuccess(res, `Usuário atualizado com sucesso!`, 202);
   } catch (error: unknown) {
     return handleError(res, error, 'Usuário');
   }
@@ -58,7 +58,7 @@ export async function deleteUserController(req: Request, res: Response) {
 
     await deleteUser(id as string);
 
-    return sendSuccess(res, 'Usuário Deletado com Sucesso', 201);
+    return sendSuccess(res, `Usuário deletado com sucesso!`, 202);
   } catch (error: any) {
     return handleError(res, error, 'Usuário');
   }

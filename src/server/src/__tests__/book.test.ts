@@ -35,7 +35,7 @@ describe('Book Service Tests', () => {
       });
 
       expect(res.status).toBe(201);
-      expect(res.body.data).toContain('criado com sucesso');
+      expect(res.body.data).toContain('Livro criado com sucesso');
     });
 
     it('deve retornar 401 VALIDATION_ERROR se a quantidade disponível for maior que a total', async () => {
@@ -100,8 +100,8 @@ describe('Book Service Tests', () => {
         name: 'Clean Code - Updated Edition',
       });
 
-      expect(res.status).toBe(200);
-      expect(res.body.data).toContain('atualizados com sucesso');
+      expect(res.status).toBe(202);
+      expect(res.body.data).toContain('Livro atualizado com sucesso');
     });
   });
 
@@ -113,7 +113,8 @@ describe('Book Service Tests', () => {
 
       const res = await request(testServer).delete(`/api/books/${bookId}`);
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(202);
+      expect(res.body.data).toContain('Livro deletado com sucesso');
 
       const check = await request(testServer).get(`/api/books/id/${bookId}`);
       expect(check.status).toBe(404);

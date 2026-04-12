@@ -9,9 +9,9 @@ export async function createBookController(req: Request, res: Response) {
   try {
     const data = CreateBookSchema.parse(req.body);
 
-    const newBook = await createBook(data);
+    await createBook(data);
 
-    return sendSuccess(res, `Livro "${newBook.name}" foi criado com sucesso!`, 201);
+    return sendSuccess(res, `Livro criado com sucesso!`, 201);
   } catch (error) {
     return handleError(res, error, 'Livro');
   }
@@ -89,9 +89,9 @@ export async function updateBookController(req: Request, res: Response) {
 
     const data = UpdateBookSchema.parse(req.body);
 
-    const updatedBook = await updateBook(id as string, data);
+    await updateBook(id as string, data);
 
-    return sendSuccess(res, `Dados do livro "${updatedBook.name}" atualizados com sucesso!`, 200);
+    return sendSuccess(res, `Livro atualizado com sucesso!`, 202);
   } catch (error) {
     return handleError(res, error, 'Livro');
   }
@@ -106,9 +106,9 @@ export async function deleteBookController(req: Request, res: Response) {
       throw new Error('ID do livro informado não é válido.');
     }
 
-    const deletedBook = await deleteBook(id as string);
+    await deleteBook(id as string);
 
-    return sendSuccess(res, `Livro "${deletedBook.name}" removido com sucesso do acervo`, 200);
+    return sendSuccess(res, `Livro deletado com sucesso`, 202);
   } catch (error) {
     return handleError(res, error, 'Livro');
   }

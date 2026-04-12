@@ -8,13 +8,9 @@ export async function addBookToWishlistController(req: Request, res: Response) {
   try {
     const data = AddBookToWishlistSchema.parse(req.body);
 
-    const addedBook = await addBookToWishlist(data);
+    await addBookToWishlist(data);
 
-    return sendSuccess(
-      res,
-      `${addedBook.student.name} adicionou o livro ${addedBook.book.name} na sua lista de desejos`,
-      201,
-    );
+    return sendSuccess(res, `Livro adicionado na sua lista de desejos`, 201);
   } catch (error: any) {
     return handleError(res, error, 'Lista de Desejos');
   }
@@ -48,9 +44,9 @@ export async function deleteBookFromWishlistController(req: Request, res: Respon
       throw new Error('O ID informado (usuário ou livro) não é válido..');
     }
 
-    const wishlist = await deleteBookFromWishlist(studentId as string, bookId as string);
+    await deleteBookFromWishlist(studentId as string, bookId as string);
 
-    return sendSuccess(res, `Livro ${wishlist.book.name} removido da lista de desejos com sucesso`, 202);
+    return sendSuccess(res, `Livro removido da sua lista de desejos`, 202);
   } catch (error: any) {
     return handleError(res, error, 'Lista de Desejos');
   }
