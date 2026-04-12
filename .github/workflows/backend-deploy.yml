@@ -105,6 +105,9 @@ jobs:
             # Inicia a API com o PM2 (ou reinicia se já estiver rodando)
             pm2 restart api-polaris --update-env || pm2 start dist/server.js --name "api-polaris" || exit 1
             
+            # Salva a lista de processos para sobreviver a reinícios do EC2
+            pm2 save
+            
             # Log de sucesso
             echo "✅ Deploy concluído com sucesso!"
             pm2 status api-polaris
