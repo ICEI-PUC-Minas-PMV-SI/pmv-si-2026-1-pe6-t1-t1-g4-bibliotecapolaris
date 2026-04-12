@@ -155,13 +155,13 @@ As seguintes práticas de segurança foram identificadas como próximos passos p
 
 ## Implantação
 
-[Instruções para implantar a aplicação distribuída em um ambiente de produção.]
+A implantação da aplicação em ambiente de produção foi realizada conforme os requisitos propostos. Inicialmente, foram definidos os requisitos de software, incluindo Node.js, Prisma ORM e o banco de dados, sendo utilizado SQLite em ambiente de desenvolvimento e MariaDB em produção.
 
-1. Defina os requisitos de hardware e software necessários para implantar a aplicação em um ambiente de produção.
-2. Escolha uma plataforma de hospedagem adequada, como um provedor de nuvem ou um servidor dedicado.
-3. Configure o ambiente de implantação, incluindo a instalação de dependências e configuração de variáveis de ambiente.
-4. Faça o deploy da aplicação no ambiente escolhido, seguindo as instruções específicas da plataforma de hospedagem.
-5. Realize testes para garantir que a aplicação esteja funcionando corretamente no ambiente de produção.
+A plataforma escolhida para hospedagem foi a AWS, utilizando uma instância RDS com MariaDB para maior confiabilidade em relação ao ambiente local.
+
+Durante a configuração do ambiente, foi necessário ajustar as variáveis de ambiente para conexão com o banco em produção, além de adaptar o Prisma ORM, alterando o `provider` no schema e garantindo compatibilidade entre SQLite e MariaDB. Também foram aplicadas as devidas migrações para adequação da estrutura do banco.
+
+Por fim, foram executados os testes a seguir para validar o funcionamento da aplicação, assegurando que as funcionalidades principais operam corretamente fora do ambiente local.
 
 ## Testes
 
@@ -268,15 +268,34 @@ A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidencia
  <img width="733" height="365" alt="image" src="https://github.com/user-attachments/assets/544a72c7-041c-4e98-8d6f-21689108e84d" />
 
 ### Testes relacionados aos Empréstimos
+A entidade de Empréstimos depende diretamente das entidades de Usuário e Livro, sendo responsável por registrar a relação de retirada de exemplares. Como o Livro, por sua vez, depende da existência de um Autor, a preparação dos testes exige a criação encadeada dessas entidades para garantir a integridade referencial.
+
+Para assegurar o isolamento dos testes, é realizada a limpeza completa da base de dados respeitando a ordem de dependência entre as tabelas. Em seguida, são criados apenas os registros mínimos necessários: um autor, um usuário e um livro associado ao autor, permitindo a execução consistente dos cenários de empréstimo.
+
+Essa preparação pode ser observada no respectivo arquivo de testes:
+```ts
+ beforeEach(async () => {
+    await prisma.book.deleteMany();
+    await prisma.author.deleteMany();
+    await prisma.user.deleteMany();
+
+    const author = await createAuthor();
+    await createUser();
+    await createBook(author.id);
+  });
+```
+
+A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidenciando os cenários mapeados e validados:
 
 <img width="722" height="526" alt="image" src="https://github.com/user-attachments/assets/7071f3a1-849c-455a-9f28-42188b0bf139" />
 
 
-### Testes Relacionados à wishlist
+### Testes Relacionados aos Autores
+A entidade de Autores é responsável por gerenciar as informações básicas dos escritores cadastrados no sistema, servindo como base para o relacionamento com a entidade de Livros.
 
-<img width="665" height="218" alt="image" src="https://github.com/user-attachments/assets/d4a9d959-8b09-4a70-9827-9ffcf48f5de9" />
+Os testes de integração desenvolvidos para essa entidade cobrem o fluxo completo de CRUD (Create, Read, Update, Delete), garantindo a validação correta dos dados e o comportamento esperado das operações.
 
+Assim como na entidade de Usuários, não é necessária uma preparação prévia de dados relacionados, pois Autores não dependem de outras entidades para sua criação.
 
-# Referências
-
-Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvolvimento do trabalho.
+A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidenciando os cenários mapeados e validados:
+<img width="570" height="355" alt="image" src="https://github.com/user-attachments/assets/fcdfc004-8dbe-4538-971c-8355f1c50734" />
