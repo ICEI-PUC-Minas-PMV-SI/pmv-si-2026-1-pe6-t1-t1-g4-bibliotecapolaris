@@ -27,6 +27,8 @@ jobs:
       - name: Instalar dependências
         working-directory: src/server
         run: npm ci
+        env:
+          NODE_ENV: development
       
       - name: Gerar Prisma Client
         working-directory: src/server
