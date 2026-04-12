@@ -3,7 +3,7 @@ import request from 'supertest';
 
 import { prisma } from '../lib/prisma';
 
-import testServer from './server.test';
+import testServer from './app';
 import { createAuthor, MOCK_AUTHOR_ID } from './wishlist.factory';
 
 describe('Book Service Tests', () => {

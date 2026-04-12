@@ -3,7 +3,7 @@ import request from 'supertest';
 
 import { prisma } from '../lib/prisma';
 
-import test from './server.test';
+import test from './app';
 import { createAuthor, createUser, createBook } from './wishlist.factory';
 import { createLoan, createReview, MOCK_USER_ID, MOCK_BOOK_ID, MOCK_LOAN_ID, MOCK_REVIEW_ID } from './review.factory';
 

@@ -1,9 +1,9 @@
-import { describe, expect, it, afterAll } from '@jest/globals';
+import { describe, expect, it, beforeEach, afterAll } from '@jest/globals';
 import request from 'supertest';
 
 import { prisma } from '../lib/prisma';
 
-import test from './server.test';
+import test from './app';
 import { createAuthor, createUser, createBook, MOCK_USER_ID, MOCK_BOOK_ID } from './wishlist.factory';
 
 describe('Wishlist Tests', () => {
