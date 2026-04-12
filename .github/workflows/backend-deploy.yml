@@ -93,7 +93,7 @@ jobs:
             npm run build || exit 1
             
             # Inicia a API com o PM2 (ou reinicia se já estiver rodando)
-            pm2 restart api-polaris || pm2 start dist/server.js --name "api-polaris" || exit 1
+            pm2 restart api-polaris --update-env || pm2 start dist/server.js --name "api-polaris" || exit 1
             # Log de sucesso
             echo "✅ Deploy concluído com sucesso!"
             pm2 logs api-polaris --lines 20
