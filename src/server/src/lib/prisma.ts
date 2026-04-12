@@ -1,6 +1,7 @@
+import { readFileSync } from 'fs';
+
 import { PrismaClient } from '@prisma/client';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
-import { readFileSync } from 'fs';
 
 import 'dotenv/config';
 
