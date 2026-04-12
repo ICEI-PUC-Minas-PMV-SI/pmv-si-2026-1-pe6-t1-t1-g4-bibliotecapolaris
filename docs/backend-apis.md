@@ -265,8 +265,7 @@ A partir dessa configuração, os cenários contemplam desde o registro do livro
 
 A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidenciando os cenários validados:
 
-<img width="938" height="333" alt="book-test-pass" src="<img width="733" height="365" alt="image" src="https://github.com/user-attachments/assets/544a72c7-041c-4e98-8d6f-21689108e84d" />
-" />
+ <img width="733" height="365" alt="image" src="https://github.com/user-attachments/assets/544a72c7-041c-4e98-8d6f-21689108e84d" />
 
 # Referências
 
