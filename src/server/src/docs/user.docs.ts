@@ -48,7 +48,7 @@ userRegistry.registerPath({
   tags: ['Users'],
   summary: 'Retorna os dados de um usuário específico',
   request: {
-    params: z.object({ id: z.string().uuid().describe('ID do Usuário') }),
+    params: z.object({ id: z.uuid().describe('ID do Usuário') }),
   },
   responses: {
     200: {
@@ -69,7 +69,7 @@ userRegistry.registerPath({
   tags: ['Users'],
   summary: 'Atualiza os dados de um usuário existente',
   request: {
-    params: z.object({ id: z.string().uuid().describe('ID do Usuário') }),
+    params: z.object({ id: z.uuid().describe('ID do Usuário') }),
     body: {
       content: {
         'application/json': { schema: UpdateUserSchema },
@@ -105,7 +105,7 @@ userRegistry.registerPath({
   tags: ['Users'],
   summary: 'Remove um usuário do banco de dados',
   request: {
-    params: z.object({ id: z.string().uuid().describe('ID do Usuário') }),
+    params: z.object({ id: z.uuid().describe('ID do Usuário') }),
   },
   responses: {
     201: {

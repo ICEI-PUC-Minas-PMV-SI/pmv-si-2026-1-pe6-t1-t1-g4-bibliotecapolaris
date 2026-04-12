@@ -4,7 +4,7 @@ const bookBase = {
   isbn: z.string().min(1, 'ISBN é obrigatório').describe('ISBN do Livro'),
   name: z.string().min(1, 'Nome é obrigatório').describe('Título do Livro'),
   year: z.number().int().positive().describe('Ano de Lançamento'),
-  authorId: z.string().uuid('ID do Autor inválido').describe('ID do Autor'),
+  authorId: z.uuid('ID do Autor inválido').describe('ID do Autor'),
   description: z.string().min(1, 'Descrição é obrigatória').describe('Descrição do Livro'),
   totalQuantity: z.number().int().nonnegative().describe('Quantidade Total'),
 };
@@ -33,7 +33,7 @@ export const BookSchema = z.object({
   totalAvailable: z.number().int().describe('Quantidade disponível para empréstimo'),
   author: z
     .object({
-      id: z.string().uuid(),
+      id: z.uuid(),
       name: z.string(),
     })
     .optional(),

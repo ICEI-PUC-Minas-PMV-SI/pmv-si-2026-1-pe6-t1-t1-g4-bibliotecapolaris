@@ -17,7 +17,7 @@ export const BookDetailSchema = BookSchema.extend({
           id: z.uuid(),
           rating: z.number().int(),
           description: z.string().nullable(),
-          date: z.string().datetime(),
+          date: z.date(),
         }),
       ),
       student: z.object({
@@ -83,7 +83,7 @@ bookRegistry.registerPath({
   summary: 'Busca detalhes de um livro pelo seu ID uuid',
   tags: ['Books'],
   request: {
-    params: z.object({ id: z.string().uuid().describe('ID do livro') }),
+    params: z.object({ id: z.uuid().describe('ID do livro') }),
   },
   responses: {
     200: {
@@ -125,7 +125,7 @@ bookRegistry.registerPath({
   summary: 'Atualiza dados de um livro existente',
   tags: ['Books'],
   request: {
-    params: z.object({ id: z.string().uuid() }),
+    params: z.object({ id: z.uuid() }),
     body: {
       content: {
         'application/json': { schema: UpdateBookSchema },
@@ -151,7 +151,7 @@ bookRegistry.registerPath({
   summary: 'Remove um livro do acervo',
   tags: ['Books'],
   request: {
-    params: z.object({ id: z.string().uuid() }),
+    params: z.object({ id: z.uuid() }),
   },
   responses: {
     200: { description: 'Livro removido com sucesso' },

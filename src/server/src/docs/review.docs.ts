@@ -66,7 +66,7 @@ reviewRegistry.registerPath({
   summary: 'Busca uma avaliação pelo ID',
   tags: ['Reviews'],
   request: {
-    params: z.object({ id: z.string().uuid().describe('ID da avaliação') }),
+    params: z.object({ id: z.uuid().describe('ID da avaliação') }),
   },
   responses: {
     200: {
@@ -87,7 +87,7 @@ reviewRegistry.registerPath({
   summary: 'Lista avaliações de um usuário específico',
   tags: ['Reviews'],
   request: {
-    params: z.object({ userId: z.string().uuid().describe('ID do usuário') }),
+    params: z.object({ userId: z.uuid().describe('ID do usuário') }),
   },
   responses: {
     200: {
@@ -108,7 +108,7 @@ reviewRegistry.registerPath({
   summary: 'Lista avaliações de um livro específico',
   tags: ['Reviews'],
   request: {
-    params: z.object({ bookId: z.string().uuid().describe('ID do livro') }),
+    params: z.object({ bookId: z.uuid().describe('ID do livro') }),
   },
   responses: {
     200: {
@@ -129,7 +129,7 @@ reviewRegistry.registerPath({
   summary: 'Atualiza uma avaliação existente',
   tags: ['Reviews'],
   request: {
-    params: z.object({ id: z.string().uuid().describe('ID da avaliação') }),
+    params: z.object({ id: z.uuid().describe('ID da avaliação') }),
     body: {
       content: {
         'application/json': { schema: UpdateReviewSchema },
@@ -155,7 +155,7 @@ reviewRegistry.registerPath({
   summary: 'Remove uma avaliação',
   tags: ['Reviews'],
   request: {
-    params: z.object({ id: z.string().uuid().describe('ID da avaliação') }),
+    params: z.object({ id: z.uuid().describe('ID da avaliação') }),
   },
   responses: {
     202: {

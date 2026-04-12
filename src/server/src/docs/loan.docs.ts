@@ -29,7 +29,7 @@ loanRegistry.registerPath({
   summary: 'Busca um empréstimo pelo ID',
   tags: ['Loans'],
   request: {
-    params: z.object({ id: z.string().uuid().describe('ID do empréstimo') }),
+    params: z.object({ id: z.uuid().describe('ID do empréstimo') }),
   },
   responses: {
     200: {
@@ -69,7 +69,7 @@ loanRegistry.registerPath({
   summary: 'Atualiza um empréstimo existente',
   tags: ['Loans'],
   request: {
-    params: z.object({ id: z.string().uuid() }),
+    params: z.object({ id: z.uuid() }),
     body: {
       content: {
         'application/json': { schema: LoanUpdateSchema },
@@ -88,7 +88,7 @@ loanRegistry.registerPath({
   summary: 'Remove um registro de empréstimo',
   tags: ['Loans'],
   request: {
-    params: z.object({ id: z.string().uuid() }),
+    params: z.object({ id: z.uuid() }),
   },
   responses: {
     200: { description: 'Empréstimo deletado com sucesso' },
@@ -102,7 +102,7 @@ loanRegistry.registerPath({
   summary: 'Lista empréstimos de um estudante específico',
   tags: ['Loans'],
   request: {
-    params: z.object({ studentId: z.string().uuid() }),
+    params: z.object({ studentId: z.uuid() }),
   },
   responses: {
     200: {

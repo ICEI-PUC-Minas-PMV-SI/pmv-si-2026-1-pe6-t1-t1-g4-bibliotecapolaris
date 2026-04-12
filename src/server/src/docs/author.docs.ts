@@ -5,7 +5,7 @@ import { NotFoundErrorSchema } from '@/models/ErrorModel';
 import { CreateAuthorSchema, UpdateAuthorSchema } from '@/models/AuthorModel';
 
 export const AuthorSchema = CreateAuthorSchema.extend({
-  id: z.string().uuid().describe('ID do autor no banco de dados'),
+  id: z.uuid().describe('ID do autor no banco de dados'),
 });
 
 export const authorRegistry = new OpenAPIRegistry();
@@ -33,7 +33,7 @@ authorRegistry.registerPath({
   summary: 'Busca um autor pelo ID',
   tags: ['Authors'],
   request: {
-    params: z.object({ id: z.string().uuid().describe('ID do autor') }),
+    params: z.object({ id: z.uuid().describe('ID do autor') }),
   },
   responses: {
     200: {
@@ -76,7 +76,7 @@ authorRegistry.registerPath({
   summary: 'Atualiza um autor existente',
   tags: ['Authors'],
   request: {
-    params: z.object({ id: z.string().uuid() }),
+    params: z.object({ id: z.uuid() }),
     body: {
       content: {
         'application/json': { schema: UpdateAuthorSchema },
@@ -96,7 +96,7 @@ authorRegistry.registerPath({
   summary: 'Retorna os livros de um autor',
   tags: ['Authors'],
   request: {
-    params: z.object({ id: z.string().uuid().describe('ID do autor') }),
+    params: z.object({ id: z.uuid().describe('ID do autor') }),
   },
   responses: {
     200: {
@@ -116,7 +116,7 @@ authorRegistry.registerPath({
   summary: 'Remove um registro de autor',
   tags: ['Authors'],
   request: {
-    params: z.object({ id: z.string().uuid() }),
+    params: z.object({ id: z.uuid() }),
   },
   responses: {
     200: { description: 'Autor deletado com sucesso' },
