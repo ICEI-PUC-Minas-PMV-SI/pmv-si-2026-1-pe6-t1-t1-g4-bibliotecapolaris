@@ -195,8 +195,7 @@ A partir dessa configuração inicial, são definidos diferentes cenários de te
 
 A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidenciando os cenários mapeados e validados. Esse conjunto de testes contribui para aumentar a confiabilidade da aplicação, assegurando o correto funcionamento dos endpoints relacionados à Lista de Desejos em um contexto de integração.
 
-<img width="794" height="288" alt="image" src="https://github.com/user-attachments/assets/7d4127bf-4a98-4d45-9a54-c0f55e576b20" />
-
+<img width="1040" height="420" alt="image" src="https://github.com/user-attachments/assets/44cd31cc-e3cf-4437-b602-42d97eefc7cc" />
 
 ### Testes Relacionados a Usuários
 
@@ -208,8 +207,7 @@ Assim como nas outras entidades, o isolamento dos testes foi garantido utilizand
 
 A imagem a seguir apresenta o sucesso da execução de testes de Usuários, validando o tratamento de dados incompletos (Erro 401), buscas inexistentes (Erro 404) e as operações de sucesso (200 e 201).
 
-<img width="938" height="333" alt="pass" src="https://github.com/user-attachments/assets/aeac3526-57dc-46aa-9a83-fc4e43919ff8" />
-
+<img width="1040" height="420" alt="image" src="https://github.com/user-attachments/assets/bb603a08-523e-4638-9b27-f89912901420" />
 
 ### Testes Relacionados a Avaliações
 
@@ -236,7 +234,7 @@ A partir dessa configuração inicial, são definidos diferentes cenários de te
 
 A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidenciando os cenários mapeados e validados:
 
-<img width="684" height="397" alt="image" src="https://github.com/user-attachments/assets/82385b97-fb74-49af-a482-b6b690979bb9" />
+<img width="1040" height="500" alt="image" src="https://github.com/user-attachments/assets/4c5d11a4-4688-489e-9c67-b2f83e7cb229" />
 
 ### Testes Relacionados aos Livros
 
@@ -265,7 +263,8 @@ A partir dessa configuração, os cenários contemplam desde o registro do livro
 
 A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidenciando os cenários validados:
 
- <img width="733" height="365" alt="image" src="https://github.com/user-attachments/assets/544a72c7-041c-4e98-8d6f-21689108e84d" />
+ <img width="1040" height="480" alt="image" src="https://github.com/user-attachments/assets/b8e1ec0b-45b1-48c5-9195-ad8b86577c40" />
+
 
 ### Testes relacionados aos Empréstimos
 A entidade de Empréstimos depende diretamente das entidades de Usuário e Livro, sendo responsável por registrar a relação de retirada de exemplares. Como o Livro, por sua vez, depende da existência de um Autor, a preparação dos testes exige a criação encadeada dessas entidades para garantir a integridade referencial.
@@ -287,8 +286,7 @@ Essa preparação pode ser observada no respectivo arquivo de testes:
 
 A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidenciando os cenários mapeados e validados:
 
-<img width="722" height="526" alt="image" src="https://github.com/user-attachments/assets/7071f3a1-849c-455a-9f28-42188b0bf139" />
-
+<img width="1040" height="700" alt="image" src="https://github.com/user-attachments/assets/79191963-82e2-445f-8f1e-38131567640d" />
 
 ### Testes Relacionados aos Autores
 A entidade de Autores é responsável por gerenciar as informações básicas dos escritores cadastrados no sistema, servindo como base para o relacionamento com a entidade de Livros.
@@ -298,4 +296,5 @@ Os testes de integração desenvolvidos para essa entidade cobrem o fluxo comple
 Assim como na entidade de Usuários, não é necessária uma preparação prévia de dados relacionados, pois Autores não dependem de outras entidades para sua criação.
 
 A imagem a seguir apresenta a execução dos testes utilizando o Jest, evidenciando os cenários mapeados e validados:
-<img width="570" height="355" alt="image" src="https://github.com/user-attachments/assets/fcdfc004-8dbe-4538-971c-8355f1c50734" />
+
+<img width="1040" height="500" alt="image" src="https://github.com/user-attachments/assets/4da27b51-7bc8-4c26-b443-b2c71b8383d4" />
