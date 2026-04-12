@@ -1,0 +1,113 @@
+name: Deploy API Polaris to EC2
+
+on:
+  push:
+    branches: [ server ]
+    paths:
+      - 'src/server/**'
+      - '.github/workflows/backend-deploy.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    environment: prod
+    env: 
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: 'src/server/package-lock.json'
+      
+      - name: Instalar dependências
+        working-directory: src/server
+        run: npm ci --include=dev
+      
+      - name: Gerar Prisma Client
+        working-directory: src/server
+        run: npx prisma generate
+      
+      - name: Lint validation
+        working-directory: src/server
+        run: npm run lint
+      
+      - name: Build TypeScript
+        working-directory: src/server
+        run: npm run build
+      
+      - name: Validar dist build
+        working-directory: src/server
+        run: |
+          if [ ! -f dist/server.js ]; then
+            echo "❌ Erro: dist/server.js não encontrado!"
+            exit 1
+          fi
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Deploy para EC2
+        uses: appleboy/ssh-action@master
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NODE_ENV: ${{ vars.NODE_ENV }}
+          PORT: ${{ vars.PORT }}
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          envs: DATABASE_URL,NODE_ENV,PORT
+          script: |
+            # Carrega o Node.js no ambiente do robô
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            
+            # Define a pasta do projeto
+            PROJECT_DIR=~/pmv-si-2026-1-pe6-t1-t1-g4-bibliotecapolaris/src/server
+            
+            # Entra na pasta do projeto
+            cd $PROJECT_DIR || exit 1
+            
+            # Puxa o código mais recente do GitHub (branch server)
+            git fetch origin server || exit 1
+            git reset --hard origin/server || exit 1
+            
+            # Exporta variáveis de ambiente
+            export DATABASE_URL="$DATABASE_URL"
+            export NODE_ENV="$NODE_ENV"
+            export PORT="$PORT"
+            
+            # Escreve .env para o PM2/dotenv ler
+            echo "DATABASE_URL=$DATABASE_URL" > .env
+            echo "NODE_ENV=$NODE_ENV" >> .env
+            echo "PORT=$PORT" >> .env
+            
+            # Instala bibliotecas novas (se houver) e atualiza o Prisma
+            npm ci --include=dev || exit 1
+            npx prisma generate || exit 1
+            
+            # Executa migrations do Prisma
+            npx prisma migrate deploy || exit 1
+            
+            # Compila o TypeScript
+            npm run build || exit 1
+            
+            # Limpa logs antigos do PM2
+            pm2 flush api-polaris
+            
+            # Inicia a API com o PM2 (ou reinicia se já estiver rodando)
+            pm2 restart api-polaris --update-env || pm2 start dist/server.js --name "api-polaris" || exit 1
+            
+            # Salva a lista de processos para sobreviver a reinícios do EC2
+            pm2 save
+            
+            # Log de sucesso
+            echo "✅ Deploy concluído com sucesso!"
+            pm2 status api-polaris

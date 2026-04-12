@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/test"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum UserType {
+  student
+  administrator
+}
+
+model User {
+  id        String   @id @default(uuid())
+  slug      String   @unique
+  name      String
+  email     String   @unique
+  password  String
+  isBlocked Boolean  @default(false) @map("is_blocked")
+  type      UserType
+
+  loans     Loan[]
+  wishlists Wishlist[]
+
+  @@map("users")
+}
+
+model Book {
+  id             String @id @default(uuid())
+  slug           String @unique
+  isbn           String @unique
+  name           String
+  year           Int    @map("year")
+  authorId       String @map("author_id")
+  description    String
+  categories     String
+  totalQuantity  Int    @map("total_quantity")
+  totalAvailable Int    @map("total_available")
+
+  author    Author     @relation(fields: [authorId], references: [id])
+  wishlists Wishlist[]
+  loans     Loan[]
+
+  @@map("books")
+}
+
+enum LoanStatus {
+  in_progress
+  returned
+  canceled
+  overdue
+}
+
+model Loan {
+  id         String     @id @default(uuid())
+  studentId  String     @map("student_id")
+  bookId     String     @map("book_id")
+  loanDate   String     @map("loan_date")
+  dueDate    String     @map("due_date")
+  returnDate String?    @map("return_date")
+  status     LoanStatus
+
+  student User     @relation(fields: [studentId], references: [id])
+  book    Book     @relation(fields: [bookId], references: [id])
+  reviews Review[]
+
+  @@map("loans")
+}
+
+model Author {
+  id    String @id @default(uuid())
+  name  String
+  books Book[]
+
+  @@map("authors")
+}
+
+model Wishlist {
+  studentId String @map("student_id")
+  bookId    String @map("book_id")
+
+  student User @relation(fields: [studentId], references: [id])
+  book    Book @relation(fields: [bookId], references: [id])
+
+  @@id([studentId, bookId])
+  @@map("wishlists")
+}
+
+model Review {
+  id          String  @id @default(uuid())
+  rating      Int
+  loanId      String  @unique @map("loan_id")
+  description String?
+  date        String
+
+  loan Loan @relation(fields: [loanId], references: [id])
+
+  @@map("reviews")
+}
