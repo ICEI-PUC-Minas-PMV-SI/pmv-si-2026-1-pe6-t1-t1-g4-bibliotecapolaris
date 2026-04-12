@@ -13,7 +13,7 @@ export const authorRegistry = new OpenAPIRegistry();
 // --- LISTAR TODOS ---
 authorRegistry.registerPath({
   method: 'get',
-  path: '/authors',
+  path: '/author',
   summary: 'Retorna todos os autores',
   tags: ['Authors'],
   responses: {
@@ -29,7 +29,7 @@ authorRegistry.registerPath({
 // --- BUSCAR POR ID ---
 authorRegistry.registerPath({
   method: 'get',
-  path: '/authors/{id}',
+  path: '/author/{id}',
   summary: 'Busca um autor pelo ID',
   tags: ['Authors'],
   request: {
@@ -50,7 +50,7 @@ authorRegistry.registerPath({
 // --- CRIAR AUTOR ---
 authorRegistry.registerPath({
   method: 'post',
-  path: '/authors',
+  path: '/author',
   summary: 'Cria um novo autor',
   tags: ['Authors'],
   request: {
@@ -72,7 +72,7 @@ authorRegistry.registerPath({
 // --- ATUALIZAR (PUT) ---
 authorRegistry.registerPath({
   method: 'put',
-  path: '/authors/{id}',
+  path: '/author/{id}',
   summary: 'Atualiza um autor existente',
   tags: ['Authors'],
   request: {
@@ -89,10 +89,30 @@ authorRegistry.registerPath({
   },
 });
 
+// --- BUSCAR LIVROS DO AUTOR ---
+authorRegistry.registerPath({
+  method: 'get',
+  path: '/author/{id}/books',
+  summary: 'Retorna os livros de um autor',
+  tags: ['Authors'],
+  request: {
+    params: z.object({ id: z.string().uuid().describe('ID do autor') }),
+  },
+  responses: {
+    200: {
+      description: 'Livros do autor recuperados com sucesso',
+    },
+    404: {
+      description: 'Autor não encontrado',
+      content: { 'application/json': { schema: NotFoundErrorSchema } },
+    },
+  },
+});
+
 // --- DELETAR ---
 authorRegistry.registerPath({
   method: 'delete',
-  path: '/authors/{id}',
+  path: '/author/{id}',
   summary: 'Remove um registro de autor',
   tags: ['Authors'],
   request: {

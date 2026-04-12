@@ -151,7 +151,7 @@ reviewRegistry.registerPath({
 // --- DELETE ---
 reviewRegistry.registerPath({
   method: 'delete',
-  path: '/review',
+  path: '/review/{id}',
   summary: 'Remove uma avaliação',
   tags: ['Reviews'],
   request: {
