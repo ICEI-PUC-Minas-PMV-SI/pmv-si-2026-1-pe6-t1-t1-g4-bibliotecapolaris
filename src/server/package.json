@@ -9,7 +9,9 @@
     "start": "node dist/server.js",
     "postinstall": "prisma generate",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint:fix": "eslint --fix .",
+    "test": "npx prisma db push --config=prisma.config.test.ts && jest --no-coverage",
+    "test:setup": "npx prisma generate --config=prisma.config.test.ts && npx prisma db push --config=prisma.config.test.ts"
   },
   "keywords": [],
   "author": "",

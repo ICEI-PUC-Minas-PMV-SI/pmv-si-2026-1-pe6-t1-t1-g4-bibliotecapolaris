@@ -3,7 +3,7 @@ import request from 'supertest';
 
 import { prisma } from '../lib/prisma';
 
-import test from './server.test';
+import test from './app';
 
 describe('Author Tests', () => {
   let mockAuthorId: string;

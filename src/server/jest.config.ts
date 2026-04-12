@@ -15,7 +15,6 @@ const config: Config = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^(\\.{1,2}/.*)\\.js$': '$1',
-    '^@prisma/client$': '<rootDir>/prisma/generated/prisma/client',
   },
 
   transform: {
@@ -31,6 +30,9 @@ const config: Config = {
   },
 
   testMatch: ['**/__tests__/**/*.test.[jt]s', '**/__tests__/**/*.spec.[jt]s'],
+
+  // Run sequentially — tests share a single SQLite file
+  maxWorkers: 1,
 };
 
 export default config;
