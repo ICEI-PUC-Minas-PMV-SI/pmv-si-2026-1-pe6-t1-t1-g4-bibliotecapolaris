@@ -4,14 +4,14 @@
   "description": "O site em HTML/CSS/JS é um projeto estático, logo pode ser utilizado tanto em servidores...",
   "main": "index.js",
   "scripts": {
+    "local:setup": "npx prisma generate --config=prisma.config.test.ts && npx prisma db push --config=prisma.config.test.ts",
     "dev": "tsx watch src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js",
-    "postinstall": "prisma generate",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "test": "npx prisma db push --config=prisma.config.test.ts && jest --no-coverage",
-    "test:setup": "npx prisma generate --config=prisma.config.test.ts && npx prisma db push --config=prisma.config.test.ts"
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
