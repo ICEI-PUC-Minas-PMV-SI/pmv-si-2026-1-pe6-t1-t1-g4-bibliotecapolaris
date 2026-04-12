@@ -79,9 +79,8 @@ jobs:
             git fetch origin server || exit 1
             git reset --hard origin/server || exit 1
             
-            # Exporta variáveis de ambiente
+            # Exporta variáveis de ambiente (NODE_ENV após o build para não pular devDependencies)
             export DATABASE_URL="$DATABASE_URL"
-            export NODE_ENV="$NODE_ENV"
             export PORT="$PORT"
             
             # Instala bibliotecas novas (se houver) e atualiza o Prisma
@@ -93,6 +92,9 @@ jobs:
             
             # Compila o TypeScript
             npm run build || exit 1
+            
+            # Define NODE_ENV=production após o build
+            export NODE_ENV="$NODE_ENV"
             
             # Inicia a API com o PM2 (ou reinicia se já estiver rodando)
             pm2 restart api-polaris --update-env || pm2 start dist/server.js --name "api-polaris" || exit 1
