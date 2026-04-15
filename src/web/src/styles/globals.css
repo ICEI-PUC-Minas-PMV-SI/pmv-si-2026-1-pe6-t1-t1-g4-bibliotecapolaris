@@ -19,6 +19,10 @@
   .search-input {
     @apply w-full px-4 py-2 rounded-xs outline-none bg-(--text) text-(--background) font-medium text-ellipsis;
   }
+
+  .form-input {
+    @apply w-full px-4 py-2 rounded-sm outline-none bg-(--text) text-(--background) font-medium font-sans text-ellipsis;
+  }
 }
 
 :root {
@@ -30,9 +34,11 @@
 
   --button-active: #ffaa00;
   --button-text-active: #0b0909;
+  --button-hover-active: #bd8109;
 
   --button-inactive: transparent;
   --button-text-inactive: #fff7e6;
+  --button-hover-inactive: #0b0909;
 }
 
 [data-theme='light'] {

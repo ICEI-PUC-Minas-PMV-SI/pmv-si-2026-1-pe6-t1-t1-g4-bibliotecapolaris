@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 import { BookCard, CategoryCard, Footer, Header } from '@/components';
 
-import { getBooks } from '@/database/Books';
+import { getBooks } from '@/services/Books';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -19,7 +19,7 @@ export default function LandingPage() {
   useEffect(() => {
     async function loadBooks() {
       const returnedBooks = await getBooks();
-      setBooks(returnedBooks.data);
+      setBooks(returnedBooks.data ?? []);
     }
 
     loadBooks();
@@ -50,6 +50,7 @@ export default function LandingPage() {
               fill
               className="object-cover"
               priority
+              unoptimized
             />
             <form
               onSubmit={handleSubmit}
@@ -70,7 +71,7 @@ export default function LandingPage() {
 
         {books.length > 0 ? (
           <section className="flex flex-col gap-4 items-center px-8">
-            <h1 className="w-full text-3xl uppercase"> Recém Chegados </h1>
+            <h1 className="w-full text-3xl uppercase tracking-wider"> Recém Chegados </h1>
 
             <div className="flex flex-wrap justify-center gap-4">
               {books.map((book: any, index: number) => (
@@ -92,7 +93,7 @@ export default function LandingPage() {
         )}
 
         <section className="flex flex-col gap-4 items-center px-8">
-          <h1 className="text-3xl uppercase w-full"> Categorias </h1>
+          <h1 className="w-full text-3xl uppercase tracking-wider"> Categorias </h1>
 
           <div className="flex flex-wrap justify-center gap-4">
             <CategoryCard title="Terror" imageSrc="/assets/images/mock-book.png" />
