@@ -24,7 +24,7 @@ export function ActionButton({ title = '', icon, variant = 'fill', className = '
   if (hasTitle && hasIcon) {
     padding = 'pl-[20px] pr-[12px] py-[4px] gap-2';
   } else if (hasTitle) {
-    padding = 'px-[40px] py-[4px]';
+    padding = 'px-8 py-1';
   } else if (hasIcon) {
     padding = 'p-1';
   }
@@ -37,7 +37,7 @@ export function ActionButton({ title = '', icon, variant = 'fill', className = '
 
       {hasIcon && (
         <figure className="w-1/2">
-          <Image src={icon} alt={title} width={80} height={20} className="object-contain" />
+          <Image src={icon} alt={title} width={64} height={40} />
         </figure>
       )}
     </button>

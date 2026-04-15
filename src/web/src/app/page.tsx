@@ -68,7 +68,7 @@ export default function LandingPage() {
           </figure>
         </section>
 
-        {books ? (
+        {books.length > 0 ? (
           <section className="flex flex-col gap-4 items-center px-8">
             <h1 className="w-full text-3xl uppercase"> Recém Chegados </h1>
 
