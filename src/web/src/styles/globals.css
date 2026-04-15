@@ -1,19 +1,31 @@
 @import 'tailwindcss';
 
 @layer base {
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    font-family: var(--font-serif);
+  }
   * {
     margin: 0;
     border: 0;
     padding: 0;
 
-    font-family: var(--font-sans);
-    font-size: 28px;
+    font-family: var(--font-serif);
+  }
+}
+
+@layer components {
+  .search-input {
+    @apply w-full px-4 py-2 rounded-xs outline-none bg-(--text) text-(--background) font-medium text-ellipsis;
   }
 }
 
 :root {
   --background: #0b0909;
-  --foreground: #171312;
+  --foreground: #121212;
   --fairground: #fff2d6;
 
   --text: #fff7e6;

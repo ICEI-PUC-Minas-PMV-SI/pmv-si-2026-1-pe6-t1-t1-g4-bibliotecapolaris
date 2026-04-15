@@ -26,7 +26,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br" className={`${inter.variable} ${crimson.variable} h-full antialiased`} suppressHydrationWarning>
+    <html
+      lang="pt-br"
+      className={`${inter.variable} ${crimson.variable} h-full antialiased overflow-x-auto`}
+      suppressHydrationWarning
+    >
       <body className="min-h-full">
         <ThemeProvider attribute="data-theme" defaultTheme="dark">
           {children}

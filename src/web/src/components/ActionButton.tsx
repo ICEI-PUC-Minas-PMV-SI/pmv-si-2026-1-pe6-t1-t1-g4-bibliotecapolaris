@@ -1,12 +1,15 @@
 'use client';
 
+import Image from 'next/image';
+
 interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   title?: string;
-  icon?: React.ReactNode;
+  icon?: string;
+  className?: string;
   variant?: 'fill' | 'outline';
 }
 
-export function ActionButton({ title = '', icon, variant = 'fill', ...props }: ActionButtonProps) {
+export function ActionButton({ title = '', icon, variant = 'fill', className = '' }: ActionButtonProps) {
   const variants = {
     fill: 'bg-[var(--button-active)] text-[var(--button-text-active)] border-[var(--button-text-active)]',
 
@@ -23,17 +26,20 @@ export function ActionButton({ title = '', icon, variant = 'fill', ...props }: A
   } else if (hasTitle) {
     padding = 'px-[40px] py-[4px]';
   } else if (hasIcon) {
-    padding = 'p-3';
+    padding = 'p-1';
   }
 
   return (
     <button
-      className={`flex items-center justify-center border-2 rounded-xs ${variants[variant]} ${padding} `}
-      {...props}
+      className={`flex items-center justify-center border-2 rounded-xs ${variants[variant]} ${padding} ${className}`}
     >
-      {hasTitle && <span className="text-md font-bold uppercase font-serif align-middle leading-none">{title}</span>}
+      {hasTitle && <span className="text-2xl font-bold uppercase font-serif align-middle leading-none">{title}</span>}
 
-      {hasIcon && <span>{icon}</span>}
+      {hasIcon && (
+        <figure className="w-1/2">
+          <Image src={icon} alt={title} width={80} height={20} className="object-contain" />
+        </figure>
+      )}
     </button>
   );
 }
