@@ -3,10 +3,11 @@
 import { ActionButton } from '@/components/ActionButton';
 
 import Image from 'next/image';
-import { Key, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Header } from '@/components/Header';
-import { BookCard } from '@/components/BookCard';
+
+import { BookCard, CategoryCard, Footer, Header } from '@/components';
+
 import { getBooks } from '@/database/Books';
 
 export default function LandingPage() {
@@ -32,13 +33,17 @@ export default function LandingPage() {
     router.push(`/books?search=${encodeURIComponent(search)}`);
   }
 
+  function goToBooks() {
+    router.push('/books');
+  }
+
   return (
     <>
       <Header />
 
-      <main className="flex flex-col gap-6 bg-(--background)">
+      <main className="min-h-screen flex flex-col gap-6 bg-(--background) mb-8">
         <section className="relative z-10 -translate-y-6">
-          <figure className="h-[45vh] overflow-hidden">
+          <figure className="h-[45vh]">
             <Image
               src="/assets/images/hero-dark.png"
               alt="Imagem principal da landing page"
@@ -62,12 +67,13 @@ export default function LandingPage() {
             </form>
           </figure>
         </section>
-        <section className="flex flex-col gap-4 items-center px-8">
-          <h1 className="text-3xl uppercase w-full"> Recém Chegados </h1>
 
-          <div className="flex flex-wrap justify-center gap-4 h-[40%] overflow-y-hidden">
-            {books?.length ? (
-              books.map((book: any, index: number) => (
+        {books ? (
+          <section className="flex flex-col gap-4 items-center px-8">
+            <h1 className="w-full text-3xl uppercase"> Recém Chegados </h1>
+
+            <div className="flex flex-wrap justify-center gap-4">
+              {books.map((book: any, index: number) => (
                 <BookCard
                   key={index}
                   type="display"
@@ -76,15 +82,25 @@ export default function LandingPage() {
                   description={book.description}
                   imageSrc="/assets/images/mock-book.png"
                 />
-              ))
-            ) : (
-              <h1 className="font-serif text-3xl uppercase"> Nenhum livro encontrado </h1>
-            )}
-          </div>
+              ))}
+            </div>
 
-          <ActionButton title="Ver mais" />
+            <ActionButton title="Ver mais" onClick={goToBooks} />
+          </section>
+        ) : (
+          <h1 className="w-full font-serif text-3xl uppercase text-center"> Nenhum livro encontrado </h1>
+        )}
+
+        <section className="flex flex-col gap-4 items-center px-8">
+          <h1 className="text-3xl uppercase w-full"> Categorias </h1>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            <CategoryCard title="Terror" imageSrc="/assets/images/mock-book.png" />
+          </div>
         </section>
       </main>
+
+      <Footer />
     </>
   );
 }

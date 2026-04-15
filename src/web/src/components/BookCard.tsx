@@ -19,13 +19,13 @@ export function BookCard({
   type = 'display',
 }: BookCardProps) {
   return (
-    <article className="flex flex-col shrink-0 justify-center items-start gap-3 p-4 bg-(--foreground) border border-(--text) rounded-xs w-[320px] min-w-0 overflow-hidden">
-      <div className="w-full text-center overflow-hidden">
+    <article className="flex flex-col shrink-0 justify-center items-start gap-3 p-4 bg-(--foreground) border border-(--text) rounded-xs w-[320px] min-w-0">
+      <div className="w-full text-center">
         <span className="text-3xl uppercase truncate line-clamp-1">{languages.join(' ')}</span>
       </div>
 
       <figure className="w-1/2 self-center">
-        <Image src={imageSrc} alt={title} width={200} height={300} className="object-cover w-full h-auto" />
+        <Image src={imageSrc} alt={title} width={2000} height={2000} className="object-cover w-full h-auto" />
       </figure>
 
       <h1 className="w-full truncate font-serif font-semibold text-3xl text-(--text) text-center ">{title}</h1>

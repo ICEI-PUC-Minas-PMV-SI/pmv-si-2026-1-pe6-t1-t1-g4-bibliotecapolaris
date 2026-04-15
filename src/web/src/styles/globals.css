@@ -12,8 +12,6 @@
     margin: 0;
     border: 0;
     padding: 0;
-
-    font-family: var(--font-serif);
   }
 }
 
@@ -24,8 +22,8 @@
 }
 
 :root {
-  --background: #0b0909;
-  --foreground: #121212;
+  --background: #121212;
+  --foreground: #0b0909;
   --fairground: #fff2d6;
 
   --text: #fff7e6;

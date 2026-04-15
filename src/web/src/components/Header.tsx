@@ -12,9 +12,9 @@ export function Header() {
   return (
     <header className="relative z-50 flex flex-row items-start justify-between w-full h-[20vh] px-8">
       <Image
-        src={isDark ? '/assets/logo-dark.png' : '/assets/logo-light.png'}
+        src={isDark ? '/assets/images/logo-dark.png' : '/assets/images/logo-light.png'}
         alt="Logo"
-        width={112}
+        width={280}
         height={40}
         className="h-full w-auto"
       />
