@@ -48,7 +48,7 @@ export default function Books() {
     const delay = setTimeout(async () => {
       if (!searchQuery) {
         const data = await getBooks();
-        setBooks(data.data ?? []);
+        setBooks(data ?? []);
         return;
       }
 
@@ -58,13 +58,13 @@ export default function Books() {
       }
 
       const data = await getBooks(searchQuery);
-      setBooks(data.data ?? []);
+      setBooks(data ?? []);
     }, 300);
 
     return () => clearTimeout(delay);
   }, [searchQuery]);
 
-  function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
 
     if (!search.trim() || search.length < 4) return;

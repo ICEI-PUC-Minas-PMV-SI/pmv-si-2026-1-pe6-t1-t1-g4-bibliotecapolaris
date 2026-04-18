@@ -3,7 +3,11 @@ export async function getBooks(search?: string) {
 
   if (search) query.append('search', search);
 
-  const res = await fetch(`http://localhost:3333/api/books?${query.toString()}`, { cache: 'no-store' });
+  const res = await fetch(`http://localhost:3333/api/books?${query.toString()}`, {
+    cache: 'no-store',
+  });
 
-  return res.json();
+  const data = await res.json();
+
+  return data.data;
 }
