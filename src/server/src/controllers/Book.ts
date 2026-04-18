@@ -60,6 +60,10 @@ export async function listBooksController(req: Request, res: Response) {
 
     if (typeof search === 'string') filters.search = search;
 
+    if (filters.search && filters.search.length > 80){
+      return sendFailure(res, 'INVALID_INPUT', 'Busca muito longa', undefined, 400);
+    }
+
     const books = await listBooks(filters);
 
     if (books.length === 0) {
