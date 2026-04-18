@@ -52,19 +52,13 @@ export async function getBookBySlugController(req: Request, res: Response) {
 
 export async function listBooksController(req: Request, res: Response) {
   try {
-    const { name, authorName, categories, wishlistId } = req.query;
+    const { search } = req.query;
 
     const filters: {
-      name?: string;
-      authorName?: string;
-      categories?: string;
-      wishlistId?: string;
+      search?: string;
     } = {};
 
-    if (typeof name === 'string') filters.name = name;
-    if (typeof authorName === 'string') filters.authorName = authorName;
-    if (typeof categories === 'string') filters.categories = categories;
-    if (typeof wishlistId === 'string') filters.wishlistId = wishlistId;
+    if (typeof search === 'string') filters.search = search;
 
     const books = await listBooks(filters);
 

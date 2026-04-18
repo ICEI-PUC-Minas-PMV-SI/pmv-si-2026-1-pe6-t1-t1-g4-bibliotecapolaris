@@ -70,31 +70,35 @@ export async function getBookBySlug(slug: string) {
   });
 }
 
-export async function listBooks(filters?: {
-  name?: string;
-  authorName?: string;
-  categories?: string;
-  wishlistId?: string;
-}) {
+export async function listBooks(filters?: { search?: string }) {
+  const cleanSearch = filters?.search?.trim();
+
   return prisma.book.findMany({
-    where: {
-      ...(filters?.name && {
-        name: { contains: filters.name },
-      }),
-      ...(filters?.authorName && {
-        author: { name: { contains: filters.authorName } },
-      }),
-      ...(filters?.categories && {
-        categories: { contains: `${filters.categories.toLowerCase()}` },
-      }),
-      ...(filters?.wishlistId && {
-        wishlists: {
-          some: {
-            studentId: filters.wishlistId,
-          },
-        },
-      }),
-    },
+    where: filters?.search
+      ? {
+          OR: [
+            {
+              name: {
+                contains: cleanSearch,
+              },
+            },
+            {
+              author: {
+                is: {
+                  name: {
+                    contains: cleanSearch,
+                  },
+                },
+              },
+            },
+            {
+              categories: {
+                contains: cleanSearch,
+              },
+            },
+          ],
+        }
+      : undefined,
     include: {
       author: true,
     },
