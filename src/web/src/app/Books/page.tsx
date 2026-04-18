@@ -1,11 +1,12 @@
 'use client';
-
-import { ActionButton } from '@/components/ActionButton';
-import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { BookDisplay, Footer, Header } from '@/components';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+import { ActionButton, BookDisplay, Footer, Header } from '@/components';
+
 import { getBooks } from '@/services/Books';
 
 export default function Books() {
@@ -30,7 +31,9 @@ export default function Books() {
       if (search === searchQuery) return;
 
       if (!search) {
-        router.replace('/Books');
+        router.replace('/Books', {
+          scroll: false,
+        });
         return;
       }
 
@@ -116,14 +119,14 @@ export default function Books() {
             <h1 className="w-full text-3xl uppercase tracking-wider">{title}</h1>
 
             <div className="flex flex-wrap justify-center gap-4">
-              {books.map((book: any, index: number) => (
-                <BookDisplay
-                  key={index}
-                  languages={['PT']}
-                  title={book.name}
-                  description={book.description}
-                  imageSrc="/assets/images/mock-book.png"
-                />
+              {books.map((book: any) => (
+                <Link key={book.slug} href={`/Books/${book.slug}`}>
+                  <BookDisplay
+                    title={book.name}
+                    description={book.description}
+                    imageSrc="/assets/images/mock-book.png"
+                  />
+                </Link>
               ))}
             </div>
           </section>

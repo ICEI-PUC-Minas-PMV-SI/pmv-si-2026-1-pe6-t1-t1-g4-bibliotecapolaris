@@ -39,6 +39,10 @@
   --button-inactive: transparent;
   --button-text-inactive: #fff7e6;
   --button-hover-inactive: #0b0909;
+
+  --status-error: #e53a41;
+  --status-warning: #ffaa00;
+  --status-success: #00ff2f;
 }
 
 [data-theme='light'] {

@@ -9,7 +9,7 @@ interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
   variant?: 'fill' | 'outline';
 }
 
-export function ActionButton({ title = '', icon, variant = 'fill', className = '', style }: ActionButtonProps) {
+export function ActionButton({ title = '', icon, variant = 'fill', className = '', ...props }: ActionButtonProps) {
   const variants = {
     fill: 'bg-[var(--button-active)] text-[var(--button-text-active)] border-[var(--button-text-active)]',
 
@@ -31,10 +31,10 @@ export function ActionButton({ title = '', icon, variant = 'fill', className = '
 
   return (
     <button
-      style={style}
-      className={`flex items-center justify-center border-2 rounded-xs ${variants[variant]} ${padding} ${className}`}
+      {...props}
+      className={`flex items-center justify-center border-2 rounded-xs ${variants[variant]} ${padding} ${className} cursor-pointer transition-colors hover:bg-(--button-hover-active)`}
     >
-      {hasTitle && <span className="text-xl font-bold uppercase font-serif align-middle leading-none">{title}</span>}
+      {hasTitle && <span className="font-bold uppercase font-serif align-middle leading-none">{title}</span>}
 
       {hasIcon && (
         <figure className="w-1/2">

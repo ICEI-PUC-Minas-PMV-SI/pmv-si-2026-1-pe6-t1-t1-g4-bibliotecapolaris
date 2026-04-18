@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
-import { ActionButton } from './ActionButton';
 
 export function Footer() {
   const { theme } = useTheme();

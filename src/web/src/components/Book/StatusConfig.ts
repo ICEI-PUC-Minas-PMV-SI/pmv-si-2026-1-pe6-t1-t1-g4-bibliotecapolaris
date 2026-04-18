@@ -32,15 +32,15 @@ function getDeliveryText(dueDate: Date) {
 
 export const StatusConfig = {
   to_due: {
-    color: '#FFAA00',
+    color: 'var(--status-warning)',
     buttonText: 'Alterar Entrega',
   },
   overdue: {
-    color: '#E53A41',
+    color: 'var(--status-error)',
     buttonText: 'Justificar Atraso',
   },
   far_due: {
-    color: '#00FF2F',
+    color: 'var(--status-success)',
     buttonText: 'Antecipar Entrega',
   },
 } as const;

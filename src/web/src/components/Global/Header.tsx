@@ -2,8 +2,9 @@
 
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
-import { ActionButton } from './ActionButton';
 import { useRouter } from 'next/navigation';
+
+import { ActionButton } from '@/components';
 
 export function Header() {
   const { theme } = useTheme();
@@ -22,7 +23,7 @@ export function Header() {
         onClick={() => router.push('/')}
       />
 
-      <ActionButton title="Perfil" variant="fill" className="mt-2" />
+      <ActionButton title="Perfil" variant="fill" className="mt-2 text-2xl" />
     </header>
   );
 }

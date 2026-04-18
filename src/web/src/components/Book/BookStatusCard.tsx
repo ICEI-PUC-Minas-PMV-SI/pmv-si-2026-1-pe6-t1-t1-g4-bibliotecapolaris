@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { ActionButton } from '@/components';
 
-import { resolveBookStatus } from './StatusConfig';
+import { resolveBookStatus } from '@/components';
 
 export function BookStatusCard({ title, imageSrc, dueDate }: { title: string; imageSrc: string; dueDate: Date }) {
   const { config, label } = resolveBookStatus(dueDate);

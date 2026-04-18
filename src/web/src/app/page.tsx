@@ -1,14 +1,15 @@
 'use client';
 
-import { ActionButton } from '@/components/ActionButton';
+import { ActionButton } from '@/components/Global/ActionButton';
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { BookDisplay, CategoryCard, Footer, Header } from '@/components';
+import { BookDisplay, BookStatusCard, CategoryCard, Footer, Header } from '@/components';
 
 import { getBooks } from '@/services/Books';
+import Link from 'next/link';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function LandingPage() {
   useEffect(() => {
     async function loadBooks() {
       const returnedBooks = await getBooks();
-      setBooks(returnedBooks.data ?? []);
+      setBooks(returnedBooks ?? []);
     }
 
     loadBooks();
@@ -73,18 +74,18 @@ export default function LandingPage() {
             <h1 className="w-full text-3xl uppercase tracking-wider"> Recém Chegados </h1>
 
             <div className="flex flex-wrap justify-center gap-4">
-              {books.map((book: any, index: number) => (
-                <BookDisplay
-                  key={index}
-                  languages={['PT']}
-                  title={book.name}
-                  description={book.description}
-                  imageSrc="/assets/images/mock-book.png"
-                />
+              {books.map((book: any) => (
+                <Link key={book.slug} href={`/Books/${book.slug}`}>
+                  <BookDisplay
+                    title={book.name}
+                    description={book.description}
+                    imageSrc="/assets/images/mock-book.png"
+                  />
+                </Link>
               ))}
             </div>
 
-            <ActionButton title="Ver mais" onClick={goToBooks} />
+            <ActionButton title="Ver mais" className="text-2xl" onClick={goToBooks} />
           </section>
         ) : (
           <h1 className="w-full font-serif text-3xl uppercase text-center"> Nenhum livro encontrado </h1>
@@ -94,6 +95,25 @@ export default function LandingPage() {
 
           <div className="flex flex-wrap justify-center gap-4">
             <CategoryCard title="Terror" imageSrc="/assets/images/mock-book.png" />
+          </div>
+        </section>
+         
+        <section className="flex flex-col gap-4 items-center px-8">
+          <h1 className="w-full text-3xl uppercase tracking-wider"> Categorias </h1>         
+          <div className="flex flex-wrap justify-center gap-4">
+            <BookStatusCard title="The Sudden Stop" imageSrc="/assets/images/mock-book.png" dueDate={new Date()} />
+
+            <BookStatusCard
+              title="The Sudden Stop"
+              imageSrc="/assets/images/mock-book.png"
+              dueDate={new Date('04/12/2026')}
+            />
+
+            <BookStatusCard
+              title="The Sudden Stop"
+              imageSrc="/assets/images/mock-book.png"
+              dueDate={new Date('04/24/2026')}
+            />
           </div>
         </section>
       </main>

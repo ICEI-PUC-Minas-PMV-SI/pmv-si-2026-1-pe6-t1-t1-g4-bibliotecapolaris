@@ -47,11 +47,7 @@ export default function LoginPage() {
           <input name="email" type="email" placeholder="alanwake@remedy.com" className="form-input text-xl" />
           <input name="password" type="password" placeholder="••••••••" className="form-input text-xl" />
 
-          <ActionButton
-            title="Entrar"
-            type="submit"
-            className="h-12 text-3xl rounded-sm cursor-pointer transition-colors hover:bg-(--button-hover-active)"
-          />
+          <ActionButton title="Entrar" type="submit" className="h-12 text-3xl rounded-sm" />
         </form>
 
         <p className="text-(--text) text-2xl font-sans">
