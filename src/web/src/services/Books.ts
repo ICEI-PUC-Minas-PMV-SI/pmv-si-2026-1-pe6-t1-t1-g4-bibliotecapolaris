@@ -1,10 +1,9 @@
-export async function getBooks() {
-  const res = await fetch('http://localhost:3333/api/books', {
-    cache: 'no-store',
-  });
+export async function getBooks(search?: string) {
+  const query = new URLSearchParams();
 
-  const data = await res.json();
-  console.log('API RESPONSE:', data);
+  if (search) query.append('search', search);
 
-  return data;
+  const res = await fetch(`http://localhost:3333/api/books?${query.toString()}`, { cache: 'no-store' });
+
+  return res.json();
 }

@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { BookCard, CategoryCard, Footer, Header } from '@/components';
+import { BookDisplay, CategoryCard, Footer, Header } from '@/components';
 
 import { getBooks } from '@/services/Books';
 
@@ -30,11 +30,11 @@ export default function LandingPage() {
 
     if (!search.trim()) return;
 
-    router.push(`/books?search=${encodeURIComponent(search)}`);
+    router.push(`/Books?search=${encodeURIComponent(search)}`);
   }
 
   function goToBooks() {
-    router.push('/books');
+    router.push('/Books');
   }
 
   return (
@@ -43,7 +43,7 @@ export default function LandingPage() {
 
       <main className="min-h-screen flex flex-col gap-6 bg-(--background) mb-8">
         <section className="relative z-10 -translate-y-6">
-          <figure className="h-[45vh]">
+          <figure className="h-[60vh] relative">
             <Image
               src="/assets/images/hero-dark.png"
               alt="Imagem principal da landing page"
@@ -60,7 +60,7 @@ export default function LandingPage() {
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Pesquise pelo Título, Autor, Editora ou Categoria."
+                placeholder="Pesquise pelo Título, Autor ou Categoria."
                 className="search-input text-3xl"
               />
 
@@ -68,16 +68,14 @@ export default function LandingPage() {
             </form>
           </figure>
         </section>
-
         {books.length > 0 ? (
           <section className="flex flex-col gap-4 items-center px-8">
             <h1 className="w-full text-3xl uppercase tracking-wider"> Recém Chegados </h1>
 
             <div className="flex flex-wrap justify-center gap-4">
               {books.map((book: any, index: number) => (
-                <BookCard
+                <BookDisplay
                   key={index}
-                  type="display"
                   languages={['PT']}
                   title={book.name}
                   description={book.description}
@@ -91,7 +89,6 @@ export default function LandingPage() {
         ) : (
           <h1 className="w-full font-serif text-3xl uppercase text-center"> Nenhum livro encontrado </h1>
         )}
-
         <section className="flex flex-col gap-4 items-center px-8">
           <h1 className="w-full text-3xl uppercase tracking-wider"> Categorias </h1>
 

@@ -3,21 +3,14 @@
 import Image from 'next/image';
 import { ActionButton } from './ActionButton';
 
-type BookCardProps = {
+type BookDisplayProps = {
   languages: string[];
   title: string;
   description: string;
   imageSrc: string;
-  type: 'ebook' | 'display' | 'to_due' | 'expired' | 'far_due';
 };
 
-export function BookCard({
-  languages = [],
-  title = '',
-  description = '',
-  imageSrc = '',
-  type = 'display',
-}: BookCardProps) {
+export function BookDisplay({ languages = [], title = '', description = '', imageSrc = '' }: BookDisplayProps) {
   return (
     <article className="flex flex-col shrink-0 align-center gap-3 p-4 bg-(--foreground) border border-(--text) rounded-xs w-[320px] min-w-0">
       <div className="w-full text-center">
