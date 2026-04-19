@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Inter, Crimson_Pro } from 'next/font/google';
 
 import '../styles/globals.css';
+import '../styles/ag-grid.css';
+
 import { ThemeProvider } from 'next-themes';
 
 const inter = Inter({

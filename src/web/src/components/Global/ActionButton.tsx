@@ -11,9 +11,10 @@ interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
 
 export function ActionButton({ title = '', icon, variant = 'fill', className = '', ...props }: ActionButtonProps) {
   const variants = {
-    fill: 'bg-[var(--button-active)] text-[var(--button-text-active)] border-[var(--button-text-active)]',
+    fill: 'bg-[var(--button-active)] text-[var(--button-text-active)] border-[var(--button-text-active)] cursor-pointer',
 
-    outline: 'bg-[var(--button-inactive)] text-[var(--button-text-inactive)] border-[var(--button-text-inactive)]',
+    outline:
+      'bg-[var(--button-inactive)] text-[var(--button-text-inactive)] border-[var(--button-text-inactive)] cursor-pointer',
   };
 
   const hasTitle = !!title;
@@ -32,7 +33,8 @@ export function ActionButton({ title = '', icon, variant = 'fill', className = '
   return (
     <button
       {...props}
-      className={`flex items-center justify-center border-2 rounded-xs ${variants[variant]} ${padding} ${className} cursor-pointer transition-colors hover:bg-(--button-hover-active)`}
+      className={`flex items-center justify-center border-2 rounded-xs ${variants[variant]} ${padding} ${className} cursor-pointer transition-colors disabled:cursor-not-allowed
+  disabled:opacity-50`}
     >
       {hasTitle && <span className="font-bold uppercase font-serif align-middle leading-none">{title}</span>}
 

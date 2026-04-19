@@ -1,0 +1,53 @@
+.ag-theme-custom {
+  --ag-border-color: #1f1a18;
+  --ag-row-border-color: #1f1a18;
+
+  --ag-background-color: #fff;
+
+  --ag-borders: none;
+}
+
+.ag-theme-custom .ag-header,
+.ag-theme-custom .ag-header-viewport {
+  background-color: #fff2d6;
+}
+
+.ag-theme-custom .ag-header-cell {
+  background-color: #fff2d6;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-right: 1px solid #1f1a18;
+}
+
+.ag-theme-custom .ag-header-cell-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px;
+  width: 100%;
+}
+
+.ag-theme-custom .ag-row {
+  border-bottom: 1px solid #1f1a18;
+}
+
+.ag-theme-custom .ag-cell {
+  display: flex;
+  align-items: center;
+
+  padding: 8px;
+  min-width: 0;
+
+  border-right: 1px solid #1f1a18;
+  border-bottom: 1px solid #1f1a18;
+
+  background-color: #fff;
+}
+
+.ag-theme-custom .ag-row:last-child .ag-cell {
+  border-bottom: none;
+}
