@@ -97,25 +97,6 @@ export default function LandingPage() {
             <CategoryCard title="Terror" imageSrc="/assets/images/mock-book.png" />
           </div>
         </section>
-         
-        <section className="flex flex-col gap-4 items-center px-8">
-          <h1 className="w-full text-3xl uppercase tracking-wider"> Categorias </h1>
-          <div className="flex flex-wrap justify-center gap-4">
-            <BookStatusCard title="The Sudden Stop" imageSrc="/assets/images/mock-book.png" dueDate={new Date()} />
-
-            <BookStatusCard
-              title="The Sudden Stop"
-              imageSrc="/assets/images/mock-book.png"
-              dueDate={new Date('04/12/2026')}
-            />
-
-            <BookStatusCard
-              title="The Sudden Stop"
-              imageSrc="/assets/images/mock-book.png"
-              dueDate={new Date('04/24/2026')}
-            />
-          </div>
-        </section>
       </main>
 
       <Footer />
