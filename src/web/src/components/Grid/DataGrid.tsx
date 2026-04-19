@@ -25,8 +25,8 @@ export function DataGrid({ columnDefs, rowData }: DataGridProps) {
   const [totalPages, setTotalPages] = useState(0);
 
   const defaultColDef = {
-    flex: 1,
-    cellClass: 'flex items-center font-serif font-bold tracking-wider',
+    flex: 2,
+    cellClass: 'flex items-center justify-center font-serif font-bold tracking-wider px-2',
     headerClass: 'text-center font-serif font-bold text-xl uppercase',
   };
 

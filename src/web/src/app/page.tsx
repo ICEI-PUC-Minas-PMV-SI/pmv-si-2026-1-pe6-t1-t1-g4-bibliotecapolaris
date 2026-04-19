@@ -99,7 +99,7 @@ export default function LandingPage() {
         </section>
          
         <section className="flex flex-col gap-4 items-center px-8">
-          <h1 className="w-full text-3xl uppercase tracking-wider"> Categorias </h1>         
+          <h1 className="w-full text-3xl uppercase tracking-wider"> Categorias </h1>
           <div className="flex flex-wrap justify-center gap-4">
             <BookStatusCard title="The Sudden Stop" imageSrc="/assets/images/mock-book.png" dueDate={new Date()} />
 

@@ -94,13 +94,13 @@ export const mockData: Record<ViewMode, any[]> = {
       nome: 'Carlos',
       livro: '1984',
       dueDate: new Date('2026-04-15'),
-      dataRetirada: '01/04/2026',
+      dataRetirada: '01/04/2026 - 12:30',
     },
     {
       nome: 'Ana',
       livro: 'Clean Code',
       dueDate: new Date('2026-04-25'),
-      dataRetirada: '05/04/2026',
+      dataRetirada: '05/04/2026 - 12:30',
     },
   ],
 };

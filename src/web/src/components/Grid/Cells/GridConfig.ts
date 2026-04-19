@@ -11,7 +11,7 @@ export const gridConfigs = {
         field: 'livro',
         cellRenderer: BookCell,
       },
-      { headerName: 'Autor', field: 'autor', cellClass: 'font-serif font-bold uppercase' },
+      { headerName: 'Autor', field: 'autor', cellClass: 'font-serif font-bold uppercase justify-center' },
       { headerName: 'Categoria', field: 'categoria' },
       {
         headerName: 'Descrição',
@@ -21,7 +21,7 @@ export const gridConfigs = {
       {
         headerName: 'Ação',
         cellRenderer: DeleteButtonCell,
-        flex: 0,
+        flex: 1,
       },
     ],
   },
@@ -47,7 +47,10 @@ export const gridConfigs = {
         field: 'dueDate',
         cellRenderer: StatusCell,
       },
-      { headerName: 'Data da Retirada', field: 'dataRetirada' },
+      {
+        headerName: 'Data da Retirada',
+        field: 'dataRetirada',
+      },
     ],
   },
 };
