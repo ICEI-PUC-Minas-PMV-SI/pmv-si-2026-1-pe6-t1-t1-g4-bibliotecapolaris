@@ -41,4 +41,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-src/web/.gitignore
+src/server/.vscode/settings.json
