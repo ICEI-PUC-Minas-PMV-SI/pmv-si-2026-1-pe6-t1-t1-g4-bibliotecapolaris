@@ -39,8 +39,8 @@ export function LoanActionsCell(params: any) {
 
   return (
     <div className="flex gap-2">
-      <ActionButton title="Rejeitar" onClick={handleReject} className="bg-(--status-error)!" />
-      <ActionButton title="Aceitar" onClick={handleAccept} className="bg-(--status-success)!" />
+      <ActionButton title="Rejeitar" onClick={handleReject} className="bg-(--status-error)! border!" />
+      <ActionButton title="Aceitar" onClick={handleAccept} className="bg-(--status-success)! border!" />
     </div>
   );
 }
@@ -48,5 +48,9 @@ export function LoanActionsCell(params: any) {
 export function StatusCell(params: any) {
   const { label, config } = resolveBookStatus(new Date(params.value));
 
-  return <span style={{ backgroundColor: config.color, padding: '8px' }}>{label}</span>;
+  return (
+    <span style={{ backgroundColor: config.color, padding: '8px', border: '1px solid #1F1A18', borderRadius: '2px' }}>
+      {label}
+    </span>
+  );
 }
