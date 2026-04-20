@@ -11,8 +11,10 @@ export function WithdrawButton() {
     <>
       <ActionButton
         title="Retirar"
-        className="w-[30%] self-end text-3xl"
-        onClick={() => {
+        className="flex-1 self-end text-3xl"
+        onClick={(e: any) => {
+          e?.preventDefault?.();
+          e?.stopPropagation?.();
           setOpen(true);
         }}
       />

@@ -1,13 +1,53 @@
-import Image from 'next/image';
+'use client';
 
-import { Footer, Header, WithdrawButton } from '@/components';
+import Image from 'next/image';
+import { use, useEffect, useState } from 'react';
+
+import { Footer, Header, LikeButton, WithdrawButton } from '@/components';
+
 import { getBookBySlug } from '@/services/Books';
 import { formatCategories } from '@/util/Formatter';
+import { toggleWishlist } from '@/util/ToggleFavorite';
+import { getWishlistByUserId } from '@/services/Wishlist';
 
-export default async function BookPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default function BookPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
 
-  const book = await getBookBySlug(slug);
+  const [book, setBook] = useState<any>(null);
+  const [wishlist, setWishlist] = useState<{ books: any[] }>({ books: [] });
+
+  const wishlistSet = new Set((wishlist.books ?? []).map((b: any) => b.id));
+
+  useEffect(() => {
+    async function loadWishlist() {
+      const data = await getWishlistByUserId('mock-user-id');
+
+      setWishlist(data ?? { books: [] });
+    }
+
+    loadWishlist();
+  }, []);
+
+  useEffect(() => {
+    async function loadBook() {
+      const data = await getBookBySlug(slug);
+      setBook(data);
+    }
+
+    loadBook();
+  }, [slug]);
+
+  async function handleToggleWishlist(bookId: string) {
+    const userId = 'mock-user-id';
+    const isFavorite = wishlistSet.has(bookId);
+
+    await toggleWishlist({
+      userId,
+      bookId,
+      isFavorite,
+      setWishlist,
+    });
+  }
 
   if (!book) {
     return <h1>Livro não encontrado</h1>;
@@ -17,7 +57,6 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
     <>
       <Header />
       <main className="min-h-[80vh] flex justify-evenly bg-(--background) mt-8">
-        {/* IMAGEM */}
         <figure className="relative w-88 h-full border border-(--text) rounded-sm">
           <Image
             src="/assets/images/mock-book.png"
@@ -29,9 +68,12 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
           />
         </figure>
 
-        {/* CONTEÚDO */}
         <section className="flex flex-col gap-6 w-[50%] h-full">
-          <h1 className="font-serif text-5xl font-medium wrap-break-word tracking-wider line-clamp-1">{book.name}</h1>
+          <div className="flex flex-row justify-between">
+            <h1 className="font-serif text-5xl font-medium wrap-break-word tracking-wider line-clamp-1">{book.name}</h1>
+
+            <LikeButton isFavorite={wishlistSet.has(book.id)} onToggle={() => handleToggleWishlist(book.id)} />
+          </div>
 
           <h2 className="font-serif text-4xl font-medium wrap-break-word tracking-wider line-clamp-1">{`Por ${book.author.name}`}</h2>
 

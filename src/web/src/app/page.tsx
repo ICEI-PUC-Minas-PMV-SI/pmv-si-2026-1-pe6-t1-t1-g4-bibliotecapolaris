@@ -10,20 +10,30 @@ import { BookDisplay, BookStatusCard, CategoryCard, Footer, Header } from '@/com
 
 import { getBooks } from '@/services/Books';
 import Link from 'next/link';
+import { toggleWishlist } from '@/util/ToggleFavorite';
+import { getWishlistByUserId } from '@/services/Wishlist';
 
 export default function LandingPage() {
   const router = useRouter();
   const [search, setSearch] = useState('');
 
   const [books, setBooks] = useState<any[]>([]);
+  const [wishlist, setWishlist] = useState<{ books: any[] }>({ books: [] });
+  const wishlistSet = new Set((wishlist.books ?? []).map((b: any) => b.id));
 
   useEffect(() => {
     async function loadBooks() {
       const returnedBooks = await getBooks();
       setBooks(returnedBooks ?? []);
     }
+    async function loadWishlist() {
+      const data = await getWishlistByUserId('mock-user-id');
+
+      setWishlist(data ?? { books: [] });
+    }
 
     loadBooks();
+    loadWishlist();
   }, []);
 
   function handleSubmit(e: React.SubmitEvent) {
@@ -32,6 +42,19 @@ export default function LandingPage() {
     if (!search.trim()) return;
 
     router.push(`/Books?search=${encodeURIComponent(search)}`);
+  }
+
+  async function handleToggleWishlist(bookId: string) {
+    const userId = 'mock-user-id';
+
+    const isFavorite = wishlistSet.has(bookId);
+
+    await toggleWishlist({
+      userId,
+      bookId,
+      isFavorite,
+      setWishlist,
+    });
   }
 
   function goToBooks() {
@@ -69,6 +92,7 @@ export default function LandingPage() {
             </form>
           </figure>
         </section>
+
         {books.length > 0 ? (
           <section className="flex flex-col gap-4 items-center px-8">
             <h1 className="w-full text-3xl uppercase tracking-wider"> Recém Chegados </h1>
@@ -80,6 +104,8 @@ export default function LandingPage() {
                     title={book.name}
                     description={book.description}
                     imageSrc="/assets/images/mock-book.png"
+                    isFavorite={wishlistSet.has(book.id)}
+                    onToggleFavorite={() => handleToggleWishlist(book.id)}
                   />
                 </Link>
               ))}
