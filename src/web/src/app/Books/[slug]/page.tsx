@@ -7,26 +7,13 @@ import { Footer, Header, LikeButton, WithdrawButton } from '@/components';
 
 import { getBookBySlug } from '@/services/Books';
 import { formatCategories } from '@/util/Formatter';
-import { toggleWishlist } from '@/util/ToggleFavorite';
-import { getWishlistByUserId } from '@/services/Wishlist';
+import { useWishlist } from '@/hooks/useWishlist';
 
 export default function BookPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
 
   const [book, setBook] = useState<any>(null);
-  const [wishlist, setWishlist] = useState<{ books: any[] }>({ books: [] });
-
-  const wishlistSet = new Set((wishlist.books ?? []).map((b: any) => b.id));
-
-  useEffect(() => {
-    async function loadWishlist() {
-      const data = await getWishlistByUserId('mock-user-id');
-
-      setWishlist(data ?? { books: [] });
-    }
-
-    loadWishlist();
-  }, []);
+  const { wishlistSet, toggle } = useWishlist('mock-user-id');
 
   useEffect(() => {
     async function loadBook() {
@@ -36,18 +23,6 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
 
     loadBook();
   }, [slug]);
-
-  async function handleToggleWishlist(bookId: string) {
-    const userId = 'mock-user-id';
-    const isFavorite = wishlistSet.has(bookId);
-
-    await toggleWishlist({
-      userId,
-      bookId,
-      isFavorite,
-      setWishlist,
-    });
-  }
 
   if (!book) {
     return <h1>Livro não encontrado</h1>;
@@ -72,7 +47,7 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
           <div className="flex flex-row justify-between">
             <h1 className="font-serif text-5xl font-medium wrap-break-word tracking-wider line-clamp-1">{book.name}</h1>
 
-            <LikeButton isFavorite={wishlistSet.has(book.id)} onToggle={() => handleToggleWishlist(book.id)} />
+            <LikeButton isFavorite={wishlistSet.has(book.id)} onToggle={() => toggle(book.id)} />
           </div>
 
           <h2 className="font-serif text-4xl font-medium wrap-break-word tracking-wider line-clamp-1">{`Por ${book.author.name}`}</h2>

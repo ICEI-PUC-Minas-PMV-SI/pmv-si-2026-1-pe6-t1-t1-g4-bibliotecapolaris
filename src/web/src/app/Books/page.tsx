@@ -8,8 +8,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { ActionButton, BookDisplay, Footer, Header } from '@/components';
 
 import { getBooks } from '@/services/Books';
-import { toggleWishlist } from '@/util/ToggleFavorite';
-import { getWishlistByUserId } from '@/services/Wishlist';
+
+import { useWishlist } from '@/hooks/useWishlist';
 
 export default function Books() {
   const router = useRouter();
@@ -19,19 +19,9 @@ export default function Books() {
 
   const [search, setSearch] = useState('');
   const [books, setBooks] = useState<any[]>([]);
-  const [wishlist, setWishlist] = useState<{ books: any[] }>({ books: [] });
-  const wishlistSet = new Set((wishlist.books ?? []).map((b: any) => b.id));
+  const { wishlistSet, toggle } = useWishlist('mock-user-id');
 
   const title = searchQuery ? `Resultados para "${searchQuery}"` : 'Livros';
-
-  useEffect(() => {
-    async function loadWishlist() {
-      const data = await getWishlistByUserId('mock-user-id');
-      setWishlist(data ?? { books: [] });
-    }
-
-    loadWishlist();
-  }, []);
 
   useEffect(() => {
     if (searchQuery !== search) {
@@ -92,19 +82,6 @@ export default function Books() {
     setSearch(e.target.value);
   }
 
-  async function handleToggleWishlist(bookId: string) {
-    const userId = 'mock-user-id';
-
-    const isFavorite = wishlistSet.has(bookId);
-
-    await toggleWishlist({
-      userId,
-      bookId,
-      isFavorite,
-      setWishlist,
-    });
-  }
-
   return (
     <>
       <Header />
@@ -152,7 +129,7 @@ export default function Books() {
                     description={book.description}
                     imageSrc="/assets/images/mock-book.png"
                     isFavorite={wishlistSet.has(book.id)}
-                    onToggleFavorite={() => handleToggleWishlist(book.id)}
+                    onToggleFavorite={() => toggle(book.id)}
                   />
                 </Link>
               ))}

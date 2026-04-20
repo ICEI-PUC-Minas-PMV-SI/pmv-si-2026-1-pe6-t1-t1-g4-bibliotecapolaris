@@ -1,39 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import { BookDisplay, BookStatusCard, Footer, Header } from '@/components';
-
-import { getWishlistByUserId } from '@/services/Wishlist';
-import { toggleWishlist } from '@/util/ToggleFavorite';
+import { useWishlist } from '@/hooks/useWishlist';
 
 export default function ProfilePage() {
-  const [wishlist, setWishlist] = useState<{ books: any[] }>({
-    books: [],
-  });
-
-  const wishlistSet = new Set((wishlist.books ?? []).map((b) => b.id));
-
-  useEffect(() => {
-    async function loadWishlist() {
-      const data = await getWishlistByUserId('mock-user-id');
-      setWishlist(data ?? { books: [] });
-    }
-
-    loadWishlist();
-  }, []);
-
-  async function handleToggleWishlist(bookId: string) {
-    const userId = 'mock-user-id';
-    const isFavorite = wishlistSet.has(bookId);
-
-    await toggleWishlist({
-      userId,
-      bookId,
-      isFavorite,
-      setWishlist,
-    });
-  }
+  const { wishlist, wishlistSet, toggle } = useWishlist('mock-user-id');
 
   return (
     <>
@@ -75,7 +46,7 @@ export default function ProfilePage() {
                 description={book.description}
                 imageSrc="/assets/images/mock-book.png"
                 isFavorite={wishlistSet.has(book.id)}
-                onToggleFavorite={() => handleToggleWishlist(book.id)}
+                onToggleFavorite={() => toggle(book.id)}
               />
             ))}
           </div>
