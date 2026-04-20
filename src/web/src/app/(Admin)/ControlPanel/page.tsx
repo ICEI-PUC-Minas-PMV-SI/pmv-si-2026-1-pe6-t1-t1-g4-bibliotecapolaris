@@ -32,24 +32,28 @@ export default function ControlPanel() {
       <Header />
 
       <main className="min-h-[80vh] flex flex-col gap-6 bg-(--background) mb-8 overflow-x-hidden">
-        <section className="w-full flex flex-row mt-8 ml-8 gap-4">
-          <ActionButton
-            title="Livros"
-            variant={activeView === 'livros' ? 'fill' : 'outline'}
-            onClick={() => setActiveView('livros')}
-          />
+        <section className=" flex flex-row mt-8 mx-8 justify-between">
+          <div className="flex flex-row gap-4">
+            <ActionButton
+              title="Livros"
+              variant={activeView === 'livros' ? 'fill' : 'outline'}
+              onClick={() => setActiveView('livros')}
+            />
 
-          <ActionButton
-            title="Empréstimos"
-            variant={activeView === 'emprestimos' ? 'fill' : 'outline'}
-            onClick={() => setActiveView('emprestimos')}
-          />
+            <ActionButton
+              title="Empréstimos"
+              variant={activeView === 'emprestimos' ? 'fill' : 'outline'}
+              onClick={() => setActiveView('emprestimos')}
+            />
 
-          <ActionButton
-            title="Histórico"
-            variant={activeView === 'historico' ? 'fill' : 'outline'}
-            onClick={() => setActiveView('historico')}
-          />
+            <ActionButton
+              title="Histórico"
+              variant={activeView === 'historico' ? 'fill' : 'outline'}
+              onClick={() => setActiveView('historico')}
+            />
+          </div>
+
+          {activeView !== 'historico' && <ActionButton title="Adicionar" />}
         </section>
 
         <DataGrid key={activeView} columnDefs={config.columnDefs} rowData={rowData} />
