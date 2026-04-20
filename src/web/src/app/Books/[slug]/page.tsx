@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import { Footer, Header, WithdrawButton } from '@/components';
 import { getBookBySlug } from '@/services/Books';
+import { formatCategories } from '@/util/Formatter';
 
 export default async function BookPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -35,10 +36,7 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
           <h2 className="font-serif text-4xl font-medium wrap-break-word tracking-wider line-clamp-1">{`Por ${book.author.name}`}</h2>
 
           <h2 className="font-serif text-3xl font-medium tracking-wider line-clamp-1">
-            {book.categories
-              .split(',')
-              .map((cat: string) => cat.charAt(0).toUpperCase() + cat.slice(1))
-              .join(', ')}
+            {formatCategories(book.categories)}
           </h2>
 
           <p className="font-sans font-light text-lg text-justify -tracking-wide line-clamp-6">{book.description}</p>

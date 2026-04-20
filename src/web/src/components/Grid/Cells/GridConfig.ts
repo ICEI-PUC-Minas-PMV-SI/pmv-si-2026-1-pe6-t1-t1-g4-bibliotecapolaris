@@ -2,20 +2,21 @@ import { BookCell } from '@/components';
 import { DeleteButtonCell } from '@/components';
 import { LoanActionsCell } from '@/components';
 import { StatusCell } from '@/components';
+import { formatCategories } from '@/util/Formatter';
 
 export const gridConfigs = {
   livros: {
     columnDefs: [
       {
         headerName: 'Livro',
-        field: 'livro',
+        field: 'name',
         cellRenderer: BookCell,
       },
-      { headerName: 'Autor', field: 'autor', cellClass: 'font-serif font-bold uppercase justify-center' },
-      { headerName: 'Categoria', field: 'categoria' },
+      { headerName: 'Autor', field: 'author', cellClass: 'font-serif font-bold text-xl uppercase justify-center' },
+      { headerName: 'Categoria', field: 'categories', valueFormatter: (params: any) => formatCategories(params.value) },
       {
         headerName: 'Descrição',
-        field: 'descricao',
+        field: 'description',
         cellClass: 'flex items-center justify-start px-2',
       },
       {

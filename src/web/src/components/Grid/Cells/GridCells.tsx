@@ -3,11 +3,11 @@ import Image from 'next/image';
 import { ActionButton, resolveBookStatus } from '@/components';
 
 export function BookCell(params: any) {
-  const { src, name } = params.value;
+  const { imageSrc, name } = params.data;
 
   return (
-    <div className="flex items-center  w-full gap-10 h-full">
-      <Image src={src} alt={name} width={40} height={64} />
+    <div className="flex items-center w-full gap-10 h-full">
+      <Image src={imageSrc} alt={name} width={40} height={64} />
       <span className="leading-none">{name}</span>
     </div>
   );

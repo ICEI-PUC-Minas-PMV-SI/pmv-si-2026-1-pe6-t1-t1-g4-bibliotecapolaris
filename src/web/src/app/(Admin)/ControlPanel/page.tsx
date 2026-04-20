@@ -2,16 +2,30 @@
 
 import '@/lib/AgGrid';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActionButton, DataGrid, gridConfigs, Header, mockData } from '@/components';
+import { getBooks } from '@/services/Books';
+
+import { formatBook } from '@/util/Formatter';
 
 type ViewMode = 'livros' | 'emprestimos' | 'historico';
 
 export default function ControlPanel() {
+  useEffect(() => {
+    async function loadBooks() {
+      const data = await getBooks();
+      setBooks((data ?? []).map(formatBook));
+    }
+
+    loadBooks();
+  }, []);
+
+  const [books, setBooks] = useState([]);
+
   const [activeView, setActiveView] = useState<ViewMode>('livros');
 
   const config = gridConfigs[activeView];
-  const rowData = mockData[activeView];
+  const rowData = activeView === 'livros' ? books : mockData[activeView];
 
   return (
     <>

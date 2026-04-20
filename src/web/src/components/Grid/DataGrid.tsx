@@ -14,10 +14,6 @@ interface DataGridProps {
   rowData: any[];
 }
 
-function onRowClicked(params: any) {
-  console.log(params.data);
-}
-
 export function DataGrid({ columnDefs, rowData }: DataGridProps) {
   const gridRef = useRef<AgGridReact>(null);
 
@@ -26,9 +22,13 @@ export function DataGrid({ columnDefs, rowData }: DataGridProps) {
 
   const defaultColDef = {
     flex: 2,
-    cellClass: 'flex items-center justify-center font-serif font-bold tracking-wider px-2',
+    cellClass: 'flex items-center justify-center font-serif font-bold  text-xl tracking-wider px-2',
     headerClass: 'text-center font-serif font-bold text-xl uppercase',
   };
+
+  function onRowClicked(params: any) {
+    console.log(params.data);
+  }
 
   function onGridReady(params: GridReadyEvent) {
     const api = params.api;
