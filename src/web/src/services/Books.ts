@@ -3,7 +3,7 @@ export async function getBooks(search?: string) {
 
   if (search) query.append('search', search);
 
-  const res = await fetch(`http://localhost:3333/api/books?${query.toString()}`, {
+  const res = await fetch(`http://127.0.0.1:3333/api/books?${query.toString()}`, {
     cache: 'no-store',
   });
 
@@ -13,7 +13,7 @@ export async function getBooks(search?: string) {
 }
 
 export async function getBookBySlug(slug: string) {
-  const res = await fetch(`http://localhost:3333/api/books/${slug}`, {
+  const res = await fetch(`http://127.0.0.1:3333/api/books/${slug}`, {
     cache: 'no-store',
   });
 

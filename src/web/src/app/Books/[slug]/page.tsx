@@ -14,6 +14,7 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
 
   const [book, setBook] = useState<any>(null);
   const { wishlistSet, toggle } = useWishlist('mock-user-id');
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     async function loadBook() {
@@ -28,18 +29,21 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
     return <h1>Livro não encontrado</h1>;
   }
 
+  const finalImageSrc = imgError || !book.imageSrc ? '/assets/images/mock-book.png' : book.imageSrc;
+
   return (
     <>
       <Header />
       <main className="min-h-[80vh] flex justify-evenly bg-(--background) mt-8">
-        <figure className="relative w-88 h-full border border-(--text) rounded-sm">
+        <figure className="relative w-88 h-full border border-(--text) rounded-sm overflow-hidden">
           <Image
-            src="/assets/images/mock-book.png"
+            src={finalImageSrc}
             height={2000}
             width={2000}
-            alt="Imagem principal da landing page"
+            alt={book.name}
             className="object-cover"
             unoptimized
+            onError={() => setImgError(true)}
           />
         </figure>
 

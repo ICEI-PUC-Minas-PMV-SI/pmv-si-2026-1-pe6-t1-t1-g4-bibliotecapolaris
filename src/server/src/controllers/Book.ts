@@ -52,24 +52,27 @@ export async function getBookBySlugController(req: Request, res: Response) {
 
 export async function listBooksController(req: Request, res: Response) {
   try {
-    const { search } = req.query;
+    const { search, name, authorName, categories, wishlistId } = req.query;
 
     const filters: {
       search?: string;
+      name?: string;
+      authorName?: string;
+      categories?: string;
+      wishlistId?: string;
     } = {};
 
     if (typeof search === 'string') filters.search = search;
+    if (typeof name === 'string') filters.name = name;
+    if (typeof authorName === 'string') filters.authorName = authorName;
+    if (typeof categories === 'string') filters.categories = categories;
+    if (typeof wishlistId === 'string') filters.wishlistId = wishlistId;
 
-    if (filters.search && filters.search.length > 80){
+    if (filters.search && filters.search.length > 80) {
       return sendFailure(res, 'INVALID_INPUT', 'Busca muito longa', undefined, 400);
     }
 
     const books = await listBooks(filters);
-
-    if (books.length === 0) {
-      return sendFailure(res, 'NOT_FOUND', 'Nenhum livro encontrado com os filtros informados', undefined, 404);
-    }
-
     return sendSuccess(res, books, 200);
   } catch (error) {
     return handleError(res, error, 'Livro');

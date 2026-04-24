@@ -103,7 +103,7 @@ export default function LandingPage() {
                   <BookDisplay
                     title={book.name}
                     description={book.description}
-                    imageSrc="/assets/images/mock-book.png"
+                    imageSrc={book.imageSrc}
                     isFavorite={wishlistSet.has(book.id)}
                     onToggleFavorite={() => handleToggleWishlist(book.id)}
                   />
