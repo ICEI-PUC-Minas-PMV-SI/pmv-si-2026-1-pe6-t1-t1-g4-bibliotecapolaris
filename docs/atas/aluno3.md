@@ -14,7 +14,7 @@
 | 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ✅ | Documentação interativa da **API** de **Usuários** **(Swagger/OpenAPI)** | ✅ |
 | 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ✅ | Testes automatizados de integração **(Jest)** para o **CRUD** de **Usuários** | ✅ |
 | 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ✅ | Apresentação da **Segunda Etapa** | ✅ |
-| 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ⬜ |  |  |
+| 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ✅ | Desenvolvimento da **Página de Registro**. Integração do **Front-end** das telas de **Autenticação (Login e Registro)** com a **API** do **Back-end**. Implementação de **Rota** e **Controller** de **Login** no **Backend**. Criação de **Modal** dinâmico para tratamento de erros de requisição. | ✅ |
 | 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ⬜ |  |  |
 | 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ⬜ |  |  |
 | 11/05 - 17/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ⬜ |  |  |
