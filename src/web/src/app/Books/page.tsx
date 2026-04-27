@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { ActionButton, BookDisplay, Footer, Header } from '@/components';
+import { ActionButton, AlertModal, BookDisplay, Footer, Header } from '@/components';
 
 import { getBooks } from '@/services/Books';
 
@@ -19,7 +19,7 @@ export default function Books() {
 
   const [search, setSearch] = useState('');
   const [books, setBooks] = useState<any[]>([]);
-  const { wishlistSet, toggle } = useWishlist('mock-user-id');
+  const { wishlistSet, toggle, error, setError } = useWishlist('mock-user-id');
 
   const title = searchQuery ? `Resultados para "${searchQuery}"` : 'Livros';
 
@@ -87,6 +87,15 @@ export default function Books() {
       <Header />
 
       <main className="min-h-screen flex flex-col gap-6 bg-(--background) mb-8">
+        {error && (
+          <AlertModal
+            type="error"
+            title="Erro ao favoritar"
+            description="Não foi possível atualizar sua lista."
+            onClose={() => setError(null)}
+          />
+        )}
+
         <section className="relative z-10 -translate-y-6">
           <figure className="h-[60vh] relative">
             <Image

@@ -1,16 +1,25 @@
 'use client';
 
-import { BookDisplay, BookStatusCard, Footer, Header } from '@/components';
 import { useWishlist } from '@/hooks/useWishlist';
+import { AlertModal, BookDisplay, BookStatusCard, Footer, Header } from '@/components';
 
 export default function ProfilePage() {
-  const { wishlist, wishlistSet, toggle } = useWishlist('mock-user-id');
+  const { wishlist, wishlistSet, toggle, error, setError } = useWishlist('mock-user-id');
 
   return (
     <>
       <Header />
 
       <main className="min-h-[80vh] flex flex-col gap-6 bg-(--background) m-8">
+        {error && (
+          <AlertModal
+            type="error"
+            title="Erro ao favoritar"
+            description="Não foi possível atualizar sua lista."
+            onClose={() => setError(null)}
+          />
+        )}
+
         <section>
           <h1 className="w-full text-3xl uppercase tracking-wider">Bem vindo de volta, 'Lindão'</h1>
         </section>

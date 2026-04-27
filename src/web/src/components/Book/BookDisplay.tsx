@@ -1,7 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { ActionButton, LikeButton, WithdrawButton } from '@/components';
+import { LikeButton, WithdrawButton } from '@/components';
+import { useState } from 'react';
 
 type BookDisplayProps = {
   title: string;
@@ -20,7 +21,7 @@ export function BookDisplay({
 }: BookDisplayProps) {
   return (
     <article className="flex flex-col shrink-0 align-center gap-3 p-4 bg-(--foreground) border border-(--text) rounded-xs w-[320px] min-w-0">
-      <figure className="w-1/2 self-center border border-(--text) rounded-xs">
+      <figure className="w-1/2 self-center border border-(--text) rounded-xs shadow-[4px_4px_8px_0px_#FFF2D633,-4px_4px_16px_0px_#FFF2D633]">
         <Image src={imageSrc} alt={title} width={2000} height={2000} className="object-cover w-full h-auto" />
       </figure>
 

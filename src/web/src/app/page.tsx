@@ -6,34 +6,27 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { BookDisplay, BookStatusCard, CategoryCard, Footer, Header } from '@/components';
+import { AlertModal, BookDisplay, CategoryCard, Footer, Header } from '@/components';
 
 import { getBooks } from '@/services/Books';
+import { useWishlist } from '@/hooks/useWishlist';
+
 import Link from 'next/link';
-import { toggleWishlist } from '@/util/ToggleFavorite';
-import { getWishlistByUserId } from '@/services/Wishlist';
 
 export default function LandingPage() {
   const router = useRouter();
   const [search, setSearch] = useState('');
 
   const [books, setBooks] = useState<any[]>([]);
-  const [wishlist, setWishlist] = useState<{ books: any[] }>({ books: [] });
-  const wishlistSet = new Set((wishlist.books ?? []).map((b: any) => b.id));
+  const { wishlistSet, toggle, error, setError } = useWishlist('mock-user-id');
 
   useEffect(() => {
     async function loadBooks() {
       const returnedBooks = await getBooks();
       setBooks(returnedBooks ?? []);
     }
-    async function loadWishlist() {
-      const data = await getWishlistByUserId('mock-user-id');
-
-      setWishlist(data ?? { books: [] });
-    }
 
     loadBooks();
-    loadWishlist();
   }, []);
 
   function handleSubmit(e: React.SubmitEvent) {
@@ -42,19 +35,6 @@ export default function LandingPage() {
     if (!search.trim()) return;
 
     router.push(`/Books?search=${encodeURIComponent(search)}`);
-  }
-
-  async function handleToggleWishlist(bookId: string) {
-    const userId = 'mock-user-id';
-
-    const isFavorite = wishlistSet.has(bookId);
-
-    await toggleWishlist({
-      userId,
-      bookId,
-      isFavorite,
-      setWishlist,
-    });
   }
 
   function goToBooks() {
@@ -66,6 +46,7 @@ export default function LandingPage() {
       <Header />
 
       <main className="min-h-screen flex flex-col gap-6 bg-(--background) mb-8">
+        {error && <AlertModal type="error" title="Erro" description={error} onClose={() => setError(null)} />}
         <section className="relative z-10 -translate-y-6">
           <figure className="h-[60vh] relative">
             <Image
@@ -105,7 +86,7 @@ export default function LandingPage() {
                     description={book.description}
                     imageSrc="/assets/images/mock-book.png"
                     isFavorite={wishlistSet.has(book.id)}
-                    onToggleFavorite={() => handleToggleWishlist(book.id)}
+                    onToggleFavorite={() => toggle(book.id)}
                   />
                 </Link>
               ))}
