@@ -1,56 +1,51 @@
 'use client';
 
 import Image from 'next/image';
-import { ActionButton } from '@/components';
+import { ActionButton, AlertModal } from '@/components';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { loginUser } from '@/services/User';
 
 export default function LoginPage() {
   const router = useRouter();
 
-  // Estados para controlar o carregamento e o Modal
   const [isLoading, setIsLoading] = useState(false);
-  const [modal, setModal] = useState({ isOpen: false, type: '', message: '' });
+  const [modal, setModal] = useState({ isOpen: false, type: 'error', title: '', description: '' });
 
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const email = formData.get('email');
-    const password = formData.get('password');
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
     try {
-      // Rota de login
-      const response = await fetch('http://localhost:3333/api/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      setIsLoading(true);
+      
+      const { status, data } = await loginUser(email, password);
 
-      const data = await response.json();
-
-      // Tratando a resposta
-      if (response.status === 200 || response.status === 201) {
-        setModal({ isOpen: true, type: 'success', message: 'Login realizado com sucesso!' });
+      if (status === 200 || status === 201) {
+        setModal({ 
+          isOpen: true, 
+          type: 'success', 
+          title: 'Sucesso!',
+          description: 'Login realizado com sucesso!' 
+        });
       } else {
-        
-        let errorMsg = data.message || 'E-mail ou senha incorretos.';
-        
-        if (data.field) {
-          if (Array.isArray(data.field)) {
-            errorMsg = data.field[0];
-          } else if (typeof data.field === 'object') {
-            const firstFieldError = Object.keys(data.field)[0];
-            errorMsg = data.field[firstFieldError][0];
-          }
-        }
-        setModal({ isOpen: true, type: 'error', message: errorMsg });
+        setModal({ 
+          isOpen: true, 
+          type: 'error', 
+          title: 'Atenção!',
+          description: data.message || 'E-mail ou senha incorretos.' 
+        });
       }
     } catch (error) {
-      setModal({ isOpen: true, type: 'error', message: 'Erro ao conectar com o servidor.' });
+      setModal({ 
+        isOpen: true, 
+        type: 'error', 
+        title: 'Erro no Servidor',
+        description: 'Não foi possível conectar.' 
+      });
     } finally {
       setIsLoading(false);
     }
@@ -58,7 +53,6 @@ export default function LoginPage() {
 
   function handleModalConfirm() {
     if (modal.type === 'success') {
-      // Se deu certo, redireciona para a página interna
       router.push('/Books'); 
     } else {
       setModal({ ...modal, isOpen: false });
@@ -91,13 +85,27 @@ export default function LoginPage() {
             ENTRAR
           </h1>
 
-          <input name="email" type="email" placeholder="JohnDoe@unipolaris.com" className="form-input text-xl" required disabled={isLoading} />
-          <input name="password" type="password" placeholder="••••••••" className="form-input text-xl" required disabled={isLoading} />
+          <input
+            name="email"
+            type="email"
+            placeholder="JohnDoe@unipolaris.com"
+            className="form-input text-xl"
+            required
+            disabled={isLoading}
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="••••••••"
+            className="form-input text-xl"
+            required
+            disabled={isLoading}
+          />
 
-          <ActionButton 
-            title={isLoading ? "Entrando..." : "Entrar"} 
-            type="submit" 
-            className={`h-12 text-3xl rounded-sm ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`} 
+          <ActionButton
+            title={isLoading ? 'Entrando...' : 'Entrar'}
+            type="submit"
+            className={`h-12 text-3xl rounded-sm ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
             disabled={isLoading}
           />
         </form>
@@ -110,19 +118,13 @@ export default function LoginPage() {
         </p>
       </section>
 
-      {/* Modal de Alerta */}
       {modal.isOpen && (
-        <div className="absolute inset-0 bg-black/80 flex justify-center items-center z-50">
-          <div className="bg-[#1e1e1e] border border-gray-600 p-8 rounded-lg flex flex-col gap-4 w-96 text-center shadow-2xl">
-            <h2 className={`text-2xl font-bold ${modal.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
-              {modal.type === 'success' ? 'Sucesso!' : 'Atenção!'}
-            </h2>
-            <p className="text-white text-lg">{modal.message}</p>
-            <div className="mt-4" onClick={handleModalConfirm}>
-              <ActionButton title="OK" className="h-10 w-full rounded-sm" />
-            </div>
-          </div>
-        </div>
+        <AlertModal
+          type={modal.type as 'error' | 'success'} 
+          title={modal.title}
+          description={modal.description}
+          onClose={handleModalConfirm}
+        />
       )}
     </main>
   );
