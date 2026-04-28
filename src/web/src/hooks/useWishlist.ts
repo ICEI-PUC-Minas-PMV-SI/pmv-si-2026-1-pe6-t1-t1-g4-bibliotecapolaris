@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 export function useWishlist(userId: string) {
   const [wishlist, setWishlist] = useState<{ books: any[] }>({ books: [] });
+  const [error, setError] = useState<null | string>(null);
 
   useEffect(() => {
     async function load() {
@@ -19,17 +20,28 @@ export function useWishlist(userId: string) {
   async function toggle(bookId: string) {
     const isFavorite = wishlistSet.has(bookId);
 
-    await toggleWishlist({
-      userId,
-      bookId,
-      isFavorite,
-      setWishlist,
-    });
+    try {
+      setError(null);
+
+      await toggleWishlist({
+        userId,
+        bookId,
+        isFavorite,
+        setWishlist,
+      });
+
+      return { success: true };
+    } catch (error: any) {
+      setError(error?.message || 'Erro ao atualizar wishlist');
+      return { success: false, error };
+    }
   }
 
   return {
     wishlist,
     wishlistSet,
     toggle,
+    error,
+    setError,
   };
 }

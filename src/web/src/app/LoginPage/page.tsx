@@ -1,16 +1,19 @@
 'use client';
 
-import Image from 'next/image';
-import { ActionButton, AlertModal } from '@/components';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
 import { loginUser } from '@/services/User';
+import { ActionButton } from '@/components';
+import { useAlertModal } from '@/hooks/useAlertModal';
 
 export default function LoginPage() {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [modal, setModal] = useState({ isOpen: false, type: 'error', title: '', description: '' });
+  const { showSuccess, showError, ModalComponent } = useAlertModal();
 
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -21,41 +24,18 @@ export default function LoginPage() {
 
     try {
       setIsLoading(true);
-      
+
       const { status, data } = await loginUser(email, password);
 
       if (status === 200 || status === 201) {
-        setModal({ 
-          isOpen: true, 
-          type: 'success', 
-          title: 'Sucesso!',
-          description: 'Login realizado com sucesso!' 
-        });
+        showSuccess('Sucesso!', 'Login realizado com sucesso!', () => router.push('/Books'));
       } else {
-        setModal({ 
-          isOpen: true, 
-          type: 'error', 
-          title: 'Atenção!',
-          description: data.message || 'E-mail ou senha incorretos.' 
-        });
+        showError('Atenção!', data.message || 'E-mail ou senha incorretos.');
       }
     } catch (error) {
-      setModal({ 
-        isOpen: true, 
-        type: 'error', 
-        title: 'Erro no Servidor',
-        description: 'Não foi possível conectar.' 
-      });
+      showError('Erro no Servidor', 'Não foi possível conectar.');
     } finally {
       setIsLoading(false);
-    }
-  }
-
-  function handleModalConfirm() {
-    if (modal.type === 'success') {
-      router.push('/Books'); 
-    } else {
-      setModal({ ...modal, isOpen: false });
     }
   }
 
@@ -118,14 +98,7 @@ export default function LoginPage() {
         </p>
       </section>
 
-      {modal.isOpen && (
-        <AlertModal
-          type={modal.type as 'error' | 'success'} 
-          title={modal.title}
-          description={modal.description}
-          onClose={handleModalConfirm}
-        />
-      )}
+      {ModalComponent}
     </main>
   );
 }

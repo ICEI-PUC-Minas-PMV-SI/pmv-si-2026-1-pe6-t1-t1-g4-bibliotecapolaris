@@ -6,34 +6,29 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { BookDisplay, BookStatusCard, CategoryCard, Footer, Header } from '@/components';
+import { BookDisplay, CategoryCard, Footer, Header } from '@/components';
 
 import { getBooks } from '@/services/Books';
+import { useWishlist } from '@/hooks/useWishlist';
+import { useAlertModal } from '@/hooks/useAlertModal';
+
 import Link from 'next/link';
-import { toggleWishlist } from '@/util/ToggleFavorite';
-import { getWishlistByUserId } from '@/services/Wishlist';
 
 export default function LandingPage() {
   const router = useRouter();
   const [search, setSearch] = useState('');
 
   const [books, setBooks] = useState<any[]>([]);
-  const [wishlist, setWishlist] = useState<{ books: any[] }>({ books: [] });
-  const wishlistSet = new Set((wishlist.books ?? []).map((b: any) => b.id));
+  const { wishlistSet, toggle, error, setError } = useWishlist('mock-user-id');
+  const { showError, ModalComponent } = useAlertModal();
 
   useEffect(() => {
     async function loadBooks() {
       const returnedBooks = await getBooks();
       setBooks(returnedBooks ?? []);
     }
-    async function loadWishlist() {
-      const data = await getWishlistByUserId('mock-user-id');
-
-      setWishlist(data ?? { books: [] });
-    }
 
     loadBooks();
-    loadWishlist();
   }, []);
 
   function handleSubmit(e: React.SubmitEvent) {
@@ -44,22 +39,16 @@ export default function LandingPage() {
     router.push(`/Books?search=${encodeURIComponent(search)}`);
   }
 
-  async function handleToggleWishlist(bookId: string) {
-    const userId = 'mock-user-id';
-
-    const isFavorite = wishlistSet.has(bookId);
-
-    await toggleWishlist({
-      userId,
-      bookId,
-      isFavorite,
-      setWishlist,
-    });
-  }
-
   function goToBooks() {
     router.push('/Books');
   }
+
+  useEffect(() => {
+    if (error) {
+      showError('Erro', error);
+      setError(null);
+    }
+  }, [error]);
 
   return (
     <>
@@ -105,7 +94,7 @@ export default function LandingPage() {
                     description={book.description}
                     imageSrc="/assets/images/mock-book.png"
                     isFavorite={wishlistSet.has(book.id)}
-                    onToggleFavorite={() => handleToggleWishlist(book.id)}
+                    onToggleFavorite={() => toggle(book.id)}
                   />
                 </Link>
               ))}
@@ -123,6 +112,8 @@ export default function LandingPage() {
             <CategoryCard title="Terror" imageSrc="/assets/images/mock-book.png" />
           </div>
         </section>
+
+        {ModalComponent}
       </main>
 
       <Footer />

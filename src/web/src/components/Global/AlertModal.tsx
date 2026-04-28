@@ -80,7 +80,12 @@ export function AlertModal({ type = 'error', title, description, onClose, onSucc
               <button
                 onClick={() => {
                   dialogRef.current?.close();
-                  onClose();
+
+                  if (type === 'success') {
+                    onSuccess?.();
+                  } else {
+                    onClose();
+                  }
                 }}
                 className={`px-6 py-2 rounded-sm font-medium text-xl text-(--background) uppercase cursor-pointer ${buttonColorMap[type]}`}
               >
