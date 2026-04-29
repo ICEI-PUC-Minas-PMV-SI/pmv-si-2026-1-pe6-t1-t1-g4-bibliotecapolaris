@@ -1,49 +1,39 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
-
-import { ActionButton } from '@/components';
+import { ActionButton, AlertModal } from '@/components'; 
 import { useRouter } from 'next/navigation';
-
-import { useAlertModal } from '@/hooks/useAlertModal';
+import { useState } from 'react';
+import { registerUser } from '@/services/User'; 
 
 export default function SignPage() {
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(false);
-  const { showSuccess, showError, ModalComponent } = useAlertModal();
+  const [isLoading, setIsLoading] = useState(false); 
+  const [modal, setModal] = useState({ isOpen: false, type: 'error', title: '', description: '' }); 
 
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setIsLoading(true);
+    e.preventDefault(); 
+    setIsLoading(true); 
 
     const formData = new FormData(e.currentTarget);
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const password = formData.get('password');
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
     try {
-      const response = await fetch('http://localhost:3333/api/users/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          type: 'student',
-        }),
-      });
+      const { status, data } = await registerUser(name, email, password);
 
-      const data = await response.json();
-
-      if (response.status === 201) {
-        showSuccess('Sucesso!', 'Usuário cadastrado com sucesso!', () => router.push('/LoginPage'));
+      if (status === 201 || status === 200) {
+        setModal({ 
+          isOpen: true, 
+          type: 'success', 
+          title: 'Sucesso!',
+          description: 'Usuário cadastrado com sucesso!' 
+        });
       } else {
         let errorMsg = data.message || 'Erro ao realizar cadastro. Verifique os dados.';
-
+        
         if (data.field) {
           if (Array.isArray(data.field)) {
             errorMsg = data.field[0];
@@ -53,12 +43,30 @@ export default function SignPage() {
           }
         }
 
-        showError('Atenção!', errorMsg);
+        setModal({ 
+          isOpen: true, 
+          type: 'error', 
+          title: 'Atenção!', 
+          description: errorMsg 
+        });
       }
     } catch (error) {
-      showError('Erro no Servidor', 'Erro ao conectar com o servidor. Tente novamente mais tarde.');
+      setModal({ 
+        isOpen: true, 
+        type: 'error', 
+        title: 'Erro de Conexão', 
+        description: 'Erro ao conectar com o servidor. Tente novamente mais tarde.' 
+      });
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); 
+    }
+  }
+
+  function handleModalConfirm() {
+    if (modal.type === 'success') {
+      router.push('/LoginPage');
+    } else {
+      setModal({ ...modal, isOpen: false });
     }
   }
 
@@ -88,36 +96,15 @@ export default function SignPage() {
             Registrar
           </h1>
 
-          <input
-            name="name"
-            type="text"
-            placeholder="John Doe"
-            className="form-input text-xl"
-            required
-            disabled={isLoading}
-          />
-          <input
-            name="email"
-            type="email"
-            placeholder="JohnDoe@unipolaris.com"
-            className="form-input text-xl"
-            required
-            disabled={isLoading}
-          />
-          <input
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            className="form-input text-xl"
-            required
-            disabled={isLoading}
-          />
+          <input name="name" type="text" placeholder="John Doe" className="form-input text-xl" required disabled={isLoading} />
+          <input name="email" type="email" placeholder="JohnDoe@unipolaris.com" className="form-input text-xl" required disabled={isLoading} />
+          <input name="password" type="password" placeholder="••••••••" className="form-input text-xl" required disabled={isLoading} />
 
-          <ActionButton
-            title={isLoading ? 'Carregando...' : 'Registrar'}
-            type="submit"
-            className={`h-12 text-3xl rounded-sm ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
-            disabled={isLoading}
+          <ActionButton 
+            title={isLoading ? "Carregando..." : "Registrar"} 
+            type="submit" 
+            className={`h-12 text-3xl rounded-sm ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`} 
+            disabled={isLoading} 
           />
         </form>
 
@@ -129,7 +116,14 @@ export default function SignPage() {
         </p>
       </section>
 
-      {ModalComponent}
+      {modal.isOpen && (
+        <AlertModal
+          type={modal.type as 'error' | 'success'}
+          title={modal.title}
+          description={modal.description}
+          onClose={handleModalConfirm}
+        />
+      )}
     </main>
   );
 }
