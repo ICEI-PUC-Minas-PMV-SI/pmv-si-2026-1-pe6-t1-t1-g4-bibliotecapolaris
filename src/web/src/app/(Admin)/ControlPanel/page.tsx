@@ -3,16 +3,22 @@
 import '@/lib/AgGrid';
 
 import { useEffect, useState } from 'react';
-import { ActionButton, AddBookModal, ConfirmModal, DataGrid, gridConfigs, Header } from '@/components';
+import { ActionButton, AddBookModal, ConfirmModal, DataGrid, gridConfigs, Header, mockData } from '@/components';
 import { deleteBook, getBooks } from '@/services/Books';
 
 import { formatBook } from '@/util/Formatter';
 
+type ViewMode = 'livros' | 'emprestimos' | 'historico';
+
 export default function ControlPanel() {
   const [books, setBooks] = useState([]);
+  const [activeView, setActiveView] = useState<ViewMode>('livros');
   const [showAddModal, setShowAddModal] = useState(false);
   const [bookToDelete, setBookToDelete] = useState<{ id: string; name: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const config = gridConfigs[activeView];
+  const rowData = activeView === 'livros' ? books : mockData[activeView];
 
   async function loadBooks() {
     const data = await getBooks();
@@ -71,24 +77,40 @@ export default function ControlPanel() {
       <main className="min-h-[80vh] flex flex-col gap-6 bg-(--background) mb-8 overflow-x-hidden">
         <section className=" flex flex-row mt-8 mx-8 justify-between">
           <div className="flex flex-row gap-4">
-            <ActionButton title="Livros" variant="fill" />
+            <ActionButton
+              title="Livros"
+              variant={activeView === 'livros' ? 'fill' : 'outline'}
+              onClick={() => setActiveView('livros')}
+            />
 
-            {/* TODO: implementar Empréstimos */}
-            <ActionButton title="Empréstimos" variant="outline" />
+            <ActionButton
+              title="Empréstimos"
+              variant={activeView === 'emprestimos' ? 'fill' : 'outline'}
+              onClick={() => setActiveView('emprestimos')}
+            />
 
-            {/* TODO: implementar Histórico */}
-            <ActionButton title="Histórico" variant="outline" />
+            <ActionButton
+              title="Histórico"
+              variant={activeView === 'historico' ? 'fill' : 'outline'}
+              onClick={() => setActiveView('historico')}
+            />
           </div>
 
-          <ActionButton
-            title="Adicionar +"
-            onClick={() => setShowAddModal(true)}
-          />
+          {activeView !== 'historico' && (
+            <ActionButton
+              title={activeView === 'livros' ? 'Adicionar +' : 'Adicionar'}
+              onClick={() => {
+                if (activeView === 'livros') setShowAddModal(true);
+                // logic for Empréstimos could go here later
+              }}
+            />
+          )}
         </section>
 
         <DataGrid 
-          columnDefs={gridConfigs.livros.columnDefs} 
-          rowData={books} 
+          key={activeView}
+          columnDefs={config.columnDefs} 
+          rowData={rowData} 
           context={{ 
             refreshGrid: loadBooks, 
             requestDelete: (book: any) => setBookToDelete(book) 
