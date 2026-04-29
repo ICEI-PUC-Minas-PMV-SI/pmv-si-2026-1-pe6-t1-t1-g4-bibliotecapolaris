@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { use, useEffect, useState } from 'react';
 
 import { Footer, Header, LikeButton, WithdrawButton } from '@/components';
+import ReviewSection from '@/components/Book/ReviewSection';
 
 import { getBookBySlug } from '@/services/Books';
 import { formatCategories } from '@/util/Formatter';
@@ -31,37 +32,57 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
   return (
     <>
       <Header />
-      <main className="min-h-[80vh] flex justify-evenly bg-(--background) mt-8">
-        <figure className="relative w-88 h-full border border-(--text) rounded-sm">
-          <Image
-            src="/assets/images/mock-book.png"
-            height={2000}
-            width={2000}
-            alt="Imagem principal da landing page"
-            className="object-cover"
-            unoptimized
-          />
-        </figure>
+      <main className="flex flex-col bg-(--background)">
+        <div className="flex justify-evenly mt-8 min-h-[50vh]">
+          <figure className="relative w-88 h-full border border-(--text) rounded-sm">
+            <Image
+              src="/assets/images/mock-book.png"
+              height={2000}
+              width={2000}
+              alt="Imagem principal da landing page"
+              className="object-cover"
+              unoptimized
+            />
+          </figure>
 
-        <section className="flex flex-col gap-6 w-[50%] h-full">
-          <div className="flex flex-row justify-between">
-            <h1 className="font-serif text-5xl font-medium wrap-break-word tracking-wider line-clamp-1">{book.name}</h1>
+          <section className="flex flex-col gap-6 w-[50%] h-full">
+            <div className="flex flex-row justify-between">
+              <h1 className="font-serif text-5xl font-medium wrap-break-word tracking-wider line-clamp-1">{book.name}</h1>
+              <LikeButton isFavorite={wishlistSet.has(book.id)} onToggle={() => toggle(book.id)} />
+            </div>
 
-            <LikeButton isFavorite={wishlistSet.has(book.id)} onToggle={() => toggle(book.id)} />
-          </div>
+            <h2 className="font-serif text-4xl font-medium wrap-break-word tracking-wider line-clamp-1">{`Por ${book.author.name}`}</h2>
 
-          <h2 className="font-serif text-4xl font-medium wrap-break-word tracking-wider line-clamp-1">{`Por ${book.author.name}`}</h2>
+            <h2 className="font-serif text-3xl font-medium tracking-wider line-clamp-1">
+              {formatCategories(book.categories)}
+            </h2>
 
-          <h2 className="font-serif text-3xl font-medium tracking-wider line-clamp-1">
-            {formatCategories(book.categories)}
-          </h2>
+            <p className="font-sans font-light text-lg text-justify -tracking-wide line-clamp-6">{book.description}</p>
 
-          <p className="font-sans font-light text-lg text-justify -tracking-wide line-clamp-6">{book.description}</p>
+            <span className="text-3xl font-medium tracking-wider line-clamp-1">{`${book.totalAvailable} unidades disponíveis`}</span>
 
-          <span className="text-3xl font-medium tracking-wider line-clamp-1">{`${book.totalAvailable} unidades disponíveis`}</span>
+            <WithdrawButton />
+          </section>
+        </div>
 
-          <WithdrawButton />
-        </section>
+      <section className="px-16 py-8">
+        <ReviewSection
+          reviews={[
+      {
+        id: '1',
+        rating: 5,
+        description: 'Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito.Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito.',
+        date: '2026-04-10',
+      },
+      {
+        id: '2',
+        rating: 3,
+        description: 'Leitura agradável, mas poderia ser melhor.',
+        date: '2026-04-15',
+      },
+    ]}
+  />
+</section>
       </main>
 
       <Footer />
