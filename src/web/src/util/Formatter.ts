@@ -19,6 +19,6 @@ export function formatBook(book: any) {
     totalAvailable: book.totalAvailable,
     totalQuantity: book.totalQuantity,
     isbn: book.isbn,
-    imageSrc: '/assets/images/mock-book.png',
+    imageSrc: book.imageSrc || '/assets/images/mock-book.png',
   };
 }

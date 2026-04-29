@@ -10,33 +10,17 @@ function normalizeCategories(categories: string): string {
     .join(',');
 }
 
-// --- INTEGRAÇÃO OPENLIBRARY: busca a capa pelo ISBN ---
-async function fetchCoverFromOpenLibrary(isbn: string): Promise<string | null> {
-  try {
-    const cleanIsbn = isbn.replace(/-/g, '').trim();
-    if (!cleanIsbn) return null;
+// --- OPENLIBRARY: monta URL da capa a partir do ISBN ---
+// O frontend usa onError para exibir o mock quando a URL retornar 404.
+function openLibraryCoverUrl(isbn: string): string {
+  const clean = isbn.replace(/-/g, '').trim();
+  return `https://covers.openlibrary.org/b/isbn/${clean}-L.jpg`;
+}
 
-    const url = `https://covers.openlibrary.org/b/isbn/${cleanIsbn}-L.jpg?default=false`;
-
-    console.log(`[OpenLibrary] Tentando buscar capa para ISBN: ${cleanIsbn}...`);
-
-    // Usando GET para maior compatibilidade, mas sem baixar o corpo se possível
-    const response = await fetch(url, {
-      method: 'GET',
-      signal: AbortSignal.timeout(5000), // Timeout de 5 segundos
-    });
-
-    if (response.ok) {
-      console.log(`[OpenLibrary] Capa encontrada com sucesso para o ISBN ${cleanIsbn}!`);
-      return url;
-    } else {
-      console.log(`[OpenLibrary] Capa não disponível (Status ${response.status}) para o ISBN ${cleanIsbn}`);
-    }
-  } catch (error: any) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(`[OpenLibrary] Erro de rede ou timeout: ${errorMessage}`);
-  }
-  return null;
+// Para livros com imageSrc nulo ou path local (legados), computa a URL do OpenLibrary.
+function resolveImageSrc(book: { isbn: string; imageSrc: string | null }): string {
+  if (book.imageSrc?.startsWith('http')) return book.imageSrc;
+  return openLibraryCoverUrl(book.isbn);
 }
 
 // --- OPERAÇÃO 1: CRIAÇÃO ---
@@ -49,8 +33,8 @@ export async function createBook(data: CreateBookInput) {
     slug = `${baseSlug}-${count++}`;
   }
 
-  // BUSCA AUTOMÁTICA DE CAPA (OpenLibrary ou Mock)
-  const imageSrc = (await fetchCoverFromOpenLibrary(data.isbn || '')) || '/assets/images/mock-book.png';
+  // Armazena a URL do OpenLibrary; o frontend exibe o mock se a imagem não carregar.
+  const imageSrc = openLibraryCoverUrl(data.isbn);
 
   const { availableQuantity, ...rest } = data;
 
@@ -70,37 +54,35 @@ export async function createBook(data: CreateBookInput) {
 
 // --- OPERAÇÃO 2: LEITURA ---
 export async function getBookById(id: string) {
-  return prisma.book.findUniqueOrThrow({
+  const book = await prisma.book.findUniqueOrThrow({
     where: { id },
     include: {
       author: true,
       loans: {
         include: {
           reviews: true,
-          student: {
-            select: { id: true, name: true, slug: true },
-          },
+          student: { select: { id: true, name: true, slug: true } },
         },
       },
     },
   });
+  return { ...book, imageSrc: resolveImageSrc(book) };
 }
 
 export async function getBookBySlug(slug: string) {
-  return prisma.book.findUniqueOrThrow({
+  const book = await prisma.book.findUniqueOrThrow({
     where: { slug },
     include: {
       author: true,
       loans: {
         include: {
           reviews: true,
-          student: {
-            select: { id: true, name: true, slug: true },
-          },
+          student: { select: { id: true, name: true, slug: true } },
         },
       },
     },
   });
+  return { ...book, imageSrc: resolveImageSrc(book) };
 }
 
 export async function listBooks(filters?: {
@@ -112,7 +94,7 @@ export async function listBooks(filters?: {
 }) {
   const { search, name, authorName, categories, wishlistId } = filters || {};
 
-  return prisma.book.findMany({
+  const books = await prisma.book.findMany({
     where: {
       AND: [
         search
@@ -138,11 +120,10 @@ export async function listBooks(filters?: {
           : {},
       ],
     },
-    include: {
-      author: true,
-    },
+    include: { author: true },
     orderBy: { name: 'asc' },
   });
+  return books.map((book) => ({ ...book, imageSrc: resolveImageSrc(book) }));
 }
 
 // --- OPERAÇÃO 3: ATUALIZAÇÃO ---
@@ -151,10 +132,9 @@ export async function updateBook(id: string, data: UpdateBookInput) {
 
   const updatedData: Record<string, unknown> = { ...data };
 
-  // Se o ISBN mudar, refaz a busca da capa
+  // Se o ISBN mudar, refaz a URL da capa
   if (data.isbn && data.isbn !== currentBook.isbn) {
-    const newImageSrc = await fetchCoverFromOpenLibrary(data.isbn);
-    updatedData.imageSrc = newImageSrc || '/assets/images/mock-book.png';
+    updatedData.imageSrc = openLibraryCoverUrl(data.isbn);
   }
 
   if (data.name) {

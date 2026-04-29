@@ -12,7 +12,7 @@ export default function ProfilePage() {
 
       <main className="min-h-[80vh] flex flex-col gap-6 bg-(--background) m-8">
         <section>
-          <h1 className="w-full text-3xl uppercase tracking-wider">Bem vindo de volta, 'Lindão'</h1>
+          <h1 className="w-full text-3xl uppercase tracking-wider">Bem vindo de volta, &apos;Lindão&apos;</h1>
         </section>
 
         <section className="flex flex-col gap-4 items-center">
@@ -39,7 +39,7 @@ export default function ProfilePage() {
           <h1 className="w-full text-3xl uppercase tracking-wider">Livros Favoritados</h1>
 
           <div className="flex flex-wrap justify-center gap-4">
-            {wishlist.books.map((book: any) => (
+            {wishlist.books.map((book: { id: string; name: string; description: string }) => (
               <BookDisplay
                 key={book.id}
                 title={book.name}

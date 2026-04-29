@@ -3,6 +3,8 @@ export * from './Global/AlertModal';
 export * from './Global/Footer';
 export * from './Global/Header';
 export * from './Global/ThemeToggle';
+export * from './Global/ConfirmModal';
+export * from './Book/AddBookModal';
 export * from './Book/WithdrawButton';
 
 export * from './Book/BookDisplay';

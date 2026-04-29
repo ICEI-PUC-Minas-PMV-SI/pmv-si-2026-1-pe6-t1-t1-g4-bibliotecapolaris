@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -11,45 +11,55 @@ import { getBooks } from '@/services/Books';
 
 import { useWishlist } from '@/hooks/useWishlist';
 
+type Book = {
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  imageSrc?: string | null;
+};
+
 export default function Books() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const searchQuery = searchParams.get('search') ?? '';
 
-  const [search, setSearch] = useState('');
-  const [books, setBooks] = useState<any[]>([]);
+  // Local input value — starts from the URL param so the field stays filled on load
+  const [search, setSearch] = useState(searchQuery);
+  const [books, setBooks] = useState<Book[]>([]);
   const { wishlistSet, toggle } = useWishlist('mock-user-id');
 
   const title = searchQuery ? `Resultados para "${searchQuery}"` : 'Livros';
 
+  // Keep the input in sync when the URL param changes externally (e.g. browser back/forward)
+  const prevQuery = useRef(searchQuery);
   useEffect(() => {
-    if (searchQuery !== search) {
+    if (prevQuery.current !== searchQuery) {
+      prevQuery.current = searchQuery;
       setSearch(searchQuery);
     }
   }, [searchQuery]);
 
+  // Debounce: update URL when user types
   useEffect(() => {
     const delay = setTimeout(() => {
       if (search === searchQuery) return;
 
       if (!search) {
-        router.replace('/Books', {
-          scroll: false,
-        });
+        router.replace('/Books', { scroll: false });
         return;
       }
 
       if (search.length < 4) return;
 
-      router.replace(`/Books?search=${encodeURIComponent(search)}`, {
-        scroll: false,
-      });
+      router.replace(`/Books?search=${encodeURIComponent(search)}`, { scroll: false });
     }, 400);
 
     return () => clearTimeout(delay);
-  }, [search, searchQuery]);
+  }, [search, searchQuery, router]);
 
+  // Fetch books whenever URL param changes
   useEffect(() => {
     const delay = setTimeout(async () => {
       if (!searchQuery) {
@@ -70,7 +80,7 @@ export default function Books() {
     return () => clearTimeout(delay);
   }, [searchQuery]);
 
-  function handleSubmit(e: React.SubmitEvent) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!search.trim() || search.length < 4) return;
@@ -122,7 +132,7 @@ export default function Books() {
             <h1 className="w-full text-3xl uppercase tracking-wider">{title}</h1>
 
             <div className="flex flex-wrap justify-center gap-4">
-              {books.map((book: any) => (
+              {books.map((book) => (
                 <Link key={book.slug} href={`/Books/${book.slug}`}>
                   <BookDisplay
                     title={book.name}

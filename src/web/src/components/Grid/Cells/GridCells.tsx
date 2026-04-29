@@ -15,7 +15,9 @@ export function BookCell(params: any) {
 
 export function DeleteButtonCell(params: any) {
   const handleDelete = () => {
-    console.log('deletar', params.data);
+    if (params.context?.requestDelete) {
+      params.context.requestDelete(params.data);
+    }
   };
 
   return (

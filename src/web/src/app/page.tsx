@@ -6,20 +6,30 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { BookDisplay, BookStatusCard, CategoryCard, Footer, Header } from '@/components';
+import { BookDisplay, CategoryCard, Footer, Header } from '@/components';
 
 import { getBooks } from '@/services/Books';
 import Link from 'next/link';
 import { toggleWishlist } from '@/util/ToggleFavorite';
 import { getWishlistByUserId } from '@/services/Wishlist';
 
+type Book = {
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  imageSrc?: string | null;
+};
+
+type WishlistItem = { id: string };
+
 export default function LandingPage() {
   const router = useRouter();
   const [search, setSearch] = useState('');
 
-  const [books, setBooks] = useState<any[]>([]);
-  const [wishlist, setWishlist] = useState<{ books: any[] }>({ books: [] });
-  const wishlistSet = new Set((wishlist.books ?? []).map((b: any) => b.id));
+  const [books, setBooks] = useState<Book[]>([]);
+  const [wishlist, setWishlist] = useState<{ books: WishlistItem[] }>({ books: [] });
+  const wishlistSet = new Set((wishlist.books ?? []).map((b) => b.id));
 
   useEffect(() => {
     async function loadBooks() {
@@ -36,7 +46,7 @@ export default function LandingPage() {
     loadWishlist();
   }, []);
 
-  function handleSubmit(e: React.SubmitEvent) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!search.trim()) return;
@@ -98,7 +108,7 @@ export default function LandingPage() {
             <h1 className="w-full text-3xl uppercase tracking-wider"> Recém Chegados </h1>
 
             <div className="flex flex-wrap justify-center gap-4">
-              {books.map((book: any) => (
+              {books.map((book) => (
                 <Link key={book.slug} href={`/Books/${book.slug}`}>
                   <BookDisplay
                     title={book.name}

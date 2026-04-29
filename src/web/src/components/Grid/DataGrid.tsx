@@ -12,9 +12,10 @@ import { ActionButton } from '@/components';
 interface DataGridProps {
   columnDefs: any[];
   rowData: any[];
+  context?: any;
 }
 
-export function DataGrid({ columnDefs, rowData }: DataGridProps) {
+export function DataGrid({ columnDefs, rowData, context }: DataGridProps) {
   const gridRef = useRef<AgGridReact>(null);
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -55,6 +56,7 @@ export function DataGrid({ columnDefs, rowData }: DataGridProps) {
         ref={gridRef}
         theme={'legacy'}
         rowData={rowData}
+        context={context}
         onGridReady={onGridReady}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
