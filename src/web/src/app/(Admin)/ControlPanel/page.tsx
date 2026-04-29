@@ -3,7 +3,7 @@
 import '@/lib/AgGrid';
 
 import { useEffect, useState } from 'react';
-import { ActionButton, AddBookModal, ConfirmModal, DataGrid, gridConfigs, Header, mockData } from '@/components';
+import { ActionButton, AddBookModal, AlertModal, DataGrid, gridConfigs, Header, mockData } from '@/components';
 import { deleteBook, getBooks } from '@/services/Books';
 
 import { formatBook } from '@/util/Formatter';
@@ -48,9 +48,10 @@ export default function ControlPanel() {
       )}
 
       {bookToDelete && (
-        <ConfirmModal
+        <AlertModal
+          type="confirmation"
           title="Excluir Livro"
-          message={`Tem certeza que deseja deletar o livro "${bookToDelete.name}"? Esta ação não pode ser desfeita.`}
+          description={`Tem certeza que deseja deletar o livro "${bookToDelete.name}"? Esta ação não pode ser desfeita.`}
           isLoading={isDeleting}
           confirmText="Excluir"
           loadingText="Excluindo..."
@@ -67,7 +68,7 @@ export default function ControlPanel() {
               setIsDeleting(false);
             }
           }}
-          onCancel={() => {
+          onClose={() => {
             if (!isDeleting) setBookToDelete(null);
           }}
         />

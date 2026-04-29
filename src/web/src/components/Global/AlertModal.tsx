@@ -2,28 +2,39 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { ActionButton } from '@/components';
 
 type AlertModalProps = {
   type?: 'error' | 'success' | 'confirmation';
   title: string;
   description?: string;
   onClose: () => void;
-  onSuccess?: () => void;
+  onConfirm?: () => void;
+  isLoading?: boolean;
+  confirmText?: string;
+  loadingText?: string;
 };
 
-const buttonColorMap = {
-  success: 'bg-(--status-success)',
-  error: 'bg-(--status-error)',
-  confirmation: 'bg-(--status-confirmation)',
-} as const;
-
-export function AlertModal({ type = 'error', title, description, onClose, onSuccess }: AlertModalProps) {
+export function AlertModal({ 
+  type = 'error', 
+  title, 
+  description, 
+  onClose,
+  onConfirm,
+  isLoading,
+  confirmText = 'Confirmar',
+  loadingText = 'Carregando...'
+}: AlertModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const buttonClass = buttonColorMap[type ?? 'error'];
 
   useEffect(() => {
     dialogRef.current?.showModal();
   }, []);
+
+  function handleClose() {
+    dialogRef.current?.close();
+    onClose();
+  }
 
   const iconSrc =
     type === 'success'
@@ -35,58 +46,68 @@ export function AlertModal({ type = 'error', title, description, onClose, onSucc
   return (
     <dialog
       ref={dialogRef}
-      className="w-[30vw] min-h-[20vh] border border-(--text) rounded-sm 
-      backdrop:bg-black/40 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-      onClose={onClose}
+      onClose={handleClose}
+      className="w-[380px] max-w-[95vw] rounded-none border border-(--text)/40
+        bg-(--background) text-(--text)
+        backdrop:bg-black/60
+        fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+        p-0 outline-none"
     >
-      <div className="min-w-75 flex flex-col bg-(--background) gap-6">
-        <div className="border-b border-(--text) px-4 py-2 bg-(--button-inactive)">
-          <h1 className="text-2xl font-semibold tracking-wide line-clamp-1">{title}</h1>
+      <div className="flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-(--text)/20">
+          <h2 className="font-serif text-lg uppercase tracking-widest font-bold line-clamp-1">
+            {title}
+          </h2>
+          <button
+            type="button"
+            onClick={handleClose}
+            aria-label="Fechar"
+            className="text-(--text)/50 hover:text-(--text) transition-colors cursor-pointer text-xl leading-none"
+          >
+            ✕
+          </button>
         </div>
 
-        <div className="flex flex-col items-center gap-4">
+        {/* Body */}
+        <div className="px-5 py-6 flex flex-col items-center gap-4">
           <Image src={iconSrc} alt="icon" width={64} height={64} />
-
           {description && (
-            <p className="text-center font-sans font-light text-lg  line-clamp-2 w-full">{description}</p>
+            <p className="font-sans text-sm text-(--text)/80 text-center">
+              {description}
+            </p>
           )}
         </div>
 
-        <div className="flex justify-end gap-5 px-4 pb-4 ">
+        {/* Footer */}
+        <div className="px-5 pb-5 flex gap-3">
           {type === 'confirmation' ? (
             <>
-              <button
-                onClick={() => {
-                  dialogRef.current?.close();
-                  onClose();
-                }}
-                className="px-5 py-2 rounded-sm border border-(--text) font-medium text-lg uppercase cursor-pointer"
-              >
-                Cancelar
-              </button>
-
-              <button
-                onClick={() => {
-                  dialogRef.current?.close();
-                  onSuccess?.();
-                }}
-                className="px-4 py-2 rounded-sm bg-(--button-active) font-medium text-lg text-(--background) uppercase cursor-pointer"
-              >
-                Confirmar
-              </button>
+              <ActionButton
+                type="button"
+                title="Cancelar"
+                variant="outline"
+                onClick={handleClose}
+                disabled={isLoading}
+                className="w-full"
+              />
+              <ActionButton
+                type="button"
+                title={isLoading ? loadingText : confirmText}
+                variant="fill"
+                onClick={() => onConfirm?.()}
+                disabled={isLoading}
+                className="w-full"
+              />
             </>
           ) : (
-            <div>
-              <button
-                onClick={() => {
-                  dialogRef.current?.close();
-                  onClose();
-                }}
-                className={`px-6 py-2 rounded-sm font-medium text-xl text-(--background) uppercase cursor-pointer ${buttonColorMap[type]}`}
-              >
-                Fechar
-              </button>
-            </div>
+            <ActionButton
+              type="button"
+              title="Fechar"
+              variant={type === 'error' ? 'outline' : 'fill'}
+              onClick={handleClose}
+              className="w-full"
+            />
           )}
         </div>
       </div>
