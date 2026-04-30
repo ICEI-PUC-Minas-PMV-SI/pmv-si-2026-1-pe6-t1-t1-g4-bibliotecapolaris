@@ -33,7 +33,7 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
     <>
       <Header />
       <main className="flex flex-col bg-(--background)">
-        <div className="flex justify-evenly mt-8 min-h-[50vh]">
+        <div className="flex justify-evenly mt-8">
           <figure className="relative w-88 h-full border border-(--text) rounded-sm">
             <Image
               src="/assets/images/mock-book.png"
@@ -47,7 +47,9 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
 
           <section className="flex flex-col gap-6 w-[50%] h-full">
             <div className="flex flex-row justify-between">
-              <h1 className="font-serif text-5xl font-medium wrap-break-word tracking-wider line-clamp-1">{book.name}</h1>
+              <h1 className="font-serif text-5xl font-medium wrap-break-word tracking-wider line-clamp-1">
+                {book.name}
+              </h1>
               <LikeButton isFavorite={wishlistSet.has(book.id)} onToggle={() => toggle(book.id)} />
             </div>
 
@@ -65,24 +67,27 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
           </section>
         </div>
 
-      <section className="px-16 py-8">
-        <ReviewSection
-          reviews={[
-      {
-        id: '1',
-        rating: 5,
-        description: 'Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito.Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito.',
-        date: '2026-04-10',
-      },
-      {
-        id: '2',
-        rating: 3,
-        description: 'Leitura agradável, mas poderia ser melhor.',
-        date: '2026-04-15',
-      },
-    ]}
-  />
-</section>
+        <section className="px-16 py-8">
+          <ReviewSection
+            reviews={[
+              {
+                id: '1',
+                userName: 'John Doe',
+                rating: 5,
+                description:
+                  'Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito.Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito.',
+                date: '10/04/2026',
+              },
+              {
+                id: '2',
+                userName: 'John Doe',
+                rating: 3,
+                description: 'Leitura agradável, mas poderia ser melhor.',
+                date: '15/04/2026',
+              },
+            ]}
+          />
+        </section>
       </main>
 
       <Footer />
