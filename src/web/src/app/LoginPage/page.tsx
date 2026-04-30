@@ -71,16 +71,8 @@ export default function LoginPage() {
             placeholder="JohnDoe@unipolaris.com"
             className="form-input text-xl"
             required
-            disabled={isLoading}
           />
-          <input
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            className="form-input text-xl"
-            required
-            disabled={isLoading}
-          />
+          <input name="password" type="password" placeholder="••••••••" className="form-input text-xl" required />
 
           <ActionButton
             title={isLoading ? 'Entrando...' : 'Entrar'}
