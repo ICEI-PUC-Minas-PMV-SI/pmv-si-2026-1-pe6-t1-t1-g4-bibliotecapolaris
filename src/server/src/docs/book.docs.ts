@@ -58,20 +58,17 @@ bookRegistry.registerPath({
   tags: ['Books'],
   request: {
     query: z.object({
-      name: z.string().optional(),
-      authorName: z.string().optional(),
-      categories: z.string().optional(),
-      wishlistId: z.uuid().optional().describe('ID do aluno para filtro de lista de desejos'),
+      search: z.string().optional().describe('Busca global por título, autor ou categoria'),
+      name: z.string().optional().describe('Filtra pelo título do livro'),
+      authorName: z.string().optional().describe('Filtra pelo nome do autor'),
+      categories: z.string().optional().describe('Filtra por categorias (ex: Terror, Romance)'),
+      wishlistId: z.string().optional().describe('ID do aluno para retornar livros da sua lista de desejos'),
     }),
   },
   responses: {
     200: {
-      description: 'Lista de livros filtrada',
+      description: 'Lista de livros (pode ser vazia)',
       content: { 'application/json': { schema: z.array(BookSchema) } },
-    },
-    404: {
-      description: 'Livro não encontrado',
-      content: { 'application/json': { schema: NotFoundErrorSchema } },
     },
   },
 });

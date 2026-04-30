@@ -31,6 +31,7 @@ export const BookSchema = z.object({
   ...bookBase,
   categories: z.string().describe('Categorias (separadas por vírgula)'),
   totalAvailable: z.number().int().describe('Quantidade disponível para empréstimo'),
+  imageSrc: z.string().url().or(z.literal('')).nullable().optional().describe('URL da capa buscada via OpenLibrary'),
   author: z
     .object({
       id: z.uuid(),

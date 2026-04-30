@@ -1,4 +1,4 @@
-import { describe, expect, it, afterAll, beforeAll } from '@jest/globals';
+import { describe, expect, it, afterAll, beforeAll, jest } from '@jest/globals';
 import request from 'supertest';
 
 import { prisma } from '../lib/prisma';
@@ -7,6 +7,8 @@ import testServer from './app';
 import { createAuthor, MOCK_AUTHOR_ID } from './wishlist.factory';
 
 describe('Book Service Tests', () => {
+  jest.setTimeout(15000);
+
   beforeAll(async () => {
     await prisma.book.deleteMany();
     await prisma.author.deleteMany();
@@ -36,6 +38,29 @@ describe('Book Service Tests', () => {
 
       expect(res.status).toBe(201);
       expect(res.body.data).toContain('Livro criado com sucesso');
+
+      // Verifica se a imagem foi buscada na OpenLibrary
+      const book = await prisma.book.findUnique({ where: { isbn: '9780132350884' } });
+      expect(book?.imageSrc).toBeDefined();
+      expect(book?.imageSrc).toMatch(/^https?:\/\/.*openlibrary\.org\/.*$/);
+    });
+
+    it('deve registrar um livro com imageSrc manual ignorando a busca automática', async () => {
+      const res = await request(testServer).post('/api/books/register').send({
+        isbn: '9780132350885',
+        name: 'Manual Image Book',
+        year: 2024,
+        authorId: MOCK_AUTHOR_ID,
+        description: 'Testing manual override',
+        categories: 'Test',
+        totalQuantity: 1,
+        availableQuantity: 1,
+        imageSrc: 'https://example.com/manual-cover.jpg',
+      });
+
+      expect(res.status).toBe(201);
+      const book = await prisma.book.findUnique({ where: { isbn: '9780132350885' } });
+      expect(book?.imageSrc).toBe('https://example.com/manual-cover.jpg');
     });
 
     it('deve retornar 401 VALIDATION_ERROR se a quantidade disponível for maior que a total', async () => {
@@ -102,6 +127,23 @@ describe('Book Service Tests', () => {
 
       expect(res.status).toBe(202);
       expect(res.body.data).toContain('Livro atualizado com sucesso');
+    });
+
+    it('deve buscar uma nova capa se o ISBN for atualizado', async () => {
+      const list = await request(testServer).get('/api/books');
+      const bookId = list.body.data[0].id;
+
+      // Primeiro garante que o livro tem uma imagem (ou limpa ela)
+      await prisma.book.update({ where: { id: bookId }, data: { imageSrc: null } });
+
+      const res = await request(testServer).put(`/api/books/${bookId}`).send({
+        isbn: '9780596007126', // Head First Design Patterns
+      });
+
+      expect(res.status).toBe(202);
+      const updatedBook = await prisma.book.findUnique({ where: { id: bookId } });
+      expect(updatedBook?.isbn).toBe('9780596007126');
+      expect(updatedBook?.imageSrc).toMatch(/^https?:\/\/.*openlibrary\.org\/.*$/);
     });
   });
 

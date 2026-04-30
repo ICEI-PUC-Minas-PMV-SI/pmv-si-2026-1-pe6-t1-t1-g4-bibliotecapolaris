@@ -37,6 +37,7 @@ model Book {
   categories     String
   totalQuantity  Int    @map("total_quantity")
   totalAvailable Int    @map("total_available")
+  imageSrc       String? @map("image_src")
 
   author         Author     @relation(fields: [authorId], references: [id])
   wishlists      Wishlist[]

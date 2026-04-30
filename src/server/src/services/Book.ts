@@ -10,6 +10,19 @@ function normalizeCategories(categories: string): string {
     .join(',');
 }
 
+// --- OPENLIBRARY: monta URL da capa a partir do ISBN ---
+// O frontend usa onError para exibir o mock quando a URL retornar 404.
+function openLibraryCoverUrl(isbn: string): string {
+  const clean = isbn.replace(/-/g, '').trim();
+  return `https://covers.openlibrary.org/b/isbn/${clean}-L.jpg`;
+}
+
+// Para livros com imageSrc nulo ou path local (legados), computa a URL do OpenLibrary.
+function resolveImageSrc(book: { isbn: string; imageSrc: string | null }): string {
+  if (book.imageSrc?.startsWith('http')) return book.imageSrc;
+  return openLibraryCoverUrl(book.isbn);
+}
+
 // --- OPERAÇÃO 1: CRIAÇÃO ---
 export async function createBook(data: CreateBookInput) {
   const baseSlug = generateSlug(data.name);
@@ -20,6 +33,9 @@ export async function createBook(data: CreateBookInput) {
     slug = `${baseSlug}-${count++}`;
   }
 
+  // Armazena a URL do OpenLibrary; o frontend exibe o mock se a imagem não carregar.
+  const imageSrc = openLibraryCoverUrl(data.isbn);
+
   const { availableQuantity, ...rest } = data;
 
   return prisma.book.create({
@@ -28,6 +44,7 @@ export async function createBook(data: CreateBookInput) {
       totalAvailable: availableQuantity,
       categories: normalizeCategories(data.categories),
       slug,
+      imageSrc,
     },
     include: {
       author: true,
@@ -37,80 +54,88 @@ export async function createBook(data: CreateBookInput) {
 
 // --- OPERAÇÃO 2: LEITURA ---
 export async function getBookById(id: string) {
-  return prisma.book.findUniqueOrThrow({
+  const book = await prisma.book.findUniqueOrThrow({
     where: { id },
     include: {
       author: true,
       loans: {
         include: {
           reviews: true,
-          student: {
-            select: { id: true, name: true, slug: true },
-          },
+          student: { select: { id: true, name: true, slug: true } },
         },
       },
     },
   });
+  return { ...book, imageSrc: resolveImageSrc(book) };
 }
 
 export async function getBookBySlug(slug: string) {
-  return prisma.book.findUniqueOrThrow({
+  const book = await prisma.book.findUniqueOrThrow({
     where: { slug },
     include: {
       author: true,
       loans: {
         include: {
           reviews: true,
-          student: {
-            select: { id: true, name: true, slug: true },
-          },
+          student: { select: { id: true, name: true, slug: true } },
         },
       },
     },
   });
+  return { ...book, imageSrc: resolveImageSrc(book) };
 }
 
-export async function listBooks(filters?: { search?: string }) {
-  const cleanSearch = filters?.search?.trim();
+export async function listBooks(filters?: {
+  search?: string;
+  name?: string;
+  authorName?: string;
+  categories?: string;
+  wishlistId?: string;
+}) {
+  const { search, name, authorName, categories, wishlistId } = filters || {};
 
-  return prisma.book.findMany({
-    where: filters?.search
-      ? {
-          OR: [
-            {
-              name: {
-                contains: cleanSearch,
-              },
-            },
-            {
-              author: {
-                is: {
-                  name: {
-                    contains: cleanSearch,
-                  },
+  const books = await prisma.book.findMany({
+    where: {
+      AND: [
+        search
+          ? {
+              OR: [
+                { name: { contains: search } },
+                { author: { name: { contains: search } } },
+                { categories: { contains: search } },
+              ],
+            }
+          : {},
+        name ? { name: { contains: name } } : {},
+        authorName ? { author: { name: { contains: authorName } } } : {},
+        categories ? { categories: { contains: categories } } : {},
+        wishlistId
+          ? {
+              wishlists: {
+                some: {
+                  studentId: wishlistId,
                 },
               },
-            },
-            {
-              categories: {
-                contains: cleanSearch,
-              },
-            },
-          ],
-        }
-      : undefined,
-    include: {
-      author: true,
+            }
+          : {},
+      ],
     },
+    include: { author: true },
     orderBy: { name: 'asc' },
   });
+  return books.map((book) => ({ ...book, imageSrc: resolveImageSrc(book) }));
 }
 
 // --- OPERAÇÃO 3: ATUALIZAÇÃO ---
 export async function updateBook(id: string, data: UpdateBookInput) {
-  await prisma.book.findUniqueOrThrow({ where: { id } });
+  const currentBook = await prisma.book.findUniqueOrThrow({ where: { id } });
 
   const updatedData: Record<string, unknown> = { ...data };
+
+  // Se o ISBN mudar, refaz a URL da capa
+  if (data.isbn && data.isbn !== currentBook.isbn) {
+    updatedData.imageSrc = openLibraryCoverUrl(data.isbn);
+  }
 
   if (data.name) {
     const baseSlug = generateSlug(data.name);
