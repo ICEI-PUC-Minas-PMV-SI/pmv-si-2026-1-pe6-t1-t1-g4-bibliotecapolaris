@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -8,25 +8,26 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { ActionButton, BookDisplay, Footer, Header } from '@/components';
 
 import { getBooks } from '@/services/Books';
+import type { Book } from '@/types';
 
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
 
-export default function Books() {
+function BooksContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const searchQuery = searchParams.get('search') ?? '';
 
   const [search, setSearch] = useState('');
-  const [books, setBooks] = useState<any[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
 
   const { wishlistSet, toggle, error, setError } = useWishlist('mock-user-id');
   const { showError, ModalComponent } = useAlertModal();
 
   const title = searchQuery ? `Resultados para "${searchQuery}"` : 'Livros';
 
-  // Keep the input in sync when the URL param changes externally (e.g. browser back/forward)
+
   const prevQuery = useRef(searchQuery);
   useEffect(() => {
     if (prevQuery.current !== searchQuery) {
@@ -35,7 +36,7 @@ export default function Books() {
     }
   }, [searchQuery]);
 
-  // Debounce: update URL when user types
+
   useEffect(() => {
     const delay = setTimeout(() => {
       if (search === searchQuery) return;
@@ -53,7 +54,7 @@ export default function Books() {
     return () => clearTimeout(delay);
   }, [search, searchQuery, router]);
 
-  // Fetch books whenever URL param changes
+
   useEffect(() => {
     const delay = setTimeout(async () => {
       if (!searchQuery) {
@@ -92,7 +93,7 @@ export default function Books() {
 
       setError(null);
     }
-  }, [error]);
+  }, [error, setError, showError]);
 
   return (
     <>
@@ -156,5 +157,13 @@ export default function Books() {
 
       <Footer />
     </>
+  );
+}
+
+export default function Books() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-(--background)" />}>
+      <BooksContent />
+    </Suspense>
   );
 }

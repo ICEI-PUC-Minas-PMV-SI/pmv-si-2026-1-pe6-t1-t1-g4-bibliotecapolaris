@@ -1,15 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import { ActionButton } from '@/components';
+import { useState, useEffect } from 'react';
+import { FormModal, FormField, BookCoverPreview } from '@/components';
 import { createBook } from '@/services/Books';
-import { createAuthor, getAuthors, type Author } from '@/services/Authors';
-
-type FeedbackState = {
-  type: 'success' | 'error';
-  message: string;
-} | null;
+import { createAuthor, getAuthors } from '@/services/Authors';
+import type { Author } from '@/types';
 
 type Props = {
   onClose: () => void;
@@ -17,367 +12,154 @@ type Props = {
 };
 
 export function AddBookModal({ onClose, onSuccess }: Props) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-
   const [isLoading, setIsLoading] = useState(false);
-  const [feedback, setFeedback] = useState<FeedbackState>(null);
-
-  // Author autocomplete
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error', message: string } | null>(null);
   const [authors, setAuthors] = useState<Author[]>([]);
-  const [authorInput, setAuthorInput] = useState('');
-  const [authorId, setAuthorId] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(false);
 
+  const [authorInfo, setAuthorInfo] = useState({ name: '', id: '' });
   const [form, setForm] = useState({
-    isbn: '',
-    name: '',
-    categories: '',
-    description: '',
-    year: new Date().getFullYear(),
-    totalQuantity: 1,
-    availableQuantity: 1,
+    isbn: '', name: '', categories: '', description: '',
+    year: new Date().getFullYear(), totalQuantity: 1, availableQuantity: 1,
   });
 
-  // Cover preview
-  const [coverUrl, setCoverUrl] = useState<string | null>(null);
-  const [coverError, setCoverError] = useState(false);
-
   useEffect(() => {
-    dialogRef.current?.showModal();
     getAuthors().then(setAuthors).catch(() => { });
   }, []);
 
-  // Debounce ISBN → update cover URL (all setState inside setTimeout, never synchronous)
-  useEffect(() => {
-    const clean = form.isbn.replace(/-/g, '').trim();
-    const timer = setTimeout(() => {
-      if (clean.length < 10) {
-        setCoverUrl(null);
-        return;
-      }
-      setCoverUrl(`https://covers.openlibrary.org/b/isbn/${clean}-L.jpg?default=false`);
-    }, 600);
-    return () => clearTimeout(timer);
-  }, [form.isbn]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target;
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    const { name, value } = e.target;
-    const isNumber = name === 'year' || name === 'totalQuantity' || name === 'availableQuantity';
-    setForm((prev) => ({ ...prev, [name]: isNumber ? Number(value) : value }));
-  }
-
-  // Author suggestion filter
-  const suggestions = authorInput.length >= 2
-    ? authors.filter((a) => a.name.toLowerCase().includes(authorInput.toLowerCase()))
-    : [];
-
-  function handleAuthorSelect(author: Author) {
-    setAuthorInput(author.name);
-    setAuthorId(author.id);
-    setShowSuggestions(false);
-  }
-
-  async function resolveAuthorId(): Promise<string> {
-    if (authorId) return authorId;
-
-    // Exact match by name (case-insensitive)
-    const match = authors.find(
-      (a) => a.name.toLowerCase() === authorInput.trim().toLowerCase()
-    );
-    if (match) return match.id;
-
-    // Create new author
-    await createAuthor(authorInput.trim());
-    const updated = await getAuthors();
-    const created = updated.find(
-      (a) => a.name.toLowerCase() === authorInput.trim().toLowerCase()
-    );
-    if (!created) throw new Error('Não foi possível criar o autor.');
-    return created.id;
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setFeedback(null);
-
-    if (!form.isbn.trim() || !form.name.trim() || !authorInput.trim()) {
-      setFeedback({ type: 'error', message: 'ISBN, Título e Autor são obrigatórios.' });
+    if (type === 'number') {
+      const numValue = Number(value);
+      if (numValue < 0) return;
+      if (name === 'year' && value.length > 4) return;
+      setForm(prev => ({ ...prev, [name]: numValue }));
       return;
     }
 
-    if (form.availableQuantity > form.totalQuantity) {
-      setFeedback({ type: 'error', message: 'Quantidade disponível não pode ser maior que a total.' });
-      return;
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  async function resolveAuthorId(): Promise<string> {
+    if (authorInfo.id) return authorInfo.id;
+    
+    const trimmedName = authorInfo.name.trim();
+    const match = authors.find(a => a.name.toLowerCase() === trimmedName.toLowerCase());
+    if (match) return match.id;
+
+    const newAuthor = await createAuthor(trimmedName);
+    return newAuthor.id;
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setFeedback(null);
+
+    if (!form.isbn.trim() || !form.name.trim() || !authorInfo.name.trim()) {
+      return setFeedback({ type: 'error', message: 'ISBN, Título e Autor são obrigatórios.' });
     }
 
     setIsLoading(true);
     try {
-      const resolvedAuthorId = await resolveAuthorId();
-
-      await createBook({
-        isbn: form.isbn,
-        name: form.name,
-        authorId: resolvedAuthorId,
-        categories: form.categories,
-        description: form.description,
-        year: form.year,
-        totalQuantity: form.totalQuantity,
-        availableQuantity: form.availableQuantity,
-      });
-
+      const authorId = await resolveAuthorId();
+      await createBook({ ...form, authorId });
       setFeedback({ type: 'success', message: 'Livro adicionado com sucesso!' });
-      setTimeout(() => {
-        dialogRef.current?.close();
-        onSuccess?.();
-      }, 1200);
+      setTimeout(() => onSuccess?.(), 1200);
     } catch (err: unknown) {
-      setFeedback({
-        type: 'error',
-        message: err instanceof Error ? err.message : 'Erro ao adicionar livro.',
-      });
+      setFeedback({ type: 'error', message: err instanceof Error ? err.message : 'Erro ao adicionar livro.' });
     } finally {
       setIsLoading(false);
     }
   }
 
-  function handleClose() {
-    dialogRef.current?.close();
-    onClose();
-  }
-
   return (
-    <dialog
-      ref={dialogRef}
+    <FormModal
+      title="Adicionar Novo Livro"
+      submitLabel={isLoading ? 'Adicionando…' : 'Adicionar'}
+      isLoading={isLoading}
       onClose={onClose}
-      className="w-[380px] max-w-[95vw] rounded-none border border-(--text)/40
-        bg-(--background) text-(--text)
-        backdrop:bg-black/60
-        fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-        p-0 outline-none"
+      onSubmit={handleSubmit}
     >
-      <form onSubmit={handleSubmit} className="flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-(--text)/20">
-          <h2 className="font-serif text-lg uppercase tracking-widest font-bold">
-            Adicionar Novo Livro
-          </h2>
-          <button
-            type="button"
-            onClick={handleClose}
-            aria-label="Fechar"
-            className="text-(--text)/50 hover:text-(--text) transition-colors cursor-pointer text-xl leading-none"
-          >
-            ✕
-          </button>
-        </div>
+      <BookCoverPreview isbn={form.isbn} />
 
-        {/* Fields */}
-        <div className="flex flex-col gap-4 px-5 py-5">
-          {/* Cover preview */}
-          <div className="flex justify-center">
-            <div
-              className="w-28 h-40 border border-(--text)/30 flex items-center justify-center overflow-hidden shrink-0"
-              style={{ background: 'var(--foreground)' }}
-            >
-              {coverUrl && !coverError ? (
-                <Image
-                  key={coverUrl}
-                  src={coverUrl}
-                  alt="Capa do livro"
-                  width={112}
-                  height={160}
-                  className="object-cover w-full h-full"
-                  onError={() => setCoverError(true)}
-                  unoptimized
-                />
-              ) : (
-                <span className="font-sans text-[10px] text-(--text)/40 text-center px-2">
-                  {form.isbn.replace(/-/g, '').trim().length >= 10
-                    ? 'Capa não encontrada'
-                    : 'Digite o ISBN'}
-                </span>
-              )}
-            </div>
-          </div>
+      <FormField label="ISBN" id="isbn"><input name="isbn" value={form.isbn} onChange={handleChange} className="form-input" placeholder="Ex: 978-0123456789" autoFocus /></FormField>
+      <FormField label="Nome" id="name"><input name="name" value={form.name} onChange={handleChange} className="form-input" placeholder="Título do livro" /></FormField>
+      
+      <FormField label="Autor" id="author">
+        <AuthorInputInline 
+          value={authorInfo.name} 
+          authors={authors}
+          onChange={(name, id) => setAuthorInfo({ name, id })} 
+        />
+      </FormField>
 
-          {/* ISBN */}
-          <div className="flex flex-col gap-1">
-            <label className="font-serif text-xs uppercase tracking-widest text-(--text)/70">
-              ISBN
-            </label>
-            <input
-              id="modal-isbn"
-              name="isbn"
-              type="text"
-              value={form.isbn}
-              onChange={handleChange}
-              placeholder="Ex.: 978-0-7653-2843-4"
-              className="form-input"
-              autoFocus
-            />
-          </div>
+      <FormField label="Categoria" id="categories"><input name="categories" value={form.categories} onChange={handleChange} className="form-input" placeholder="Ex: Suspense, Fantasia" /></FormField>
+      <FormField label="Descrição" id="description"><textarea name="description" value={form.description} onChange={handleChange} rows={3} className="form-input resize-none" placeholder="Breve resumo da obra..." /></FormField>
 
-          {/* Nome */}
-          <div className="flex flex-col gap-1">
-            <label className="font-serif text-xs uppercase tracking-widest text-(--text)/70">
-              Nome:
-            </label>
-            <input
-              id="modal-name"
-              name="name"
-              type="text"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="The Sudden Stop"
-              className="form-input"
-            />
-          </div>
+      <div className="flex gap-3">
+        <FormField label="Ano" id="year" className="flex-1"><input name="year" type="number" value={form.year} onChange={handleChange} className="form-input" placeholder="AAAA" min={0} max={new Date().getFullYear() + 1} /></FormField>
+        <FormField label="Total" id="total" className="flex-1"><input name="totalQuantity" type="number" value={form.totalQuantity} onChange={handleChange} className="form-input" placeholder="0" min={1} /></FormField>
+        <FormField label="Disponível" id="available" className="flex-1"><input name="availableQuantity" type="number" value={form.availableQuantity} onChange={handleChange} className="form-input" placeholder="0" min={0} max={form.totalQuantity} /></FormField>
+      </div>
 
-          {/* Autor (autocomplete) */}
-          <div className="flex flex-col gap-1 relative">
-            <label className="font-serif text-xs uppercase tracking-widest text-(--text)/70">
-              Autor:
-            </label>
-            <input
-              id="modal-author"
-              type="text"
-              value={authorInput}
-              onChange={(e) => {
-                setAuthorInput(e.target.value);
-                setAuthorId('');
-                setShowSuggestions(true);
-              }}
-              onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-              placeholder="Rick Burroughs"
-              className="form-input"
-              autoComplete="off"
-            />
-            {showSuggestions && suggestions.length > 0 && (
-              <ul className="absolute top-full left-0 right-0 z-50 border border-(--text)/30 bg-(--background) max-h-40 overflow-y-auto mt-1">
-                {suggestions.map((a) => (
-                  <li
-                    key={a.id}
-                    onMouseDown={() => handleAuthorSelect(a)}
-                    className="px-3 py-2 font-sans text-sm cursor-pointer hover:bg-(--button-active) hover:text-(--button-text-active) transition-colors"
-                  >
-                    {a.name}
-                  </li>
-                ))}
-              </ul>
-            )}
-            {authorInput.length >= 2 && !authorId && suggestions.length === 0 && (
-              <p className="font-sans text-xs text-(--text)/50 mt-1">
-                Autor não encontrado — será criado ao salvar.
-              </p>
-            )}
-          </div>
-
-          {/* Categoria */}
-          <div className="flex flex-col gap-1">
-            <label className="font-serif text-xs uppercase tracking-widest text-(--text)/70">
-              Categoria
-            </label>
-            <input
-              id="modal-categories"
-              name="categories"
-              type="text"
-              value={form.categories}
-              onChange={handleChange}
-              placeholder="Suspense, Terror"
-              className="form-input"
-            />
-          </div>
-
-          {/* Descrição */}
-          <div className="flex flex-col gap-1">
-            <label className="font-serif text-xs uppercase tracking-widest text-(--text)/70">
-              Descrição
-            </label>
-            <textarea
-              id="modal-description"
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              rows={3}
-              placeholder="Uma breve descrição do livro…"
-              className="form-input resize-none"
-            />
-          </div>
-
-          {/* Ano + Qtd Total + Qtd Disponível */}
-          <div className="flex gap-3">
-            <div className="flex flex-col gap-1 flex-1">
-              <label className="font-serif text-xs uppercase tracking-widest text-(--text)/70">
-                Ano Publicado
-              </label>
-              <input
-                id="modal-year"
-                name="year"
-                type="number"
-                min={1000}
-                max={new Date().getFullYear()}
-                value={form.year}
-                onChange={handleChange}
-                className="form-input"
-              />
-            </div>
-
-            <div className="flex flex-col gap-1 flex-1">
-              <label className="font-serif text-xs uppercase tracking-widest text-(--text)/70">
-                Total
-              </label>
-              <input
-                id="modal-total-qty"
-                name="totalQuantity"
-                type="number"
-                min={1}
-                value={form.totalQuantity}
-                onChange={handleChange}
-                className="form-input"
-              />
-            </div>
-
-            <div className="flex flex-col gap-1 flex-1">
-              <label className="font-serif text-xs uppercase tracking-widest text-(--text)/70">
-                Disponível
-              </label>
-              <input
-                id="modal-available-qty"
-                name="availableQuantity"
-                type="number"
-                min={0}
-                max={form.totalQuantity}
-                value={form.availableQuantity}
-                onChange={handleChange}
-                className="form-input"
-              />
-            </div>
-          </div>
-
-          {/* Feedback */}
-          {feedback && (
-            <p
-              className={`font-sans text-sm text-center font-medium ${feedback.type === 'success'
-                ? 'text-(--status-success)'
-                : 'text-(--status-error)'
-                }`}
-            >
-              {feedback.message}
-            </p>
-          )}
-        </div>
-
-        {/* Footer */}
-        <div className="px-5 pb-5">
-          <ActionButton
-            type="submit"
-            title={isLoading ? 'Adicionando…' : 'Adicionar'}
-            variant="fill"
-            disabled={isLoading}
-            className="w-full text-base py-3"
-          />
-        </div>
-      </form>
-    </dialog>
+      {feedback && (
+        <p className={`text-sm text-center font-medium ${feedback.type === 'success' ? 'text-(--status-success)' : 'text-(--status-error)'}`}>
+          {feedback.message}
+        </p>
+      )}
+    </FormModal>
   );
 }
+
+// Componente Local para evitar poluir o AddBookModal
+function AuthorInputInline({ value, authors, onChange }: { value: string, authors: Author[], onChange: (name: string, id: string) => void }) {
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const suggestions = value.length >= 2
+    ? authors.filter((a) => a.name.toLowerCase().includes(value.toLowerCase()))
+    : [];
+
+  const selectedAuthor = authors.find(a => a.name.toLowerCase() === value.toLowerCase());
+
+  return (
+    <div className="relative">
+      <input
+        id="modal-author"
+        type="text"
+        value={value}
+        onChange={(e) => {
+          onChange(e.target.value, '');
+          setShowSuggestions(true);
+        }}
+        onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+        placeholder="Rick Burroughs"
+        className="form-input"
+        autoComplete="off"
+      />
+
+      {showSuggestions && suggestions.length > 0 && (
+        <ul className="absolute top-full left-0 right-0 z-50 border border-(--text)/30 bg-(--background) max-h-40 overflow-y-auto mt-1 shadow-lg">
+          {suggestions.map((a) => (
+            <li
+              key={a.id}
+              onMouseDown={() => {
+                onChange(a.name, a.id);
+                setShowSuggestions(false);
+              }}
+              className="px-3 py-2 font-sans text-sm cursor-pointer hover:bg-(--button-active) hover:text-(--button-text-active) transition-colors"
+            >
+              {a.name}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {value.length >= 2 && !selectedAuthor && suggestions.length === 0 && (
+        <p className="font-sans text-xs text-(--text)/50 mt-1">
+          Autor não encontrado — será criado ao salvar.
+        </p>
+      )}
+    </div>
+  );
+}
+

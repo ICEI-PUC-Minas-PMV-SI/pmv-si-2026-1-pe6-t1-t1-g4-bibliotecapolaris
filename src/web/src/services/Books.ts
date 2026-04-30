@@ -1,6 +1,8 @@
+import type { Book } from '@/types';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
-export async function getBooks(search?: string) {
+export async function getBooks(search?: string): Promise<Book[]> {
   const query = new URLSearchParams();
 
   if (search) query.append('search', search);
@@ -14,7 +16,7 @@ export async function getBooks(search?: string) {
   return data.data;
 }
 
-export async function getBookBySlug(slug: string) {
+export async function getBookBySlug(slug: string): Promise<Book | null> {
   const res = await fetch(`${API_URL}/books/${slug}`, {
     cache: 'no-store',
   });
@@ -34,7 +36,7 @@ export async function createBook(payload: {
   totalQuantity: number;
   availableQuantity: number;
 }) {
-  const res = await fetch('http://127.0.0.1:3333/api/books/register', {
+  const res = await fetch(`${API_URL}/books/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -50,7 +52,7 @@ export async function createBook(payload: {
 }
 
 export async function deleteBook(id: string) {
-  const res = await fetch(`http://127.0.0.1:3333/api/books/${id}`, {
+  const res = await fetch(`${API_URL}/books/${id}`, {
     method: 'DELETE',
   });
 

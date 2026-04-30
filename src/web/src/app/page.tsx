@@ -31,7 +31,7 @@ export default function LandingPage() {
     loadBooks();
   }, []);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!search.trim()) return;

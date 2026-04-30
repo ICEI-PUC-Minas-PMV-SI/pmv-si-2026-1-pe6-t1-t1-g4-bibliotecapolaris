@@ -12,9 +12,9 @@ export function WithdrawButton() {
       <ActionButton
         title="Retirar"
         className="flex-1 self-end text-3xl"
-        onClick={(e: any) => {
-          e?.preventDefault?.();
-          e?.stopPropagation?.();
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          e.preventDefault();
+          e.stopPropagation();
 
           showConfirmation('Modal aberta!', 'Isso é só um teste de abertura.', () => {
             console.log('Confirmado!');

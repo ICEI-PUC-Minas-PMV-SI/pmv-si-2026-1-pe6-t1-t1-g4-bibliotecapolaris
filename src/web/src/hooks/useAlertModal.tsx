@@ -57,8 +57,13 @@ export function useAlertModal() {
       type={modal.type}
       title={modal.title}
       description={modal.description}
-      onClose={close}
-      onSuccess={() => {
+      onClose={() => {
+        close();
+        if (modal.type === 'success') {
+          modal.onSuccess?.();
+        }
+      }}
+      onConfirm={() => {
         close();
         modal.onSuccess?.();
       }}

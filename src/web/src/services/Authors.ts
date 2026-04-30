@@ -1,10 +1,9 @@
-export type Author = {
-  id: string;
-  name: string;
-};
+import type { Author } from '@/types';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 export async function getAuthors(): Promise<Author[]> {
-  const res = await fetch('http://127.0.0.1:3333/api/author', {
+  const res = await fetch(`${API_URL}/author`, {
     cache: 'no-store',
   });
 
@@ -12,15 +11,18 @@ export async function getAuthors(): Promise<Author[]> {
   return data.data ?? [];
 }
 
-export async function createAuthor(name: string): Promise<void> {
-  const res = await fetch('http://127.0.0.1:3333/api/author', {
+export async function createAuthor(name: string): Promise<Author> {
+  const res = await fetch(`${API_URL}/author`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name }),
   });
 
+  const data = await res.json();
+
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err?.message ?? `Erro ${res.status}`);
+    throw new Error(data?.message ?? `Erro ${res.status}`);
   }
+
+  return data.data;
 }

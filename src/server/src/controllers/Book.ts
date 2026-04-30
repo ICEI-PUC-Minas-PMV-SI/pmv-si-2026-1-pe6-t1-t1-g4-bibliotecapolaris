@@ -4,7 +4,6 @@ import { CreateBookSchema, UpdateBookSchema } from '@/models/BookModel';
 import { createBook, deleteBook, getBookById, getBookBySlug, listBooks, updateBook } from '@/services';
 import { handleError, sendFailure, sendSuccess } from '@/utils';
 
-// --- OPERAÇÃO 1: CRIAÇÃO ---
 export async function createBookController(req: Request, res: Response) {
   try {
     const data = CreateBookSchema.parse(req.body);
@@ -17,7 +16,6 @@ export async function createBookController(req: Request, res: Response) {
   }
 }
 
-// --- OPERAÇÃO 2: LEITURA ---
 export async function getBookByIdController(req: Request, res: Response) {
   try {
     const { id } = req.params;
@@ -79,7 +77,6 @@ export async function listBooksController(req: Request, res: Response) {
   }
 }
 
-// --- OPERAÇÃO 3: ATUALIZAÇÃO ---
 export async function updateBookController(req: Request, res: Response) {
   try {
     const { id } = req.params;
@@ -98,7 +95,6 @@ export async function updateBookController(req: Request, res: Response) {
   }
 }
 
-// --- OPERAÇÃO 4: DELETAR ---
 export async function deleteBookController(req: Request, res: Response) {
   try {
     const { id } = req.params;

@@ -12,9 +12,9 @@ export async function createAuthorController(req: Request, res: Response) {
       return sendFailure(res, 'VALIDATION_ERROR', 'Erro de validação', undefined, 401);
     }
 
-    await createAuthor({ name });
+    const author = await createAuthor({ name });
 
-    return sendSuccess(res, `Autor criado com sucesso!`, 201);
+    return sendSuccess(res, author, 201);
   } catch (error: unknown) {
     return handleError(res, error, 'Autor');
   }
