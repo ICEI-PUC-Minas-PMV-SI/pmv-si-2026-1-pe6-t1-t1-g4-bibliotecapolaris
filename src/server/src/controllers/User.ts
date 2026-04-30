@@ -3,6 +3,7 @@ import type { Request, Response } from 'express';
 import { handleError, hashPassword, sendSuccess, verifyPassword } from '@/utils';
 import { createUser, getUserById, updateUser, deleteUser } from '@/services';
 import { CreateUserSchema, UpdateUserSchema } from '@/models/UserModel';
+import { prisma } from '@/lib/prisma';
 
 export async function createUserController(req: Request, res: Response) {
   try {
@@ -63,3 +64,37 @@ export async function deleteUserController(req: Request, res: Response) {
     return handleError(res, error, 'Usuário');
   }
 }
+
+// Função de login, recebe o e-mail e senha e busca no banco
+export const loginUserController = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    // Busca o usuário no banco de dados pelo e-mail
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    // Se não achar o e-mail
+    if (!user) {
+      return res.status(400).json({ message: "E-mail ou senha incorretos." });
+    }
+
+    // Verifica se a senha bate
+    const isPasswordValid = await verifyPassword(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "E-mail ou senha incorretos." });
+    }
+
+    // Se deu tudo certo, libera
+    return res.status(200).json({ 
+      message: "Login realizado com sucesso!", 
+      user: { id: user.id, name: user.name, email: user.email, type: user.type } 
+    });
+
+  } catch (error) {
+    console.error("Erro no login:", error);
+    return res.status(500).json({ message: "Erro interno do servidor." });
+  }
+};

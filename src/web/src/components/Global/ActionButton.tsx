@@ -34,7 +34,7 @@ export function ActionButton({ title = '', icon, variant = 'fill', className = '
     <button
       {...props}
       className={`flex items-center justify-center border-2 rounded-xs ${variants[variant]} ${padding} ${className} cursor-pointer transition-colors disabled:cursor-not-allowed
-  disabled:opacity-50`}
+  disabled:opacity-50 hover:opacity-80`}
     >
       {hasTitle && <span className="font-bold uppercase font-serif align-middle leading-none">{title}</span>}
 

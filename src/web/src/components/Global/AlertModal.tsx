@@ -15,10 +15,10 @@ type AlertModalProps = {
   loadingText?: string;
 };
 
-export function AlertModal({ 
-  type = 'error', 
-  title, 
-  description, 
+export function AlertModal({
+  type = 'error',
+  title,
+  description,
   onClose,
   onConfirm,
   isLoading,
@@ -101,13 +101,22 @@ export function AlertModal({
               />
             </>
           ) : (
-            <ActionButton
-              type="button"
-              title="Fechar"
-              variant={type === 'error' ? 'outline' : 'fill'}
-              onClick={handleClose}
-              className="w-full"
-            />
+            <div>
+              <button
+                onClick={() => {
+                  dialogRef.current?.close();
+
+                  if (type === 'success') {
+                    onSuccess?.();
+                  } else {
+                    onClose();
+                  }
+                }}
+                className={`px-6 py-2 rounded-sm font-medium text-xl text-(--background) uppercase cursor-pointer ${buttonColorMap[type]}`}
+              >
+                Fechar
+              </button>
+            </div>
           )}
         </div>
       </div>

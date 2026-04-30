@@ -1,10 +1,23 @@
 'use client';
 
-import { BookDisplay, BookStatusCard, Footer, Header } from '@/components';
+import { useEffect } from 'react';
+
 import { useWishlist } from '@/hooks/useWishlist';
+import { useAlertModal } from '@/hooks/useAlertModal';
+
+import { BookDisplay, BookStatusCard, Footer, Header } from '@/components';
 
 export default function ProfilePage() {
-  const { wishlist, wishlistSet, toggle } = useWishlist('mock-user-id');
+  const { wishlist, wishlistSet, toggle, error, setError } = useWishlist('137dda5c-0a74-4e4a-909a-e9f836162955');
+  const { showError, ModalComponent } = useAlertModal();
+
+  useEffect(() => {
+    if (error) {
+      showError('Erro ao favoritar', 'Não foi possível atualizar sua lista.');
+
+      setError(null);
+    }
+  }, [error]);
 
   return (
     <>
@@ -39,18 +52,26 @@ export default function ProfilePage() {
           <h1 className="w-full text-3xl uppercase tracking-wider">Livros Favoritados</h1>
 
           <div className="flex flex-wrap justify-center gap-4">
-            {wishlist.books.map((book: { id: string; name: string; description: string }) => (
-              <BookDisplay
-                key={book.id}
-                title={book.name}
-                description={book.description}
-                imageSrc="/assets/images/mock-book.png"
-                isFavorite={wishlistSet.has(book.id)}
-                onToggleFavorite={() => toggle(book.id)}
-              />
-            ))}
+            {wishlist.books.length > 0 ? (
+              wishlist.books.map((book: any) => (
+                <BookDisplay
+                  key={book.id}
+                  title={book.name}
+                  description={book.description}
+                  imageSrc="/assets/images/mock-book.png"
+                  isFavorite={wishlistSet.has(book.id)}
+                  onToggleFavorite={() => toggle(book.id)}
+                />
+              ))
+            ) : (
+              <h2 className="w-full font-serif text-3xl uppercase text-center">
+                Nenhum livro favoritado, comece agora!
+              </h2>
+            )}
           </div>
         </section>
+
+        {ModalComponent}
       </main>
 
       <Footer />

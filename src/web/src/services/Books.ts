@@ -1,9 +1,11 @@
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+
 export async function getBooks(search?: string) {
   const query = new URLSearchParams();
 
   if (search) query.append('search', search);
 
-  const res = await fetch(`http://127.0.0.1:3333/api/books?${query.toString()}`, {
+  const res = await fetch(`${API_URL}/books?${query.toString()}`, {
     cache: 'no-store',
   });
 
@@ -13,7 +15,7 @@ export async function getBooks(search?: string) {
 }
 
 export async function getBookBySlug(slug: string) {
-  const res = await fetch(`http://127.0.0.1:3333/api/books/${slug}`, {
+  const res = await fetch(`${API_URL}/books/${slug}`, {
     cache: 'no-store',
   });
 

@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
 import { ActionButton } from '@/components';
-import { AlertModal } from '@/components';
+
+import { useAlertModal } from '@/hooks/useAlertModal';
 
 export function WithdrawButton() {
-  const [open, setOpen] = useState(false);
+  const { showConfirmation, ModalComponent } = useAlertModal();
 
   return (
     <>
@@ -15,18 +15,14 @@ export function WithdrawButton() {
         onClick={(e: any) => {
           e?.preventDefault?.();
           e?.stopPropagation?.();
-          setOpen(true);
+
+          showConfirmation('Modal aberta!', 'Isso é só um teste de abertura.', () => {
+            console.log('Confirmado!');
+          });
         }}
       />
 
-      {open && (
-        <AlertModal
-          type="confirmation"
-          title="Modal aberta!"
-          description="Isso é só um teste de abertura."
-          onClose={() => setOpen(false)}
-        />
-      )}
+      {ModalComponent}
     </>
   );
 }

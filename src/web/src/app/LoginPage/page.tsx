@@ -1,21 +1,42 @@
 'use client';
 
+import { useState } from 'react';
+
 import Image from 'next/image';
-import { ActionButton } from '@/components';
 import { useRouter } from 'next/navigation';
+
+import { loginUser } from '@/services/User';
+import { ActionButton } from '@/components';
+import { useAlertModal } from '@/hooks/useAlertModal';
 
 export default function LoginPage() {
   const router = useRouter();
 
-  function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+  const [isLoading, setIsLoading] = useState(false);
+  const { showSuccess, showError, ModalComponent } = useAlertModal();
+
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
-    const email = formData.get('email');
-    const password = formData.get('password');
+    try {
+      setIsLoading(true);
 
-    console.log({ email, password });
+      const { status, data } = await loginUser(email, password);
+
+      if (status === 200 || status === 201) {
+        showSuccess('Sucesso!', 'Login realizado com sucesso!', () => router.push('/Books'));
+      } else {
+        showError('Atenção!', data.message || 'E-mail ou senha incorretos.');
+      }
+    } catch (error) {
+      showError('Erro no Servidor', 'Não foi possível conectar.');
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   function goToSign() {
@@ -23,7 +44,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-row gap-6 bg-(--background)">
+    <main className="min-h-screen flex flex-row gap-6 bg-(--background) relative">
       <figure className="relative w-[55vw] h-screen overflow-hidden">
         <Image
           src="/assets/images/login-dark.jpg"
@@ -44,10 +65,29 @@ export default function LoginPage() {
             ENTRAR
           </h1>
 
-          <input name="email" type="email" placeholder="alanwake@remedy.com" className="form-input text-xl" />
-          <input name="password" type="password" placeholder="••••••••" className="form-input text-xl" />
+          <input
+            name="email"
+            type="email"
+            placeholder="JohnDoe@unipolaris.com"
+            className="form-input text-xl"
+            required
+            disabled={isLoading}
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="••••••••"
+            className="form-input text-xl"
+            required
+            disabled={isLoading}
+          />
 
-          <ActionButton title="Entrar" type="submit" className="h-12 text-3xl rounded-sm" />
+          <ActionButton
+            title={isLoading ? 'Entrando...' : 'Entrar'}
+            type="submit"
+            className={`h-12 text-3xl rounded-sm ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+            disabled={isLoading}
+          />
         </form>
 
         <p className="text-(--text) text-2xl font-sans">
@@ -57,6 +97,8 @@ export default function LoginPage() {
           </span>
         </p>
       </section>
+
+      {ModalComponent}
     </main>
   );
 }

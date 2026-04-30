@@ -10,14 +10,7 @@ import { ActionButton, BookDisplay, Footer, Header } from '@/components';
 import { getBooks } from '@/services/Books';
 
 import { useWishlist } from '@/hooks/useWishlist';
-
-type Book = {
-  id: string;
-  slug: string;
-  name: string;
-  description: string;
-  imageSrc?: string | null;
-};
+import { useAlertModal } from '@/hooks/useAlertModal';
 
 export default function Books() {
   const router = useRouter();
@@ -25,10 +18,11 @@ export default function Books() {
 
   const searchQuery = searchParams.get('search') ?? '';
 
-  // Local input value — starts from the URL param so the field stays filled on load
-  const [search, setSearch] = useState(searchQuery);
-  const [books, setBooks] = useState<Book[]>([]);
-  const { wishlistSet, toggle } = useWishlist('mock-user-id');
+  const [search, setSearch] = useState('');
+  const [books, setBooks] = useState<any[]>([]);
+
+  const { wishlistSet, toggle, error, setError } = useWishlist('mock-user-id');
+  const { showError, ModalComponent } = useAlertModal();
 
   const title = searchQuery ? `Resultados para "${searchQuery}"` : 'Livros';
 
@@ -92,6 +86,14 @@ export default function Books() {
     setSearch(e.target.value);
   }
 
+  useEffect(() => {
+    if (error) {
+      showError('Erro ao favoritar', 'Não foi possível atualizar sua lista.');
+
+      setError(null);
+    }
+  }, [error]);
+
   return (
     <>
       <Header />
@@ -148,6 +150,8 @@ export default function Books() {
         ) : (
           <h1 className="w-full font-serif text-3xl uppercase text-center">Nenhum livro encontrado</h1>
         )}
+
+        {ModalComponent}
       </main>
 
       <Footer />
