@@ -19,7 +19,6 @@ const buttonColorMap = {
 
 export function AlertModal({ type = 'error', title, description, onClose, onSuccess }: AlertModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const buttonClass = buttonColorMap[type ?? 'error'];
 
   useEffect(() => {
     dialogRef.current?.showModal();
