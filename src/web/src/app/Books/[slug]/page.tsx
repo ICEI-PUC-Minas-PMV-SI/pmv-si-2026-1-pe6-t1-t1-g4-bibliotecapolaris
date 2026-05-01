@@ -6,14 +6,26 @@ import { use, useEffect, useState } from 'react';
 import { Footer, Header, LikeButton, WithdrawButton } from '@/components';
 import ReviewSection from '@/components/Book/ReviewSection';
 
-import { getBookBySlug } from '@/services/Books';
+import { getBookBySlug, getReviewsByBookId } from '@/services/Books';
 import { formatCategories } from '@/util/Formatter';
 import { useWishlist } from '@/hooks/useWishlist';
+
+function mapReviews(apiReviews: any[]) {
+  return apiReviews.map((r) => ({
+    id: r.id,
+    userName: r.loan?.student?.name ?? 'Usuário desconhecido',
+    userSlug: r.loan?.student?.slug ?? '',
+    rating: r.rating,
+    description: r.description,
+    date: r.date,
+  }));
+}
 
 export default function BookPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
 
   const [book, setBook] = useState<any>(null);
+  const [reviews, setReviews] = useState<any[]>([]);
   const { wishlistSet, toggle } = useWishlist('mock-user-id');
 
   useEffect(() => {
@@ -24,6 +36,15 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
 
     loadBook();
   }, [slug]);
+
+  useEffect(() => {
+    if (!book?.id) return;
+    async function loadReviews() {
+      const data = await getReviewsByBookId(book.id);
+      setReviews(mapReviews(data));
+    }
+    loadReviews();
+  }, [book?.id]);
 
   if (!book) {
     return <h1>Livro não encontrado</h1>;
@@ -68,25 +89,7 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
         </div>
 
         <section className="px-16 py-8">
-          <ReviewSection
-            reviews={[
-              {
-                id: '1',
-                userName: 'John Doe',
-                rating: 5,
-                description:
-                  'Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito.Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito. Um livro incrível! Recomendo muito.',
-                date: '10/04/2026',
-              },
-              {
-                id: '2',
-                userName: 'John Doe',
-                rating: 3,
-                description: 'Leitura agradável, mas poderia ser melhor.',
-                date: '15/04/2026',
-              },
-            ]}
-          />
+          <ReviewSection reviews={reviews} />
         </section>
       </main>
 

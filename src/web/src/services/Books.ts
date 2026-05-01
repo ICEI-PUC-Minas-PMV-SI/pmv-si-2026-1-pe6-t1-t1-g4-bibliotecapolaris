@@ -23,3 +23,11 @@ export async function getBookBySlug(slug: string) {
 
   return data.data;
 }
+
+export async function getReviewsByBookId(id: string) {
+  const res = await fetch(`${API_URL}/review/book/${id}`, {
+    cache: 'no-store',
+  });
+  const data = await res.json();
+  return data.data;
+}

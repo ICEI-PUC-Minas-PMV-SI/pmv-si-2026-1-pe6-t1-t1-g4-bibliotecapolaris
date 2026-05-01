@@ -1,6 +1,9 @@
+import Link from 'next/link';
+
 type Review = {
   id: string;
   userName: string;
+  userSlug: string;
   rating: number;
   description?: string;
   date: string;
@@ -27,18 +30,20 @@ function StarRating({ rating }: { rating: number }) {
 
 function ReviewCard({ review }: { review: Review }) {
   return (
-    <article className="border border-(--text) p-6 rounded-sm flex flex-col gap-4">
-      <div className="flex justify-between items-center gap-4">
-        <div className="flex flex-row gap-8">
-          <h3 className="flex-1 font-serif text-2xl font-bold tracking-wider uppercase border-b-2 border-(--button-active) line-clamp-1">
-            {review.userName}
-          </h3>
-          <h3 className="font-serif text-xl font-bold tracking-wider uppercase">{review.date}</h3>
+    <Link href={`/Users/${review.userSlug}`}>
+      <article className="border border-(--text) p-6 rounded-sm flex flex-col gap-4 hover:opacity-80">
+        <div className="flex justify-between items-center gap-4">
+          <div className="flex flex-row gap-8">
+            <h3 className="flex-1 font-serif text-2xl font-bold tracking-wider uppercase border-b-2 border-(--button-active) line-clamp-1">
+              {review.userName}
+            </h3>
+            <h3 className="font-serif text-xl font-bold tracking-wider uppercase">{review.date}</h3>
+          </div>
+          <StarRating rating={review.rating} />
         </div>
-        <StarRating rating={review.rating} />
-      </div>
-      <p className="font-sans font-light text-base text-justify leading-relaxed line-clamp-5">{review.description}</p>
-    </article>
+        <p className="font-sans font-light text-base text-justify leading-relaxed line-clamp-5">{review.description}</p>
+      </article>
+    </Link>
   );
 }
 
