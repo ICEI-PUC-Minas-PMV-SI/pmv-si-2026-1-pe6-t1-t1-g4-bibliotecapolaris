@@ -24,9 +24,17 @@ function mapReviews(apiReviews: any[]) {
 export default function BookPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
 
+  const [img, setImg] = useState('/assets/images/mock-book.png');
   const [book, setBook] = useState<any>(null);
   const [reviews, setReviews] = useState<any[]>([]);
+
   const { wishlistSet, toggle } = useWishlist('mock-user-id');
+
+  useEffect(() => {
+    if (book?.imageSrc) {
+      setImg(book.imageSrc);
+    }
+  }, [book]);
 
   useEffect(() => {
     async function loadBook() {
@@ -55,13 +63,14 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
       <Header />
       <main className="flex flex-col bg-(--background)">
         <div className="flex justify-evenly mt-8">
-          <figure className="relative w-88 h-full border border-(--text) rounded-sm">
+          <figure className="relative w-88 h-105 border border-(--text) rounded-sm">
             <Image
-              src="/assets/images/mock-book.png"
-              height={2000}
-              width={2000}
-              alt="Imagem principal da landing page"
-              className="object-cover"
+              src={img}
+              fill
+              alt={`Imagem do livro ${book.name}`}
+              onError={() => {
+                setImg('/assets/images/mock-book.png');
+              }}
               unoptimized
             />
           </figure>

@@ -12,13 +12,14 @@ export function formatCategories(categories?: string): string {
 export function formatBook(book: any) {
   return {
     id: book.id,
+    isbn: book.isbn,
+    year: book.year,
     name: book.name,
     author: book.author?.name,
     categories: book.categories,
     description: book.description,
     totalAvailable: book.totalAvailable,
     totalQuantity: book.totalQuantity,
-    isbn: book.isbn,
-    imageSrc: '/assets/images/mock-book.png',
+    imageSrc: book.imageSrc || '/assets/images/mock-book.png',
   };
 }

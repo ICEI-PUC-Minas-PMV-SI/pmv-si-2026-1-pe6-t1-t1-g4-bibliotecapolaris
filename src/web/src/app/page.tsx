@@ -48,7 +48,7 @@ export default function LandingPage() {
       showError('Erro', error);
       setError(null);
     }
-  }, [error]);
+  }, [error, setError, showError]);
 
   return (
     <>
@@ -92,7 +92,7 @@ export default function LandingPage() {
                   <BookDisplay
                     title={book.name}
                     description={book.description}
-                    imageSrc="/assets/images/mock-book.png"
+                    imageSrc={book.imageSrc ? book.imageSrc : '/assets/images/mock-book.png'}
                     isFavorite={wishlistSet.has(book.id)}
                     onToggleFavorite={() => toggle(book.id)}
                   />

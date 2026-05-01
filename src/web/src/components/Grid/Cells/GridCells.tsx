@@ -1,21 +1,34 @@
 import Image from 'next/image';
 
 import { ActionButton, resolveBookStatus } from '@/components';
+import { useState } from 'react';
 
 export function BookCell(params: any) {
   const { imageSrc, name } = params.data;
+  const [img, setImg] = useState(imageSrc);
 
   return (
     <div className="flex items-center w-full gap-10 h-full">
-      <Image src={imageSrc} alt={name} width={40} height={64} />
+      <figure className="relative min-w-12 h-full">
+        <Image
+          src={img}
+          alt={name}
+          fill
+          onError={() => {
+            setImg('/assets/images/mock-book.png');
+          }}
+        />
+      </figure>
       <span className="leading-none">{name}</span>
     </div>
   );
 }
 
 export function DeleteButtonCell(params: any) {
-  const handleDelete = () => {
-    console.log('deletar', params.data);
+  const handleDelete = (e: any) => {
+    e.stopPropagation();
+
+    params.context?.handleDeleteRequest?.(params.data);
   };
 
   return (
@@ -29,11 +42,14 @@ export function DeleteButtonCell(params: any) {
 }
 
 export function LoanActionsCell(params: any) {
-  const handleAccept = () => {
+  const handleAccept = (e: any) => {
+    e.stopPropagation();
+
     console.log('aceitou', params.data);
   };
 
-  const handleReject = () => {
+  const handleReject = (e: any) => {
+    e.stopPropagation();
     console.log('rejeitou', params.data);
   };
 

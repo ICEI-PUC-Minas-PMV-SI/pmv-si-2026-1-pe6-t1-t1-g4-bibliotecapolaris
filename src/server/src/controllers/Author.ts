@@ -1,8 +1,14 @@
 import type { Request, Response } from 'express';
 
-import { createAuthor, getAllAuthors, updateAuthor, getAuthorById, getBooksByAuthorId, deleteAuthor } from '@/services';
+import {
+  getAllAuthors,
+  updateAuthor,
+  getAuthorById,
+  getBooksByAuthorId,
+  deleteAuthor,
+  findOrCreateAuthor,
+} from '@/services';
 import { handleError, sendFailure, sendSuccess } from '@/utils';
-import { CreateAuthorSchema, UpdateAuthorSchema } from '@/models/AuthorModel';
 
 export async function createAuthorController(req: Request, res: Response) {
   try {
@@ -12,7 +18,7 @@ export async function createAuthorController(req: Request, res: Response) {
       return sendFailure(res, 'VALIDATION_ERROR', 'Erro de validação', undefined, 401);
     }
 
-    await createAuthor({ name });
+    await findOrCreateAuthor(name);
 
     return sendSuccess(res, `Autor criado com sucesso!`, 201);
   } catch (error: unknown) {

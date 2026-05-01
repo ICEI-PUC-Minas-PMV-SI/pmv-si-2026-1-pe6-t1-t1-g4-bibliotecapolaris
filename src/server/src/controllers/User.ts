@@ -13,7 +13,7 @@ export async function createUserController(req: Request, res: Response) {
 
     const newUser = await createUser({ ...data, password: hashedPassword });
 
-    return sendSuccess(res, `Usuário criado com sucesso!`, 201);
+    return sendSuccess(res, `Usuário ${newUser.id} criado com sucesso!`, 201);
   } catch (error: any) {
     return handleError(res, error, 'Usuário');
   }
@@ -77,24 +77,23 @@ export const loginUserController = async (req: Request, res: Response) => {
 
     // Se não achar o e-mail
     if (!user) {
-      return res.status(400).json({ message: "E-mail ou senha incorretos." });
+      return res.status(400).json({ message: 'E-mail ou senha incorretos.' });
     }
 
     // Verifica se a senha bate
     const isPasswordValid = await verifyPassword(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(400).json({ message: "E-mail ou senha incorretos." });
+      return res.status(400).json({ message: 'E-mail ou senha incorretos.' });
     }
 
     // Se deu tudo certo, libera
-    return res.status(200).json({ 
-      message: "Login realizado com sucesso!", 
-      user: { id: user.id, name: user.name, email: user.email, type: user.type } 
+    return res.status(200).json({
+      message: 'Login realizado com sucesso!',
+      user: { id: user.id, name: user.name, email: user.email, type: user.type },
     });
-
   } catch (error) {
-    console.error("Erro no login:", error);
-    return res.status(500).json({ message: "Erro interno do servidor." });
+    console.error('Erro no login:', error);
+    return res.status(500).json({ message: 'Erro interno do servidor.' });
   }
 };

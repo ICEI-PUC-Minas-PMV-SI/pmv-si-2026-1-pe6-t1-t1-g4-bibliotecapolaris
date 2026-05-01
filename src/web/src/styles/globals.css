@@ -23,6 +23,10 @@
   .form-input {
     @apply w-full px-4 py-2 rounded-sm outline-none bg-(--text) text-(--background) font-medium font-sans text-ellipsis;
   }
+
+  .form-label {
+    @apply w-full tracking-wider text-xl font-serif font-semibold text-ellipsis uppercase;
+  }
 }
 
 :root {

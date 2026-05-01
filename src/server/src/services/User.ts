@@ -11,8 +11,6 @@ export async function createUser(data: CreateUserInput) {
     slug = `${baseSlug}-${count++}`;
   }
 
-  console.log(`[SISTEMA] Notificando administrador: Novo usuário ${data.name} cadastrado!`);
-
   return prisma.user.create({
     data: {
       ...data,
