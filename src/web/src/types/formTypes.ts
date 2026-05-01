@@ -1,4 +1,5 @@
 export type BookForm = {
+  id: string;
   isbn: string;
   name: string;
   author: string;
@@ -6,11 +7,12 @@ export type BookForm = {
   categories: string;
   description: string;
   totalQuantity: number;
-  availableQuantity: number;
+  totalAvailable: number;
   imageSrc: string;
 };
 
 export const initialBookForm = {
+  id: '',
   isbn: '',
   name: '',
   author: '',
@@ -18,7 +20,7 @@ export const initialBookForm = {
   categories: '',
   description: '',
   totalQuantity: 0,
-  availableQuantity: 0,
+  totalAvailable: 0,
   imageSrc: '',
 };
 

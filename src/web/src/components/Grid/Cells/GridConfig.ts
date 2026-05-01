@@ -21,6 +21,7 @@ export const gridConfigs = {
       },
       {
         headerName: 'Ação',
+        field: 'action',
         cellRenderer: DeleteButtonCell,
         flex: 1,
       },

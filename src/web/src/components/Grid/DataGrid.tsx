@@ -7,15 +7,19 @@ import type { GridReadyEvent } from 'ag-grid-community';
 
 import 'ag-grid-community/styles/ag-grid.css';
 
-import { ActionButton } from '@/components';
+import { ActionButton, DeleteButtonCell } from '@/components';
+import { useAlertModal } from '@/hooks/useAlertModal';
 
 interface DataGridProps {
   columnDefs: any[];
   rowData: any[];
+  onRowClick?: (row: any) => void;
+  context: any;
 }
 
-export function DataGrid({ columnDefs, rowData }: DataGridProps) {
+export function DataGrid({ columnDefs, rowData, onRowClick, context }: DataGridProps) {
   const gridRef = useRef<AgGridReact>(null);
+  const { showConfirmation, ModalComponent } = useAlertModal();
 
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -25,10 +29,6 @@ export function DataGrid({ columnDefs, rowData }: DataGridProps) {
     cellClass: 'flex items-center justify-center font-serif font-bold  text-xl tracking-wider px-2',
     headerClass: 'text-center font-serif font-bold text-xl uppercase',
   };
-
-  function onRowClicked(params: any) {
-    console.log(params.data);
-  }
 
   function onGridReady(params: GridReadyEvent) {
     const api = params.api;
@@ -61,12 +61,15 @@ export function DataGrid({ columnDefs, rowData }: DataGridProps) {
         rowHeight={73}
         paginationPageSize={6}
         headerHeight={40}
-        onRowClicked={onRowClicked}
+        onRowClicked={onRowClick}
         overlayNoRowsTemplate="Nada encontrado para essa tabela"
         suppressCellFocus
         suppressDragLeaveHidesColumns
         pagination
         suppressPaginationPanel
+        suppressClickEdit
+        suppressMovableColumns
+        context={context}
         onPaginationChanged={onPaginationChanged}
       />
 

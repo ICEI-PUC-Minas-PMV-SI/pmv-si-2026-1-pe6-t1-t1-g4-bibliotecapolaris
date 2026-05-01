@@ -5,7 +5,7 @@ import { ActionButton } from '@/components';
 import { useFormState } from '@/hooks/useFormState';
 import { BaseField, BaseInputModal } from './BaseInput';
 
-import { addNewBook } from '@/services/Books';
+import { addNewBook, updateBook } from '@/services/Books';
 import { type BookForm, initialBookForm } from '@/types/formTypes';
 import { useAlertModal } from '@/hooks/useAlertModal';
 
@@ -13,10 +13,19 @@ type AddBookModalProps = {
   open: boolean;
   onClose: () => void;
   onSuccess?: () => void;
+
+  mode?: 'create' | 'edit';
+  initialData?: BookForm;
 };
 
-export function AddBookModal({ open = false, onClose, onSuccess }: AddBookModalProps) {
-  const { form, handleChange } = useFormState<BookForm>(initialBookForm);
+export function AddBookModal({
+  open = false,
+  onClose,
+  onSuccess,
+  mode = 'create',
+  initialData = initialBookForm,
+}: AddBookModalProps) {
+  const { form, setForm, handleChange } = useFormState<BookForm>(initialBookForm);
   const { showSuccess, showError, ModalComponent } = useAlertModal();
 
   const [coverUrl, setCoverUrl] = useState<string | null>(null);
@@ -24,7 +33,7 @@ export function AddBookModal({ open = false, onClose, onSuccess }: AddBookModalP
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const clean = form.isbn.replace(/-/g, '').trim();
+      const clean = (form.isbn ?? '').replace(/-/g, '').trim();
 
       if (clean.length < 10) {
         setCoverUrl(null);
@@ -41,19 +50,31 @@ export function AddBookModal({ open = false, onClose, onSuccess }: AddBookModalP
     return () => clearTimeout(timer);
   }, [form.isbn]);
 
+  useEffect(() => {
+    if (!open) return;
+
+    const data = mode === 'edit' && initialData ? { ...initialBookForm, ...initialData } : initialBookForm;
+
+    setForm(data);
+  }, [open]);
+
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
 
-    const clean = form.isbn.trim();
+    const clean = (form.isbn ?? '').replace(/-/g, '').trim();
 
     const finalCoverUrl =
       clean.length >= 10 ? `https://covers.openlibrary.org/b/isbn/${clean}-L.jpg?default=false` : '';
 
     try {
-      await addNewBook({
-        ...form,
-        imageSrc: finalCoverUrl,
-      });
+      if (mode === 'edit') {
+        await updateBook(form.id, form);
+      } else {
+        await addNewBook({
+          ...form,
+          imageSrc: finalCoverUrl,
+        });
+      }
 
       showSuccess('Sucesso!', 'Livro adicionado com sucesso!', () => {
         onSuccess?.();
@@ -65,7 +86,11 @@ export function AddBookModal({ open = false, onClose, onSuccess }: AddBookModalP
   }
 
   return (
-    <BaseInputModal open={open} onClose={onClose} title="Adicionar um novo livro">
+    <BaseInputModal
+      open={open}
+      onClose={onClose}
+      title={mode === 'create' ? 'Adicionar um novo livro' : 'Atualizar livro'}
+    >
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex justify-center">
           <div className="w-24 h-32 border border-(--text)/30 flex items-center justify-center overflow-hidden bg-(--foreground)">
@@ -157,8 +182,8 @@ export function AddBookModal({ open = false, onClose, onSuccess }: AddBookModalP
 
           <BaseField label="Cópias Disponíveis" className="items-end" labelClassName="text-base">
             <input
-              name="availableQuantity"
-              value={form.availableQuantity}
+              name="totalAvailable"
+              value={form.totalQuantity}
               type="number"
               min={1}
               max={form.totalQuantity}
@@ -168,7 +193,12 @@ export function AddBookModal({ open = false, onClose, onSuccess }: AddBookModalP
           </BaseField>
         </div>
 
-        <ActionButton title="Adicionar" type="submit" variant="fill" className="h-12 text-3xl rounded-sm" />
+        <ActionButton
+          title={mode === 'create' ? 'Adicionar' : 'Atualizar'}
+          type="submit"
+          variant="fill"
+          className="h-12 text-3xl rounded-sm"
+        />
       </form>
 
       {ModalComponent}
