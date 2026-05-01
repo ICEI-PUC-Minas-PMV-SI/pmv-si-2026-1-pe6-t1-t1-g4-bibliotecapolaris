@@ -41,7 +41,9 @@ function ReviewCard({ review }: { review: Review }) {
           </div>
           <StarRating rating={review.rating} />
         </div>
-        <p className="font-sans font-light text-base text-justify leading-relaxed line-clamp-5">{review.description}</p>
+        <p className="min-h-25 font-sans font-light text-base text-justify leading-relaxed wrap-break-word line-clamp-4">
+          {review.description}
+        </p>
       </article>
     </Link>
   );
