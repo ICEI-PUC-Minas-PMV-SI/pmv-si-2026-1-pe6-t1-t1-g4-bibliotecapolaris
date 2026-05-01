@@ -87,7 +87,7 @@ export default function LandingPage() {
             <h1 className="w-full text-3xl uppercase tracking-wider"> Recém Chegados </h1>
 
             <div className="flex flex-wrap justify-center gap-4">
-              {books.map((book: any) => (
+              {books.slice(0, 3).map((book: any) => (
                 <Link key={book.slug} href={`/Books/${book.slug}`}>
                   <BookDisplay
                     title={book.name}
