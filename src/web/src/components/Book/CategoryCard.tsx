@@ -14,8 +14,8 @@ export function CategoryCard({ title = '', imageSrc = '' }: CategoryCardProps) {
         <span className="text-3xl uppercase truncate line-clamp-1">{title}</span>
       </div>
 
-      <figure className="w-1/2 self-center border border-(--text)">
-        <Image src={imageSrc} alt={title} width={200} height={300} className="object-cover w-full h-auto" />
+      <figure className="relative w-1/2 h-32 self-center border border-(--text)">
+        <Image src={imageSrc} alt={title} fill />
       </figure>
     </article>
   );

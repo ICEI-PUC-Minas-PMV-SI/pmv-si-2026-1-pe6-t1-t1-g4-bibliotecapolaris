@@ -7,6 +7,7 @@ import { ActionButton, DataGrid, gridConfigs, Header, mockData } from '@/compone
 import { getBooks } from '@/services/Books';
 
 import { formatBook } from '@/util/Formatter';
+import { AddBookModal } from '@/components/Form/AddBookModal';
 
 type ViewMode = 'livros' | 'emprestimos' | 'historico';
 
@@ -23,6 +24,7 @@ export default function ControlPanel() {
   const [books, setBooks] = useState([]);
 
   const [activeView, setActiveView] = useState<ViewMode>('livros');
+  const [isAddBookOpen, setIsAddBookOpen] = useState(false);
 
   const config = gridConfigs[activeView];
   const rowData = activeView === 'livros' ? books : mockData[activeView];
@@ -53,10 +55,18 @@ export default function ControlPanel() {
             />
           </div>
 
-          {activeView !== 'historico' && <ActionButton title="Adicionar" />}
+          {activeView !== 'historico' && <ActionButton title="Adicionar" onClick={() => setIsAddBookOpen(true)} />}
         </section>
 
         <DataGrid key={activeView} columnDefs={config.columnDefs} rowData={rowData} />
+
+        {isAddBookOpen && (
+          <AddBookModal
+            open={isAddBookOpen}
+            onClose={() => setIsAddBookOpen(false)}
+            onSuccess={() => setIsAddBookOpen(false)}
+          />
+        )}
       </main>
     </>
   );

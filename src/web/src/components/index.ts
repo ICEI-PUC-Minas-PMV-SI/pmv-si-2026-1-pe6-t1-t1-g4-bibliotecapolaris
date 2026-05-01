@@ -16,3 +16,6 @@ export * from './Grid/DataGrid';
 export * from './Grid/MockData';
 export * from './Grid/Cells/GridCells';
 export * from './Grid/Cells/GridConfig';
+
+export * from './Form/AddBookModal';
+export * from './Form/BaseInput';

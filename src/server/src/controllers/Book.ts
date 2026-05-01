@@ -1,13 +1,28 @@
 import type { Request, Response } from 'express';
 
 import { CreateBookSchema, UpdateBookSchema } from '@/models/BookModel';
-import { createBook, deleteBook, getBookById, getBookBySlug, listBooks, updateBook } from '@/services';
+import {
+  createBook,
+  deleteBook,
+  findOrCreateAuthor,
+  getBookById,
+  getBookBySlug,
+  listBooks,
+  updateBook,
+} from '@/services';
 import { handleError, sendFailure, sendSuccess } from '@/utils';
 
 // --- OPERAÇÃO 1: CRIAÇÃO ---
 export async function createBookController(req: Request, res: Response) {
   try {
-    const data = CreateBookSchema.parse(req.body);
+    const { author, ...rest } = req.body;
+
+    const authorId = await findOrCreateAuthor(author);
+
+    const data = CreateBookSchema.parse({
+      ...rest,
+      authorId,
+    });
 
     await createBook(data);
 
@@ -60,7 +75,7 @@ export async function listBooksController(req: Request, res: Response) {
 
     if (typeof search === 'string') filters.search = search;
 
-    if (filters.search && filters.search.length > 80){
+    if (filters.search && filters.search.length > 80) {
       return sendFailure(res, 'INVALID_INPUT', 'Busca muito longa', undefined, 400);
     }
 

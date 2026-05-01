@@ -36,7 +36,7 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
         <div className="flex justify-evenly mt-8">
           <figure className="relative w-88 h-full border border-(--text) rounded-sm">
             <Image
-              src="/assets/images/mock-book.png"
+              src={book.imageSrc || '/assets/images/mock-book.png'}
               height={2000}
               width={2000}
               alt="Imagem principal da landing page"

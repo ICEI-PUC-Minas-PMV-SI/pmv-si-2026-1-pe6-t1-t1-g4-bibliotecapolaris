@@ -7,7 +7,7 @@ export function BookCell(params: any) {
 
   return (
     <div className="flex items-center w-full gap-10 h-full">
-      <Image src={imageSrc} alt={name} width={40} height={64} />
+      <Image src={imageSrc} alt={name} width={40} height={80} />
       <span className="leading-none">{name}</span>
     </div>
   );

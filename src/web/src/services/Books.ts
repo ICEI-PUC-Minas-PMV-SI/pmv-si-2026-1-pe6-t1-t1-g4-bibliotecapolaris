@@ -1,3 +1,5 @@
+import { BookForm } from '@/types/formTypes';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 export async function getBooks(search?: string) {
@@ -21,5 +23,23 @@ export async function getBookBySlug(slug: string) {
 
   const data = await res.json();
 
+  return data.data;
+}
+
+export async function addNewBook(book: BookForm) {
+  const res = await fetch(`${API_URL}/books/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(book),
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => null);
+    throw new Error(error?.message || 'Erro ao criar livro');
+  }
+
+  const data = await res.json();
   return data.data;
 }
