@@ -31,7 +31,7 @@ describe('Book Service Tests', () => {
         description: 'Noted software expert Robert C. Martin presents a revolutionary paradigm...',
         categories: 'Programming, Agile',
         totalQuantity: 5,
-        availableQuantity: 5,
+        totalAvailable: 5,
       });
 
       expect(res.status).toBe(201);
@@ -47,7 +47,7 @@ describe('Book Service Tests', () => {
         description: 'Should fail',
         categories: 'Test',
         totalQuantity: 5,
-        availableQuantity: 10,
+        totalAvailable: 10,
       });
 
       expect(res.status).toBe(401);

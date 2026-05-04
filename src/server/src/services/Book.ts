@@ -20,12 +20,9 @@ export async function createBook(data: CreateBookInput) {
     slug = `${baseSlug}-${count++}`;
   }
 
-  const { availableQuantity, ...rest } = data;
-
   return prisma.book.create({
     data: {
-      ...rest,
-      totalAvailable: availableQuantity,
+      ...data,
       categories: normalizeCategories(data.categories),
       slug,
     },
@@ -133,9 +130,8 @@ export async function updateBook(id: string, data: UpdateBookInput) {
     updatedData.categories = normalizeCategories(data.categories);
   }
 
-  if (typeof data.availableQuantity !== 'undefined') {
-    updatedData.totalAvailable = data.availableQuantity;
-    delete updatedData.availableQuantity;
+  if (typeof data.totalAvailable !== 'undefined') {
+    updatedData.totalAvailable = data.totalAvailable;
   }
 
   return prisma.book.update({
