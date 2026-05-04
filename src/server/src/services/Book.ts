@@ -149,3 +149,29 @@ export async function deleteBook(id: string) {
     where: { id },
   });
 }
+
+export async function listCategories() {
+  const books = await prisma.book.findMany({
+    select: {
+      categories: true,
+      imageSrc: true,
+    },
+  });
+
+  const categoryMap = new Map<string, string>();
+
+  books.forEach((book) => {
+    const categories = book.categories.split(',').map((c) => c.trim());
+    categories.forEach((cat) => {
+      const normalizedCat = cat.trim() ? cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase() : '';
+      if (normalizedCat && !categoryMap.has(normalizedCat)) {
+        categoryMap.set(normalizedCat, book.imageSrc || '/assets/images/mock-book.png');
+      }
+    });
+  });
+
+  return Array.from(categoryMap.entries()).map(([name, imageSrc]) => ({
+    name,
+    imageSrc,
+  }));
+}

@@ -16,6 +16,16 @@ export async function getBooks(search?: string) {
   return data.data;
 }
 
+export async function getCategories() {
+  const res = await fetch(`${API_URL}/books/categories`, {
+    cache: 'no-store',
+  });
+
+  const data = await res.json();
+
+  return data.data;
+}
+
 export async function getBookBySlug(slug: string) {
   const res = await fetch(`${API_URL}/books/${slug}`, {
     cache: 'no-store',
