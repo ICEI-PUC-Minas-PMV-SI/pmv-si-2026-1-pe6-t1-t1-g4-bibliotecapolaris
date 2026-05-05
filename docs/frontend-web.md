@@ -15,21 +15,17 @@ Além disso, a interface utiliza componentes padronizados, promovendo consistên
 
 ### Wireframes
 
-[Inclua os wireframes das páginas principais da interface, mostrando a disposição dos elementos na página.]
 Tela Inicial
-<img width="3842" height="4324" alt="image" src="https://github.com/user-attachments/assets/cfe4bb75-3471-45a0-beb9-04e6769f2180" />
+<img width="3840" height="4426" alt="Tela Inicial" src="https://github.com/user-attachments/assets/be67409a-50ce-4f7c-9fc2-2c69a81770c4" />
 
 Tela de Livro
-<img width="3840" height="2778" alt="image" src="https://github.com/user-attachments/assets/5d00eac6-0517-45c5-95d2-45d3cab3f45a" />
+<img width="3840" height="2930" alt="Tela de livro" src="https://github.com/user-attachments/assets/3da7bb78-6718-44f1-8b06-e70b01d5367a" />
 
 Tela de Perfil
-<img width="3840" height="3852" alt="image" src="https://github.com/user-attachments/assets/6fd2915a-df30-42a4-84f1-512f6e8677f9" />
+<img width="3840" height="3830" alt="Tela de Perfil" src="https://github.com/user-attachments/assets/bb005a62-a2b9-4c0d-b960-3941f6dd4ba3" />
 
 Tela de Painel de Controle
-<img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/c30e858f-5110-4d7c-9d9e-35d5fe9883d9" />
-
-
-
+<img width="3840" height="2160" alt="Tela de Painel de controle" src="https://github.com/user-attachments/assets/cbf8b8da-9e18-4014-b40e-1faed07859e7" />
 
 ### Design Visual
 O estilo visual da interface foi projetado com foco em clareza, consistência e legibilidade, utilizando uma paleta de cores bem definida e de alto contraste. A aplicação adota um tema escuro como base, com tons predominantes de fundo em preto e variações próximas, combinados com cores claras para texto, garantindo conforto visual e fácil leitura.
@@ -44,10 +40,95 @@ De forma geral, o design busca ser direto e objetivo, reduzindo distrações e f
 
 ## Fluxo de Dados
 
-[Diagrama ou descrição do fluxo de dados na aplicação.]
+### 1. Autenticação do usuário
+ - O fluxo se inicia na tela de login, onde o usuário insere suas credenciais.
+ - Esses dados são enviados para a API de back-end, responsável por validar as informações.
+
+#### Após a validação:
+ - A API retorna os dados do usuário
+ - Inclui o tipo de usuário (ex: estudante ou administrador)
+ - Um token de autenticação é gerado
+Essas informações são armazenadas no front-end, permitindo manter a sessão ativa e controlar o acesso às funcionalidades.
+
+### 2. Controle de acesso e estado da aplicação
+Com o usuário autenticado:
+- O sistema armazena o estado global (usuário + permissões)
+- A interface se adapta dinamicamente com base no tipo de usuário
+
+Exemplos:
+- Estudante → acesso a operações padrão
+- Administrador → acesso a funcionalidades avançadas
+
+### 3. Navegação e carregamento de dados
+Ao acessar a aplicação:
+- A página inicial requisita dados básicos à API
+- A listagem de livros é carregada por meio de requisições ao back-end
+
+Quando o usuário seleciona um livro:
+ - O usuário é redirecionado a página do livro selecionado
+ - A interface é atualizada com essas informações
+
+### 4. Interações do usuário (operações)
+Usuários autenticados podem realizar ações como:
+ - Empréstimo de livros
+ - Favoritar itens
+
+Fluxo dessas ações:
+ - O usuário interage com a interface
+ - O front-end envia a requisição para a API
+
+A API valida:
+ - Autenticação
+ - Permissão do usuário
+A API processa a ação e retorna o resultado. O front-end atualiza a interface com base na resposta
+
+### 5. Página de perfil
+A página de perfil:
+- Pode ser acessada por usuários autenticados
+
+Regras:
+ - Visualização → permitida
+ - Edição → restrita ao próprio usuário
+
+Validação:
+ - O front-end controla a interface
+ - O back-end garante a segurança
+
+### 6. Painel administrativo
+- O painel de controle:
+- É exclusivo para usuários administradores
+
+Fluxo:
+- As ações realizadas enviam requisições específicas para a API
+- A API valida privilégios antes de executar qualquer operação
+
+7. Padrão geral do fluxo
+- De forma geral, a aplicação segue o padrão cliente-servidor:
+
+O front-end:
+- Solicita dados
+- Envia ações do usuário
+- Atualiza a interface
+
+O back-end:
+- Processa regras de negócio
+- Valida autenticação e autorização
+- Retorna respostas estruturadas
 
 ## Tecnologias Utilizadas
-[Lista das tecnologias principais que serão utilizadas no projeto.]
+O desenvolvimento da interface web foi realizado utilizando tecnologias modernas do ecossistema JavaScript, com foco em desempenho, escalabilidade e organização do código.
+
+#### React
+Biblioteca utilizada para construção da interface de usuário baseada em componentes, permitindo maior reutilização de código e organização da aplicação.
+
+#### Next.js
+Framework utilizado para estruturar a aplicação, oferecendo recursos como roteamento, renderização otimizada e melhor organização do projeto.
+
+#### TypeScript
+Linguagem utilizada para adicionar tipagem estática ao JavaScript, aumentando a segurança, legibilidade e manutenibilidade do código.
+
+#### Tailwind CSS
+Framework de estilização utilizado para construir a interface de forma rápida e consistente, através de classes utilitárias e padronização visual dos componentes.
 
 ## Considerações de Segurança
 
