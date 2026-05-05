@@ -9,11 +9,18 @@ export async function createUserController(req: Request, res: Response) {
   try {
     const data = CreateUserSchema.parse(req.body);
 
-    const hashedPassword = await hashPassword(data.password);
+    const userExists = await prisma.user.findUnique({
+      where: { email: data.email },
+    });
 
+    if (userExists) {
+      return res.status(400).json({ message: 'Este e-mail já está em uso. Tente outro ou faça login.' });
+    }
+
+    const hashedPassword = await hashPassword(data.password);
     const newUser = await createUser({ ...data, password: hashedPassword });
 
-    return sendSuccess(res, `Usuário ${newUser.id} criado com sucesso!`, 201);
+    return sendSuccess(res, `Usuário criado com sucesso!`, 201);
   } catch (error: any) {
     return handleError(res, error, 'Usuário');
   }
@@ -65,29 +72,24 @@ export async function deleteUserController(req: Request, res: Response) {
   }
 }
 
-// Função de login, recebe o e-mail e senha e busca no banco
 export const loginUserController = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    // Busca o usuário no banco de dados pelo e-mail
     const user = await prisma.user.findUnique({
       where: { email },
     });
 
-    // Se não achar o e-mail
     if (!user) {
       return res.status(400).json({ message: 'E-mail ou senha incorretos.' });
     }
 
-    // Verifica se a senha bate
     const isPasswordValid = await verifyPassword(password, user.password);
 
     if (!isPasswordValid) {
       return res.status(400).json({ message: 'E-mail ou senha incorretos.' });
     }
 
-    // Se deu tudo certo, libera
     return res.status(200).json({
       message: 'Login realizado com sucesso!',
       user: { id: user.id, name: user.name, email: user.email, type: user.type },

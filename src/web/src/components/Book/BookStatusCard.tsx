@@ -23,7 +23,7 @@ export function BookStatusCard({ title, imageSrc, dueDate }: { title: string; im
       </div>
 
       <div className="px-4 pb-4">
-        <ActionButton className="w-full" style={{ backgroundColor: config.color }} title={config.buttonText} />
+        {/* <ActionButton className="w-full" style={{ backgroundColor: config.color }} title={config.buttonText} /> */}
       </div>
     </article>
   );
