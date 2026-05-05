@@ -1,6 +1,6 @@
 # 📊 Relatório de Contribuições do Projeto
 
-**Última atualização:** 05/05/2026 13:27
+**Última atualização:** 05/05/2026 13:34
 
 ---
 
@@ -8,7 +8,7 @@
 
 | Aluno                 |   Commits |   Linhas+ |   Linhas- |   Arquivos |   Docs Commits |   Docs Arquivos |
 |-----------------------|-----------|-----------|-----------|------------|----------------|-----------------|
-| Davih Duque           |       107 |     20075 |      9086 |        161 |             31 |               5 |
+| Davih Duque           |       108 |     20079 |      9090 |        161 |             32 |               5 |
 | Fabiana               |        17 |        54 |        27 |          3 |             17 |               3 |
 | Fabiana Santos Soares |        11 |      1159 |       377 |         19 |              0 |               0 |
 | Filipe Acacio         |         6 |       792 |       251 |         18 |              0 |               0 |
@@ -16,14 +16,14 @@
 | LJ-Leonardo           |        10 |      6250 |       688 |         17 |              3 |               1 |
 | Leonardo Junior       |        25 |        74 |        76 |          7 |             19 |               3 |
 | Lucas Fonseca         |        28 |      5928 |       812 |         48 |             16 |               3 |
-| github-actions[bot]   |        61 |       528 |       513 |          3 |             61 |               1 |
+| github-actions[bot]   |        62 |       535 |       520 |          3 |             62 |               1 |
 | github-classroom[bot] |         1 |      2152 |         0 |         45 |              1 |              13 |
 | vcrfrancisco          |        88 |      6381 |      1703 |         80 |             18 |               4 |
 
 
 ## 📅 Contribuições Semanais (Todo o Semestre)
 
-**2026-04-28**: Davih Duque: 10, Fabiana: 1, Fabiana Santos Soares: 2, Filipe Acacio: 1, Leonardo Junior: 2, Lucas Fonseca: 4, github-actions[bot]: 6
+**2026-04-28**: Davih Duque: 11, Fabiana: 1, Fabiana Santos Soares: 2, Filipe Acacio: 1, Leonardo Junior: 2, Lucas Fonseca: 4, github-actions[bot]: 7
 
 **2026-04-21**: Davih Duque: 4, Fabiana: 1, Filipe Acacio: 2, Filipeacacio1: 2, Lucas Fonseca: 1, github-actions[bot]: 5
 
