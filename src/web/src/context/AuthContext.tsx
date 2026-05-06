@@ -38,8 +38,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const storedUser = localStorage.getItem(USER_KEY);
       const storedToken = localStorage.getItem(TOKEN_KEY);
       if (storedUser && storedToken) {
-        setUser(JSON.parse(storedUser));
-        setToken(storedToken);
+        const payload = JSON.parse(atob(storedToken.split('.')[1]));
+        const expired = payload.exp && Date.now() / 1000 > payload.exp;
+        if (expired) {
+          localStorage.removeItem(USER_KEY);
+          localStorage.removeItem(TOKEN_KEY);
+        } else {
+          setUser(JSON.parse(storedUser));
+          setToken(storedToken);
+        }
       }
     } catch {
       localStorage.removeItem(USER_KEY);
