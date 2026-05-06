@@ -1,11 +1,11 @@
+import 'dotenv/config';
+
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
   require('module-alias/register');
 }
 import express from 'express';
 import cors from 'cors';
-
-import 'dotenv/config';
 
 import { generateOpenApiDocuments } from './lib/zod-to-openapi';
 import { swaggerRoute } from './lib/swagger';
