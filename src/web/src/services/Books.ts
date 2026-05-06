@@ -27,6 +27,7 @@ export async function addNewBook(book: BookForm) {
     auth: true,
     body: JSON.stringify(book),
   });
+  if (res.status === 401) return;
   if (!res.ok) {
     const error = await res.json().catch(() => null);
     throw new Error(error?.message || 'Erro ao criar livro');
@@ -41,6 +42,7 @@ export async function updateBook(id: string, book: BookForm) {
     auth: true,
     body: JSON.stringify(book),
   });
+  if (res.status === 401) return;
   if (!res.ok) {
     const error = await res.json().catch(() => null);
     throw new Error(error?.message || 'Erro ao atualizar livro');
