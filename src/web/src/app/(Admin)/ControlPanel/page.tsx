@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { ActionButton, DataGrid, gridConfigs, Header } from '@/components';
 
 import { AddBookModal } from '@/components/Form/AddBookModal';
+import { AddLoanModal } from '@/components/Form/AddLoanModal';
 
 type ViewMode = 'livros' | 'emprestimos' | 'historico';
 
@@ -129,11 +130,22 @@ export default function ControlPanel() {
           }}
         />
 
-        {modal.open && (
+        {modal.open && activeView === 'livros' && (
           <AddBookModal
             open={modal.open}
             mode={modal.mode}
             initialData={modal.data}
+            onClose={() => setModal({ open: false, mode: 'create', data: null })}
+            onSuccess={() => {
+              setModal({ open: false, mode: 'create', data: null });
+              load();
+            }}
+          />
+        )}
+
+        {modal.open && activeView === 'emprestimos' && (
+          <AddLoanModal
+            open={modal.open}
             onClose={() => setModal({ open: false, mode: 'create', data: null })}
             onSuccess={() => {
               setModal({ open: false, mode: 'create', data: null });
