@@ -11,17 +11,19 @@ import { getBooks } from '@/services/Books';
 
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Books() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { user } = useAuth();
 
   const searchQuery = searchParams.get('search') ?? '';
 
   const [search, setSearch] = useState('');
   const [books, setBooks] = useState<any[]>([]);
 
-  const { wishlistSet, toggle, error, setError } = useWishlist('mock-user-id');
+  const { wishlistSet, toggle, error, setError } = useWishlist(user?.id ?? '');
   const { showError, ModalComponent } = useAlertModal();
 
   const title = searchQuery ? `Resultados para "${searchQuery}"` : 'Livros';
@@ -140,7 +142,7 @@ export default function Books() {
                     description={book.description}
                     imageSrc={book.imageSrc ? book.imageSrc : '/assets/images/mock-book.png'}
                     isFavorite={wishlistSet.has(book.id)}
-                    onToggleFavorite={() => toggle(book.id)}
+                    onToggleFavorite={user ? () => toggle(book.id) : undefined}
                   />
                 </Link>
               ))}

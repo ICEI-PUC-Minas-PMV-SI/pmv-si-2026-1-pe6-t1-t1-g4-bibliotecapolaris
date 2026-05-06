@@ -1,6 +1,6 @@
 import type { Response } from 'express';
 import { ZodError } from 'zod';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '../../prisma/generated/test/client';
 
 import { sendFailure } from '@/utils';
 

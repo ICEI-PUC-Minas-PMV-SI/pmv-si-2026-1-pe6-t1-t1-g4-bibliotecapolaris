@@ -11,15 +11,27 @@ import {
 } from '@/controllers';
 import { validateBody } from '@/utils/validation';
 import { LoanCreateSchema, LoanUpdateSchema } from '@/services/loan/schema';
+import { requireAuth, requireAdmin } from '@/middleware/auth';
 
 const router = Router();
 
-router.get('/loans', getAllLoansController);
-router.get('/loans/:id', (req, res) => getLoanByIdControllerById(req.params.id, res));
-router.post('/loans', validateBody(LoanCreateSchema), createLoanController);
-router.put('/loans/:id', validateBody(LoanUpdateSchema), updateLoanController);
-router.delete('/loans/:id', (req, res) => deleteLoanController(req, res));
-router.get('/loans/student/:studentId', (req, res) => getLoansByStudentControllerById(req.params.studentId, res));
-router.get('/loans/status/:status', (req, res) => getLoansByStatusControllerByStatus(req.params.status, res));
+// Admin: visão geral
+router.get('/loans', requireAuth, requireAdmin, getAllLoansController);
+router.get('/loans/status/:status', requireAuth, requireAdmin, (req, res) =>
+  getLoansByStatusControllerByStatus(req.params.status, res),
+);
+
+// Autenticado: próprio histórico
+router.get('/loans/student/:studentId', requireAuth, (req, res) =>
+  getLoansByStudentControllerById(req.params.studentId, res),
+);
+router.get('/loans/:id', requireAuth, (req, res) => getLoanByIdControllerById(req.params.id, res));
+
+// Autenticado: criar empréstimo
+router.post('/loans', requireAuth, validateBody(LoanCreateSchema), createLoanController);
+
+// Admin: atualizar / deletar
+router.put('/loans/:id', requireAuth, requireAdmin, validateBody(LoanUpdateSchema), updateLoanController);
+router.delete('/loans/:id', requireAuth, requireAdmin, (req, res) => deleteLoanController(req, res));
 
 export default router;

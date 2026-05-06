@@ -1,7 +1,7 @@
 import path from 'path';
 import { readFileSync } from 'fs';
 
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '../../prisma/generated/test/client';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 
