@@ -25,10 +25,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     async function loadData() {
-      const [returnedBooks, returnedCategories] = await Promise.all([
-        getBooks(),
-        getCategories(),
-      ]);
+      const [returnedBooks, returnedCategories] = await Promise.all([getBooks(), getCategories()]);
       setBooks(returnedBooks ?? []);
       setCategories(returnedCategories ?? []);
     }
@@ -114,7 +111,7 @@ export default function LandingPage() {
           <h1 className="w-full text-3xl uppercase tracking-wider"> Categorias </h1>
 
           <div className="flex flex-wrap justify-center gap-4">
-            {categories.map((cat: any) => (
+            {categories.slice(0, 5).map((cat: any) => (
               <Link key={cat.name} href={`/Books?search=${encodeURIComponent(cat.name)}`}>
                 <CategoryCard title={cat.name} imageSrc={cat.imageSrc} />
               </Link>
