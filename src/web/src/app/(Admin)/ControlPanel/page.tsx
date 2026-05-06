@@ -1,26 +1,32 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import '@/lib/AgGrid';
 
-import { ActionButton, DataGrid, Header } from '@/components';
+import { useEffect, useState } from 'react';
+import { ActionButton, DataGrid, gridConfigs, Header, mockData } from '@/components';
+
 import { AddBookModal } from '@/components/Form/AddBookModal';
-import { ProtectedRoute } from '@/components/Global/ProtectedRoute';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useAuth } from '@/context/AuthContext';
-
 import { deleteBook } from '@/services/Books';
-import { gridConfigs } from '@/components/Grid/Cells/GridConfig';
+
 import { ViewHandler } from './ViewHandler';
 
 type ViewMode = 'livros' | 'emprestimos' | 'historico';
 
-function ControlPanelContent() {
+export default function ControlPanel() {
   const { user, isLoading } = useAuth();
   const { showConfirmation, showError, showSuccess, ModalComponent } = useAlertModal();
 
   const [activeView, setActiveView] = useState<ViewMode>('livros');
-  const [rowData, setRowData] = useState<any[]>([]);
-  const [modal, setModal] = useState<{ open: boolean; mode: 'create' | 'edit'; data: any | null }>({
+  const view = ViewHandler[activeView];
+
+  const [data, setData] = useState<any[]>([]);
+  const [modal, setModal] = useState<{
+    open: boolean;
+    mode: 'create' | 'edit';
+    data: any | null;
+  }>({
     open: false,
     mode: 'create',
     data: null,
@@ -29,82 +35,81 @@ function ControlPanelContent() {
   useEffect(() => {
     if (isLoading) return;
     if (!user || user.type !== 'administrator') {
-      showError('Acesso negado', 'Você não tem permissão para acessar esta área.');
-      window.location.replace('/');
-      return;
+      showError('Acesso negado', 'Você não tem permissão para acessar esta área.', () => {
+        window.location.replace('/');
+      });
     }
   }, [user, isLoading]);
 
-  async function loadView(view: ViewMode) {
-    const data = await ViewHandler[view].load();
-    setRowData(data ?? []);
+  async function load() {
+    const result = await view.load();
+    setData(result);
   }
 
   useEffect(() => {
-    loadView(activeView);
+    load();
   }, [activeView]);
 
-  function handleDeleteBook(params: any) {
-    const book = params.data;
+  function openCreate() {
+    setModal({ open: true, mode: 'create', data: null });
+  }
+
+  function handleRowClick(event: any) {
+    if (event.event?.target?.closest('button')) return;
+    if (activeView === 'historico') return;
+    setModal({ open: true, mode: 'edit', data: event.data });
+  }
+
+  const handleDeleteRequest = (row: any) => {
+    const book = row?.data ?? row;
     showConfirmation('Excluir livro', `Tem certeza que deseja excluir "${book.name}"?`, async () => {
       try {
         const { status, data } = await deleteBook(book.id);
         if (status === 200 || status === 202) {
-          showSuccess('Sucesso!', 'Livro deletado com sucesso!', () => loadView('livros'));
+          showSuccess('Sucesso!', 'Livro deletado com sucesso!', () => { load(); });
         } else {
-          showError('Erro', data?.message || 'Não foi possível deletar.');
+          showError('Erro', data?.message || 'Não foi possível deletar o livro.');
         }
       } catch {
         showError('Erro no Servidor', 'Não foi possível conectar.');
       }
     });
-  }
-
-  const columnDefs = gridConfigs[activeView].columnDefs.map((col: any) => {
-    if (col.field === 'action') {
-      return { ...col, cellRendererParams: { onClick: handleDeleteBook } };
-    }
-    return col;
-  });
+  };
 
   return (
     <>
       <Header />
 
-      <main className="min-h-[80vh] flex flex-col gap-6 bg-(--background) px-10 pb-10">
-        <div className="flex items-center justify-between">
-          <div className="flex gap-6">
+      <main className="min-h-[80vh] flex flex-col gap-6 bg-(--background) mb-8 overflow-x-hidden">
+        <section className="flex flex-row mt-8 mx-8 justify-between">
+          <div className="flex flex-row gap-4">
             <ActionButton
               title="Livros"
               variant={activeView === 'livros' ? 'fill' : 'outline'}
               onClick={() => setActiveView('livros')}
-              className="text-2xl tracking-widest px-8 py-4"
             />
             <ActionButton
               title="Empréstimos"
               variant={activeView === 'emprestimos' ? 'fill' : 'outline'}
               onClick={() => setActiveView('emprestimos')}
-              className="text-2xl tracking-widest px-8 py-4"
             />
             <ActionButton
               title="Histórico"
               variant={activeView === 'historico' ? 'fill' : 'outline'}
               onClick={() => setActiveView('historico')}
-              className="text-2xl tracking-widest px-8 py-4"
             />
           </div>
 
-          {activeView === 'livros' && (
-            <ActionButton
-              title="Adicionar +"
-              variant="fill"
-              onClick={() => setModal({ open: true, mode: 'create', data: null })}
-              className="text-2xl tracking-widest px-8 py-4"
-            />
-          )}
-        </div>
+          {activeView !== 'historico' && <ActionButton title="Adicionar" onClick={openCreate} />}
+        </section>
 
-        <DataGrid columnDefs={columnDefs} rowData={rowData} />
+        <DataGrid
+          key={`${activeView}-${data.length}`}
+          columnDefs={gridConfigs[activeView].columnDefs}
+          rowData={data}
+          onRowClick={handleRowClick}
+          context={{ handleDeleteRequest }}
+        />
 
         {modal.open && (
           <AddBookModal
@@ -114,7 +119,7 @@ function ControlPanelContent() {
             onClose={() => setModal({ open: false, mode: 'create', data: null })}
             onSuccess={() => {
               setModal({ open: false, mode: 'create', data: null });
-              loadView('livros');
+              load();
             }}
           />
         )}
@@ -122,13 +127,5 @@ function ControlPanelContent() {
         {ModalComponent}
       </main>
     </>
-  );
-}
-
-export default function ControlPanel() {
-  return (
-    <ProtectedRoute adminOnly>
-      <ControlPanelContent />
-    </ProtectedRoute>
   );
 }
