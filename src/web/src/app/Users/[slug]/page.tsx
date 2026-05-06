@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
 
-import { ActionButton, BookDisplay, BookStatusCard, Footer, Header } from '@/components';
+import { BookDisplay, BookStatusCard, Footer, Header } from '@/components';
 import { AdjustLoanModal } from '@/components/Book/AdjustLoanModal';
 import { Loan } from '@/types';
 
@@ -165,14 +166,16 @@ export default function ProfilePage() {
           <div className="flex flex-wrap justify-center gap-4">
             {wishlist.books.length > 0 ? (
               wishlist.books.map((book: any) => (
-                <BookDisplay
-                  key={book.id}
-                  title={book.name}
-                  description={book.description}
-                  imageSrc={book.imageSrc ? book.imageSrc : '/assets/images/mock-book.png'}
-                  isFavorite={wishlistSet.has(book.id)}
-                  onToggleFavorite={() => toggle(book.id)}
-                />
+                <Link key={book.slug} href={`/Books/${book.slug}`}>
+                  <BookDisplay
+                    key={book.id}
+                    title={book.name}
+                    description={book.description}
+                    imageSrc={book.imageSrc ? book.imageSrc : '/assets/images/mock-book.png'}
+                    isFavorite={wishlistSet.has(book.id)}
+                    onToggleFavorite={() => toggle(book.id)} 
+                  />
+                </Link>
               ))
             ) : (
               <h2 className="w-full font-serif text-3xl uppercase text-center">
