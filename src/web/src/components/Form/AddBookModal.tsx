@@ -58,7 +58,7 @@ export function AddBookModal({
     setForm(data);
   }, [open]);
 
-  async function handleSubmit(e: React.SubmitEvent) {
+  async function handleSubmit(e: { preventDefault(): void }) {
     e.preventDefault();
 
     const clean = (form.isbn ?? '').replace(/-/g, '').trim();
@@ -183,7 +183,7 @@ export function AddBookModal({
           <BaseField label="Cópias Disponíveis" className="items-end" labelClassName="text-base">
             <input
               name="totalAvailable"
-              value={form.totalQuantity}
+              value={form.totalAvailable}
               type="number"
               min={1}
               max={form.totalQuantity}

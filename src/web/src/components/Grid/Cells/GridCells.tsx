@@ -4,15 +4,15 @@ import { ActionButton, resolveBookStatus } from '@/components';
 import { useState } from 'react';
 
 export function BookCell(params: any) {
-  const { imageSrc, name } = params.data;
-  const [img, setImg] = useState(imageSrc);
+  const { imageSrc, name } = params.data ?? {};
+  const [img, setImg] = useState(imageSrc || '/assets/images/mock-book.png');
 
   return (
     <div className="flex items-center w-full gap-10 h-full">
       <figure className="relative min-w-12 h-full">
         <Image
           src={img}
-          alt={name}
+          alt={name || 'Capa do livro'}
           fill
           onError={() => {
             setImg('/assets/images/mock-book.png');
@@ -44,13 +44,12 @@ export function DeleteButtonCell(params: any) {
 export function LoanActionsCell(params: any) {
   const handleAccept = (e: any) => {
     e.stopPropagation();
-
-    console.log('aceitou', params.data);
+    params.context?.handleLoanAction?.(params.data, 'returned');
   };
 
   const handleReject = (e: any) => {
     e.stopPropagation();
-    console.log('rejeitou', params.data);
+    params.context?.handleLoanAction?.(params.data, 'canceled');
   };
 
   return (

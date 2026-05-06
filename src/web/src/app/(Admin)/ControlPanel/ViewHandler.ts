@@ -1,7 +1,20 @@
-import { mockData } from '@/components';
 import { getBooks, updateBook, addNewBook } from '@/services/Books';
-import { getLoans, getLoansByStatus, createLoan, updateLoan, deleteLoan } from '@/services/Loans';
+import { getLoansByStatus, createLoan, updateLoan, deleteLoan } from '@/services/Loans';
 import { formatBook } from '@/util/Formatter';
+
+async function loansWithBooks(status: string) {
+  const [loans, books] = await Promise.all([
+    getLoansByStatus(status),
+    getBooks(),
+  ]);
+
+  const bookMap = new Map((books ?? []).map((b: any) => [b.id, b]));
+
+  return (loans ?? []).map((loan: any) => ({
+    ...loan,
+    book: loan.book ?? bookMap.get(loan.bookId) ?? null,
+  }));
+}
 
 export const ViewHandler = {
   livros: {
@@ -15,18 +28,12 @@ export const ViewHandler = {
   },
 
   emprestimos: {
-    load: async () => {
-      const data = await getLoansByStatus('in_progress');
-      return data ?? [];
-    },
+    load: () => loansWithBooks('in_progress'),
     create: createLoan,
     update: updateLoan,
   },
 
   historico: {
-    load: async () => {
-      const data = await getLoansByStatus('returned');
-      return data ?? [];
-    },
+    load: () => loansWithBooks('returned'),
   },
 };

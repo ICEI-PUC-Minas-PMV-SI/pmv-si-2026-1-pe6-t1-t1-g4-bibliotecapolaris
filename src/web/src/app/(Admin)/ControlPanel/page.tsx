@@ -12,6 +12,7 @@ type ViewMode = 'livros' | 'emprestimos' | 'historico';
 import { ViewHandler } from './ViewHandler';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { deleteBook } from '@/services/Books';
+import { updateLoan } from '@/services/Loans';
 export default function ControlPanel() {
   const [activeView, setActiveView] = useState<ViewMode>('livros');
   const { showConfirmation, showError, showSuccess, ModalComponent } = useAlertModal();
@@ -58,6 +59,16 @@ export default function ControlPanel() {
       data: event.data,
     });
   }
+
+  const handleLoanAction = async (row: any, status: 'returned' | 'canceled') => {
+    try {
+      const returnDate = status === 'returned' ? new Date().toISOString().slice(0, 10) : undefined;
+      await updateLoan(row.id, { status, ...(returnDate ? { returnDate } : {}) });
+      load();
+    } catch {
+      showError('Erro', 'Não foi possível atualizar o empréstimo.');
+    }
+  };
 
   const handleDeleteRequest = (row: any) => {
     const book = row?.data ?? row;
@@ -114,6 +125,7 @@ export default function ControlPanel() {
           onRowClick={handleRowClick}
           context={{
             handleDeleteRequest,
+            handleLoanAction,
           }}
         />
 

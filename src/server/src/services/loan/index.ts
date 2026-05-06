@@ -9,14 +9,14 @@ type LoanUpdateInput = z.infer<typeof LoanUpdateSchema>;
 
 export async function getAllLoans() {
   return prisma.loan.findMany({
-    include: { student: true },
+    include: { student: true, book: true },
   });
 }
 
 export async function getLoanById(id: string) {
   return prisma.loan.findUniqueOrThrow({
     where: { id },
-    include: { student: true },
+    include: { student: true, book: true },
   });
 }
 
@@ -53,13 +53,13 @@ export async function deleteLoan(id: string) {
 export async function getLoansByStudent(studentId: string) {
   return prisma.loan.findMany({
     where: { studentId },
-    include: { student: true },
+    include: { student: true, book: true },
   });
 }
 
 export async function getLoansByStatus(status: 'in_progress' | 'returned' | 'canceled' | 'overdue') {
   return prisma.loan.findMany({
     where: { status },
-    include: { student: true },
+    include: { student: true, book: true },
   });
 }
