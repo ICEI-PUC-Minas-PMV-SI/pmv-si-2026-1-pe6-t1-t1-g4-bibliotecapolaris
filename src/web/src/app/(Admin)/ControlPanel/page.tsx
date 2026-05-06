@@ -3,7 +3,7 @@
 import '@/lib/AgGrid';
 
 import { useEffect, useState } from 'react';
-import { ActionButton, DataGrid, gridConfigs, Header, mockData } from '@/components';
+import { ActionButton, DataGrid, gridConfigs, Header } from '@/components';
 
 import { AddBookModal } from '@/components/Form/AddBookModal';
 
@@ -60,7 +60,7 @@ export default function ControlPanel() {
     });
   }
 
-  const handleLoanAction = async (row: any, status: 'returned' | 'canceled') => {
+  const handleLoanAction = async (row: any, status: 'returned' | 'overdue') => {
     try {
       const returnDate = status === 'returned' ? new Date().toISOString().slice(0, 10) : undefined;
       await updateLoan(row.id, { status, ...(returnDate ? { returnDate } : {}) });

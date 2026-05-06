@@ -2,6 +2,7 @@ import { BookCell } from '@/components';
 import { DeleteButtonCell } from '@/components';
 import { LoanActionsCell } from '@/components';
 import { StatusCell } from '@/components';
+import { HistoricoStatusCell } from '@/components';
 import { formatCategories } from '@/util/Formatter';
 
 export const gridConfigs = {
@@ -55,7 +56,7 @@ export const gridConfigs = {
       {
         headerName: 'Status',
         field: 'dueDate',
-        cellRenderer: StatusCell,
+        cellRenderer: HistoricoStatusCell,
       },
       {
         headerName: 'Data da Retirada',

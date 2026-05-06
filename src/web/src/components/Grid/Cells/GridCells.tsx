@@ -49,7 +49,7 @@ export function LoanActionsCell(params: any) {
 
   const handleReject = (e: any) => {
     e.stopPropagation();
-    params.context?.handleLoanAction?.(params.data, 'canceled');
+    params.context?.handleLoanAction?.(params.data, 'overdue');
   };
 
   return (
@@ -65,6 +65,31 @@ export function StatusCell(params: any) {
 
   return (
     <span style={{ backgroundColor: config.color, padding: '8px', border: '1px solid #1F1A18', borderRadius: '2px' }}>
+      {label}
+    </span>
+  );
+}
+
+export function HistoricoStatusCell(params: any) {
+  const { dueDate, returnDate, status } = params.data ?? {};
+
+  let label: string;
+  let color: string;
+
+  if (returnDate) {
+    const late = returnDate > dueDate;
+    label = late ? 'Devolvido com atraso' : 'Devolvido no prazo';
+    color = late ? 'var(--status-error)' : 'var(--status-success)';
+  } else if (status === 'overdue') {
+    label = 'Em atraso — não devolvido';
+    color = 'var(--status-error)';
+  } else {
+    label = 'Pendente';
+    color = 'var(--status-warning)';
+  }
+
+  return (
+    <span style={{ backgroundColor: color, padding: '8px', border: '1px solid #1F1A18', borderRadius: '2px' }}>
       {label}
     </span>
   );
