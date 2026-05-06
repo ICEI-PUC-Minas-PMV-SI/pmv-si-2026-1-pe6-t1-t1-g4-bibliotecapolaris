@@ -10,11 +10,12 @@ import { useAlertModal } from '@/hooks/useAlertModal';
 import { useAuth } from '@/context/AuthContext';
 import { deleteBook } from '@/services/Books';
 
+import { ProtectedRoute } from '@/components/Global/ProtectedRoute';
 import { ViewHandler } from './ViewHandler';
 
 type ViewMode = 'livros' | 'emprestimos' | 'historico';
 
-export default function ControlPanel() {
+function ControlPanelContent() {
   const { user, isLoading } = useAuth();
   const { showConfirmation, showError, showSuccess, ModalComponent } = useAlertModal();
 
@@ -127,5 +128,13 @@ export default function ControlPanel() {
         {ModalComponent}
       </main>
     </>
+  );
+}
+
+export default function ControlPanel() {
+  return (
+    <ProtectedRoute adminOnly>
+      <ControlPanelContent />
+    </ProtectedRoute>
   );
 }
