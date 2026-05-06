@@ -1,5 +1,6 @@
 import { mockData } from '@/components';
 import { getBooks, updateBook, addNewBook } from '@/services/Books';
+import { getLoans, getLoansByStatus, createLoan, updateLoan, deleteLoan } from '@/services/Loans';
 import { formatBook } from '@/util/Formatter';
 
 export const ViewHandler = {
@@ -14,12 +15,18 @@ export const ViewHandler = {
   },
 
   emprestimos: {
-    load: async () => mockData['emprestimos'],
-    create: async () => {},
-    update: async () => {},
+    load: async () => {
+      const data = await getLoansByStatus('in_progress');
+      return data ?? [];
+    },
+    create: createLoan,
+    update: updateLoan,
   },
 
   historico: {
-    load: async () => mockData['historico'],
+    load: async () => {
+      const data = await getLoansByStatus('returned');
+      return data ?? [];
+    },
   },
 };
