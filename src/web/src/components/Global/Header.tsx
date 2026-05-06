@@ -10,7 +10,7 @@ import { useAuth } from '@/context/AuthContext';
 export function Header() {
   const { theme } = useTheme();
   const router = useRouter();
-  const { user, logout } = useAuth();
+  const { user, logout, isLoading } = useAuth();
 
   const isDark = theme !== 'light';
 
@@ -46,12 +46,14 @@ export function Header() {
         {user && (
           <span className="text-(--text) text-lg font-sans tracking-wide">{user.name.split(' ')[0]}</span>
         )}
-        <ActionButton
-          title={isAdmin ? 'Painel de Controle' : 'Perfil'}
-          variant="fill"
-          className="text-2xl"
-          onClick={handleProfileClick}
-        />
+        {!isLoading && (
+          <ActionButton
+            title={isAdmin ? 'Painel de Controle' : 'Perfil'}
+            variant="fill"
+            className="text-2xl"
+            onClick={handleProfileClick}
+          />
+        )}
         {user && (
           <ActionButton title="Sair" variant="outline" className="text-2xl" onClick={handleLogout} />
         )}
