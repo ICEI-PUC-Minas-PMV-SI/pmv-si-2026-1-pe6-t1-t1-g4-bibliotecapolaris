@@ -26,5 +26,9 @@ export async function apiFetch(path: string, options: FetchOptions = {}) {
     ...rest,
   });
 
+  if (res.status === 401) {
+    window.dispatchEvent(new Event('polaris:unauthorized'));
+  }
+
   return res;
 }

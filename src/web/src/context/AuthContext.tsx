@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 type UserType = 'student' | 'administrator';
 
@@ -31,6 +31,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const logoutRef = useRef<() => void>(() => {});
+
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem(USER_KEY);
@@ -45,6 +47,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    logoutRef.current = () => {
+      localStorage.removeItem(USER_KEY);
+      localStorage.removeItem(TOKEN_KEY);
+      setUser(null);
+      setToken(null);
+      window.location.replace('/LoginPage');
+    };
+  });
+
+  useEffect(() => {
+    function handleUnauthorized() {
+      logoutRef.current();
+    }
+    window.addEventListener('polaris:unauthorized', handleUnauthorized);
+    return () => window.removeEventListener('polaris:unauthorized', handleUnauthorized);
   }, []);
 
   function login(userData: AuthUser, jwt: string) {
