@@ -7,23 +7,34 @@ import { useAlertModal } from '@/hooks/useAlertModal';
 
 import { ActionButton, BookDisplay, BookStatusCard, Footer, Header } from '@/components';
 import { AdjustLoanModal } from '@/components/Book/AdjustLoanModal';
+import { Loan } from '@/types';
 
 const MOCK_USER_ID = '137dda5c-0a74-4e4a-909a-e9f836162955';
 
-const INITIAL_MOCK_LOANS = [
+const INITIAL_MOCK_LOANS: Loan[] = [
   {
-    id: 'loan-123',
-    title: 'The Sudden Stop',
-    imageSrc: '/assets/images/mock-book.png',
+    id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+    studentId: MOCK_USER_ID,
+    bookId: 'b391786c-45ab-4c28-98e1-d238b725c5d0',
+    loanDate: new Date('2026-05-01'),
     dueDate: new Date('2026-05-15'),
-    status: 'Em andamento',
+    status: 'in_progress',
+    book: {
+      name: 'The Sudden Stop',
+      imageSrc: '/assets/images/mock-book.png',
+    }
   },
   {
-    id: 'loan-456',
-    title: 'Arquitetura Limpa',
-    imageSrc: '/assets/images/mock-book.png',
+    id: '550e8400-e29b-41d4-a716-446655440000',
+    studentId: MOCK_USER_ID,
+    bookId: 'a123456c-45ab-4c28-98e1-d238b725c5d1',
+    loanDate: new Date('2026-03-01'),
     dueDate: new Date('2026-04-12'),
-    status: 'Atrasado',
+    status: 'late',
+    book: {
+      name: 'Arquitetura Limpa',
+      imageSrc: '/assets/images/mock-book.png',
+    }
   }
 ];
 
@@ -31,10 +42,10 @@ export default function ProfilePage() {
   const { wishlist, wishlistSet, toggle, error, setError } = useWishlist(MOCK_USER_ID);
   const { showError, showSuccess, ModalComponent } = useAlertModal();
 
-  const [loans, setLoans] = useState(INITIAL_MOCK_LOANS);
+  const [loans, setLoans] = useState<Loan[]>(INITIAL_MOCK_LOANS);
 
   const [isAdjustModalOpen, setIsAdjustModalOpen] = useState(false);
-  const [selectedLoan, setSelectedLoan] = useState<any>(null);
+  const [selectedLoan, setSelectedLoan] = useState<Loan | null>(null);
 
   useEffect(() => {
     if (error) {
@@ -43,12 +54,13 @@ export default function ProfilePage() {
     }
   }, [error]);
 
-  function handleOpenAdjustments(loan: any) {
+  function handleOpenAdjustments(loan: Loan) {
     setSelectedLoan(loan);
     setIsAdjustModalOpen(true);
   }
 
-  async function handleAlterarEntrega(newDate: string) {
+  async function handleChangeDueDate(newDate: string) {
+    if (!selectedLoan) return;
     try {
       const response = await fetch(`http://localhost:3333/loans/${selectedLoan.id}`, {
         method: 'PUT',
@@ -69,7 +81,8 @@ export default function ProfilePage() {
     }
   }
 
-  async function handleAnteciparEntrega() {
+  async function handleReturnBook() {
+    if (!selectedLoan) return;
     try {
       const todayString = new Date().toISOString().split('T')[0]; 
 
@@ -92,7 +105,8 @@ export default function ProfilePage() {
     }
   }
 
-  async function handleJustificarEDevolver(justificationText: string) {
+  async function handleJustifyAndReturn(justificationText: string) {
+    if (!selectedLoan) return;
     try {
       const todayString = new Date().toISOString().split('T')[0];
 
@@ -133,26 +147,13 @@ export default function ProfilePage() {
               <div key={loan.id} className="flex flex-col items-center gap-3 bg-[#1e1e1e] p-4 rounded-md border border-gray-800 shadow-md">
                 
                 <BookStatusCard 
-                  title={loan.title} 
-                  imageSrc={loan.imageSrc} 
+                  title={loan.book.name} 
+                  imageSrc={loan.book.imageSrc} 
                   dueDate={loan.dueDate} 
+                  status={loan.status}
+                  onAdjustClick={() => handleOpenAdjustments(loan)}
                 />
                 
-                <div className="flex flex-col items-center gap-2 w-full">
-                  <span className={`font-semibold text-lg ${
-                    loan.status === 'Atrasado' ? 'text-red-500' : 
-                    loan.status.includes('Devolvido') ? 'text-blue-400' : 'text-green-500'
-                  }`}>
-                    Status: {loan.status}
-                  </span>
-                  
-                  <ActionButton 
-                    title={loan.status.includes('Devolvido') ? "Empréstimo Encerrado" : "Ajustar Empréstimo"} 
-                    className={`h-10 w-full text-sm rounded-sm ${loan.status.includes('Devolvido') ? 'opacity-50 cursor-not-allowed' : ''}`} 
-                    onClick={() => !loan.status.includes('Devolvido') && handleOpenAdjustments(loan)} 
-                    disabled={loan.status.includes('Devolvido')}
-                  />
-                </div>
               </div>
             ))}
           </div>
@@ -185,9 +186,9 @@ export default function ProfilePage() {
           isOpen={isAdjustModalOpen}
           onClose={() => setIsAdjustModalOpen(false)}
           loan={selectedLoan}
-          onAlterarEntrega={handleAlterarEntrega}
-          onAnteciparEntrega={handleAnteciparEntrega}
-          onJustificarEDevolver={handleJustificarEDevolver}
+          onChangeDueDate={handleChangeDueDate}
+          onReturnBook={handleReturnBook}
+          onJustifyAndReturn={handleJustifyAndReturn}
         />
 
         {ModalComponent}
