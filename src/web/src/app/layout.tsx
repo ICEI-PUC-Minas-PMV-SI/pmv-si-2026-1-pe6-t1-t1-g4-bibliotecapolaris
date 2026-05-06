@@ -5,6 +5,7 @@ import '../styles/globals.css';
 import '../styles/ag-grid.css';
 
 import { ThemeProvider } from 'next-themes';
+import { AuthProvider } from '@/context/AuthContext';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -29,9 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br" className={`${inter.variable} ${crimson.variable} antialiased`} suppressHydrationWarning>
-      <body className="">
+      <body className="" suppressHydrationWarning>
         <ThemeProvider attribute="data-theme" defaultTheme="dark">
-          {children}
+          <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>
       </body>
     </html>
