@@ -9,7 +9,6 @@ import {
   getBookBySlug,
   listBooks,
   updateBook,
-  listCategories,
 } from '@/services';
 import { handleError, sendFailure, sendSuccess } from '@/utils';
 
@@ -89,15 +88,6 @@ export async function listBooksController(req: Request, res: Response) {
     return sendSuccess(res, books, 200);
   } catch (error) {
     return handleError(res, error, 'Livro');
-  }
-}
-
-export async function listCategoriesController(req: Request, res: Response) {
-  try {
-    const categories = await listCategories();
-    return sendSuccess(res, categories, 200);
-  } catch (error) {
-    return handleError(res, error, 'Categorias');
   }
 }
 
