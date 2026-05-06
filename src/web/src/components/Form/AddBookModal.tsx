@@ -3,7 +3,6 @@ import Image from 'next/image';
 
 import { ActionButton } from '@/components';
 import { useFormState } from '@/hooks/useFormState';
-import { BaseField, BaseInputModal } from './BaseInput';
 
 import { addNewBook, updateBook } from '@/services/Books';
 import { type BookForm, initialBookForm } from '@/types/formTypes';
@@ -13,7 +12,6 @@ type AddBookModalProps = {
   open: boolean;
   onClose: () => void;
   onSuccess?: () => void;
-
   mode?: 'create' | 'edit';
   initialData?: BookForm;
 };
@@ -34,35 +32,26 @@ export function AddBookModal({
   useEffect(() => {
     const timer = setTimeout(() => {
       const clean = (form.isbn ?? '').replace(/-/g, '').trim();
-
       if (clean.length < 10) {
         setCoverUrl(null);
         setCoverError(false);
         return;
       }
-
-      const url = `https://covers.openlibrary.org/b/isbn/${clean}-L.jpg?default=false`;
-
-      setCoverUrl(url);
+      setCoverUrl(`https://covers.openlibrary.org/b/isbn/${clean}-L.jpg?default=false`);
       setCoverError(false);
     }, 500);
-
     return () => clearTimeout(timer);
   }, [form.isbn]);
 
   useEffect(() => {
     if (!open) return;
-
     const data = mode === 'edit' && initialData ? { ...initialBookForm, ...initialData } : initialBookForm;
-
     setForm(data);
   }, [open]);
 
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
-
     const clean = (form.isbn ?? '').replace(/-/g, '').trim();
-
     const finalCoverUrl =
       clean.length >= 10 ? `https://covers.openlibrary.org/b/isbn/${clean}-L.jpg?default=false` : '';
 
@@ -70,138 +59,133 @@ export function AddBookModal({
       if (mode === 'edit') {
         await updateBook(form.id, form);
       } else {
-        await addNewBook({
-          ...form,
-          imageSrc: finalCoverUrl,
-        });
+        await addNewBook({ ...form, imageSrc: finalCoverUrl });
       }
-
-      showSuccess('Sucesso!', 'Livro adicionado com sucesso!', () => {
+      showSuccess('Sucesso!', mode === 'edit' ? 'Livro atualizado com sucesso!' : 'Livro adicionado com sucesso!', () => {
         onSuccess?.();
         onClose();
       });
     } catch (err) {
-      showError('Erro!', err instanceof Error ? err.message : 'Erro ao adicionar livro');
+      showError('Erro!', err instanceof Error ? err.message : 'Erro ao salvar livro');
     }
   }
 
+  if (!open) return null;
+
   return (
-    <BaseInputModal
-      open={open}
-      onClose={onClose}
-      title={mode === 'create' ? 'Adicionar um novo livro' : 'Atualizar livro'}
-    >
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <div className="flex justify-center">
-          <div className="w-24 h-32 border border-(--text)/30 flex items-center justify-center overflow-hidden bg-(--foreground)">
-            <Image
-              src={coverUrl && !coverError ? coverUrl : '/assets/images/mock-book.png'}
-              alt="Capa do livro"
-              width={112}
-              height={160}
-              className="w-full h-full object-cover"
-              onError={() => setCoverError(true)}
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
+
+      <div className="relative w-[420px] max-h-[90vh] overflow-y-auto bg-(--background) border border-(--text)/20 rounded-sm shadow-2xl">
+        <div className="p-6">
+          <h1 className="font-serif text-2xl font-bold tracking-widest uppercase mb-6">
+            {mode === 'create' ? 'Adicionar Novo Livro' : 'Atualizar Livro'}
+          </h1>
+
+          <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+            <ModalField label="ISBN">
+              <input
+                name="isbn"
+                value={form.isbn}
+                onChange={handleChange}
+                placeholder="1234-sudden"
+                className="modal-input"
+                maxLength={13}
+              />
+            </ModalField>
+
+            <ModalField label="Nome:">
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="The Sudden Stop"
+                className="modal-input"
+              />
+            </ModalField>
+
+            <ModalField label="Autor:">
+              <input
+                name="author"
+                value={form.author}
+                onChange={handleChange}
+                placeholder="Alan Wake"
+                className="modal-input"
+              />
+            </ModalField>
+
+            <ModalField label="Categoria">
+              <input
+                name="categories"
+                value={form.categories}
+                onChange={handleChange}
+                placeholder="Horror, Romance"
+                className="modal-input"
+              />
+            </ModalField>
+
+            <ModalField label="Descrição">
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                placeholder="Descreva o livro..."
+                className="modal-input min-h-[100px] resize-none text-justify"
+              />
+            </ModalField>
+
+            <div className="flex gap-4">
+              <ModalField label="Cópias Totais" className="flex-1">
+                <input
+                  name="totalQuantity"
+                  value={form.totalQuantity}
+                  type="number"
+                  min={1}
+                  onChange={handleChange}
+                  className="modal-input"
+                />
+              </ModalField>
+              <ModalField label="Disponíveis" className="flex-1">
+                <input
+                  name="totalAvailable"
+                  value={form.totalQuantity}
+                  type="number"
+                  min={1}
+                  max={form.totalQuantity}
+                  onChange={handleChange}
+                  className="modal-input"
+                />
+              </ModalField>
+            </div>
+
+            <ActionButton
+              title={mode === 'create' ? 'Adicionar' : 'Atualizar'}
+              type="submit"
+              variant="fill"
+              className="h-12 text-2xl tracking-widest rounded-sm mt-2"
             />
-          </div>
+          </form>
         </div>
-
-        <BaseField label="ISBN">
-          <input
-            name="isbn"
-            value={form.isbn}
-            onChange={handleChange}
-            placeholder="9780553802023"
-            className="form-input"
-            maxLength={13}
-          />
-        </BaseField>
-
-        <BaseField label="Nome do Livro">
-          <input
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            placeholder="Universe in a nutshell"
-            className="form-input"
-          />
-        </BaseField>
-
-        <BaseField label="Autor">
-          <input
-            name="author"
-            value={form.author}
-            onChange={handleChange}
-            placeholder="Stephen Hawking"
-            className="form-input"
-          />
-        </BaseField>
-
-        <BaseField label="Ano de Publicação">
-          <input
-            name="year"
-            value={form.year}
-            type="number"
-            min={1900}
-            onChange={handleChange}
-            placeholder="2001"
-            className="form-input"
-          />
-        </BaseField>
-
-        <BaseField label="Categorias">
-          <input
-            name="categories"
-            value={form.categories}
-            onChange={handleChange}
-            placeholder="Science, Physics"
-            className="form-input"
-          />
-        </BaseField>
-
-        <BaseField label="Descrição">
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-            className="form-input overflow-hidden min-h-[12vh] max-h-[19vh] text-justify"
-          />
-        </BaseField>
-
-        <div className="flex gap-8 justify-between">
-          <BaseField label="Qtde. de Cópias" className="items-start" labelClassName="text-base">
-            <input
-              name="totalQuantity"
-              value={form.totalQuantity}
-              type="number"
-              min={1}
-              onChange={handleChange}
-              className="form-input w-24"
-            />
-          </BaseField>
-
-          <BaseField label="Cópias Disponíveis" className="items-end" labelClassName="text-base">
-            <input
-              name="totalAvailable"
-              value={form.totalQuantity}
-              type="number"
-              min={1}
-              max={form.totalQuantity}
-              onChange={handleChange}
-              className="form-input w-24"
-            />
-          </BaseField>
-        </div>
-
-        <ActionButton
-          title={mode === 'create' ? 'Adicionar' : 'Atualizar'}
-          type="submit"
-          variant="fill"
-          className="h-12 text-3xl rounded-sm"
-        />
-      </form>
+      </div>
 
       {ModalComponent}
-    </BaseInputModal>
+    </div>
+  );
+}
+
+function ModalField({
+  label,
+  children,
+  className,
+}: {
+  label: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={`flex flex-col gap-1 ${className ?? ''}`}>
+      <label className="font-sans text-sm font-bold tracking-widest uppercase text-(--text)">{label}</label>
+      {children}
+    </div>
   );
 }
