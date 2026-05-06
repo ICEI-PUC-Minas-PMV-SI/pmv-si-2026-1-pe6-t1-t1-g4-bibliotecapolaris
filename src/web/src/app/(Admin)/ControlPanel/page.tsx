@@ -16,7 +16,7 @@ type ViewMode = 'livros' | 'emprestimos' | 'historico';
 
 function ControlPanelContent() {
   const { user, isLoading } = useAuth();
-  const { showConfirmation, showError, showSuccess, showAlert, ModalComponent } = useAlertModal();
+  const { showConfirmation, showError, showSuccess, ModalComponent } = useAlertModal();
 
   const [activeView, setActiveView] = useState<ViewMode>('livros');
   const [rowData, setRowData] = useState<any[]>([]);
@@ -29,9 +29,8 @@ function ControlPanelContent() {
   useEffect(() => {
     if (isLoading) return;
     if (!user || user.type !== 'administrator') {
-      showAlert('Acesso negado', 'Você não tem permissão para acessar esta área.', () => {
-        window.location.replace('/');
-      });
+      showError('Acesso negado', 'Você não tem permissão para acessar esta área.');
+      window.location.replace('/');
       return;
     }
   }, [user, isLoading]);
