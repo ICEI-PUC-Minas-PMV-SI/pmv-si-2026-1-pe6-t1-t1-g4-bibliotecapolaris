@@ -104,19 +104,19 @@ export default function ControlPanel() {
             />
 
             <ActionButton
-              title="Empréstimos"
+              title="Solicitações"
               variant={activeView === 'emprestimos' ? 'fill' : 'outline'}
               onClick={() => setActiveView('emprestimos')}
             />
 
             <ActionButton
-              title="Histórico"
+              title="Empréstimos"
               variant={activeView === 'historico' ? 'fill' : 'outline'}
               onClick={() => setActiveView('historico')}
             />
           </div>
 
-          {activeView !== 'historico' && <ActionButton title="Adicionar" onClick={openCreate} />}
+          {activeView !== 'emprestimos' && <ActionButton title="Adicionar" onClick={openCreate} />}
         </section>
 
         <DataGrid
@@ -143,7 +143,7 @@ export default function ControlPanel() {
           />
         )}
 
-        {modal.open && activeView === 'emprestimos' && (
+        {modal.open && activeView === 'historico' && (
           <AddLoanModal
             open={modal.open}
             onClose={() => setModal({ open: false, mode: 'create', data: null })}

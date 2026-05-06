@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { ActionButton } from '@/components';
 import { BaseField, BaseInputModal } from './BaseInput';
@@ -27,18 +27,23 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
   const [students, setStudents] = useState<any[]>([]);
 
   const [selectedBookId, setSelectedBookId] = useState('');
+  const [selectedAuthor, setSelectedAuthor] = useState('');
   const [studentSearch, setStudentSearch] = useState('');
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
-  const [dueDate, setDueDate] = useState('');
+  const [dueDateDisplay, setDueDateDisplay] = useState('');
+  const [dueDateIso, setDueDateIso] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const datePickerRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!open) return;
 
     setSelectedBookId('');
+    setSelectedAuthor('');
     setStudentSearch('');
     setSelectedStudent(null);
-    setDueDate('');
+    setDueDateDisplay('');
+    setDueDateIso('');
 
     Promise.all([getBooks(), getLoans()]).then(([fetchedBooks, fetchedLoans]) => {
       setBooks(fetchedBooks ?? []);
@@ -50,6 +55,41 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
       setStudents(Array.from(seen.values()));
     });
   }, [open]);
+
+  const authors = useMemo(() => {
+    const seen = new Map<string, any>();
+    books.forEach((b) => {
+      const a = b.author;
+      if (!a) return;
+      const id = a?.id ?? a;
+      if (!seen.has(String(id))) seen.set(String(id), a);
+    });
+    return Array.from(seen.values()).sort((a, b) => {
+      const na = a?.name ?? a;
+      const nb = b?.name ?? b;
+      return String(na).localeCompare(String(nb));
+    });
+  }, [books]);
+
+  const filteredBooks = useMemo(() => {
+    if (!selectedAuthor) return books;
+    return books.filter((b) => {
+      const id = b.author?.id ?? b.author;
+      return String(id) === selectedAuthor;
+    });
+  }, [books, selectedAuthor]);
+
+  function handleBookSelect(bookId: string) {
+    setSelectedBookId(bookId);
+    const book = books.find((b) => b.id === bookId);
+    const a = book?.author;
+    if (a) setSelectedAuthor(String(a?.id ?? a));
+  }
+
+  function handleAuthorSelect(authorId: string) {
+    setSelectedAuthor(authorId);
+    setSelectedBookId('');
+  }
 
   const suggestions = studentSearch
     ? students.filter((s) => s.name.toLowerCase().includes(studentSearch.toLowerCase()))
@@ -66,7 +106,7 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
         bookId: selectedBookId,
         userId: selectedStudent.id,
         loanDate: todayPlus(0),
-        returnDate: dueDate || todayPlus(7),
+        returnDate: dueDateIso || todayPlus(7),
       });
 
       showSuccess('Sucesso!', 'Empréstimo criado com sucesso!', () => {
@@ -117,39 +157,85 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
           </div>
         </BaseField>
 
-        <BaseField label="Livro">
-          <div className="flex flex-col gap-2">
-            {books.length === 0 && (
-              <span className="form-input opacity-50">Carregando livros...</span>
-            )}
-            {books.map((book) => (
-              <button
-                key={book.id}
-                type="button"
-                onClick={() => setSelectedBookId(book.id)}
-                className={`form-input text-left cursor-pointer transition-opacity ${
-                  selectedBookId === book.id
-                    ? 'ring-2 ring-(--button-active) opacity-100'
-                    : 'opacity-70 hover:opacity-100'
-                }`}
-              >
+        <BaseField label="Nome do Livro">
+          <select
+            value={selectedBookId}
+            onChange={(e) => handleBookSelect(e.target.value)}
+            className="form-input"
+          >
+            <option value="">
+              {filteredBooks.length === 0 ? 'Carregando livros...' : 'Selecione um livro'}
+            </option>
+            {filteredBooks.map((book) => (
+              <option key={book.id} value={book.id}>
                 {book.name}
-              </button>
+              </option>
             ))}
-          </div>
+          </select>
+        </BaseField>
+
+        <BaseField label="Nome do Autor">
+          <select
+            value={selectedAuthor}
+            onChange={(e) => handleAuthorSelect(e.target.value)}
+            className="form-input"
+          >
+            <option value="">Todos os autores</option>
+            {authors.map((author) => {
+              const id = String(author?.id ?? author);
+              const name = author?.name ?? author;
+              return (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              );
+            })}
+          </select>
         </BaseField>
 
         <BaseField label="Data de Entrega">
-          <input
-            type="date"
-            value={dueDate}
-            min={todayPlus(1)}
-            onChange={(e) => setDueDate(e.target.value)}
-            className="form-input"
-          />
-          <span className="text-sm text-(--text)/60 font-sans">
-            Padrão: 7 dias depois de hoje
-          </span>
+          <div className="flex gap-2 items-center">
+            <input
+              type="text"
+              value={dueDateDisplay}
+              onChange={(e) => {
+                const digits = e.target.value.replace(/\D/g, '').slice(0, 8);
+                let display = digits;
+                if (digits.length > 4) display = digits.slice(0, 2) + '/' + digits.slice(2, 4) + '/' + digits.slice(4);
+                else if (digits.length > 2) display = digits.slice(0, 2) + '/' + digits.slice(2);
+                setDueDateDisplay(display);
+                if (digits.length === 8) {
+                  setDueDateIso(`${digits.slice(4)}-${digits.slice(2, 4)}-${digits.slice(0, 2)}`);
+                } else {
+                  setDueDateIso('');
+                }
+              }}
+              placeholder="Padrão: 7 dias depois de hoje"
+              maxLength={10}
+              className="form-input"
+            />
+            <input
+              ref={datePickerRef}
+              type="date"
+              min={todayPlus(1)}
+              className="sr-only"
+              onChange={(e) => {
+                const iso = e.target.value;
+                if (!iso) return;
+                const [y, m, d] = iso.split('-');
+                setDueDateDisplay(`${d}/${m}/${y}`);
+                setDueDateIso(iso);
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => datePickerRef.current?.showPicker()}
+              className="form-input w-auto px-3 cursor-pointer shrink-0"
+              title="Selecionar data"
+            >
+              📅
+            </button>
+          </div>
         </BaseField>
 
         <ActionButton

@@ -58,8 +58,22 @@ export async function createLoan(loan: LoanForm) {
     });
 
     if (!res.ok) {
-      const error = await res.json().catch(() => null);
-      throw new Error(error?.message || 'Erro ao registrar empréstimo');
+      const body = await res.json().catch(() => null);
+      const details = body?.details;
+      let msg = '';
+      if (details && typeof details === 'object') {
+        const errs: string[] = [];
+        const collect = (o: any) => {
+          if (!o || typeof o !== 'object') return;
+          if (Array.isArray(o._errors) && o._errors.length) errs.push(...o._errors);
+          for (const [k, v] of Object.entries(o)) if (k !== '_errors') collect(v);
+        };
+        collect(details);
+        msg = errs.join('\n');
+      }
+      if (!msg) msg = body?.message || `Erro ${res.status} ao registrar empréstimo`;
+      if (msg === 'Request validation failed') msg = `Erro ${res.status} ao registrar empréstimo`;
+      throw new Error(msg);
     }
 
     const response = await res.json();
