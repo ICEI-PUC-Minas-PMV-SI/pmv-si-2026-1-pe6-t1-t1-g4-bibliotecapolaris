@@ -6,9 +6,10 @@ import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
 
 import { BookDisplay, BookStatusCard, Footer, Header } from '@/components';
+import Link from 'next/link';
 
 export default function ProfilePage() {
-  const { wishlist, wishlistSet, toggle, error, setError } = useWishlist('137dda5c-0a74-4e4a-909a-e9f836162955');
+  const { wishlist, wishlistSet, toggle, error, setError } = useWishlist('mock-user-id');
   const { showError, ModalComponent } = useAlertModal();
 
   useEffect(() => {
@@ -54,14 +55,16 @@ export default function ProfilePage() {
           <div className="flex flex-wrap justify-center gap-4">
             {wishlist.books.length > 0 ? (
               wishlist.books.map((book: any) => (
-                <BookDisplay
-                  key={book.id}
-                  title={book.name}
-                  description={book.description}
-                  imageSrc={book.imageSrc ? book.imageSrc : '/assets/images/mock-book.png'}
-                  isFavorite={wishlistSet.has(book.id)}
-                  onToggleFavorite={() => toggle(book.id)}
-                />
+                <Link key={book.slug} href={`/Books/${book.slug}`}>
+                  <BookDisplay
+                    key={book.id}
+                    title={book.name}
+                    description={book.description}
+                    imageSrc={book.imageSrc ? book.imageSrc : '/assets/images/mock-book.png'}
+                    isFavorite={wishlistSet.has(book.id)}
+                    onToggleFavorite={() => toggle(book.id)}
+                  />
+                </Link>
               ))
             ) : (
               <h2 className="w-full font-serif text-3xl uppercase text-center">
