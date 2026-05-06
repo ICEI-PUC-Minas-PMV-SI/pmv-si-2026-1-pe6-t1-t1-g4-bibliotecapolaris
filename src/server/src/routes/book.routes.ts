@@ -7,12 +7,14 @@ import {
   getBookBySlugController,
   listBooksController,
   updateBookController,
+  listCategoriesController,
 } from '@/controllers';
 
 const BookRouter = Router();
 
 BookRouter.post('/books/register', createBookController);
 BookRouter.get('/books', listBooksController);
+BookRouter.get('/books/categories', listCategoriesController);
 BookRouter.get('/books/id/:id', getBookByIdController);
 BookRouter.get('/books/:slug', getBookBySlugController);
 BookRouter.put('/books/:id', updateBookController);

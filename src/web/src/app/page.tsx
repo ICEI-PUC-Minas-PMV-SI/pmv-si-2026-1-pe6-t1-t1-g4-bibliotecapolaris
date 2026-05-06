@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 import { BookDisplay, CategoryCard, Footer, Header } from '@/components';
 
-import { getBooks } from '@/services/Books';
+import { getBooks, getCategories } from '@/services/Books';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
 
@@ -19,16 +19,18 @@ export default function LandingPage() {
   const [search, setSearch] = useState('');
 
   const [books, setBooks] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const { wishlistSet, toggle, error, setError } = useWishlist('mock-user-id');
   const { showError, ModalComponent } = useAlertModal();
 
   useEffect(() => {
-    async function loadBooks() {
-      const returnedBooks = await getBooks();
+    async function loadData() {
+      const [returnedBooks, returnedCategories] = await Promise.all([getBooks(), getCategories()]);
       setBooks(returnedBooks ?? []);
+      setCategories(returnedCategories ?? []);
     }
 
-    loadBooks();
+    loadData();
   }, []);
 
   function handleSubmit(e: React.SubmitEvent) {
@@ -109,7 +111,11 @@ export default function LandingPage() {
           <h1 className="w-full text-3xl uppercase tracking-wider"> Categorias </h1>
 
           <div className="flex flex-wrap justify-center gap-4">
-            <CategoryCard title="Terror" imageSrc="/assets/images/mock-book.png" />
+            {categories.slice(0, 5).map((cat: any) => (
+              <Link key={cat.name} href={`/Books?search=${encodeURIComponent(cat.name)}`}>
+                <CategoryCard title={cat.name} imageSrc={cat.imageSrc} />
+              </Link>
+            ))}
           </div>
         </section>
 
