@@ -82,6 +82,25 @@ export function AddBookModal({
             {mode === 'create' ? 'Adicionar Novo Livro' : 'Atualizar Livro'}
           </h1>
 
+          <div className="flex justify-center mb-6">
+            <div className="relative w-[140px] h-[200px] border border-(--text)/20 rounded-sm bg-(--text)/5 flex items-center justify-center overflow-hidden">
+              {coverUrl && !coverError ? (
+                <Image
+                  src={coverUrl}
+                  alt="Capa do livro"
+                  fill
+                  className="object-cover"
+                  onError={() => setCoverError(true)}
+                  unoptimized
+                />
+              ) : (
+                <span className="text-xs text-(--text)/50 text-center px-2 tracking-widest uppercase">
+                  {coverError ? 'Capa nao encontrada' : 'Pre-visualizacao da capa'}
+                </span>
+              )}
+            </div>
+          </div>
+
           <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
             <ModalField label="ISBN">
               <input
