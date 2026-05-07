@@ -124,7 +124,97 @@ O desenvolvimento da interface web foi realizado utilizando tecnologias modernas
 - Tailwind CSS - Framework de estilização utilizado para construir a interface de forma rápida e consistente, através de classes utilitárias e padronização visual dos componentes.
 
 ## Considerações de Segurança
-[Discuta as considerações de segurança relevantes para a aplicação distribuída, como autenticação, autorização, proteção contra ataques, etc.]
+
+A aplicação web adota um conjunto de práticas e mecanismos de segurança ao longo da sua camada de cliente, abrangendo desde o gerenciamento da sessão autenticada até a proteção das rotas privadas e o tratamento adequado de respostas de erro vindas da API. As seções a seguir detalham cada aspecto implementado e as decisões que os motivaram.
+
+### Autenticação com JWT e Gerenciamento de Sessão
+
+A autenticação é realizada por meio de um **token JWT** emitido pelo backend após a validação das credenciais. O token e os dados do usuário autenticado são persistidos no `localStorage` e disponibilizados globalmente para a aplicação por meio de um **AuthContext**, o que permite manter a sessão ativa entre recargas de página e centralizar o estado de autenticação em um único ponto.
+
+```ts
+// src/web/src/context/AuthContext.tsx
+const stored = localStorage.getItem('auth');
+if (stored) {
+  const parsed = JSON.parse(stored) as StoredAuth;
+  if (isTokenExpired(parsed.token)) {
+    localStorage.removeItem('auth');
+    return;
+  }
+  setUser(parsed.user);
+  setToken(parsed.token);
+}
+```
+
+Ao restaurar a sessão, a expiração do token é verificada antes de considerá-la válida, evitando que o usuário continue navegando com um JWT já vencido. Quando o token expira ou é considerado inválido pelo servidor, a sessão é encerrada automaticamente.
+
+### Proteção de Rotas Privadas
+
+Páginas que dependem de autenticação são envolvidas por um componente **`ProtectedRoute`**, responsável por verificar se há um usuário autenticado e, opcionalmente, se ele possui o papel necessário para acessar a rota. Caso o usuário não esteja autenticado, é redirecionado para a tela de login; caso não tenha permissão suficiente, é redirecionado para a página inicial.
+
+```tsx
+// src/web/src/components/Global/ProtectedRoute.tsx
+export function ProtectedRoute({ children, requiredRole }: Props) {
+  const { user, isLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (!user) router.replace('/LoginPage');
+    else if (requiredRole && user.role !== requiredRole) router.replace('/');
+  }, [user, isLoading, requiredRole, router]);
+
+  if (isLoading || !user) return null;
+  if (requiredRole && user.role !== requiredRole) return null;
+  return <>{children}</>;
+}
+```
+
+Esse mecanismo garante que telas como o **Painel de Controle**, restrito a administradores, não sejam acessíveis por contas comuns mesmo via digitação direta da URL.
+
+### Logout Automático em Respostas Não Autorizadas
+
+Todas as requisições HTTP da aplicação passam por um wrapper centralizado (`apiFetch`), que injeta automaticamente o cabeçalho `Authorization: Bearer <token>` em rotas autenticadas e detecta respostas `401 Unauthorized`. Quando isso ocorre, a sessão é encerrada e o usuário é redirecionado para a tela de login, prevenindo que a interface continue tentando operar com um token inválido.
+
+```ts
+// src/web/src/lib/api.ts
+if (auth && res.status === 401) {
+  localStorage.removeItem('auth');
+  window.location.href = '/LoginPage';
+}
+```
+
+### Controle de Acesso por Papel na Interface
+
+Além da proteção de rotas, a interface se adapta dinamicamente ao papel do usuário autenticado. Botões e links sensíveis — como acesso ao Painel de Controle, exclusão de livros e ajustes administrativos — só são renderizados quando o usuário possui o papel `administrator`. Vale destacar que esse controle é apenas uma camada de **usabilidade**: a autorização efetiva é sempre validada pelo backend, evitando que manipulação do cliente conceda privilégios indevidos.
+
+### Validação de Entrada nos Formulários
+
+Os formulários de cadastro, login e ações administrativas validam os campos antes do envio à API, restringindo formato e tamanho mínimo de e-mail, senha e demais dados. Essa camada visa fornecer feedback imediato ao usuário e reduzir requisições inválidas, mas a validação definitiva — incluindo regras de negócio — é sempre realizada pelo backend com **Zod**, que retorna erros padronizados (`HTTP 400`) tratados de forma consistente pela interface.
+
+### Tratamento de Erros e Não-Exposição de Dados Sensíveis
+
+As respostas de erro da API são tratadas por um modal de alerta padronizado (`AlertModal`), que apresenta mensagens claras e amigáveis ao usuário sem expor detalhes internos do servidor, identificadores de banco ou *stack traces*. Erros silenciosos como `401` em rotas opcionais (por exemplo, recuperação inicial da *wishlist*) são suprimidos para evitar poluição visual quando a sessão ainda está sendo restaurada.
+
+### Variáveis de Ambiente
+
+A URL da API é configurada via variáveis de ambiente (`NEXT_PUBLIC_API_URL`), permitindo trocar facilmente o destino entre os ambientes de desenvolvimento e produção sem necessidade de alterações no código-fonte. O arquivo `.env.local` não é rastreado pelo Git, isolando configurações específicas do ambiente local da equipe.
+
+### HTTPS e Comunicação Segura
+
+Em ambiente de produção, toda a comunicação entre o cliente e o servidor é realizada por meio de **HTTPS**, garantindo a criptografia em trânsito das credenciais, do token JWT e dos dados pessoais trocados durante a sessão.
+
+### Melhorias Previstas
+
+As seguintes práticas de segurança foram identificadas como próximos passos prioritários para elevar o nível de proteção da camada web:
+
+| Melhoria | Descrição |
+|---|---|
+| Armazenamento do token em cookies HttpOnly | Substituir o `localStorage` por cookies seguros e marcados como `HttpOnly`, mitigando o risco de roubo de token via XSS |
+| Refresh Token | Adoção de fluxo com tokens de curta duração e *refresh tokens*, reduzindo o impacto de um token comprometido |
+| Content Security Policy (CSP) | Configuração de cabeçalhos CSP para restringir origens permitidas de scripts, estilos e imagens |
+| Sanitização explícita de conteúdo | Aplicação de bibliotecas como **DOMPurify** em campos que possam vir a renderizar HTML proveniente do usuário |
+| Proteção contra CSRF | Implementação de tokens *anti-CSRF* em conjunto com o uso de cookies para autenticação |
+| Rate Limiting no cliente | Controle de tentativas seguidas de login no front-end como camada complementar à proteção do backend |
 
 ## Implantação
 

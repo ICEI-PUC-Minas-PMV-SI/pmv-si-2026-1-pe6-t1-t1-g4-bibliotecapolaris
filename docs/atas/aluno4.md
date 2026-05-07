@@ -13,10 +13,10 @@
 | 23/03 - 29/03 | APIs e Web Services - Unidade 2 | ✅ | Fiquei responsável pela criação dos endpoints relacionados aos Autores. | ✅ |
 | 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ✅ | Finalização do desenvolvimento da lógica e arquitetura da branch feat-autores, preparando a base para os testes. | ✅ |
 | 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ✅ | Configuração do ambiente de testes de integração (Jest + Supertest), ajustes de scripts de execução (tsx) e resolução de conflitos e cache no Git. Criação da documentação referente as Considerações de segurança. | ✅ |
-| 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ✅ |  | ✅ |
-| 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ✅ |  | ✅ |
-| 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ✅ |  | ✅ |
-| 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ✅ |  | ✅ |
+| 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ✅ | Levantamento da estratégia de autenticação para o backend e estudo do fluxo de JWT e controle de acesso por role a ser aplicado no projeto. | ✅ |
+| 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ✅ | Início da implementação do middleware de autenticação no servidor, ajustes nas rotas protegidas e padronização do tratamento de erros de autorização. | ✅ |
+| 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ✅ | Implementação da camada de segurança no backend com JWT e controle de acesso por role, ajustes nas controllers de User/Book e integração com as rotas protegidas. | ✅ |
+| 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ✅ | Integração da autenticação no frontend (AuthContext, ProtectedRoute, validação de token e logout automático em 401), correções no ControlPanel e Header, ajustes no AddBookModal (preview da capa, campo year, totalAvailable) e correção de marcadores de conflito mal mesclados em ProfilePage. | ✅ |
 | 11/05 - 17/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ✅ |  | ✅ |
 | 18/05 - 24/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 1 | ⬜ |  |  |
 | 25/05 - 31/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 2 | ⬜ |  |  |
