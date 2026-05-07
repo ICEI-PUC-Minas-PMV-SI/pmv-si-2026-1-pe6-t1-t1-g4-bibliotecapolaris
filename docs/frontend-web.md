@@ -19,13 +19,13 @@ Além disso, a interface utiliza componentes padronizados, promovendo consistên
 <img width="3840" height="4426" alt="Tela Inicial" src="https://github.com/user-attachments/assets/be67409a-50ce-4f7c-9fc2-2c69a81770c4" />
 
 ## Tela de Livro
-<img width="3840" height="2930" alt="Tela de livro" src="https://github.com/user-attachments/assets/3da7bb78-6718-44f1-8b06-e70b01d5367a" />
+<img width="3840" height="2930" alt="Tela de Livro" src="https://github.com/user-attachments/assets/b7429f72-07e1-4397-896a-c8b8b82a29bc" />
 
 ## Tela de Perfil
 <img width="3840" height="3830" alt="Tela de Perfil" src="https://github.com/user-attachments/assets/bb005a62-a2b9-4c0d-b960-3941f6dd4ba3" />
 
 ## Tela de Painel de Controle
-<img width="3840" height="2160" alt="Tela de Painel de controle" src="https://github.com/user-attachments/assets/cbf8b8da-9e18-4014-b40e-1faed07859e7" />
+<img width="3840" height="2160" alt="Tela de Painel de Controle" src="https://github.com/user-attachments/assets/f151abb1-8c0f-4132-b6aa-98cb8e4a74e0" />
 
 ### Design Visual
 O estilo visual da interface foi projetado com foco em clareza, consistência e legibilidade, utilizando uma paleta de cores bem definida e de alto contraste. A aplicação adota um tema escuro como base, com tons predominantes de fundo em preto e variações próximas, combinados com cores claras para texto, garantindo conforto visual e fácil leitura.
@@ -117,21 +117,13 @@ O back-end:
 
 ## Tecnologias Utilizadas
 O desenvolvimento da interface web foi realizado utilizando tecnologias modernas do ecossistema JavaScript, com foco em desempenho, escalabilidade e organização do código.
+- React - Biblioteca utilizada para construção da interface de usuário baseada em componentes, permitindo maior reutilização de código e organização da aplicação.
+- Next.js - Framework utilizado para estruturar a aplicação, oferecendo recursos como roteamento, renderização otimizada e melhor organização do projeto.
+- TypeScript - Linguagem utilizada para adicionar tipagem estática ao JavaScript, aumentando a segurança, legibilidade e manutenibilidade do código.
 
-#### React
-Biblioteca utilizada para construção da interface de usuário baseada em componentes, permitindo maior reutilização de código e organização da aplicação.
-
-#### Next.js
-Framework utilizado para estruturar a aplicação, oferecendo recursos como roteamento, renderização otimizada e melhor organização do projeto.
-
-#### TypeScript
-Linguagem utilizada para adicionar tipagem estática ao JavaScript, aumentando a segurança, legibilidade e manutenibilidade do código.
-
-#### Tailwind CSS
-Framework de estilização utilizado para construir a interface de forma rápida e consistente, através de classes utilitárias e padronização visual dos componentes.
+- Tailwind CSS - Framework de estilização utilizado para construir a interface de forma rápida e consistente, através de classes utilitárias e padronização visual dos componentes.
 
 ## Considerações de Segurança
-
 [Discuta as considerações de segurança relevantes para a aplicação distribuída, como autenticação, autorização, proteção contra ataques, etc.]
 
 ## Implantação
