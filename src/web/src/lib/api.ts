@@ -27,6 +27,16 @@ export async function apiFetch(path: string, options: FetchOptions = {}) {
   });
 
   if (res.status === 401) {
+    const cloned = res.clone();
+    const body = await cloned.text().catch(() => '<no body>');
+    const tokenPresent = !!resolvedHeaders['Authorization'];
+    console.error('[apiFetch 401]', {
+      method: rest.method ?? 'GET',
+      url: `${API_URL}${path}`,
+      auth,
+      tokenPresent,
+      body,
+    });
     window.dispatchEvent(new Event('polaris:unauthorized'));
   }
 
