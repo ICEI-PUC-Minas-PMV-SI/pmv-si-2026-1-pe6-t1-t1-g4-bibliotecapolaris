@@ -134,6 +134,18 @@ export function AddBookModal({
               />
             </ModalField>
 
+            <ModalField label="Ano">
+              <input
+                name="year"
+                value={form.year}
+                type="number"
+                min={1}
+                onChange={handleChange}
+                placeholder="2024"
+                className="modal-input"
+              />
+            </ModalField>
+
             <div className="flex gap-4">
               <ModalField label="Cópias Totais" className="flex-1">
                 <input
@@ -148,9 +160,9 @@ export function AddBookModal({
               <ModalField label="Disponíveis" className="flex-1">
                 <input
                   name="totalAvailable"
-                  value={form.totalQuantity}
+                  value={form.totalAvailable}
                   type="number"
-                  min={1}
+                  min={0}
                   max={form.totalQuantity}
                   onChange={handleChange}
                   className="modal-input"
