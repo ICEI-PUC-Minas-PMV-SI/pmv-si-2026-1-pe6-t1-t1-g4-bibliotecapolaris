@@ -9,7 +9,7 @@ import { useAlertModal } from '@/hooks/useAlertModal';
 import { BookDisplay, BookStatusCard, Footer, Header } from '@/components';
 import { AdjustLoanModal } from '@/components/Book/AdjustLoanModal';
 import { Loan } from '@/types';
-import { updateLoanDueDate, returnLoanStatus } from '@/services/loan';
+import { updateLoanDueDate, returnLoanStatus, getLoansByUserId } from '@/services/loan';
 
 const MOCK_USER_ID = '137dda5c-0a74-4e4a-909a-e9f836162955';
 
@@ -21,6 +21,18 @@ export default function ProfilePage() {
 
   const [isAdjustModalOpen, setIsAdjustModalOpen] = useState(false);
   const [selectedLoan, setSelectedLoan] = useState<Loan | null>(null);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const data = await getLoansByUserId(MOCK_USER_ID);
+        setLoans(data ?? []);
+      } catch (err) {
+        console.error("Erro ao carregar empréstimos:", err);
+      }
+    }
+    loadData();
+  }, []);
 
   useEffect(() => {
     if (error) {
@@ -53,7 +65,7 @@ export default function ProfilePage() {
   async function handleReturnBook() {
     if (!selectedLoan) return;
     try {
-      const todayString = new Date().toISOString().split('T')[0]; 
+      const todayString = new Date().toLocaleDateString('en-CA'); 
       
       await returnLoanStatus(selectedLoan.id, todayString);
 
@@ -68,7 +80,7 @@ export default function ProfilePage() {
   async function handleJustifyAndReturn(justificationText: string) {
     if (!selectedLoan) return;
     try {
-      const todayString = new Date().toISOString().split('T')[0];
+      const todayString = new Date().toLocaleDateString('en-CA');
 
       await returnLoanStatus(selectedLoan.id, todayString, justificationText);
 
@@ -97,8 +109,8 @@ export default function ProfilePage() {
               loans.map((loan) => (
                 <div key={loan.id} className="flex flex-col items-center gap-3 bg-[#1e1e1e] p-4 rounded-md border border-gray-800 shadow-md">
                   <BookStatusCard 
-                    title={loan.book.name || 'Livro Desconhecido'} 
-                    imageSrc={loan.book.imageSrc || '/assets/images/mock-book.png'} 
+                    title={loan.book?.name || 'Livro Desconhecido'} 
+                    imageSrc={loan.book?.imageSrc || '/assets/images/mock-book.png'} 
                     dueDate={loan.dueDate} 
                     status={loan.status}
                     onAdjustClick={() => handleOpenAdjustments(loan)}

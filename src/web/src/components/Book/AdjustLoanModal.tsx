@@ -28,8 +28,8 @@ export function AdjustLoanModal({
   useEffect(() => {
     if (loan) {
       const dateString = loan.dueDate instanceof Date 
-        ? loan.dueDate.toISOString().split('T')[0] 
-        : new Date(loan.dueDate).toISOString().split('T')[0];
+        ? loan.dueDate.toLocaleDateString('en-CA') 
+        : new Date(loan.dueDate).toLocaleDateString('en-CA');
         
       setNewDueDate(dateString);
       setJustification('');
