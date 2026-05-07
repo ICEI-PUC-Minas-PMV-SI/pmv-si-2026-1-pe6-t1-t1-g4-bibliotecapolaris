@@ -9,41 +9,15 @@ import { useAlertModal } from '@/hooks/useAlertModal';
 import { BookDisplay, BookStatusCard, Footer, Header } from '@/components';
 import { AdjustLoanModal } from '@/components/Book/AdjustLoanModal';
 import { Loan } from '@/types';
+import { updateLoanDueDate, returnLoanStatus } from '@/services/loan';
 
 const MOCK_USER_ID = '137dda5c-0a74-4e4a-909a-e9f836162955';
-
-const INITIAL_MOCK_LOANS: Loan[] = [
-  {
-    id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
-    studentId: MOCK_USER_ID,
-    bookId: 'b391786c-45ab-4c28-98e1-d238b725c5d0',
-    loanDate: new Date('2026-05-01'),
-    dueDate: new Date('2026-05-15'),
-    status: 'in_progress',
-    book: {
-      name: 'The Sudden Stop',
-      imageSrc: '/assets/images/mock-book.png',
-    }
-  },
-  {
-    id: '550e8400-e29b-41d4-a716-446655440000',
-    studentId: MOCK_USER_ID,
-    bookId: 'a123456c-45ab-4c28-98e1-d238b725c5d1',
-    loanDate: new Date('2026-03-01'),
-    dueDate: new Date('2026-04-12'),
-    status: 'late',
-    book: {
-      name: 'Arquitetura Limpa',
-      imageSrc: '/assets/images/mock-book.png',
-    }
-  }
-];
 
 export default function ProfilePage() {
   const { wishlist, wishlistSet, toggle, error, setError } = useWishlist(MOCK_USER_ID);
   const { showError, showSuccess, ModalComponent } = useAlertModal();
 
-  const [loans, setLoans] = useState<Loan[]>(INITIAL_MOCK_LOANS);
+  const [loans, setLoans] = useState<Loan[]>([]);
 
   const [isAdjustModalOpen, setIsAdjustModalOpen] = useState(false);
   const [selectedLoan, setSelectedLoan] = useState<Loan | null>(null);
@@ -63,13 +37,7 @@ export default function ProfilePage() {
   async function handleChangeDueDate(newDate: string) {
     if (!selectedLoan) return;
     try {
-      const response = await fetch(`http://localhost:3333/loans/${selectedLoan.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ dueDate: newDate }) 
-      });
-
-      if (!response.ok) throw new Error('Erro ao atualizar no banco');
+      await updateLoanDueDate(selectedLoan.id, newDate);
 
       const [year, month, day] = newDate.split('-').map(Number);
       const adjustedDate = new Date(year, month - 1, day);
@@ -86,17 +54,8 @@ export default function ProfilePage() {
     if (!selectedLoan) return;
     try {
       const todayString = new Date().toISOString().split('T')[0]; 
-
-      const response = await fetch(`http://localhost:3333/loans/${selectedLoan.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          status: 'returned', 
-          returnDate: todayString 
-        })
-      });
-
-      if (!response.ok) throw new Error('Erro no banco');
+      
+      await returnLoanStatus(selectedLoan.id, todayString);
 
       setLoans((prev) => prev.map((loan) => loan.id === selectedLoan.id ? { ...loan, status: 'returned' } : loan));
       setIsAdjustModalOpen(false);
@@ -111,17 +70,7 @@ export default function ProfilePage() {
     try {
       const todayString = new Date().toISOString().split('T')[0];
 
-      const response = await fetch(`http://localhost:3333/loans/${selectedLoan.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          status: 'returned', 
-          returnDate: todayString,
-          justification: justificationText 
-        })
-      });
-
-      if (!response.ok) throw new Error('Erro no banco');
+      await returnLoanStatus(selectedLoan.id, todayString, justificationText);
 
       setLoans((prev) => prev.map((loan) => loan.id === selectedLoan.id ? { ...loan, status: 'returned' } : loan));
       setIsAdjustModalOpen(false);
@@ -143,20 +92,24 @@ export default function ProfilePage() {
         <section className="flex flex-col gap-4 items-center">
           <h1 className="w-full text-3xl uppercase tracking-wider">Livros Emprestados</h1>
 
-          <div className="flex flex-wrap justify-center gap-8">
-            {loans.map((loan) => (
-              <div key={loan.id} className="flex flex-col items-center gap-3 bg-[#1e1e1e] p-4 rounded-md border border-gray-800 shadow-md">
-                
-                <BookStatusCard 
-                  title={loan.book.name} 
-                  imageSrc={loan.book.imageSrc} 
-                  dueDate={loan.dueDate} 
-                  status={loan.status}
-                  onAdjustClick={() => handleOpenAdjustments(loan)}
-                />
-                
-              </div>
-            ))}
+          <div className="flex flex-wrap justify-center gap-8 w-full">
+            {loans.length > 0 ? (
+              loans.map((loan) => (
+                <div key={loan.id} className="flex flex-col items-center gap-3 bg-[#1e1e1e] p-4 rounded-md border border-gray-800 shadow-md">
+                  <BookStatusCard 
+                    title={loan.book.name || 'Livro Desconhecido'} 
+                    imageSrc={loan.book.imageSrc || '/assets/images/mock-book.png'} 
+                    dueDate={loan.dueDate} 
+                    status={loan.status}
+                    onAdjustClick={() => handleOpenAdjustments(loan)}
+                  />
+                </div>
+              ))
+            ) : (
+              <h2 className="w-full font-serif text-2xl uppercase text-center text-gray-500 mt-4">
+                Nenhum empréstimo ativo no momento.
+              </h2>
+            )}
           </div>
         </section>
 
@@ -178,7 +131,7 @@ export default function ProfilePage() {
                 </Link>
               ))
             ) : (
-              <h2 className="w-full font-serif text-3xl uppercase text-center">
+              <h2 className="w-full font-serif text-3xl uppercase text-center text-gray-500">
                 Nenhum livro favoritado, comece agora!
               </h2>
             )}

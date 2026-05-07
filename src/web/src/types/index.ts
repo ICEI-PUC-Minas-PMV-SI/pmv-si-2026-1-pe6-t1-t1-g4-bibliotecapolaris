@@ -1,7 +1,6 @@
-export type Book = {
-  name: string;
-  imageSrc: string;
-};
+import { BookForm } from './formTypes'; 
+
+export type BookOptional = Partial<BookForm>;
 
 export type Loan = {
   id: string;
@@ -12,5 +11,5 @@ export type Loan = {
   returnDate?: string | Date | null;
   status: 'in_progress' | 'returned' | 'late';
   justification?: string | null;
-  book: Book;
+  book: BookOptional;
 };
