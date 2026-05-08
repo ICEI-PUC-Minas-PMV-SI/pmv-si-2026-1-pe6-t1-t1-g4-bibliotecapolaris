@@ -121,7 +121,7 @@ export function AddBookModal({
             name="name"
             value={form.name}
             onChange={handleChange}
-            placeholder="Universe in a nutshell"
+            placeholder="Universo em numa casca de noz"
             className="form-input"
           />
         </BaseField>
@@ -153,7 +153,7 @@ export function AddBookModal({
             name="categories"
             value={form.categories}
             onChange={handleChange}
-            placeholder="Science, Physics"
+            placeholder="Estudos, Física"
             className="form-input"
           />
         </BaseField>
@@ -183,7 +183,7 @@ export function AddBookModal({
           <BaseField label="Cópias Disponíveis" className="items-end" labelClassName="text-base">
             <input
               name="totalAvailable"
-              value={form.totalQuantity}
+              value={form.totalAvailable}
               type="number"
               min={1}
               max={form.totalQuantity}

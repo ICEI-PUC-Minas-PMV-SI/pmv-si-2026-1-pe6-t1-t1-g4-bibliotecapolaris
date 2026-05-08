@@ -43,20 +43,16 @@ export function Header() {
       />
 
       <div className="flex flex-row items-center gap-3 mt-2">
-        {user && (
-          <span className="text-(--text) text-lg font-sans tracking-wide">{user.name.split(' ')[0]}</span>
-        )}
+        {user && <span className="text-(--text) text-lg font-sans tracking-wide">{user.name.split(' ')[0]}</span>}
         {!isLoading && (
           <ActionButton
-            title={isAdmin ? 'Painel de Controle' : 'Perfil'}
+            title={!user ? 'Entrar' : isAdmin ? 'Painel' : 'Perfil'}
             variant="fill"
             className="text-2xl"
             onClick={handleProfileClick}
           />
         )}
-        {user && (
-          <ActionButton title="Sair" variant="outline" className="text-2xl" onClick={handleLogout} />
-        )}
+        {user && <ActionButton title="Sair" variant="outline" className="text-2xl" onClick={handleLogout} />}
       </div>
     </header>
   );
