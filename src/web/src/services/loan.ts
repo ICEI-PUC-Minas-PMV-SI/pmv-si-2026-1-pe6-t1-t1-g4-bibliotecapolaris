@@ -1,7 +1,8 @@
-const API_URL = 'http://localhost:3333';
+import { apiFetch } from '@/lib/api';
 
 export async function getLoansByUserId(userId: string) {
-  const res = await fetch(`${API_URL}/loans/student/${userId}`, {
+  const res = await apiFetch(`/loans/student/${userId}`, {
+    auth: true,
     cache: 'no-store',
   });
 
@@ -10,10 +11,10 @@ export async function getLoansByUserId(userId: string) {
 }
 
 export async function updateLoanDueDate(loanId: string, newDate: string) {
-  const response = await fetch(`${API_URL}/loans/${loanId}`, {
+  const response = await apiFetch(`/loans/${loanId}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ dueDate: newDate }) 
+    auth: true,
+    body: JSON.stringify({ dueDate: newDate, status: 'in_progress' }),
   });
 
   if (!response.ok) throw new Error('Erro ao atualizar no banco');
@@ -24,10 +25,10 @@ export async function returnLoanStatus(loanId: string, returnDate: string, justi
   const payload: any = { status: 'returned', returnDate };
   if (justification) payload.justification = justification;
 
-  const response = await fetch(`${API_URL}/loans/${loanId}`, {
+  const response = await apiFetch(`/loans/${loanId}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
+    auth: true,
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) throw new Error('Erro no banco');

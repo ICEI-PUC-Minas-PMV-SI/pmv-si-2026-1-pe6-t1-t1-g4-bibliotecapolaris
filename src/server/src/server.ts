@@ -1,11 +1,11 @@
+import 'dotenv/config';
+
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
   require('module-alias/register');
 }
 import express from 'express';
 import cors from 'cors';
-
-import 'dotenv/config';
 
 import { generateOpenApiDocuments } from './lib/zod-to-openapi';
 import { swaggerRoute } from './lib/swagger';
@@ -16,7 +16,11 @@ const app = express();
 
 const open_api_documents = generateOpenApiDocuments();
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL ?? 'http://localhost:3000',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
 app.use(express.json());
 
 app.use('/api', router);

@@ -12,8 +12,7 @@ type BookStatusCardProps = {
 };
 
 export function BookStatusCard({ title, imageSrc, dueDate, status, onAdjustClick }: BookStatusCardProps) {
-  const parsedDate = dueDate instanceof Date ? dueDate : new Date(dueDate);
-  const { config, label } = resolveBookStatus(parsedDate);
+  const { config, label } = resolveBookStatus(dueDate);
 
   const isReturned = status === 'returned';
 

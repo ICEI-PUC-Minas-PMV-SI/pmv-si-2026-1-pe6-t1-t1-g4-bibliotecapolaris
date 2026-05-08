@@ -33,12 +33,13 @@ export function useAlertModal() {
     });
   }
 
-  function showError(title: string, description?: string) {
+  function showError(title: string, description?: string, onClose?: () => void) {
     setModal({
       isOpen: true,
       type: 'error',
       title,
       description,
+      onSuccess: onClose,
     });
   }
 

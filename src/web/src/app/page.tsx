@@ -11,16 +11,18 @@ import { BookDisplay, CategoryCard, Footer, Header } from '@/components';
 import { getBooks, getCategories } from '@/services/Books';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useAuth } from '@/context/AuthContext';
 
 import Link from 'next/link';
 
 export default function LandingPage() {
   const router = useRouter();
+  const { user } = useAuth();
   const [search, setSearch] = useState('');
 
   const [books, setBooks] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
-  const { wishlistSet, toggle, error, setError } = useWishlist('mock-user-id');
+  const { wishlistSet, toggle, error, setError } = useWishlist(user?.id ?? '');
   const { showError, ModalComponent } = useAlertModal();
 
   useEffect(() => {

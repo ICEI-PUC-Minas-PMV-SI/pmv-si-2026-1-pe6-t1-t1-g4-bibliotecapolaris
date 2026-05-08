@@ -66,8 +66,23 @@ export async function updateLoanController(req: Request, res: Response) {
       return res.status(400).json({ error: true, errorCode: 'ERR_INVALID_ID', message: 'ID inválido' });
     }
 
+    const requestingUser = req.user!;
+
+    // Estudante só pode atualizar o próprio empréstimo (e não pode mudar status arbitrariamente).
+    if (requestingUser.type !== 'administrator') {
+      const existing = await getLoanById(id);
+      if (!existing) {
+        return res
+          .status(404)
+          .json({ error: true, errorCode: 'ERR_LOAN_NOT_FOUND', message: 'Empréstimo não encontrado' });
+      }
+      if (existing.studentId !== requestingUser.id) {
+        return res.status(403).json({ error: true, message: 'Acesso negado.' });
+      }
+    }
+
     const parsed = LoanUpdateSchema.parse(req.body);
-    const loan = await updateLoan(id, parsed);
+    await updateLoan(id, parsed);
     return sendSuccess(res, `Empréstimo atualizado com sucesso`, 202);
   } catch (error) {
     handleError(res, error, 'Empréstimo');
