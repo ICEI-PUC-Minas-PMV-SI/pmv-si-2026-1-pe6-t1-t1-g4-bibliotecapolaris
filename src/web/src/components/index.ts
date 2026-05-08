@@ -1,4 +1,5 @@
 export * from './Global/ActionButton';
+export * from './Global/ProtectedRoute';
 export * from './Global/AlertModal';
 export * from './Global/Footer';
 export * from './Global/Header';

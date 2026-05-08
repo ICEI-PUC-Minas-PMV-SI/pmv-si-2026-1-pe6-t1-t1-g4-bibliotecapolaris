@@ -9,6 +9,7 @@ import ReviewSection from '@/components/Book/ReviewSection';
 import { getBookBySlug, getReviewsByBookId } from '@/services/Books';
 import { formatCategories } from '@/util/Formatter';
 import { useWishlist } from '@/hooks/useWishlist';
+import { useAuth } from '@/context/AuthContext';
 
 function mapReviews(apiReviews: any[]) {
   return apiReviews.map((r) => ({
@@ -28,7 +29,8 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
   const [book, setBook] = useState<any>(null);
   const [reviews, setReviews] = useState<any[]>([]);
 
-  const { wishlistSet, toggle } = useWishlist('mock-user-id');
+  const { user } = useAuth();
+  const { wishlistSet, toggle } = useWishlist(user?.id ?? '');
 
   useEffect(() => {
     if (book?.imageSrc) {

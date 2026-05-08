@@ -1,17 +1,27 @@
 'use client';
 
 import Image from 'next/image';
-import { ActionButton } from '@/components';
+import { ActionButton, resolveBookStatus } from '@/components';
 
-import { resolveBookStatus } from '@/components';
+type BookStatusCardProps = {
+  title: string;
+  imageSrc: string;
+  dueDate: Date | string;
+  status?: string;
+  onAdjustClick?: () => void;
+};
 
-export function BookStatusCard({ title, imageSrc, dueDate }: { title: string; imageSrc: string; dueDate: Date }) {
+export function BookStatusCard({ title, imageSrc, dueDate, status, onAdjustClick }: BookStatusCardProps) {
   const { config, label } = resolveBookStatus(dueDate);
+
+  const isReturned = status === 'returned';
 
   return (
     <article className="flex flex-col bg-(--foreground) border border-(--text) rounded-xs w-[320px] overflow-hidden">
-      <div className="w-full text-center p-1" style={{ backgroundColor: config.color }}>
-        <span className="text-xl text-(--button-text-active) line-clamp-1">{label}</span>
+      <div className="w-full text-center p-1" style={{ backgroundColor: isReturned ? '#6b7280' : config.color }}>
+        <span className="text-xl text-(--button-text-active) line-clamp-1 font-bold">
+          {isReturned ? 'Devolvido' : label}
+        </span>
       </div>
 
       <div className="flex flex-col gap-3 p-4">
@@ -23,7 +33,13 @@ export function BookStatusCard({ title, imageSrc, dueDate }: { title: string; im
       </div>
 
       <div className="px-4 pb-4">
-        <ActionButton className="w-full" style={{ backgroundColor: config.color }} title={config.buttonText} />
+        <ActionButton
+          className={`w-full ${isReturned ? 'opacity-50 cursor-not-allowed' : ''}`}
+          style={{ backgroundColor: isReturned ? '#6b7280' : config.color }}
+          title={isReturned ? 'Empréstimo Encerrado' : config.buttonText || 'Ajustar Empréstimo'}
+          onClick={isReturned ? undefined : onAdjustClick}
+          disabled={isReturned}
+        />
       </div>
     </article>
   );

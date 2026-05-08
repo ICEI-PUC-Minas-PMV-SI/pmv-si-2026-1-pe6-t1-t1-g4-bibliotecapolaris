@@ -1,21 +1,36 @@
-const API_URL = 'http://localhost:3333/api';
+import { apiFetch } from '@/lib/api';
 
 export const loginUser = async (email: string, password: string) => {
-  const response = await fetch(`${API_URL}/users/login`, {
+  const res = await apiFetch('/users/login', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),
   });
-  const data = await response.json();
-  return { status: response.status, data };
+  const data = await res.json();
+  return { status: res.status, data };
+};
+
+export const getUserBySlug = async (slug: string) => {
+  const res = await apiFetch(`/users/slug/${slug}`);
+
+  const data = await res.json();
+  return data.data;
 };
 
 export const registerUser = async (name: string, email: string, password: string) => {
-  const response = await fetch(`${API_URL}/users/register`, { 
+  const res = await apiFetch('/users/register', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, password, type: 'student' }), 
+    body: JSON.stringify({ name, email, password, type: 'student' }),
   });
-  const data = await response.json();
-  return { status: response.status, data };
+  const data = await res.json();
+  return { status: res.status, data };
+};
+
+export const updateUserName = async (id: string, name: string) => {
+  const res = await apiFetch(`/users/${id}`, {
+    method: 'PUT',
+    auth: true,
+    body: JSON.stringify({ name }),
+  });
+  const data = await res.json();
+  return { status: res.status, data };
 };

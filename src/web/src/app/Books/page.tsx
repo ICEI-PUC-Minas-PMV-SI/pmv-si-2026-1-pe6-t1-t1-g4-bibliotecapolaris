@@ -11,6 +11,7 @@ import { getBooks } from '@/services/Books';
 
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Books() {
   const router = useRouter();
@@ -18,10 +19,11 @@ export default function Books() {
 
   const searchQuery = searchParams.get('search') ?? '';
 
+  const { user } = useAuth();
   const [search, setSearch] = useState('');
   const [books, setBooks] = useState<any[]>([]);
 
-  const { wishlistSet, toggle, error, setError } = useWishlist('mock-user-id');
+  const { wishlistSet, toggle, error, setError } = useWishlist(user?.id ?? '');
   const { showError, ModalComponent } = useAlertModal();
 
   const title = searchQuery ? `Resultados para "${searchQuery}"` : 'Livros';

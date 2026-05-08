@@ -8,9 +8,11 @@ import { useRouter } from 'next/navigation';
 import { loginUser } from '@/services/User';
 import { ActionButton } from '@/components';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useAuth } from '@/context/AuthContext';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
   const { showSuccess, showError, ModalComponent } = useAlertModal();
@@ -28,6 +30,7 @@ export default function LoginPage() {
       const { status, data } = await loginUser(email, password);
 
       if (status === 200 || status === 201) {
+        login(data.user, data.token);
         showSuccess('Sucesso!', 'Login realizado com sucesso!', () => router.push('/Books'));
       } else {
         showError('Atenção!', data.message || 'E-mail ou senha incorretos.');

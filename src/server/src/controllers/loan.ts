@@ -66,8 +66,23 @@ export async function updateLoanController(req: Request, res: Response) {
       return res.status(400).json({ error: true, errorCode: 'ERR_INVALID_ID', message: 'ID inválido' });
     }
 
+    const requestingUser = req.user!;
+
+    // Estudante só pode atualizar o próprio empréstimo (e não pode mudar status arbitrariamente).
+    if (requestingUser.type !== 'administrator') {
+      const existing = await getLoanById(id);
+      if (!existing) {
+        return res
+          .status(404)
+          .json({ error: true, errorCode: 'ERR_LOAN_NOT_FOUND', message: 'Empréstimo não encontrado' });
+      }
+      if (existing.studentId !== requestingUser.id) {
+        return res.status(403).json({ error: true, message: 'Acesso negado.' });
+      }
+    }
+
     const parsed = LoanUpdateSchema.parse(req.body);
-    const loan = await updateLoan(id, parsed);
+    await updateLoan(id, parsed);
     return sendSuccess(res, `Empréstimo atualizado com sucesso`, 202);
   } catch (error) {
     handleError(res, error, 'Empréstimo');
@@ -100,13 +115,43 @@ export async function getLoansByStudentController(req: Request, res: Response) {
 export async function getLoansByStudentControllerById(studentId: string | undefined, res: Response) {
   try {
     if (!studentId || typeof studentId !== 'string') {
-      return res
-        .status(400)
-        .json({ error: true, errorCode: 'ERR_INVALID_STUDENT_ID', message: 'ID do estudante inválido' });
+      return res.status(400).json({
+        error: true,
+        errorCode: 'ERR_INVALID_STUDENT_ID',
+        message: 'ID do estudante inválido',
+      });
     }
 
     const loans = await getLoansByStudent(studentId);
-    return res.status(200).json({ error: false, data: loans });
+
+    const loansWithComputedStatus = loans.map((loan) => {
+      if (loan.status === 'returned') {
+        return loan;
+      }
+
+      const today = new Date();
+
+      const [day, month, year] = loan.dueDate.split('/').map(Number);
+
+      const dueDate = new Date(year, month - 1, day);
+
+      today.setHours(0, 0, 0, 0);
+      dueDate.setHours(0, 0, 0, 0);
+
+      if (dueDate < today) {
+        return {
+          ...loan,
+          status: 'overdue',
+        };
+      }
+
+      return loan;
+    });
+
+    return res.status(200).json({
+      error: false,
+      data: loansWithComputedStatus,
+    });
   } catch (error) {
     handleError(res, error, 'Empréstimo');
   }

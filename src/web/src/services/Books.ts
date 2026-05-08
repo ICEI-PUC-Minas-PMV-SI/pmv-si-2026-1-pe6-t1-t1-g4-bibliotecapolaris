@@ -1,4 +1,5 @@
 import { BookForm } from '@/types/formTypes';
+import { apiFetch } from '@/lib/api';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
@@ -65,11 +66,9 @@ function extractErrorMessage(body: any, fallback: string): string {
 }
 
 export async function addNewBook(book: BookForm) {
-  const res = await fetch(`${API_URL}/books/register`, {
+  const res = await apiFetch('/books/register', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    auth: true,
     body: JSON.stringify(book),
   });
 
@@ -83,11 +82,9 @@ export async function addNewBook(book: BookForm) {
 }
 
 export async function updateBook(id: string, book: BookForm) {
-  const res = await fetch(`${API_URL}/books/${id}`, {
+  const res = await apiFetch(`/books/${id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    auth: true,
     body: JSON.stringify(book),
   });
 
@@ -101,11 +98,9 @@ export async function updateBook(id: string, book: BookForm) {
 }
 
 export async function deleteBook(id: string) {
-  const res = await fetch(`${API_URL}/books/${id}`, {
+  const res = await apiFetch(`/books/${id}`, {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    auth: true,
   });
 
   const data = await res.json().catch(() => null);

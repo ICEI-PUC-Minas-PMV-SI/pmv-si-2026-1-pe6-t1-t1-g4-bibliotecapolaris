@@ -13,6 +13,7 @@ type ViewMode = 'livros' | 'emprestimos' | 'historico';
 import { ViewHandler } from './ViewHandler';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { deleteBook } from '@/services/Books';
+import { ProtectedRoute } from '@/components/Global/ProtectedRoute';
 import { updateLoan } from '@/services/Loans';
 export default function ControlPanel() {
   const [activeView, setActiveView] = useState<ViewMode>('livros');
@@ -91,8 +92,9 @@ export default function ControlPanel() {
     });
   };
   return (
-    <>
-      <Header />
+    <ProtectedRoute adminOnly>
+      <>
+        <Header />
 
       <main className="min-h-[80vh] flex flex-col gap-6 bg-(--background) mb-8 overflow-x-hidden">
         <section className="flex flex-row mt-8 mx-8 justify-between">
@@ -156,6 +158,7 @@ export default function ControlPanel() {
 
         {ModalComponent}
       </main>
-    </>
+      </>
+    </ProtectedRoute>
   );
 }
