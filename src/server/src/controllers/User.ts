@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { handleError, hashPassword, sendSuccess, verifyPassword } from '@/utils';
-import { createUser, getUserById, updateUser, deleteUser } from '@/services';
+import { createUser, getUserById, updateUser, deleteUser, getUserBySlug } from '@/services';
 import { CreateUserSchema, UpdateUserSchema } from '@/models/UserModel';
 import { prisma } from '@/lib/prisma';
 
@@ -42,6 +42,22 @@ export async function getUserByIdController(req: Request, res: Response) {
     }
 
     const user = await getUserById(id as string);
+
+    return sendSuccess(res, user, 200);
+  } catch (error: any) {
+    return handleError(res, error, 'Usuário');
+  }
+}
+
+export async function getUserBySlugController(req: Request, res: Response) {
+  try {
+    const { slug } = req.params;
+
+    if (!slug || Array.isArray(slug)) {
+      throw new Error('ID do usuário inválido.');
+    }
+
+    const user = await getUserBySlug(slug as string);
 
     return sendSuccess(res, user, 200);
   } catch (error: any) {

@@ -1,4 +1,4 @@
-import { BookForm } from './formTypes'; 
+import { BookForm } from './formTypes';
 
 export type BookOptional = Partial<BookForm>;
 
@@ -13,3 +13,5 @@ export type Loan = {
   justification?: string | null;
   book: BookOptional;
 };
+
+export type User = { id: string; name: string; email: string; slug: string; role: 'student' | 'administrator' };

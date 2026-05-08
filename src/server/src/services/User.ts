@@ -25,6 +25,12 @@ export async function getUserById(id: string) {
   });
 }
 
+export async function getUserBySlug(slug: string) {
+  return prisma.user.findUniqueOrThrow({
+    where: { slug },
+  });
+}
+
 export async function updateUser(id: string, data: any) {
   const user = await prisma.user.findUniqueOrThrow({ where: { id } });
 

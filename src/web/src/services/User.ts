@@ -9,6 +9,13 @@ export const loginUser = async (email: string, password: string) => {
   return { status: res.status, data };
 };
 
+export const getUserBySlug = async (slug: string) => {
+  const res = await apiFetch(`/users/slug/${slug}`);
+
+  const data = await res.json();
+  return data.data;
+};
+
 export const registerUser = async (name: string, email: string, password: string) => {
   const res = await apiFetch('/users/register', {
     method: 'POST',

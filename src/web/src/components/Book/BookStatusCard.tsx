@@ -19,7 +19,7 @@ export function BookStatusCard({ title, imageSrc, dueDate, status, onAdjustClick
   return (
     <article className="flex flex-col bg-(--foreground) border border-(--text) rounded-xs w-[320px] overflow-hidden">
       <div className="w-full text-center p-1" style={{ backgroundColor: isReturned ? '#6b7280' : config.color }}>
-        <span className="text-xl text-(--button-text-active) line-clamp-1">
+        <span className="text-xl text-(--button-text-active) line-clamp-1 font-bold">
           {isReturned ? 'Devolvido' : label}
         </span>
       </div>
@@ -33,10 +33,10 @@ export function BookStatusCard({ title, imageSrc, dueDate, status, onAdjustClick
       </div>
 
       <div className="px-4 pb-4">
-        <ActionButton 
-          className={`w-full ${isReturned ? 'opacity-50 cursor-not-allowed' : ''}`} 
-          style={{ backgroundColor: isReturned ? '#6b7280' : config.color }} 
-          title={isReturned ? "Empréstimo Encerrado" : (config.buttonText || "Ajustar Empréstimo")} 
+        <ActionButton
+          className={`w-full ${isReturned ? 'opacity-50 cursor-not-allowed' : ''}`}
+          style={{ backgroundColor: isReturned ? '#6b7280' : config.color }}
+          title={isReturned ? 'Empréstimo Encerrado' : config.buttonText || 'Ajustar Empréstimo'}
           onClick={isReturned ? undefined : onAdjustClick}
           disabled={isReturned}
         />

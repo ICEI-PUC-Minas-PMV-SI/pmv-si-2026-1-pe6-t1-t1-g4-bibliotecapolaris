@@ -10,7 +10,12 @@ import { requireAuth, requireSelfWishlist } from '@/middleware/auth';
 const WishlistRouter = Router();
 
 WishlistRouter.post('/wishlist/register', requireAuth, requireSelfWishlist, addBookToWishlistController);
-WishlistRouter.get('/wishlist/:id', requireAuth, requireSelfWishlist, getWishlistByUserIdController);
-WishlistRouter.delete('/wishlist/:studentId/:bookId', requireAuth, requireSelfWishlist, deleteBookFromWishlistController);
+WishlistRouter.get('/wishlist/:id', getWishlistByUserIdController);
+WishlistRouter.delete(
+  '/wishlist/:studentId/:bookId',
+  requireAuth,
+  requireSelfWishlist,
+  deleteBookFromWishlistController,
+);
 
 export default WishlistRouter;

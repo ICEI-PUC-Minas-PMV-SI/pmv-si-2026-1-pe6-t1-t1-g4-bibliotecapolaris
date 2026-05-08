@@ -6,6 +6,7 @@ import {
   updateUserController,
   deleteUserController,
   loginUserController,
+  getUserBySlugController,
 } from '@/controllers';
 import { requireAuth, requireAdmin, requireSelfOrAdmin } from '@/middleware/auth';
 
@@ -16,6 +17,7 @@ UserRouter.post('/users/register', createUserController);
 UserRouter.post('/users/login', loginUserController);
 
 // Autenticadas
+UserRouter.get('/users/slug/:slug', getUserBySlugController);
 UserRouter.get('/users/:id', requireAuth, requireSelfOrAdmin, getUserByIdController);
 UserRouter.put('/users/:id', requireAuth, requireSelfOrAdmin, updateUserController);
 UserRouter.delete('/users/:id', requireAuth, requireAdmin, deleteUserController);
