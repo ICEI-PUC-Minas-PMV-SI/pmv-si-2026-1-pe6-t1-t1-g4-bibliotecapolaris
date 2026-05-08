@@ -53,7 +53,7 @@ export async function deleteLoan(id: string) {
 export async function getLoansByStudent(studentId: string) {
   return prisma.loan.findMany({
     where: { studentId },
-    include: { student: true, book: true }, 
+    include: { student: true, book: true },
   });
 }
 

@@ -23,6 +23,7 @@ export async function createBook(data: CreateBookInput) {
   return prisma.book.create({
     data: {
       ...data,
+      imageSrc: data.imageSrc ?? '',
       categories: normalizeCategories(data.categories),
       slug,
     },

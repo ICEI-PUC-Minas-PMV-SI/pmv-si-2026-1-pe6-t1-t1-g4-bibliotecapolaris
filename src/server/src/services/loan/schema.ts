@@ -22,9 +22,9 @@ export const LoanSchema = z.object({
   loanDate: z.date(),
   dueDate: z.date(),
   returnDate: z.date().optional(),
-  
-  justification: z.string().nullable().optional(), 
-  
+
+  justification: z.string().nullable().optional(),
+
   status: z.enum(['in_progress', 'returned', 'canceled', 'overdue']),
 });
 

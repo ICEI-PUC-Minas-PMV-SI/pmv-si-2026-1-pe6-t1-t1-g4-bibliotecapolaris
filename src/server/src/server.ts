@@ -16,11 +16,13 @@ const app = express();
 
 const open_api_documents = generateOpenApiDocuments();
 
-app.use(cors({
-  origin: process.env.FRONTEND_URL ?? 'http://localhost:3000',
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL ?? 'http://localhost:3000',
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 app.use('/api', router);
