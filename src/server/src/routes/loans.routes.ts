@@ -18,14 +18,14 @@ const router = Router();
 // Admin: visão geral
 router.get('/loans', requireAuth, requireAdmin, getAllLoansController);
 router.get('/loans/status/:status', requireAuth, requireAdmin, (req, res) =>
-  getLoansByStatusControllerByStatus(req.params.status, res),
+  getLoansByStatusControllerByStatus(req.params.status as string, res),
 );
 
 // Autenticado: próprio histórico
 router.get('/loans/student/:studentId', requireAuth, (req, res) =>
-  getLoansByStudentControllerById(req.params.studentId, res),
+  getLoansByStudentControllerById(req.params.studentId as string, res),
 );
-router.get('/loans/:id', requireAuth, (req, res) => getLoanByIdControllerById(req.params.id, res));
+router.get('/loans/:id', requireAuth, (req, res) => getLoanByIdControllerById(req.params.id as string, res));
 
 // Autenticado: criar empréstimo
 router.post('/loans', requireAuth, validateBody(LoanCreateSchema), createLoanController);
