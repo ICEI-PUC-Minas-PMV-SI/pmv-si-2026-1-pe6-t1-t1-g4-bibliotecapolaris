@@ -85,6 +85,8 @@ export function AddBookModal({
     }
   }
 
+  if (!open) return null;
+  
   return (
     <BaseInputModal
       open={open}

@@ -16,11 +16,11 @@ export const initialBookForm = {
   isbn: '',
   name: '',
   author: '',
-  year: 0,
+  year: 2024,
   categories: '',
   description: '',
-  totalQuantity: 0,
-  totalAvailable: 0,
+  totalQuantity: 1,
+  totalAvailable: 1,
   imageSrc: '',
 };
 
