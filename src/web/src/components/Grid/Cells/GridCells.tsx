@@ -44,18 +44,18 @@ export function DeleteButtonCell(params: any) {
 export function LoanActionsCell(params: any) {
   const handleAccept = (e: any) => {
     e.stopPropagation();
-    params.context?.handleLoanAction?.(params.data, 'returned');
+    params.context?.handleLoanAction?.(params.data, 'in_progress');
   };
 
   const handleReject = (e: any) => {
     e.stopPropagation();
-    params.context?.handleLoanAction?.(params.data, 'overdue');
+    params.context?.handleLoanAction?.(params.data, 'canceled');
   };
 
   return (
     <div className="flex gap-2">
-      <ActionButton title="Marcar Atraso" onClick={handleReject} className="bg-(--status-error)! border!" />
-      <ActionButton title="Confirmar Devolução" onClick={handleAccept} className="bg-(--status-success)! border!" />
+      <ActionButton title="Recusar" onClick={handleReject} className="bg-(--status-error)! border-0!" />
+      <ActionButton title="Aprovar" onClick={handleAccept} className="bg-(--status-success)! border-0!" />
     </div>
   );
 }
@@ -83,9 +83,12 @@ export function HistoricoStatusCell(params: any) {
   } else if (status === 'overdue') {
     label = 'Em atraso — não devolvido';
     color = 'var(--status-error)';
+  } else if (status === 'canceled') {
+    label = 'Cancelado';
+    color = 'var(--status-canceled)';
   } else {
-    label = 'Pendente';
-    color = 'var(--status-warning)';
+    label = 'Em andamento';
+    color = 'var(--status-in-progress)';
   }
 
   return (

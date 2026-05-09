@@ -12,7 +12,7 @@ async function loansWithBooks(status: string | null) {
 
   const filtered = status
     ? (loans ?? [])
-    : (loans ?? []).filter((l: any) => l.status === 'returned' || l.status === 'overdue');
+    : (loans ?? []).filter((l: any) => l.status !== 'pending');
 
   return filtered.map((loan: any) => ({
     ...loan,
@@ -32,7 +32,7 @@ export const ViewHandler = {
   },
 
   emprestimos: {
-    load: () => loansWithBooks('in_progress'),
+    load: () => loansWithBooks('pending'),
     create: createLoan,
     update: updateLoan,
   },

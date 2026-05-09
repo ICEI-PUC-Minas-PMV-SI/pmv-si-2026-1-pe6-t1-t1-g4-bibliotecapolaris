@@ -1,15 +1,12 @@
 import { LoanForm } from '@/types/formTypes';
+import { apiFetch } from '@/lib/api';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 export async function getLoans() {
   try {
-    const res = await fetch(`${API_URL}/loans`, {
-      cache: 'no-store',
-    });
-
+    const res = await apiFetch('/loans', { auth: true });
     if (!res.ok) return [];
-
     const data = await res.json();
     return data.data ?? [];
   } catch (error) {
@@ -20,12 +17,8 @@ export async function getLoans() {
 
 export async function getLoansByStatus(status: string) {
   try {
-    const res = await fetch(`${API_URL}/loans/status/${status}`, {
-      cache: 'no-store',
-    });
-
+    const res = await apiFetch(`/loans/status/${status}`, { auth: true });
     if (!res.ok) return [];
-
     const data = await res.json();
     return data.data ?? [];
   } catch (error) {
@@ -43,11 +36,9 @@ export async function createLoan(loan: LoanForm) {
   const finalLoanDate = loanDate ?? formatDate(new Date());
 
   try {
-    const res = await fetch(`${API_URL}/loans`, {
+    const res = await apiFetch('/loans', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      auth: true,
       body: JSON.stringify({
         studentId: userId,
         bookId,
@@ -84,13 +75,18 @@ export async function createLoan(loan: LoanForm) {
   }
 }
 
-export async function updateLoan(id: string, data: Partial<LoanForm> & { status: string }) {
+type LoanUpdate = Partial<LoanForm> & {
+  status: string;
+  dueDate?: string;
+  returnDate?: string;
+  justification?: string;
+};
+
+export async function updateLoan(id: string, data: LoanUpdate) {
   try {
-    const res = await fetch(`${API_URL}/loans/${id}`, {
+    const res = await apiFetch(`/loans/${id}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      auth: true,
       body: JSON.stringify(data),
     });
 
@@ -109,11 +105,9 @@ export async function updateLoan(id: string, data: Partial<LoanForm> & { status:
 
 export async function deleteLoan(id: string) {
   try {
-    const res = await fetch(`${API_URL}/loans/${id}`, {
+    const res = await apiFetch(`/loans/${id}`, {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      auth: true,
     });
 
     const data = await res.json().catch(() => null);

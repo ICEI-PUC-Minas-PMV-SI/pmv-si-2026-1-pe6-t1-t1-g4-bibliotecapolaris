@@ -55,8 +55,8 @@ export function AdjustLoanModal({
   if (!isOpen || !loan) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50">
-      <div className="bg-[#1e1e1e] border border-gray-600 p-8 rounded-lg flex flex-col gap-6 w-[500px] shadow-2xl">
+    <div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50" onClick={onClose}>
+      <div className="bg-[#1e1e1e] border border-gray-600 p-8 rounded-lg flex flex-col gap-6 w-[500px] shadow-2xl" onClick={(e) => e.stopPropagation()}>
         
         <div className="flex justify-between items-center border-b border-gray-700 pb-2">
           <h2 className="text-2xl font-bold text-white">Ajustar: {loan.book?.name}</h2>

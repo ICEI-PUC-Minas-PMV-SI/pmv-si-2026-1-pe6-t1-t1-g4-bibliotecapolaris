@@ -9,7 +9,7 @@ export const gridConfigs = {
   livros: {
     columnDefs: [
       {
-        headerName: 'Livro',
+        headerName: 'Capa - Nome',
         field: 'name',
         cellRenderer: BookCell,
       },
@@ -21,7 +21,7 @@ export const gridConfigs = {
         cellClass: 'flex items-center justify-start px-2',
       },
       {
-        headerName: 'Ação',
+        headerName: '',
         field: 'action',
         cellRenderer: DeleteButtonCell,
         flex: 1,

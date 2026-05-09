@@ -47,6 +47,7 @@ model Book {
 }
 
 enum LoanStatus {
+  pending
   in_progress
   returned
   canceled

@@ -24,6 +24,7 @@ export async function createLoan(data: LoanCreateInput) {
   return prisma.loan.create({
     data: {
       ...data,
+      status: 'pending',
       loanDate: data.loanDate,
       dueDate: data.dueDate,
       returnDate: null,
@@ -57,7 +58,7 @@ export async function getLoansByStudent(studentId: string) {
   });
 }
 
-export async function getLoansByStatus(status: 'in_progress' | 'returned' | 'canceled' | 'overdue') {
+export async function getLoansByStatus(status: 'pending' | 'in_progress' | 'returned' | 'canceled' | 'overdue') {
   return prisma.loan.findMany({
     where: { status },
     include: { student: true, book: true },

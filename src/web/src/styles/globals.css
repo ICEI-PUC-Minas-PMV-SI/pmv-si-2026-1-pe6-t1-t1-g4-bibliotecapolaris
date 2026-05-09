@@ -51,6 +51,8 @@
   --status-error: #e53a41;
   --status-warning: #ffaa00;
   --status-success: #00ff2f;
+  --status-in-progress: #c9a227;
+  --status-canceled: #a93226;
 }
 
 [data-theme='light'] {
@@ -59,6 +61,8 @@
   --fairground: #fff2d6;
 
   --text: #1f1a18;
+
+  --button-text-inactive: #1f1a18;
 }
 
 .font-sans {

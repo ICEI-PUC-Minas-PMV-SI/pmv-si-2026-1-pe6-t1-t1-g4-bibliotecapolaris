@@ -5,7 +5,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActionButton } from '@/components';
 import { BaseField, BaseInputModal } from './BaseInput';
 import { getBooks } from '@/services/Books';
-import { getLoans, createLoan } from '@/services/Loans';
+import { createLoan } from '@/services/Loans';
+import { getStudents } from '@/services/User';
 import { useAlertModal } from '@/hooks/useAlertModal';
 
 type AddLoanModalProps = {
@@ -14,10 +15,10 @@ type AddLoanModalProps = {
   onSuccess?: () => void;
 };
 
-function todayPlus(days: number) {
+function localDateIso(daysOffset = 0) {
   const d = new Date();
-  d.setDate(d.getDate() + days);
-  return d.toISOString().slice(0, 10);
+  d.setDate(d.getDate() + daysOffset);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
@@ -25,14 +26,13 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
 
   const [books, setBooks] = useState<any[]>([]);
   const [students, setStudents] = useState<any[]>([]);
+  const [loadingStudents, setLoadingStudents] = useState(false);
 
   const [selectedBookId, setSelectedBookId] = useState('');
   const [selectedAuthor, setSelectedAuthor] = useState('');
-  const [studentSearch, setStudentSearch] = useState('');
-  const [selectedStudent, setSelectedStudent] = useState<any>(null);
+  const [selectedStudentId, setSelectedStudentId] = useState('');
   const [dueDateDisplay, setDueDateDisplay] = useState('');
   const [dueDateIso, setDueDateIso] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(false);
   const datePickerRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -40,20 +40,21 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
 
     setSelectedBookId('');
     setSelectedAuthor('');
-    setStudentSearch('');
-    setSelectedStudent(null);
+    setSelectedStudentId('');
     setDueDateDisplay('');
     setDueDateIso('');
+    setLoadingStudents(true);
 
-    Promise.all([getBooks(), getLoans()]).then(([fetchedBooks, fetchedLoans]) => {
-      setBooks(fetchedBooks ?? []);
-
-      const seen = new Map<string, any>();
-      (fetchedLoans ?? []).forEach((l: any) => {
-        if (l.student && !seen.has(l.student.id)) seen.set(l.student.id, l.student);
-      });
-      setStudents(Array.from(seen.values()));
-    });
+    Promise.all([getBooks(), getStudents()])
+      .then(([fetchedBooks, fetchedStudents]) => {
+        setBooks(fetchedBooks ?? []);
+        setStudents(fetchedStudents ?? []);
+      })
+      .catch(() => {
+        setBooks([]);
+        setStudents([]);
+      })
+      .finally(() => setLoadingStudents(false));
   }, [open]);
 
   const authors = useMemo(() => {
@@ -91,22 +92,18 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
     setSelectedBookId('');
   }
 
-  const suggestions = studentSearch
-    ? students.filter((s) => s.name.toLowerCase().includes(studentSearch.toLowerCase()))
-    : students;
-
   async function handleSubmit(e: { preventDefault(): void }) {
     e.preventDefault();
 
-    if (!selectedStudent) return showError('Erro', 'Selecione um estudante válido.');
+    if (!selectedStudentId) return showError('Erro', 'Selecione um estudante.');
     if (!selectedBookId) return showError('Erro', 'Selecione um livro.');
 
     try {
       await createLoan({
         bookId: selectedBookId,
-        userId: selectedStudent.id,
-        loanDate: todayPlus(0),
-        returnDate: dueDateIso || todayPlus(7),
+        userId: selectedStudentId,
+        loanDate: localDateIso(0),
+        returnDate: dueDateIso || localDateIso(7),
       });
 
       showSuccess('Sucesso!', 'Empréstimo criado com sucesso!', () => {
@@ -122,39 +119,20 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
     <BaseInputModal open={open} onClose={onClose} title="Adicionar Novo Empréstimo">
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <BaseField label="Nome">
-          <div className="relative">
-            <input
-              value={studentSearch}
-              onChange={(e) => {
-                setStudentSearch(e.target.value);
-                setSelectedStudent(null);
-                setShowSuggestions(true);
-              }}
-              onFocus={() => setShowSuggestions(true)}
-              onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-              placeholder="John Doe"
-              className="form-input"
-              autoComplete="off"
-            />
-
-            {showSuggestions && suggestions.length > 0 && (
-              <ul className="absolute z-10 w-full border border-(--text) bg-(--text) text-(--background) max-h-36 overflow-y-auto rounded-sm shadow-lg">
-                {suggestions.map((s) => (
-                  <li
-                    key={s.id}
-                    onMouseDown={() => {
-                      setSelectedStudent(s);
-                      setStudentSearch(s.name);
-                      setShowSuggestions(false);
-                    }}
-                    className="px-4 py-2 cursor-pointer hover:opacity-70 font-sans font-medium"
-                  >
-                    {s.name}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <select
+            value={selectedStudentId}
+            onChange={(e) => setSelectedStudentId(e.target.value)}
+            className="form-input"
+          >
+            <option value="">
+              {loadingStudents ? 'Carregando estudantes...' : 'Selecione um estudante'}
+            </option>
+            {students.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
         </BaseField>
 
         <BaseField label="Nome do Livro">
@@ -217,7 +195,7 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
             <input
               ref={datePickerRef}
               type="date"
-              min={todayPlus(1)}
+              min={localDateIso(1)}
               className="sr-only"
               onChange={(e) => {
                 const iso = e.target.value;
