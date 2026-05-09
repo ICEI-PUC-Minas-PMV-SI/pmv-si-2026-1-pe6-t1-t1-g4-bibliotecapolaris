@@ -8,6 +8,7 @@ import {
   deleteLoan,
   getLoansByStudent,
   getLoansByStatus,
+  markOverdueLoans,
 } from '@/services';
 import { handleError, sendSuccess } from '@/utils';
 import { LoanCreateSchema, LoanUpdateSchema } from '@/services/loan/schema';
@@ -152,6 +153,15 @@ export async function getLoansByStudentControllerById(studentId: string | undefi
       error: false,
       data: loansWithComputedStatus,
     });
+  } catch (error) {
+    handleError(res, error, 'Empréstimo');
+  }
+}
+
+export async function checkOverdueLoansController(_req: Request, res: Response) {
+  try {
+    const result = await markOverdueLoans();
+    return sendSuccess(res, { updated: result.count });
   } catch (error) {
     handleError(res, error, 'Empréstimo');
   }

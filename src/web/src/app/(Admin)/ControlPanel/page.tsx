@@ -14,7 +14,7 @@ type ViewMode = 'livros' | 'emprestimos' | 'historico';
 import { ViewHandler } from './ViewHandler';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { deleteBook } from '@/services/Books';
-import { updateLoan } from '@/services/Loans';
+import { updateLoan, checkOverdueLoans } from '@/services/Loans';
 function localDateIso() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -47,6 +47,10 @@ export default function ControlPanel() {
     const result = await view.load();
     setData(result);
   }
+
+  useEffect(() => {
+    checkOverdueLoans().then(() => load());
+  }, []);
 
   useEffect(() => {
     load();

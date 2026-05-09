@@ -103,6 +103,14 @@ export async function updateLoan(id: string, data: LoanUpdate) {
   }
 }
 
+export async function checkOverdueLoans() {
+  try {
+    await apiFetch('/loans/check-overdue', { method: 'POST', auth: true });
+  } catch {
+    // silently fail — não bloqueia o carregamento do painel
+  }
+}
+
 export async function deleteLoan(id: string) {
   try {
     const res = await apiFetch(`/loans/${id}`, {

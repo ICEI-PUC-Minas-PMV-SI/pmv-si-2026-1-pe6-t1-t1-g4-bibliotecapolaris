@@ -64,3 +64,16 @@ export async function getLoansByStatus(status: 'pending' | 'in_progress' | 'retu
     include: { student: true, book: true },
   });
 }
+
+export async function markOverdueLoans() {
+  const d = new Date();
+  const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+  return prisma.loan.updateMany({
+    where: {
+      status: 'in_progress',
+      dueDate: { lt: today },
+    },
+    data: { status: 'overdue' },
+  });
+}
