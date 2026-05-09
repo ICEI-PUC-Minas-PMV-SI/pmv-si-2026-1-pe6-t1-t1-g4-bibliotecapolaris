@@ -95,7 +95,7 @@ export default function BookPage({ params }: { params: Promise<{ slug: string }>
 
             <span className="text-3xl font-medium tracking-wider line-clamp-1">{`${book.totalAvailable} unidades disponíveis`}</span>
 
-            <WithdrawButton />
+            <WithdrawButton book={{ id: book.id, name: book.name, imageSrc: book.imageSrc }} />
           </section>
         </div>
 

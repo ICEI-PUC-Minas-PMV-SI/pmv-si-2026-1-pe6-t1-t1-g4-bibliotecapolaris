@@ -138,6 +138,7 @@ export default function Books() {
               {books.map((book: any) => (
                 <Link key={book.slug} href={`/Books/${book.slug}`}>
                   <BookDisplay
+                    bookId={book.id}
                     title={book.name}
                     description={book.description}
                     imageSrc={book.imageSrc ? book.imageSrc : '/assets/images/mock-book.png'}

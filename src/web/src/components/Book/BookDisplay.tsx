@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { LikeButton, WithdrawButton } from '@/components';
 
 type BookDisplayProps = {
+  bookId: string;
   title: string;
   description: string;
   imageSrc: string;
@@ -13,6 +14,7 @@ type BookDisplayProps = {
 };
 
 export function BookDisplay({
+  bookId,
   title = '',
   description = '',
   imageSrc = '',
@@ -43,7 +45,7 @@ export function BookDisplay({
       </p>
 
       <div className="flex gap-2 w-full">
-        <WithdrawButton />
+        <WithdrawButton book={{ id: bookId, name: title, imageSrc }} />
 
         <LikeButton isFavorite={isFavorite} onToggle={onToggleFavorite} />
       </div>

@@ -297,6 +297,7 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
                   <Link key={book.slug} href={`/Books/${book.slug}`}>
                     <BookDisplay
                       key={book.id}
+                      bookId={book.id}
                       title={book.name}
                       description={book.description}
                       imageSrc={book.imageSrc ? book.imageSrc : '/assets/images/mock-book.png'}
