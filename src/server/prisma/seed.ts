@@ -1,3 +1,8 @@
+if (process.env.NODE_ENV === 'production') {
+  console.error('seed.ts is for local development only. Aborting.');
+  process.exit(1);
+}
+
 import path from 'path';
 import { randomUUID } from 'crypto';
 import bcrypt from 'bcrypt';
