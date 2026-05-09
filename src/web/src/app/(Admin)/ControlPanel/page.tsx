@@ -3,7 +3,7 @@
 import '@/lib/AgGrid';
 
 import { useEffect, useState } from 'react';
-import { ActionButton, DataGrid, gridConfigs, Header } from '@/components';
+import { ActionButton, DataGrid, gridConfigs, Header, ProtectedRoute } from '@/components';
 
 import { AddBookModal } from '@/components/Form/AddBookModal';
 import { AddLoanModal } from '@/components/Form/AddLoanModal';
@@ -110,7 +110,7 @@ export default function ControlPanel() {
     });
   };
   return (
-    // <ProtectedRoute adminOnly>
+    <ProtectedRoute adminOnly>
       <>
         <Header />
 
@@ -196,6 +196,6 @@ export default function ControlPanel() {
         {ModalComponent}
       </main>
       </>
-    // </ProtectedRoute>
+    </ProtectedRoute>
   );
 }
