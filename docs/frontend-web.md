@@ -256,9 +256,13 @@ As seguintes práticas de segurança foram identificadas como próximos passos p
 
 ## Testes
 
-A estratégia de testes do front-end foca em garantir a qualidade e resiliência das principais jornadas do usuário. Para o módulo de **Gerenciamento de Livros (Criação de Livros)**, adotamos uma abordagem de testes automatizados em dois níveis principais:
+Foi implementado testes automatizados de integração utilizando Jest e React Testing Library (RTL):
 
-### 1. Testes Unitários e de Integração de Componentes (Jest + React Testing Library)
+Os testes podem ser executados via linha de comando dentro do diretório `src/web/`:
+
+- **Executar todos os testes:** `npm test`
+
+### 1. Testes Relacionados aos Livros
 
 Foco em testar a lógica interna dos componentes, validações de formulário e chamadas de serviços de forma isolada.
 
@@ -271,30 +275,9 @@ Foco em testar a lógica interna dos componentes, validações de formulário e 
   - Integração com o contexto global de alertas (`useAlertModal`) para feedback visual.
   - Tratamento de exceções (erros 400/500 da API).
 
-### 2. Testes End-to-End (E2E) com Playwright
-
-Foco em validar o fluxo completo do ponto de vista do usuário final em um navegador real, garantindo que os componentes interagem corretamente com o roteamento e com o estado global.
-
-- **Ferramentas:** Playwright Test.
-- **Escopo Implementado:** Fluxo de criação de livros no Painel de Controle (`book-create.spec.ts`).
-- **Estratégia de Isolamento:**
-  - **Injeção de Autenticação:** A sessão do usuário administrador é simulada diretamente via injeção no `localStorage`, evitando a dependência do endpoint de login e tornando o teste focado.
-  - **Interceptação de Rotas (Mocking):** As requisições de criação de livros (`POST /books/register`) são interceptadas no navegador. Isso permite testar cenários de sucesso e erro na UI mesmo sem um ambiente backend de desenvolvimento 100% configurado ou com dados poluídos.
-- **Cenários Cobertos:**
-  - Redirecionamento de usuários não autenticados (`ProtectedRoute`).
-  - Navegação entre abas do Painel de Controle.
-  - Abertura e manipulação do modal de criação de livros.
-  - Submissão com sucesso e tratamento de erros no formulário.
-
-### 3. Como Executar os Testes
-
-Os testes podem ser executados via linha de comando dentro do diretório `src/web/`:
-
-- **Executar todos os testes:** `npm test`
-
 A imagem a seguir apresenta a execução dos testes unitários (Jest), evidenciando a cobertura e validação dos cenários mapeados:
 
-<img width="1040" height="500" alt="Resultados dos Testes Jest" src="./img/test-results.png" />
+<img width="693" height="447" alt="test-books" src="https://github.com/user-attachments/assets/225b2c40-8828-40b2-80e7-b6d8a70e5306" />
 
 # Referências
 
