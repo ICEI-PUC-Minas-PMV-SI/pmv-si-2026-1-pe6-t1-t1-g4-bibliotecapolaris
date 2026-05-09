@@ -64,27 +64,20 @@ export function WithdrawButton({ book }: WithdrawButtonProps) {
 
   return (
     <>
-      <ActionButton
-        title="Retirar"
-        className="flex-1 self-end text-3xl"
-        onClick={openModal}
-      />
+      <ActionButton title="Retirar" className="flex-1 self-end text-3xl" onClick={openModal} />
 
       {open && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          onClick={() => setOpen(false)}
-        >
+        <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={() => setOpen(false)}>
           <div className="absolute inset-0 bg-black/60" />
 
           <div
-            className="relative z-10 w-[420px] border border-(--text) rounded-sm bg-(--background) flex flex-col p-6 gap-5"
+            className="relative z-10 w-105 border border-(--text) rounded-sm bg-(--background) flex flex-col p-6 gap-5"
             onClick={(e) => e.stopPropagation()}
           >
             <h1 className="text-2xl font-serif font-semibold tracking-wide">Retirar livro</h1>
 
-            <div className="flex gap-4 items-center">
-              <figure className="relative w-16 h-24 border border-(--text) rounded-xs shrink-0 overflow-hidden">
+            <div className="flex gap-4 items-center flex-col">
+              <figure className="relative w-24 h-32 border border-(--text) rounded-xs shrink-0 overflow-hidden">
                 <Image
                   src={img}
                   alt={book.name}
@@ -93,7 +86,7 @@ export function WithdrawButton({ book }: WithdrawButtonProps) {
                   onError={() => setImg('/assets/images/mock-book.png')}
                 />
               </figure>
-              <p className="font-serif text-xl font-medium line-clamp-3 leading-snug">{book.name}</p>
+              <p className="font-serif text-2xl font-medium line-clamp-3 leading-snug">{book.name}</p>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -104,10 +97,11 @@ export function WithdrawButton({ book }: WithdrawButtonProps) {
                     key={opt.days}
                     type="button"
                     onClick={() => setDays(opt.days)}
-                    className={`flex-1 py-2 border rounded-sm font-serif text-lg font-semibold transition-colors cursor-pointer
-                      ${days === opt.days
-                        ? 'bg-(--button-active) text-(--button-text-active) border-(--button-active)'
-                        : 'bg-(--button-inactive) text-(--button-text-inactive) border-(--text) hover:bg-(--button-hover-inactive)'
+                    className={`flex-1 border rounded-[1.5px] font-serif text-lg font-semibold transition-colors cursor-pointer
+                      ${
+                        days === opt.days
+                          ? 'bg-(--button-active) text-(--button-text-active) border-(--button-active)'
+                          : 'bg-(--button-inactive) text-(--button-text-inactive) border-(--text) hover:bg-(--button-hover-inactive)'
                       }`}
                   >
                     {opt.label}
@@ -120,12 +114,7 @@ export function WithdrawButton({ book }: WithdrawButtonProps) {
             </div>
 
             <div className="flex gap-3">
-              <ActionButton
-                title="Cancelar"
-                variant="outline"
-                onClick={() => setOpen(false)}
-                className="flex-1"
-              />
+              <ActionButton title="Cancelar" variant="outline" onClick={() => setOpen(false)} className="flex-1" />
               <ActionButton
                 title={submitting ? 'Aguarde...' : 'Confirmar'}
                 variant="fill"

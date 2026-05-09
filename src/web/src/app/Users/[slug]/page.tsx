@@ -22,6 +22,8 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
 
   const { user: authenticatedUser, updateUser } = useAuth();
 
+  const isAdmin = authenticatedUser?.type === 'administrator';
+
   const { showError, showSuccess, ModalComponent } = useAlertModal();
 
   const [profileUser, setProfileUser] = useState<User | null>(null);
@@ -267,17 +269,21 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
                     key={loan.id}
                     title={loan.book?.name || 'Livro Desconhecido'}
                     imageSrc={loan.book?.imageSrc || '/assets/images/mock-book.png'}
-                    dueDate={loan.dueDate}
+                    dueDate={loan.status === 'pending' ? 'Pendente' : loan.dueDate}
                     status={loan.status}
-                    onAdjustClick={() => {
-                      if (!isOwnProfile) {
-                        showError('Acesso negado', 'Eeei, esse perfil não é seu');
+                    onAdjustClick={
+                      loan.status === 'pending'
+                        ? undefined
+                        : () => {
+                            if (!isOwnProfile) {
+                              showError('Acesso negado', 'Eeei, esse perfil não é seu');
 
-                        return;
-                      }
+                              return;
+                            }
 
-                      handleOpenAdjustments(loan);
-                    }}
+                            handleOpenAdjustments(loan);
+                          }
+                    }
                   />
                 ))
               ) : (
@@ -294,17 +300,15 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
             <div className="flex flex-wrap justify-center gap-4">
               {wishlist.books.length > 0 ? (
                 wishlist.books.map((book) => (
-                  <Link key={book.slug} href={`/Books/${book.slug}`}>
-                    <BookDisplay
-                      key={book.id}
-                      bookId={book.id}
-                      title={book.name}
-                      description={book.description}
-                      imageSrc={book.imageSrc ? book.imageSrc : '/assets/images/mock-book.png'}
-                      isFavorite={wishlistSet.has(book.id)}
-                      onToggleFavorite={() => toggle(book.id)}
-                    />
-                  </Link>
+                  <BookDisplay
+                    key={book.id}
+                    bookId={book.id}
+                    title={book.name}
+                    description={book.description}
+                    imageSrc={book.imageSrc ? book.imageSrc : '/assets/images/mock-book.png'}
+                    isFavorite={wishlistSet.has(book.id)}
+                    onToggleFavorite={() => toggle(book.id)}
+                  />
                 ))
               ) : (
                 <h2 className="w-full font-serif text-3xl uppercase text-center text-gray-500">
@@ -321,6 +325,7 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
             onChangeDueDate={handleChangeDueDate}
             onReturnBook={handleReturnBook}
             onJustifyAndReturn={handleJustifyAndReturn}
+            isAdmin={isAdmin}
           />
 
           {ModalComponent}

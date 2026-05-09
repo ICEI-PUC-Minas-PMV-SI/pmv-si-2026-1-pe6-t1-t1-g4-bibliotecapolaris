@@ -44,7 +44,7 @@ export async function createLoan(loan: LoanForm) {
         bookId,
         loanDate: finalLoanDate,
         dueDate: returnDate,
-        status: 'in_progress',
+        status: 'pending',
       }),
     });
 

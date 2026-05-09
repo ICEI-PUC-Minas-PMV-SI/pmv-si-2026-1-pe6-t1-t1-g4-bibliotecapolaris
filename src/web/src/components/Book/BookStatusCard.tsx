@@ -12,7 +12,9 @@ type BookStatusCardProps = {
 };
 
 export function BookStatusCard({ title, imageSrc, dueDate, status, onAdjustClick }: BookStatusCardProps) {
-  const { config, label } = resolveBookStatus(dueDate);
+  const { config, label, type } = resolveBookStatus(dueDate, status);
+
+  const isPending = type === 'pending';
 
   const isReturned = status === 'returned';
 
@@ -33,13 +35,15 @@ export function BookStatusCard({ title, imageSrc, dueDate, status, onAdjustClick
       </div>
 
       <div className="px-4 pb-4">
-        <ActionButton
-          className={`w-full ${isReturned ? 'opacity-50 cursor-not-allowed' : ''}`}
-          style={{ backgroundColor: isReturned ? '#6b7280' : config.color }}
-          title={isReturned ? 'Empréstimo Encerrado' : config.buttonText || 'Ajustar Empréstimo'}
-          onClick={isReturned ? undefined : onAdjustClick}
-          disabled={isReturned}
-        />
+        {!isPending && (
+          <ActionButton
+            className={`w-full ${isReturned ? 'opacity-50 cursor-not-allowed' : ''}`}
+            style={{ backgroundColor: isReturned ? '#6b7280' : config.color }}
+            title={isReturned ? 'Empréstimo Encerrado' : config.buttonText || 'Ajustar Empréstimo'}
+            onClick={isReturned ? undefined : onAdjustClick}
+            disabled={isReturned}
+          />
+        )}
       </div>
     </article>
   );

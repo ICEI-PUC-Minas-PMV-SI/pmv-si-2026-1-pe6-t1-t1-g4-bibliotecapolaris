@@ -54,8 +54,8 @@ export function LoanActionsCell(params: any) {
 
   return (
     <div className="flex gap-2">
-      <ActionButton title="Recusar" onClick={handleReject} className="bg-(--status-error)! border-0!" />
-      <ActionButton title="Aprovar" onClick={handleAccept} className="bg-(--status-success)! border-0!" />
+      <ActionButton title="Recusar" onClick={handleReject} className="bg-(--status-error)! " />
+      <ActionButton title="Aprovar" onClick={handleAccept} className="bg-(--status-success)!" />
     </div>
   );
 }

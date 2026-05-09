@@ -182,7 +182,7 @@ export async function getLoansByStatusControllerByStatus(status: string | undefi
       return res.status(400).json({ error: true, errorCode: 'ERR_INVALID_STATUS', message: 'Status inválido' });
     }
 
-    const loans = await getLoansByStatus(status as 'in_progress' | 'returned' | 'canceled' | 'overdue');
+    const loans = await getLoansByStatus(status as 'in_progress' | 'returned' | 'canceled' | 'overdue' | 'pending');
     return res.status(200).json({ error: false, data: loans });
   } catch (error) {
     handleError(res, error, 'Empréstimo');
