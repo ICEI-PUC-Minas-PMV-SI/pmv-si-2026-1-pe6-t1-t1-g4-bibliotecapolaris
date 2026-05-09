@@ -99,12 +99,15 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
     if (!selectedBookId) return showError('Erro', 'Selecione um livro.');
 
     try {
-      await createLoan({
-        bookId: selectedBookId,
-        userId: selectedStudentId,
-        loanDate: localDateIso(0),
-        returnDate: dueDateIso || localDateIso(7),
-      });
+      await createLoan(
+        {
+          bookId: selectedBookId,
+          userId: selectedStudentId,
+          loanDate: localDateIso(0),
+          returnDate: dueDateIso || localDateIso(7),
+        },
+        'admin',
+      );
 
       showSuccess('Sucesso!', 'Empréstimo criado com sucesso!', () => {
         onSuccess?.();
@@ -124,9 +127,7 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
             onChange={(e) => setSelectedStudentId(e.target.value)}
             className="form-input"
           >
-            <option value="">
-              {loadingStudents ? 'Carregando estudantes...' : 'Selecione um estudante'}
-            </option>
+            <option value="">{loadingStudents ? 'Carregando estudantes...' : 'Selecione um estudante'}</option>
             {students.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.name}
@@ -136,14 +137,8 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
         </BaseField>
 
         <BaseField label="Nome do Livro">
-          <select
-            value={selectedBookId}
-            onChange={(e) => handleBookSelect(e.target.value)}
-            className="form-input"
-          >
-            <option value="">
-              {filteredBooks.length === 0 ? 'Carregando livros...' : 'Selecione um livro'}
-            </option>
+          <select value={selectedBookId} onChange={(e) => handleBookSelect(e.target.value)} className="form-input">
+            <option value="">{filteredBooks.length === 0 ? 'Carregando livros...' : 'Selecione um livro'}</option>
             {filteredBooks.map((book) => (
               <option key={book.id} value={book.id}>
                 {book.name}
@@ -153,11 +148,7 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
         </BaseField>
 
         <BaseField label="Nome do Autor">
-          <select
-            value={selectedAuthor}
-            onChange={(e) => handleAuthorSelect(e.target.value)}
-            className="form-input"
-          >
+          <select value={selectedAuthor} onChange={(e) => handleAuthorSelect(e.target.value)} className="form-input">
             <option value="">Todos os autores</option>
             {authors.map((author) => {
               const id = String(author?.id ?? author);
@@ -216,12 +207,7 @@ export function AddLoanModal({ open, onClose, onSuccess }: AddLoanModalProps) {
           </div>
         </BaseField>
 
-        <ActionButton
-          title="Adicionar"
-          type="submit"
-          variant="fill"
-          className="h-12 text-3xl rounded-sm"
-        />
+        <ActionButton title="Adicionar" type="submit" variant="fill" className="h-12 text-3xl rounded-sm" />
       </form>
 
       {ModalComponent}

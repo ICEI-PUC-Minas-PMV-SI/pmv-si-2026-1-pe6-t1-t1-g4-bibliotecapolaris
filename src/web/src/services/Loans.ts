@@ -31,7 +31,7 @@ function formatDate(date: Date) {
   return date.toISOString().slice(0, 10);
 }
 
-export async function createLoan(loan: LoanForm) {
+export async function createLoan(loan: LoanForm, origin?: 'student' | 'admin') {
   const { bookId, userId, loanDate, returnDate } = loan;
   const finalLoanDate = loanDate ?? formatDate(new Date());
 
@@ -44,7 +44,7 @@ export async function createLoan(loan: LoanForm) {
         bookId,
         loanDate: finalLoanDate,
         dueDate: returnDate,
-        status: 'pending',
+        status: origin === 'student' ? 'pending' : 'in_progress',
       }),
     });
 

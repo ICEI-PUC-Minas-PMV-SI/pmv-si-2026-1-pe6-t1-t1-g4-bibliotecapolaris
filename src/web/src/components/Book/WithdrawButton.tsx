@@ -47,12 +47,16 @@ export function WithdrawButton({ book }: WithdrawButtonProps) {
     if (!user) return;
     setSubmitting(true);
     try {
-      await createLoan({
-        bookId: book.id,
-        userId: user.id,
-        loanDate: localDateIso(0),
-        returnDate: localDateIso(days),
-      });
+      await createLoan(
+        {
+          bookId: book.id,
+          userId: user.id,
+          loanDate: localDateIso(0),
+          returnDate: localDateIso(days),
+        },
+
+        'student',
+      );
       setOpen(false);
       showSuccess('Solicitação enviada!', 'Sua retirada foi registrada e aguarda aprovação da biblioteca.');
     } catch (err) {

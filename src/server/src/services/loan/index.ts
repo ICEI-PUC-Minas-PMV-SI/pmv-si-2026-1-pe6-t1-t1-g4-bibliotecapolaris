@@ -3,6 +3,7 @@ import type { z } from 'zod';
 import { LoanCreateSchema, LoanUpdateSchema } from './schema';
 
 import { prisma } from '@/lib/prisma';
+import { LoanStatus } from '@prisma/client';
 
 type LoanCreateInput = z.infer<typeof LoanCreateSchema>;
 type LoanUpdateInput = z.infer<typeof LoanUpdateSchema>;
@@ -24,7 +25,6 @@ export async function createLoan(data: LoanCreateInput) {
   return prisma.loan.create({
     data: {
       ...data,
-      status: 'pending',
       loanDate: data.loanDate,
       dueDate: data.dueDate,
       returnDate: null,
@@ -58,7 +58,7 @@ export async function getLoansByStudent(studentId: string) {
   });
 }
 
-export async function getLoansByStatus(status: 'pending' | 'in_progress' | 'returned' | 'canceled' | 'overdue') {
+export async function getLoansByStatus(status: LoanStatus) {
   return prisma.loan.findMany({
     where: { status },
     include: { student: true, book: true },

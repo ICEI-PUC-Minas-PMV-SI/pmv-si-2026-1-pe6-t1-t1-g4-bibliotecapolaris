@@ -12,6 +12,7 @@ import {
 } from '@/services';
 import { handleError, sendSuccess } from '@/utils';
 import { LoanCreateSchema, LoanUpdateSchema } from '@/services/loan/schema';
+import { LoanStatus } from '@prisma/client';
 
 export async function getAllLoansController(_req: Request, res: Response) {
   try {
@@ -182,7 +183,7 @@ export async function getLoansByStatusControllerByStatus(status: string | undefi
       return res.status(400).json({ error: true, errorCode: 'ERR_INVALID_STATUS', message: 'Status inválido' });
     }
 
-    const loans = await getLoansByStatus(status as 'in_progress' | 'returned' | 'canceled' | 'overdue' | 'pending');
+    const loans = await getLoansByStatus(status as LoanStatus);
     return res.status(200).json({ error: false, data: loans });
   } catch (error) {
     handleError(res, error, 'Empréstimo');
