@@ -37,15 +37,17 @@ model Book {
   categories     String
   totalQuantity  Int    @map("total_quantity")
   totalAvailable Int    @map("total_available")
+  imageSrc       String @map("image_src")
 
-  author         Author     @relation(fields: [authorId], references: [id])
-  wishlists      Wishlist[]
-  loans          Loan[]
+  author    Author     @relation(fields: [authorId], references: [id])
+  wishlists Wishlist[]
+  loans     Loan[]
 
   @@map("books")
 }
 
 enum LoanStatus {
+  pending
   in_progress
   returned
   canceled
@@ -53,17 +55,18 @@ enum LoanStatus {
 }
 
 model Loan {
-  id         String     @id @default(uuid())
-  studentId  String     @map("student_id")
-  bookId     String     @map("book_id")
-  loanDate   String     @map("loan_date")
-  dueDate    String     @map("due_date")
-  returnDate String?    @map("return_date")
-  status     LoanStatus
+  id            String     @id @default(uuid())
+  studentId     String     @map("student_id")
+  bookId        String     @map("book_id")
+  loanDate      String     @map("loan_date")
+  dueDate       String     @map("due_date")
+  returnDate    String?    @map("return_date")
+  justification String?    
+  status        LoanStatus
 
-  student    User     @relation(fields: [studentId], references: [id])
-  book       Book     @relation(fields: [bookId], references: [id])
-  reviews    Review[]
+  student User     @relation(fields: [studentId], references: [id])
+  book    Book     @relation(fields: [bookId], references: [id])
+  reviews Review[]
 
   @@map("loans")
 }
@@ -80,8 +83,8 @@ model Wishlist {
   studentId String @map("student_id")
   bookId    String @map("book_id")
 
-  student   User @relation(fields: [studentId], references: [id])
-  book      Book @relation(fields: [bookId], references: [id])
+  student User @relation(fields: [studentId], references: [id])
+  book    Book @relation(fields: [bookId], references: [id])
 
   @@id([studentId, bookId])
   @@map("wishlists")
@@ -94,7 +97,7 @@ model Review {
   description String?
   date        String
 
-  loan        Loan @relation(fields: [loanId], references: [id])
+  loan Loan @relation(fields: [loanId], references: [id])
 
   @@map("reviews")
 }

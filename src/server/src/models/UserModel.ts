@@ -10,9 +10,9 @@ export const CreateUserSchema = z.object({
 
   password: z
     .string()
-    .min(6, 'No mínimo 6 caracteres')
-    .regex(/[A-Z]/, 'Precisa de uma letra maiúscula')
-    .regex(/[!@#$%^&*]/, 'Precisa de um caractere especial'),
+    .min(6, 'A senha deve que ter no mínimo 6 caracteres')
+    .regex(/[A-Z]/, 'A senha precisa de uma letra maiúscula')
+    .regex(/[!@#$%^&*]/, 'A senha precisa de um caractere especial'),
 
   type: z.enum(['student', 'administrator']).describe('Tipo de Usuário'),
 });

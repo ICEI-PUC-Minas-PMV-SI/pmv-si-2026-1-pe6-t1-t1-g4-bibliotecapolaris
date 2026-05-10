@@ -1,13 +1,29 @@
 import type { Request, Response } from 'express';
 
 import { CreateBookSchema, UpdateBookSchema } from '@/models/BookModel';
-import { createBook, deleteBook, getBookById, getBookBySlug, listBooks, updateBook } from '@/services';
+import {
+  createBook,
+  deleteBook,
+  findOrCreateAuthor,
+  getBookById,
+  getBookBySlug,
+  listBooks,
+  updateBook,
+  listCategories,
+} from '@/services';
 import { handleError, sendFailure, sendSuccess } from '@/utils';
 
 // --- OPERAÇÃO 1: CRIAÇÃO ---
 export async function createBookController(req: Request, res: Response) {
   try {
-    const data = CreateBookSchema.parse(req.body);
+    const { author, ...rest } = req.body;
+
+    const authorId = await findOrCreateAuthor(author);
+
+    const data = CreateBookSchema.parse({
+      ...rest,
+      authorId,
+    });
 
     await createBook(data);
 
@@ -52,19 +68,17 @@ export async function getBookBySlugController(req: Request, res: Response) {
 
 export async function listBooksController(req: Request, res: Response) {
   try {
-    const { name, authorName, categories, wishlistId } = req.query;
+    const { search } = req.query;
 
     const filters: {
-      name?: string;
-      authorName?: string;
-      categories?: string;
-      wishlistId?: string;
+      search?: string;
     } = {};
 
-    if (typeof name === 'string') filters.name = name;
-    if (typeof authorName === 'string') filters.authorName = authorName;
-    if (typeof categories === 'string') filters.categories = categories;
-    if (typeof wishlistId === 'string') filters.wishlistId = wishlistId;
+    if (typeof search === 'string') filters.search = search;
+
+    if (filters.search && filters.search.length > 80) {
+      return sendFailure(res, 'INVALID_INPUT', 'Busca muito longa', undefined, 400);
+    }
 
     const books = await listBooks(filters);
 
@@ -75,6 +89,15 @@ export async function listBooksController(req: Request, res: Response) {
     return sendSuccess(res, books, 200);
   } catch (error) {
     return handleError(res, error, 'Livro');
+  }
+}
+
+export async function listCategoriesController(req: Request, res: Response) {
+  try {
+    const categories = await listCategories();
+    return sendSuccess(res, categories, 200);
+  } catch (error) {
+    return handleError(res, error, 'Categorias');
   }
 }
 

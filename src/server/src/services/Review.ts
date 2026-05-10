@@ -115,6 +115,7 @@ export async function getReviewsByBookId(bookId: string) {
             select: {
               id: true,
               name: true,
+              slug: true,
             },
           },
           book: {

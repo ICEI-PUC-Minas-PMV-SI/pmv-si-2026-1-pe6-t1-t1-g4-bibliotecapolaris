@@ -7,17 +7,18 @@ const bookBase = {
   authorId: z.uuid('ID do Autor inválido').describe('ID do Autor'),
   description: z.string().min(1, 'Descrição é obrigatória').describe('Descrição do Livro'),
   totalQuantity: z.number().int().nonnegative().describe('Quantidade Total'),
+  imageSrc: z.string().optional().describe('Link da Imagem de livro'),
 };
 
 export const CreateBookObject = z.object({
   ...bookBase,
   categories: z.string().min(1, 'Pelo menos uma categoria é obrigatória').describe('Categorias do Livro'),
-  availableQuantity: z.number().int().nonnegative().describe('Quantidade Disponível'),
+  totalAvailable: z.number().int().nonnegative().describe('Quantidade Disponível'),
 });
 
-export const CreateBookSchema = CreateBookObject.refine((data) => data.availableQuantity <= data.totalQuantity, {
+export const CreateBookSchema = CreateBookObject.refine((data) => data.totalAvailable <= data.totalQuantity, {
   message: 'A quantidade disponível não pode ser maior que a quantidade total.',
-  path: ['availableQuantity'],
+  path: ['totalAvailable'],
 });
 
 export const UpdateBookSchema = CreateBookObject.partial().extend({

@@ -20,12 +20,10 @@ export async function createBook(data: CreateBookInput) {
     slug = `${baseSlug}-${count++}`;
   }
 
-  const { availableQuantity, ...rest } = data;
-
   return prisma.book.create({
     data: {
-      ...rest,
-      totalAvailable: availableQuantity,
+      ...data,
+      imageSrc: data.imageSrc ?? '',
       categories: normalizeCategories(data.categories),
       slug,
     },
@@ -70,31 +68,35 @@ export async function getBookBySlug(slug: string) {
   });
 }
 
-export async function listBooks(filters?: {
-  name?: string;
-  authorName?: string;
-  categories?: string;
-  wishlistId?: string;
-}) {
+export async function listBooks(filters?: { search?: string }) {
+  const cleanSearch = filters?.search?.trim();
+
   return prisma.book.findMany({
-    where: {
-      ...(filters?.name && {
-        name: { contains: filters.name },
-      }),
-      ...(filters?.authorName && {
-        author: { name: { contains: filters.authorName } },
-      }),
-      ...(filters?.categories && {
-        categories: { contains: `${filters.categories.toLowerCase()}` },
-      }),
-      ...(filters?.wishlistId && {
-        wishlists: {
-          some: {
-            studentId: filters.wishlistId,
-          },
-        },
-      }),
-    },
+    where: filters?.search
+      ? {
+          OR: [
+            {
+              name: {
+                contains: cleanSearch,
+              },
+            },
+            {
+              author: {
+                is: {
+                  name: {
+                    contains: cleanSearch,
+                  },
+                },
+              },
+            },
+            {
+              categories: {
+                contains: cleanSearch,
+              },
+            },
+          ],
+        }
+      : undefined,
     include: {
       author: true,
     },
@@ -129,9 +131,8 @@ export async function updateBook(id: string, data: UpdateBookInput) {
     updatedData.categories = normalizeCategories(data.categories);
   }
 
-  if (typeof data.availableQuantity !== 'undefined') {
-    updatedData.totalAvailable = data.availableQuantity;
-    delete updatedData.availableQuantity;
+  if (typeof data.totalAvailable !== 'undefined') {
+    updatedData.totalAvailable = data.totalAvailable;
   }
 
   return prisma.book.update({
@@ -148,4 +149,37 @@ export async function deleteBook(id: string) {
   return prisma.book.delete({
     where: { id },
   });
+}
+
+export async function listCategories() {
+  const books = await prisma.book.findMany({
+    select: {
+      categories: true,
+      imageSrc: true,
+    },
+  });
+
+  const categoryMap = new Map<string, string>();
+
+  books.forEach((book) => {
+    const categories = book.categories
+      .split(',')
+      .map((c) => c.trim())
+      .filter(Boolean);
+
+    for (const cat of categories) {
+      const normalizedCat = cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase();
+
+      if (!categoryMap.has(normalizedCat)) {
+        categoryMap.set(normalizedCat, book.imageSrc || '/assets/images/mock-book.png');
+
+        break;
+      }
+    }
+  });
+
+  return Array.from(categoryMap.entries()).map(([name, imageSrc]) => ({
+    name,
+    imageSrc,
+  }));
 }

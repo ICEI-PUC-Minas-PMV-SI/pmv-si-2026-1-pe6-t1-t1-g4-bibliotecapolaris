@@ -1,12 +1,27 @@
 import { Router } from 'express';
 
-import { createUserController, getUserByIdController, updateUserController, deleteUserController } from '@/controllers';
+import {
+  createUserController,
+  getUserByIdController,
+  updateUserController,
+  deleteUserController,
+  loginUserController,
+  getUserBySlugController,
+  getStudentsController,
+} from '@/controllers';
+import { requireAuth, requireAdmin, requireSelfOrAdmin } from '@/middleware/auth';
 
 const UserRouter = Router();
 
+// Públicas
 UserRouter.post('/users/register', createUserController);
-UserRouter.get('/users/:id', getUserByIdController);
-UserRouter.put('/users/:id', updateUserController);
-UserRouter.delete('/users/:id', deleteUserController);
+UserRouter.post('/users/login', loginUserController);
+
+// Autenticadas
+UserRouter.get('/users/students', requireAuth, requireAdmin, getStudentsController);
+UserRouter.get('/users/slug/:slug', getUserBySlugController);
+UserRouter.get('/users/:id', requireAuth, requireSelfOrAdmin, getUserByIdController);
+UserRouter.put('/users/:id', requireAuth, requireSelfOrAdmin, updateUserController);
+UserRouter.delete('/users/:id', requireAuth, requireAdmin, deleteUserController);
 
 export default UserRouter;

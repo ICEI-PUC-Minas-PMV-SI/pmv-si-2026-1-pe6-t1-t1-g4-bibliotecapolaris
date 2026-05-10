@@ -11,8 +11,6 @@ export async function createUser(data: CreateUserInput) {
     slug = `${baseSlug}-${count++}`;
   }
 
-  console.log(`[SISTEMA] Notificando administrador: Novo usuário ${data.name} cadastrado!`);
-
   return prisma.user.create({
     data: {
       ...data,
@@ -24,6 +22,12 @@ export async function createUser(data: CreateUserInput) {
 export async function getUserById(id: string) {
   return prisma.user.findUniqueOrThrow({
     where: { id },
+  });
+}
+
+export async function getUserBySlug(slug: string) {
+  return prisma.user.findUniqueOrThrow({
+    where: { slug },
   });
 }
 
@@ -61,5 +65,13 @@ export async function updateUser(id: string, data: any) {
 export async function deleteUser(id: string) {
   return prisma.user.delete({
     where: { id },
+  });
+}
+
+export async function getStudents() {
+  return prisma.user.findMany({
+    where: { type: 'student' },
+    select: { id: true, name: true, email: true, slug: true },
+    orderBy: { name: 'asc' },
   });
 }

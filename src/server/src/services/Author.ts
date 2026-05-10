@@ -23,6 +23,25 @@ export async function getAuthorById(id: string) {
   });
 }
 
+export async function findOrCreateAuthor(name: string) {
+  const clean = name.trim();
+  const normalized = clean.toLowerCase();
+
+  const authors = await prisma.author.findMany();
+
+  const existing = authors.find((a) => a.name.toLowerCase() === normalized);
+
+  if (existing) return existing.id;
+
+  const created = await prisma.author.create({
+    data: {
+      name: clean,
+    },
+  });
+
+  return created.id;
+}
+
 export async function updateAuthor(id: string, data: Partial<CreateAuthorInput>) {
   return prisma.author.update({
     where: { id },

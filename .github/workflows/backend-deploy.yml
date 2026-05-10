@@ -2,7 +2,7 @@ name: Deploy API Polaris to EC2
 
 on:
   push:
-    branches: [ server ]
+    branches: [ server, web ]
     paths:
       - 'src/server/**'
       - '.github/workflows/backend-deploy.yml'
