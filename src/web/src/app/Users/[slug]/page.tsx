@@ -24,6 +24,8 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
 
   const { user: authenticatedUser, updateUser } = useAuth();
 
+  const isAdmin = authenticatedUser?.type === 'administrator';
+
   const { showError, showSuccess, ModalComponent } = useAlertModal();
 
   const [profileUser, setProfileUser] = useState<User | null>(null);
@@ -90,9 +92,7 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
       const { status } = await updateUserName(profileUser?.id ?? '', nameInput.trim());
 
       if (status === 200 || status === 202) {
-        setProfileUser((prev) =>
-          prev ? { ...prev, name: nameInput.trim() } : null,
-        );
+        setProfileUser((prev) => (prev ? { ...prev, name: nameInput.trim() } : null));
 
         if (isOwnProfile) {
           updateUser({ name: nameInput.trim() });
@@ -146,11 +146,7 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
     try {
       await updateLoanDueDate(selectedLoan.id, newDate);
 
-      setLoans((prev) =>
-        prev.map((loan) =>
-          loan.id === selectedLoan.id ? { ...loan, dueDate: newDate } : loan,
-        ),
-      );
+      setLoans((prev) => prev.map((loan) => (loan.id === selectedLoan.id ? { ...loan, dueDate: newDate } : loan)));
 
       setIsAdjustModalOpen(false);
       showSuccess('Data Alterada!', 'A data de entrega foi atualizada com sucesso no banco.');
@@ -167,11 +163,7 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
 
       await returnLoanStatus(selectedLoan.id, todayString);
 
-      setLoans((prev) =>
-        prev.map((loan) =>
-          loan.id === selectedLoan.id ? { ...loan, status: 'returned' } : loan,
-        ),
-      );
+      setLoans((prev) => prev.map((loan) => (loan.id === selectedLoan.id ? { ...loan, status: 'returned' } : loan)));
 
       setIsAdjustModalOpen(false);
       showSuccess('Livro Devolvido!', 'A devolução foi registrada no banco de dados.');
@@ -188,11 +180,7 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
 
       await returnLoanStatus(selectedLoan.id, todayString, justificationText);
 
-      setLoans((prev) =>
-        prev.map((loan) =>
-          loan.id === selectedLoan.id ? { ...loan, status: 'returned' } : loan,
-        ),
-      );
+      setLoans((prev) => prev.map((loan) => (loan.id === selectedLoan.id ? { ...loan, status: 'returned' } : loan)));
 
       setIsAdjustModalOpen(false);
       showSuccess('Devolução Registrada', 'Justificativa salva com sucesso!');
@@ -268,7 +256,7 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
                     key={loan.id}
                     title={loan.book?.name || 'Livro Desconhecido'}
                     imageSrc={loan.book?.imageSrc || '/assets/images/mock-book.png'}
-                    dueDate={loan.dueDate}
+                    dueDate={loan.status === 'pending' ? 'Pendente' : loan.dueDate}
                     status={loan.status}
                     onAdjustClick={() => {
                       if (!isOwnProfile) {
@@ -303,6 +291,7 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
                   <Link key={book.slug} href={`/Books/${book.slug}`}>
                     <BookDisplay
                       key={book.id}
+                      bookId={book.id}
                       title={book.name}
                       description={book.description}
                       imageSrc={book.imageSrc ? book.imageSrc : '/assets/images/mock-book.png'}
@@ -326,6 +315,7 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
             onChangeDueDate={handleChangeDueDate}
             onReturnBook={handleReturnBook}
             onJustifyAndReturn={handleJustifyAndReturn}
+            isAdmin={isAdmin}
           />
 
           <ReviewModal

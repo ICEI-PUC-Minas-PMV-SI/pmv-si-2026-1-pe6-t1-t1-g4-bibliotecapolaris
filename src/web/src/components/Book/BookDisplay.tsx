@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { LikeButton, WithdrawButton } from '@/components';
+import { ActionButton, LikeButton, WithdrawButton } from '@/components';
+import { useRouter } from 'next/navigation';
 
 type BookDisplayProps = {
+  bookId: string;
   title: string;
   description: string;
   imageSrc: string;
@@ -13,6 +15,7 @@ type BookDisplayProps = {
 };
 
 export function BookDisplay({
+  bookId,
   title = '',
   description = '',
   imageSrc = '',
@@ -20,6 +23,7 @@ export function BookDisplay({
   onToggleFavorite,
 }: BookDisplayProps) {
   const [img, setImg] = useState(imageSrc);
+  const router = useRouter();
 
   return (
     <article className="flex flex-col shrink-0 align-center gap-3 p-4 bg-(--foreground) border border-(--text) rounded-xs w-[320px] min-w-0">
@@ -43,7 +47,7 @@ export function BookDisplay({
       </p>
 
       <div className="flex gap-2 w-full">
-        <WithdrawButton />
+        <ActionButton title="Retirar" className="flex-1 text-2xl" />
 
         <LikeButton isFavorite={isFavorite} onToggle={onToggleFavorite} />
       </div>

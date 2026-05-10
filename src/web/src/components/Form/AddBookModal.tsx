@@ -58,8 +58,24 @@ export function AddBookModal({
     setForm(data);
   }, [open]);
 
-  async function handleSubmit(e: React.SubmitEvent) {
+  function validate(): string | null {
+    if (!form.isbn.trim()) return 'ISBN é obrigatório.';
+    if (!form.name.trim()) return 'Nome do livro é obrigatório.';
+    if (!form.author.trim()) return 'Autor é obrigatório.';
+    if (!form.year || Number(form.year) <= 0) return 'Ano de publicação é obrigatório e deve ser positivo.';
+    if (!form.categories.trim()) return 'Pelo menos uma categoria é obrigatória.';
+    if (!form.description.trim()) return 'Descrição é obrigatória.';
+    if (!form.totalQuantity || form.totalQuantity <= 0) return 'Quantidade total deve ser maior que 0.';
+    if (form.totalAvailable < 0) return 'Cópias disponíveis não pode ser negativo.';
+    if (form.totalAvailable > form.totalQuantity) return 'Cópias disponíveis não pode ser maior que a quantidade total.';
+    return null;
+  }
+
+  async function handleSubmit(e: { preventDefault(): void }) {
     e.preventDefault();
+
+    const validationError = validate();
+    if (validationError) return showError('Campos inválidos', validationError);
 
     const clean = (form.isbn ?? '').replace(/-/g, '').trim();
 
@@ -81,10 +97,13 @@ export function AddBookModal({
         onClose();
       });
     } catch (err) {
-      showError('Erro!', err instanceof Error ? err.message : 'Erro ao adicionar livro');
+      const msg = err instanceof Error ? err.message : String(err);
+      showError('Erro ao salvar livro', msg);
     }
   }
 
+  if (!open) return null;
+  
   return (
     <BaseInputModal
       open={open}

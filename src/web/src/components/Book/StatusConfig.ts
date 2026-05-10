@@ -1,4 +1,4 @@
-export type BookStatus = 'to_due' | 'overdue' | 'far_due';
+export type BookStatus = 'to_due' | 'overdue' | 'far_due' | 'pending';
 
 /**
  * Converte string em `dd/mm/yyyy` (pt-BR) ou `yyyy-mm-dd` (ISO) para Date local.
@@ -77,9 +77,21 @@ export const StatusConfig = {
     color: 'var(--status-success)',
     buttonText: 'Antecipar Entrega',
   },
+  pending: {
+    color: 'var(--status-warning)',
+    buttonText: '',
+  },
 } as const;
 
-export function resolveBookStatus(dueDate: Date | string) {
+export function resolveBookStatus(dueDate: Date | string, status?: string) {
+  if (status === 'pending') {
+    return {
+      type: 'pending' as BookStatus,
+      config: StatusConfig.pending,
+      label: 'Pendente',
+    };
+  }
+
   const type = getBookStatus(dueDate);
 
   return {

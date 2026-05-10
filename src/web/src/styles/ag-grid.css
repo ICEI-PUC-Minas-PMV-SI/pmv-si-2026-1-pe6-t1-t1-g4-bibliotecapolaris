@@ -2,7 +2,7 @@
   --ag-border-color: #1f1a18;
   --ag-row-border-color: #1f1a18;
 
-  --ag-background-color: #fff;
+  --ag-background-color: #fff7e6;
 
   --ag-borders: none;
 }
@@ -45,9 +45,16 @@
   border-right: 1px solid #1f1a18;
   border-bottom: 1px solid #1f1a18;
 
-  background-color: #fff;
+  background-color: #fff7e6;
 }
 
 .ag-theme-custom .ag-row:last-child .ag-cell {
   border-bottom: none;
+}
+
+.ag-theme-custom .ag-body-viewport,
+.ag-theme-custom .ag-center-cols-viewport,
+.ag-theme-custom .ag-center-cols-container,
+.ag-theme-custom .ag-body {
+  background-color: #fff7e6;
 }

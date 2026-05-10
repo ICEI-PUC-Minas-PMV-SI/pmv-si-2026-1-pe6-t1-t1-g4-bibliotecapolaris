@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { handleError, hashPassword, sendSuccess, verifyPassword } from '@/utils';
-import { createUser, getUserById, updateUser, deleteUser, getUserBySlug } from '@/services';
+import { createUser, getUserById, updateUser, deleteUser, getUserBySlug, getStudents } from '@/services';
 import { CreateUserSchema, UpdateUserSchema } from '@/models/UserModel';
 import { prisma } from '@/lib/prisma';
 
@@ -104,6 +104,15 @@ export async function deleteUserController(req: Request, res: Response) {
     return sendSuccess(res, `Usuário deletado com sucesso!`, 202);
   } catch (error: any) {
     return handleError(res, error, 'Usuário');
+  }
+}
+
+export async function getStudentsController(req: Request, res: Response) {
+  try {
+    const students = await getStudents();
+    return sendSuccess(res, students, 200);
+  } catch (error: any) {
+    return handleError(res, error, 'Estudantes');
   }
 }
 

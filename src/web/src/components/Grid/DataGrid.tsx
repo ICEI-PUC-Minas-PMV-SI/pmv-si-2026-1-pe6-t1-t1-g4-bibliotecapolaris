@@ -81,13 +81,13 @@ export function DataGrid({ columnDefs, rowData, onRowClick, context }: DataGridP
         />
 
         <span className="font-bold font-serif text-2xl text-(--text)">
-          Página {currentPage + 1} de {totalPages}
+          Página {currentPage + 1} de {Math.max(1, totalPages)}
         </span>
 
         <ActionButton
           title="Próxima"
           onClick={() => gridRef.current?.api.paginationGoToNextPage()}
-          disabled={currentPage === totalPages - 1}
+          disabled={currentPage >= totalPages - 1}
         />
       </div>
     </section>

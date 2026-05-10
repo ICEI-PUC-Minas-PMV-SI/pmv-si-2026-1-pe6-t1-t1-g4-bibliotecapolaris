@@ -1,3 +1,4 @@
+import { LoanStatus } from '@prisma/client';
 import { z } from 'zod';
 
 export const LoanCreateSchema = z.object({
@@ -5,11 +6,11 @@ export const LoanCreateSchema = z.object({
   bookId: z.uuid(),
   loanDate: z.string(),
   dueDate: z.string(),
-  status: z.enum(['in_progress', 'returned', 'canceled', 'overdue']),
+  status: z.enum(LoanStatus),
 });
 
 export const LoanUpdateSchema = LoanCreateSchema.partial().extend({
-  status: z.enum(['in_progress', 'returned', 'canceled', 'overdue']),
+  status: z.enum(LoanStatus),
   returnDate: z.string().optional(),
 
   justification: z.string().optional(),
@@ -25,7 +26,7 @@ export const LoanSchema = z.object({
 
   justification: z.string().nullable().optional(),
 
-  status: z.enum(['in_progress', 'returned', 'canceled', 'overdue']),
+  status: z.enum(LoanStatus),
 });
 
 export const LoanWithUserSchema = LoanSchema.extend({
@@ -33,7 +34,7 @@ export const LoanWithUserSchema = LoanSchema.extend({
     .object({
       id: z.uuid(),
       name: z.string(),
-      email: z.string().email(),
+      email: z.email(),
     })
     .optional(),
 });

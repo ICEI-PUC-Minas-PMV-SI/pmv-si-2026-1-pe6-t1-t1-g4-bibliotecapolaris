@@ -8,12 +8,16 @@ import {
   deleteLoanController,
   getLoansByStudentControllerById,
   getLoansByStatusControllerByStatus,
+  checkOverdueLoansController,
 } from '@/controllers';
 import { validateBody } from '@/utils/validation';
 import { LoanCreateSchema, LoanUpdateSchema } from '@/services/loan/schema';
 import { requireAuth, requireAdmin } from '@/middleware/auth';
 
 const router = Router();
+
+// Admin: marcar empréstimos vencidos
+router.post('/loans/check-overdue', requireAuth, requireAdmin, checkOverdueLoansController);
 
 // Admin: visão geral
 router.get('/loans', requireAuth, requireAdmin, getAllLoansController);

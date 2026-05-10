@@ -25,6 +25,12 @@ export const registerUser = async (name: string, email: string, password: string
   return { status: res.status, data };
 };
 
+export const getStudents = async () => {
+  const res = await apiFetch('/users/students', { auth: true });
+  const data = await res.json();
+  return (data.data ?? []) as { id: string; name: string; email: string; slug: string }[];
+};
+
 export const updateUserName = async (id: string, name: string) => {
   const res = await apiFetch(`/users/${id}`, {
     method: 'PUT',

@@ -67,3 +67,11 @@ export async function deleteUser(id: string) {
     where: { id },
   });
 }
+
+export async function getStudents() {
+  return prisma.user.findMany({
+    where: { type: 'student' },
+    select: { id: true, name: true, email: true, slug: true },
+    orderBy: { name: 'asc' },
+  });
+}

@@ -8,9 +8,11 @@ import {
   deleteLoan,
   getLoansByStudent,
   getLoansByStatus,
+  markOverdueLoans,
 } from '@/services';
 import { handleError, sendSuccess } from '@/utils';
 import { LoanCreateSchema, LoanUpdateSchema } from '@/services/loan/schema';
+import { LoanStatus } from '@prisma/client';
 
 export async function getAllLoansController(_req: Request, res: Response) {
   try {
@@ -157,6 +159,15 @@ export async function getLoansByStudentControllerById(studentId: string | undefi
   }
 }
 
+export async function checkOverdueLoansController(_req: Request, res: Response) {
+  try {
+    const result = await markOverdueLoans();
+    return sendSuccess(res, { updated: result.count });
+  } catch (error) {
+    handleError(res, error, 'Empréstimo');
+  }
+}
+
 export async function getLoansByStatusController(req: Request, res: Response) {
   try {
     const status = Array.isArray(req.params.status) ? req.params.status[0] : req.params.status;
@@ -172,7 +183,7 @@ export async function getLoansByStatusControllerByStatus(status: string | undefi
       return res.status(400).json({ error: true, errorCode: 'ERR_INVALID_STATUS', message: 'Status inválido' });
     }
 
-    const loans = await getLoansByStatus(status as 'in_progress' | 'returned' | 'canceled' | 'overdue');
+    const loans = await getLoansByStatus(status as LoanStatus);
     return res.status(200).json({ error: false, data: loans });
   } catch (error) {
     handleError(res, error, 'Empréstimo');

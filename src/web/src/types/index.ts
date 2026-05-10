@@ -9,7 +9,7 @@ export type Loan = {
   loanDate: string | Date;
   dueDate: string | Date;
   returnDate?: string | Date | null;
-  status: 'in_progress' | 'returned' | 'overdue' | 'canceled';
+  status: 'in_progress' | 'returned' | 'overdue' | 'canceled' | 'pending';
   justification?: string | null;
   book: BookOptional;
 };

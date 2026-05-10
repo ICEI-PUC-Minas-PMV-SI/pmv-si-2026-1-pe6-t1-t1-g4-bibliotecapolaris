@@ -3,20 +3,21 @@ import type { z } from 'zod';
 import { LoanCreateSchema, LoanUpdateSchema } from './schema';
 
 import { prisma } from '@/lib/prisma';
+import { LoanStatus } from '@prisma/client';
 
 type LoanCreateInput = z.infer<typeof LoanCreateSchema>;
 type LoanUpdateInput = z.infer<typeof LoanUpdateSchema>;
 
 export async function getAllLoans() {
   return prisma.loan.findMany({
-    include: { student: true },
+    include: { student: true, book: true },
   });
 }
 
 export async function getLoanById(id: string) {
   return prisma.loan.findUniqueOrThrow({
     where: { id },
-    include: { student: true },
+    include: { student: true, book: true },
   });
 }
 
@@ -57,9 +58,22 @@ export async function getLoansByStudent(studentId: string) {
   });
 }
 
-export async function getLoansByStatus(status: 'in_progress' | 'returned' | 'canceled' | 'overdue') {
+export async function getLoansByStatus(status: LoanStatus) {
   return prisma.loan.findMany({
     where: { status },
-    include: { student: true },
+    include: { student: true, book: true },
+  });
+}
+
+export async function markOverdueLoans() {
+  const d = new Date();
+  const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+  return prisma.loan.updateMany({
+    where: {
+      status: 'in_progress',
+      dueDate: { lt: today },
+    },
+    data: { status: 'overdue' },
   });
 }
