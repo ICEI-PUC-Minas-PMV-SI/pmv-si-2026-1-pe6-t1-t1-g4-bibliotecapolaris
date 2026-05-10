@@ -319,6 +319,11 @@ A imagem a seguir apresenta a execução dos testes unitários (Jest), evidencia
 
 <img width="693" height="447" alt="test-books" src="https://github.com/user-attachments/assets/225b2c40-8828-40b2-80e7-b6d8a70e5306" />
 
+### 2. ControlPanel e Empréstimos:
+
+<img width="803" height="1026" alt="image" src="https://github.com/user-attachments/assets/aebf1ae0-a6bb-400a-a8d5-239d0e6b926e" />
+
+
 # Referências
 
 Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvolvimento do trabalho.
