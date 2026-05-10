@@ -162,13 +162,20 @@ export async function listCategories() {
   const categoryMap = new Map<string, string>();
 
   books.forEach((book) => {
-    const categories = book.categories.split(',').map((c) => c.trim());
-    categories.forEach((cat) => {
-      const normalizedCat = cat.trim() ? cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase() : '';
-      if (normalizedCat && !categoryMap.has(normalizedCat)) {
+    const categories = book.categories
+      .split(',')
+      .map((c) => c.trim())
+      .filter(Boolean);
+
+    for (const cat of categories) {
+      const normalizedCat = cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase();
+
+      if (!categoryMap.has(normalizedCat)) {
         categoryMap.set(normalizedCat, book.imageSrc || '/assets/images/mock-book.png');
+
+        break;
       }
-    });
+    }
   });
 
   return Array.from(categoryMap.entries()).map(([name, imageSrc]) => ({

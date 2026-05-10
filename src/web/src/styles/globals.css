@@ -51,7 +51,7 @@
   --status-error: #e53a41;
   --status-warning: #ffaa00;
   --status-success: #00ff2f;
-  --status-in-progress: #c9a227;
+  --status-in-progress: #ffaa00;
   --status-canceled: #a93226;
 }
 
