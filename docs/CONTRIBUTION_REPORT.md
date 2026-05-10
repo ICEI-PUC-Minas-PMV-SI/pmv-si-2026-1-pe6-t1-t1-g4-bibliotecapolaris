@@ -1,6 +1,6 @@
 # 📊 Relatório de Contribuições do Projeto
 
-**Última atualização:** 10/05/2026 19:40
+**Última atualização:** 10/05/2026 21:14
 
 ---
 
@@ -12,19 +12,19 @@
 | Fabiana               |        18 |        56 |        29 |          3 |             18 |               3 |
 | Fabiana Santos Soares |        12 |      1326 |       423 |         22 |              0 |               0 |
 | Filipe Acacio         |         7 |       845 |       328 |         21 |              0 |               0 |
-| Filipeacacio1         |        25 |      1116 |       524 |         19 |             18 |               4 |
+| Filipeacacio1         |        27 |      1137 |       527 |         20 |             20 |               5 |
 | LJ-Leonardo           |        10 |      6250 |       688 |         17 |              3 |               1 |
 | Leonardo Guedes       |         3 |       941 |       203 |         36 |              2 |               2 |
 | Leonardo Junior       |        25 |        74 |        76 |          7 |             19 |               3 |
 | Lucas Fonseca         |        31 |      6538 |       854 |         55 |             19 |               4 |
-| github-actions[bot]   |        69 |       624 |       606 |          3 |             69 |               1 |
+| github-actions[bot]   |        70 |       635 |       617 |          3 |             70 |               1 |
 | github-classroom[bot] |         1 |      2152 |         0 |         45 |              1 |              13 |
 | vcrfrancisco          |       111 |      8429 |      1971 |        111 |             21 |               5 |
 
 
 ## 📅 Contribuições Semanais (Todo o Semestre)
 
-**2026-05-03**: Davih Duque: 18, Fabiana: 1, Fabiana Santos Soares: 1, Filipe Acacio: 1, Filipeacacio1: 5, Leonardo Guedes: 3, Leonardo Junior: 2, Lucas Fonseca: 5, github-actions[bot]: 12, vcrfrancisco: 23
+**2026-05-03**: Davih Duque: 18, Fabiana: 1, Fabiana Santos Soares: 1, Filipe Acacio: 1, Filipeacacio1: 7, Leonardo Guedes: 3, Leonardo Junior: 2, Lucas Fonseca: 5, github-actions[bot]: 13, vcrfrancisco: 23
 
 **2026-04-26**: Davih Duque: 11, Fabiana: 1, Fabiana Santos Soares: 2, Filipe Acacio: 2, Lucas Fonseca: 2, github-actions[bot]: 3
 
