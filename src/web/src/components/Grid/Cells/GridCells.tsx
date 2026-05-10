@@ -79,16 +79,16 @@ export function HistoricoStatusCell(params: any) {
   if (returnDate) {
     const late = returnDate > dueDate;
     label = late ? 'Devolvido com atraso' : 'Devolvido no prazo';
-    color = late ? 'var(--status-error)' : 'var(--status-success)';
+    color = late ? '#e53a41' : '#00ff2f';
   } else if (status === 'overdue') {
     label = 'Em atraso — não devolvido';
-    color = 'var(--status-error)';
+    color = '#e53a41';
   } else if (status === 'canceled') {
     label = 'Cancelado';
-    color = 'var(--status-canceled)';
+    color = '#a93226';
   } else {
     label = 'Em andamento';
-    color = 'var(--status-in-progress)';
+    color = '#c9a227';
   }
 
   return (
