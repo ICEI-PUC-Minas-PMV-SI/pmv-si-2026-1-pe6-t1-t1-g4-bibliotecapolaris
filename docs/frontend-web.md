@@ -323,6 +323,24 @@ A imagem a seguir apresenta a execução dos testes unitários (Jest), evidencia
 
 <img width="803" height="1026" alt="image" src="https://github.com/user-attachments/assets/aebf1ae0-a6bb-400a-a8d5-239d0e6b926e" />
 
+### 3. Autenticação e Registro de Usuários
+
+Foco em testar o fluxo completo de cadastro de usuários, garantindo a robustez das validações de formulário (client-side) e a correta resposta da interface frente às diferentes interações com a API.
+
+- **Ferramentas:** Jest (test runner), React Testing Library (renderização de componentes), ts-jest (suporte a TypeScript).
+- **Escopo Implementado:** Testes detalhados para a tela de registro (`SignPage`).
+- **Cenários Cobertos:**
+  - Renderização correta do formulário e seus respectivos campos de entrada (Nome, Email e Senha).
+  - Fluxo de sucesso (Caminho Feliz): preenchimento válido, chamada correta aos serviços da API (`registerUser`), exibição do modal de confirmação e redirecionamento seguro de rota.
+  - Tratamento de exceções da API: exibição de feedback visual adequado quando o servidor recusa o cadastro (ex: e-mail já existente ou senha fora do padrão).
+  - Validações de Front-end: bloqueio de envio de requisições quando os campos obrigatórios estão vazios ou quando o formato do e-mail é inválido.
+  - Integração com contextos globais de alerta (`useAlertModal`) e roteamento do Next.js (`useRouter`).
+
+A imagem a seguir apresenta a execução dos testes unitários (Jest) da rotina de usuários, evidenciando a cobertura e validação dos cenários mapeados:
+
+<img width="660" height="250" alt="testes" src="https://github.com/user-attachments/assets/161d05c6-9d9b-4158-a5bf-16ba1d50a16b" />
+
+
 
 # Referências
 
