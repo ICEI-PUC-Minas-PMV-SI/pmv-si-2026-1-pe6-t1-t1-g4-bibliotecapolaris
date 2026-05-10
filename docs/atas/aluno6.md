@@ -15,8 +15,8 @@
 | 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ✅ | Testes e documentação do endpoint de avaliação | ✅ |
 | 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ✅ | Criar componente de Review para o Book | ✅ |
 | 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ✅ | Criar componente de Review para o Book | ✅ |
-| 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ✅ | Criar componente de Review para o Book e integrarar com a página de User |  |
-| 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ⬜ |  |  |
+| 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ✅ | Criar componente de Review para o Book e integrarar com a página de User | ✅ |
+| 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ✅ | Criar componente de Review para o Book e integrarar com a página de User | ✅ |
 | 11/05 - 17/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ⬜ |  |  |
 | 18/05 - 24/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 1 | ⬜ |  |  |
 | 25/05 - 31/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 2 | ⬜ |  |  |
