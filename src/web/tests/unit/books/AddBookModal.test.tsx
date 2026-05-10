@@ -23,6 +23,9 @@ import { initialBookForm } from '@/types/formTypes';
 
 // ─── Mocks ───────────────────────────────────────────────────────────────────
 
+// AddBookModal importa @/components barrel que puxa WithdrawButton → @/services/Loans → @/lib/api
+jest.mock('@/lib/api', () => ({ apiFetch: jest.fn() }));
+
 // next/image não funciona no jsdom — substituímos por um <img> simples
 jest.mock('next/image', () => ({
   __esModule: true,
@@ -170,10 +173,12 @@ describe('AddBookModal — Criação de Livros', () => {
     mockAddNewBook.mockResolvedValueOnce({ id: 'abc' });
     renderModal();
 
-    await user.type(
-      screen.getByPlaceholderText('Universo em numa casca de noz'),
-      'Livro Qualquer',
-    );
+    // Todos os campos obrigatórios devem ser preenchidos para a validação passar
+    await user.type(screen.getByPlaceholderText('9780553802023'), '9780553802023');
+    await user.type(screen.getByPlaceholderText('Universo em numa casca de noz'), 'Livro Qualquer');
+    await user.type(screen.getByPlaceholderText('Stephen Hawking'), 'Autor Teste');
+    await user.type(screen.getByPlaceholderText('Estudos, Física'), 'ficção');
+    await user.type(screen.getByPlaceholderText(/Lorem ipsum/), 'Descrição de teste.');
 
     act(() => jest.advanceTimersByTime(600));
 
@@ -194,35 +199,40 @@ describe('AddBookModal — Criação de Livros', () => {
     mockAddNewBook.mockRejectedValueOnce(new Error('ISBN já cadastrado.'));
     renderModal();
 
-    await user.type(
-      screen.getByPlaceholderText('Universo em numa casca de noz'),
-      'Livro com Erro',
-    );
+    await user.type(screen.getByPlaceholderText('9780553802023'), '9780553802023');
+    await user.type(screen.getByPlaceholderText('Universo em numa casca de noz'), 'Livro com Erro');
+    await user.type(screen.getByPlaceholderText('Stephen Hawking'), 'Autor Teste');
+    await user.type(screen.getByPlaceholderText('Estudos, Física'), 'ficção');
+    await user.type(screen.getByPlaceholderText(/Lorem ipsum/), 'Descrição de teste.');
 
     act(() => jest.advanceTimersByTime(600));
 
     await user.click(screen.getByRole('button', { name: 'Adicionar' }));
 
     await waitFor(() => {
-      expect(mockShowError).toHaveBeenCalledWith('Erro!', 'ISBN já cadastrado.');
+      expect(mockShowError).toHaveBeenCalledWith('Erro ao salvar livro', 'ISBN já cadastrado.');
     });
   });
 
   // ── RTL-07 ──────────────────────────────────────────────────────────────
-  test('RTL-07 · Erro genérico exibe mensagem padrão quando a exceção não tem mensagem', async () => {
+  test('RTL-07 · Erro genérico exibe mensagem de string quando a exceção não é Error', async () => {
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
-    // Rejeita com algo que não é instanceof Error
+    // Rejeita com algo que não é instanceof Error — deve usar String(err)
     mockAddNewBook.mockRejectedValueOnce('erro desconhecido');
     renderModal();
 
+    await user.type(screen.getByPlaceholderText('9780553802023'), '9780553802023');
     await user.type(screen.getByPlaceholderText('Universo em numa casca de noz'), 'Livro');
+    await user.type(screen.getByPlaceholderText('Stephen Hawking'), 'Autor Teste');
+    await user.type(screen.getByPlaceholderText('Estudos, Física'), 'ficção');
+    await user.type(screen.getByPlaceholderText(/Lorem ipsum/), 'Descrição de teste.');
 
     act(() => jest.advanceTimersByTime(600));
 
     await user.click(screen.getByRole('button', { name: 'Adicionar' }));
 
     await waitFor(() => {
-      expect(mockShowError).toHaveBeenCalledWith('Erro!', 'Erro ao adicionar livro');
+      expect(mockShowError).toHaveBeenCalledWith('Erro ao salvar livro', 'erro desconhecido');
     });
   });
 
