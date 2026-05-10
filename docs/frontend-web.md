@@ -1,4 +1,4 @@
-# Front-end Web
+<img width="3366" height="204" alt="image" src="https://github.com/user-attachments/assets/fde3fdea-ae1a-4f33-9e09-f6f2597f9075" /># Front-end Web
 
 Este projeto consiste no desenvolvimento de uma interface web para o sistema de gestão da Biblioteca da Universidade Polaris. A aplicação tem como objetivo permitir que usuários interajam de forma intuitiva com o sistema, realizando operações relacionadas ao acervo, como consulta de livros, empréstimos, devoluções e reservas.
 
@@ -86,6 +86,20 @@ Quando o usuário seleciona um livro:
 Usuários autenticados podem realizar ações como:
 
 - Empréstimo de livros
+
+Empréstimos podem ser solicitados para retirada presencial e/ou aprovação do admin a partir da página do livro ou a partir do Landing Page principal. Ao clicar em "Retirar" um livro, abre-se a seguinte tela:
+
+<img width="439" height="389" alt="image" src="https://github.com/user-attachments/assets/e832029c-8106-45f0-b021-0b6a8ac5a9d3" />
+
+Na qual é possível selecionar 7 ou 14 dias para ficar com o livro.
+
+Esse pedido de empréstimo será visível pelo Admin no /ControlPanel, no formato:
+
+<img width="3351" height="484" alt="image" src="https://github.com/user-attachments/assets/9abacaa4-e922-4e09-a1b3-e68f1767d825" />
+
+Caso seja aprovado, ele constará como "Em andamento", e caso seja cancelado constará como "Cancelado":
+<img width="2632" height="139" alt="image" src="https://github.com/user-attachments/assets/7b3c20ba-bfd3-473f-888c-ae4516b508d8" />
+
 - Favoritar itens
 
 Fluxo dessas ações:
@@ -125,7 +139,28 @@ Fluxo:
 - As ações realizadas enviam requisições específicas para a API
 - A API valida privilégios antes de executar qualquer operação
 
-7. Padrão geral do fluxo
+No painel de controle, temos 3 abas:
+<img width="3354" height="607" alt="image" src="https://github.com/user-attachments/assets/11d9008e-dd70-481a-a4c5-9b5b544da822" />
+
+A aba de livros exibe informações dos livros. Nessa aba, também é possível "adicionar" para abrir a tela de cadastro de livro:
+<img width="908" height="1047" alt="image" src="https://github.com/user-attachments/assets/c9005961-8225-4f2c-97bf-1d5c95ea9b95" />
+
+Ela também permite selecionar um livro da lista e editá-lo:
+<img width="845" height="993" alt="image" src="https://github.com/user-attachments/assets/0b6e4208-d731-43cf-8929-346011070aaf" />
+
+
+O Painel de solicitações exibe solicitações pendentes tanto abertas pelos admins quanto pelos alunos pela interface do sistema de empréstimos para serem aceitas ou rejeitadas:
+<img width="3366" height="204" alt="image" src="https://github.com/user-attachments/assets/d66f1b65-c9d3-4dae-bf98-677b204344de" />
+
+
+Por fim, o Painel de Empréstimos exibe todos os empréstimos e seus respectivos Status.
+<img width="3333" height="424" alt="image" src="https://github.com/user-attachments/assets/8228fd7c-103d-40dc-a206-fe76eceb3aa1" />
+
+Ao clicar em um empréstimo _Em andamento_, também é possível editá-lo para dá-lo como entregue ou alterar a data de entrega prevista:
+<img width="486" height="299" alt="image" src="https://github.com/user-attachments/assets/20f10bec-6271-48fb-be4e-82dfccdbe064" />
+
+
+### 7. Padrão geral do fluxo
 
 - De forma geral, a aplicação segue o padrão cliente-servidor:
 
@@ -140,6 +175,7 @@ O back-end:
 - Processa regras de negócio
 - Valida autenticação e autorização
 - Retorna respostas estruturadas
+
 
 ## Tecnologias Utilizadas
 
@@ -243,6 +279,10 @@ As seguintes práticas de segurança foram identificadas como próximos passos p
 | Sanitização explícita de conteúdo          | Aplicação de bibliotecas como **DOMPurify** em campos que possam vir a renderizar HTML proveniente do usuário           |
 | Proteção contra CSRF                       | Implementação de tokens _anti-CSRF_ em conjunto com o uso de cookies para autenticação                                  |
 | Rate Limiting no cliente                   | Controle de tentativas seguidas de login no front-end como camada complementar à proteção do backend                    |
+
+### Painel de Controle
+
+
 
 ## Implantação
 
