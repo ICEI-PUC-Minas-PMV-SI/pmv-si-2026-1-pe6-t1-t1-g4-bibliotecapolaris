@@ -1,4 +1,4 @@
-<img width="3366" height="204" alt="image" src="https://github.com/user-attachments/assets/fde3fdea-ae1a-4f33-9e09-f6f2597f9075" /># Front-end Web
+# Front-end Web
 
 Este projeto consiste no desenvolvimento de uma interface web para o sistema de gestão da Biblioteca da Universidade Polaris. A aplicação tem como objetivo permitir que usuários interajam de forma intuitiva com o sistema, realizando operações relacionadas ao acervo, como consulta de livros, empréstimos, devoluções e reservas.
 
