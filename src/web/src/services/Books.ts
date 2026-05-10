@@ -89,3 +89,18 @@ export async function deleteBook(id: string) {
     data,
   };
 }
+
+export async function createReview(data: { loanId: string; rating: number; description?: string; date: string }) {
+  const res = await apiFetch('/review', {
+    method: 'POST',
+    auth: true,
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => null);
+    throw new Error(error?.message || 'Erro ao criar avaliação');
+  }
+
+  return res.json();
+}

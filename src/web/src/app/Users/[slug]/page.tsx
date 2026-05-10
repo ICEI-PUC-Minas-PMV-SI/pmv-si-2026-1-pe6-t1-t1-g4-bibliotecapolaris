@@ -8,9 +8,11 @@ import { useAlertModal } from '@/hooks/useAlertModal';
 import { useAuth } from '@/context/AuthContext';
 
 import { updateUserName, getUserBySlug } from '@/services/User';
+import { createReview } from '@/services/Books';
 
 import { ActionButton, BookDisplay, BookStatusCard, Footer, Header } from '@/components';
 import { AdjustLoanModal } from '@/components/Book/AdjustLoanModal';
+import { ReviewModal } from '@/components/Book/ReviewModal';
 import { ProtectedRoute } from '@/components/Global/ProtectedRoute';
 
 import { Loan, User } from '@/types';
@@ -35,11 +37,13 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
   const [isAdjustModalOpen, setIsAdjustModalOpen] = useState(false);
   const [selectedLoan, setSelectedLoan] = useState<Loan | null>(null);
 
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [selectedLoanForReview, setSelectedLoanForReview] = useState<Loan | null>(null);
+
   useEffect(() => {
     async function loadProfile() {
       try {
         const userData = await getUserBySlug(slug);
-
         setProfileUser(userData);
       } catch (err) {
         console.error('Erro ao carregar perfil:', err);
@@ -55,7 +59,6 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
     async function loadLoans() {
       try {
         const data = await getLoansByUserId(profileUser?.id ?? '');
-
         setLoans(data ?? []);
       } catch (err) {
         console.error('Erro ao carregar empréstimos:', err);
@@ -70,7 +73,6 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
   useEffect(() => {
     if (error) {
       showError('Erro ao favoritar', 'Não foi possível atualizar sua lista.');
-
       setError(null);
     }
   }, [error]);
@@ -89,12 +91,7 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
 
       if (status === 200 || status === 202) {
         setProfileUser((prev) =>
-          prev
-            ? {
-                ...prev,
-                name: nameInput.trim(),
-              }
-            : null,
+          prev ? { ...prev, name: nameInput.trim() } : null,
         );
 
         if (isOwnProfile) {
@@ -102,7 +99,6 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
         }
 
         setEditingName(false);
-
         showSuccess('Sucesso!', 'Nome atualizado!');
       } else {
         showError('Erro', 'Não foi possível atualizar o nome.');
@@ -116,8 +112,32 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
 
   function handleOpenAdjustments(loan: Loan) {
     setSelectedLoan(loan);
-
     setIsAdjustModalOpen(true);
+  }
+
+  function handleOpenReview(loan: Loan) {
+    setSelectedLoanForReview(loan);
+    setIsReviewModalOpen(true);
+  }
+
+  async function handleCreateReview(rating: number, description: string) {
+    if (!selectedLoanForReview) return;
+
+    try {
+      const today = new Date().toISOString().split('T')[0];
+
+      await createReview({
+        loanId: selectedLoanForReview.id,
+        rating,
+        description,
+        date: today,
+      });
+
+      showSuccess('Avaliação enviada!', 'Obrigada pela sua avaliação!');
+      setIsReviewModalOpen(false);
+    } catch {
+      showError('Erro', 'Não foi possível enviar a avaliação.');
+    }
   }
 
   async function handleChangeDueDate(newDate: string) {
@@ -128,17 +148,11 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
 
       setLoans((prev) =>
         prev.map((loan) =>
-          loan.id === selectedLoan.id
-            ? {
-                ...loan,
-                dueDate: newDate,
-              }
-            : loan,
+          loan.id === selectedLoan.id ? { ...loan, dueDate: newDate } : loan,
         ),
       );
 
       setIsAdjustModalOpen(false);
-
       showSuccess('Data Alterada!', 'A data de entrega foi atualizada com sucesso no banco.');
     } catch {
       showError('Erro', 'Não foi possível alterar a data no sistema.');
@@ -155,17 +169,11 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
 
       setLoans((prev) =>
         prev.map((loan) =>
-          loan.id === selectedLoan.id
-            ? {
-                ...loan,
-                status: 'returned',
-              }
-            : loan,
+          loan.id === selectedLoan.id ? { ...loan, status: 'returned' } : loan,
         ),
       );
 
       setIsAdjustModalOpen(false);
-
       showSuccess('Livro Devolvido!', 'A devolução foi registrada no banco de dados.');
     } catch {
       showError('Erro', 'Não foi possível registrar a devolução.');
@@ -182,17 +190,11 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
 
       setLoans((prev) =>
         prev.map((loan) =>
-          loan.id === selectedLoan.id
-            ? {
-                ...loan,
-                status: 'returned',
-              }
-            : loan,
+          loan.id === selectedLoan.id ? { ...loan, status: 'returned' } : loan,
         ),
       );
 
       setIsAdjustModalOpen(false);
-
       showSuccess('Devolução Registrada', 'Justificativa salva com sucesso!');
     } catch {
       showError('Erro', 'Não foi possível salvar a justificativa.');
@@ -244,7 +246,6 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
                   <button
                     onClick={() => {
                       setNameInput(profileUser.name);
-
                       setEditingName(true);
                     }}
                     className="text-(--button-active) text-sm font-sans underline cursor-pointer ml-2"
@@ -272,11 +273,16 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
                     onAdjustClick={() => {
                       if (!isOwnProfile) {
                         showError('Acesso negado', 'Eeei, esse perfil não é seu');
-
                         return;
                       }
-
                       handleOpenAdjustments(loan);
+                    }}
+                    onReviewClick={() => {
+                      if (!isOwnProfile) {
+                        showError('Acesso negado', 'Eeei, esse perfil não é seu');
+                        return;
+                      }
+                      handleOpenReview(loan);
                     }}
                   />
                 ))
@@ -320,6 +326,12 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
             onChangeDueDate={handleChangeDueDate}
             onReturnBook={handleReturnBook}
             onJustifyAndReturn={handleJustifyAndReturn}
+          />
+
+          <ReviewModal
+            isOpen={isReviewModalOpen}
+            onClose={() => setIsReviewModalOpen(false)}
+            onSubmit={handleCreateReview}
           />
 
           {ModalComponent}
