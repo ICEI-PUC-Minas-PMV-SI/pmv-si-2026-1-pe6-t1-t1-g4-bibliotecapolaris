@@ -331,7 +331,7 @@ Foco em testar o fluxo completo de cadastro de usuários, garantindo a robustez 
 - **Escopo Implementado:** Testes detalhados para a tela de registro (`SignPage`).
 - **Cenários Cobertos:**
   - Renderização correta do formulário e seus respectivos campos de entrada (Nome, Email e Senha).
-  - Fluxo de sucesso (Caminho Feliz): preenchimento válido, chamada correta aos serviços da API (`registerUser`), exibição do modal de confirmação e redirecionamento seguro de rota.
+  - Fluxo de sucesso: preenchimento válido, chamada correta aos serviços da API (`registerUser`), exibição do modal de confirmação e redirecionamento seguro de rota.
   - Tratamento de exceções da API: exibição de feedback visual adequado quando o servidor recusa o cadastro (ex: e-mail já existente ou senha fora do padrão).
   - Validações de Front-end: bloqueio de envio de requisições quando os campos obrigatórios estão vazios ou quando o formato do e-mail é inválido.
   - Integração com contextos globais de alerta (`useAlertModal`) e roteamento do Next.js (`useRouter`).
