@@ -7,6 +7,7 @@ type ReviewModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (rating: number, description: string) => Promise<void>;
+  bookTitle?: string;
 };
 
 function StarSelector({ rating, onChange }: { rating: number; onChange: (r: number) => void }) {
@@ -25,7 +26,7 @@ function StarSelector({ rating, onChange }: { rating: number; onChange: (r: numb
   );
 }
 
-export function ReviewModal({ isOpen, onClose, onSubmit }: ReviewModalProps) {
+export function ReviewModal({ isOpen, onClose, onSubmit, bookTitle }: ReviewModalProps) {
   const [rating, setRating] = useState(0);
   const [description, setDescription] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -50,7 +51,7 @@ export function ReviewModal({ isOpen, onClose, onSubmit }: ReviewModalProps) {
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
       <div className="bg-(--foreground) border border-(--text) rounded-sm p-8 flex flex-col gap-6 w-125">
-        <h2 className="font-serif text-3xl uppercase tracking-wider"> Avaliar Livro </h2>
+        <h2 className="font-serif text-3xl uppercase tracking-wider"> Avaliar Livro{bookTitle ? ` - ${bookTitle}` : ''}</h2>
 
         <div className="flex flex-col gap-2 items-center">
           <label className="font-serif text-2xl uppercase tracking-wider">Nota</label>

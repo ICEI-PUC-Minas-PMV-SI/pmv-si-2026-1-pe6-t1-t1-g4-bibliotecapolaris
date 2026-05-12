@@ -8,7 +8,7 @@ import { useAlertModal } from '@/hooks/useAlertModal';
 import { useAuth } from '@/context/AuthContext';
 
 import { updateUserName, getUserBySlug } from '@/services/User';
-import { createReview } from '@/services/Books';
+import { createReview, getReviewsByUserId } from '@/services/Books';
 
 import { ActionButton, BookDisplay, BookStatusCard, Footer, Header } from '@/components';
 import { AdjustLoanModal } from '@/components/Book/AdjustLoanModal';
@@ -70,6 +70,30 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
     loadLoans();
   }, [profileUser?.id]);
 
+  useEffect(() => {
+  if (!profileUser?.id || loans.length === 0) return;
+
+  async function loadReviews() {
+    try {
+      const reviews = await getReviewsByUserId(profileUser?.id ?? '');
+      if (!reviews) return;
+
+      const reviewedLoanIds = new Set(reviews.map((r: any) => r.loan?.id));
+
+      setLoans((prev) =>
+        prev.map((loan) => ({
+          ...loan,
+          hasReview: reviewedLoanIds.has(loan.id),
+        })),
+      );
+    } catch (err) {
+      console.error('Erro ao carregar reviews:', err);
+    }
+  }
+
+  loadReviews();
+}, [profileUser?.id, loans.length]);
+
   const { wishlist, wishlistSet, toggle, error, setError } = useWishlist(profileUser?.id ?? '');
 
   useEffect(() => {
@@ -121,24 +145,30 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
   }
 
   async function handleCreateReview(rating: number, description: string) {
-    if (!selectedLoanForReview) return;
+  if (!selectedLoanForReview) return;
 
-    try {
-      const today = new Date().toISOString().split('T')[0];
+  try {
+    const today = new Date().toISOString().split('T')[0];
 
-      await createReview({
-        loanId: selectedLoanForReview.id,
-        rating,
-        description,
-        date: today,
-      });
+    await createReview({
+      loanId: selectedLoanForReview.id,
+      rating,
+      description,
+      date: today,
+    });
 
-      showSuccess('Avaliação enviada!', 'Obrigada pela sua avaliação!');
-      setIsReviewModalOpen(false);
-    } catch {
-      showError('Erro', 'Não foi possível enviar a avaliação.');
-    }
+    setLoans((prev) =>
+      prev.map((loan) =>
+        loan.id === selectedLoanForReview.id ? { ...loan, hasReview: true } : loan,
+      ),
+    );
+
+    showSuccess('Avaliação enviada!', 'Obrigada pela sua avaliação!');
+    setIsReviewModalOpen(false);
+  } catch {
+    showError('Erro', 'Não foi possível enviar a avaliação.');
   }
+}
 
   async function handleChangeDueDate(newDate: string) {
     if (!selectedLoan) return;
@@ -258,6 +288,7 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
                     imageSrc={loan.book?.imageSrc || '/assets/images/mock-book.png'}
                     dueDate={loan.status === 'pending' ? 'Pendente' : loan.dueDate}
                     status={loan.status}
+                    hasReview={(loan as any).hasReview}
                     onAdjustClick={() => {
                       if (!isOwnProfile) {
                         showError('Acesso negado', 'Eeei, esse perfil não é seu');
@@ -322,6 +353,7 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
             isOpen={isReviewModalOpen}
             onClose={() => setIsReviewModalOpen(false)}
             onSubmit={handleCreateReview}
+            bookTitle={selectedLoanForReview?.book?.name}
           />
 
           {ModalComponent}
