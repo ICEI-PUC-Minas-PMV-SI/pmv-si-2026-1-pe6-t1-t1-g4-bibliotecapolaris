@@ -16,7 +16,7 @@
 | 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ✅ | Apresentação da **Segunda Etapa** | ✅ |
 | 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ✅ | Desenvolvimento da **Página de Registro**. Integração do **Front-end** das telas de **Autenticação (Login e Registro)** com a **API** do **Back-end**. | ✅ |
 | 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ✅ | Implementação de **Rota** e **Controller** de **Login** no **Backend**. Criação de **Modal** dinâmico para tratamento de erros de requisição.  | ✅ |
-| 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ✅ | Criação e componentização do **Modal dinâmico** de **Ajuste de Empréstimos** com dados estáticos, contemplando regras de negócio para renovação de **Datas** e **Devoluções** em atraso com obrigatoriedade de **Justificativa**. Estruturação inicial da camada de **Serviços** para o consumo da **API REST** | ✅ |
+| 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ✅ | Criação e componentização do **Modal dinâmico** de **Ajuste de Empréstimos**, contemplando regras de negócio para renovação de **Datas** e **Devoluções** em atraso com obrigatoriedade de **Justificativa**. Estruturação inicial da camada de **Serviços** para o consumo da **API REST** | ✅ |
 | 11/05 - 17/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ⬜ |  |  |
 | 18/05 - 24/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 1 | ⬜ |  |  |
 | 25/05 - 31/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 2 | ⬜ |  |  |
