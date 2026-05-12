@@ -14,6 +14,63 @@ type AdjustLoanModalProps = {
   isAdmin?: boolean;
 };
 
+function formatDate(value: string) {
+  const numbers = value.replace(/\D/g, '');
+
+  if (numbers.length <= 2) return numbers;
+
+  if (numbers.length <= 4) {
+    return `${numbers.slice(0, 2)}/${numbers.slice(2)}`;
+  }
+
+  return `${numbers.slice(0, 2)}/${numbers.slice(2, 4)}/${numbers.slice(4, 8)}`;
+}
+
+function brToIso(date: string) {
+  if (date.includes('-')) return date;
+
+  const [day, month, year] = date.split('/');
+
+  return `${year}-${month}-${day}`;
+}
+
+function isoToBr(date: string | Date) {
+  const d =
+    date instanceof Date
+      ? date
+      : (() => {
+          const raw = String(date);
+
+          if (raw.includes('/')) {
+            const [day, month, year] = raw.split('/').map(Number);
+            return new Date(year, month - 1, day);
+          }
+
+          if (raw.includes('-')) {
+            const [year, month, day] = raw.split('-').map(Number);
+            return new Date(year, month - 1, day);
+          }
+
+          return new Date(raw);
+        })();
+
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
+function isValidBR(value: string): boolean {
+  if (!/^\d{2}\/\d{2}\/\d{4}$/.test(value)) return false;
+
+  const [day, month, year] = value.split('/').map(Number);
+
+  const date = new Date(year, month - 1, day);
+
+  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+}
+
 export function AdjustLoanModal({
   isOpen,
   onClose,
@@ -28,33 +85,10 @@ export function AdjustLoanModal({
 
   useEffect(() => {
     if (loan) {
-      const d =
-        loan.dueDate instanceof Date
-          ? loan.dueDate
-          : (() => {
-              const raw = String(loan.dueDate);
-              if (raw.includes('/')) {
-                const [day, m, y] = raw.split('/').map(Number);
-                return new Date(y, m - 1, day);
-              }
-              if (raw.includes('-')) {
-                const [y, m, day] = raw.split('-').map(Number);
-                return new Date(y, m - 1, day);
-              }
-              return new Date(raw);
-            })();
-
-      const day = String(d.getDate()).padStart(2, '0');
-      const month = String(d.getMonth() + 1).padStart(2, '0');
-      const year = d.getFullYear();
-      setNewDueDate(`${day}/${month}/${year}`);
+      setNewDueDate(isoToBr(loan.dueDate));
       setJustification('');
     }
   }, [loan]);
-
-  function isValidBR(value: string): boolean {
-    return /^\d{2}\/\d{2}\/\d{4}$/.test(value);
-  }
 
   if (!isOpen || !loan) return null;
 
@@ -66,6 +100,7 @@ export function AdjustLoanModal({
       >
         <div className="flex justify-between items-center border-b border-gray-700 pb-2">
           <h2 className="text-2xl font-bold text-white">Ajustar: {loan.book?.name}</h2>
+
           <button onClick={onClose} className="text-gray-400 hover:text-white text-2xl font-bold">
             &times;
           </button>
@@ -74,6 +109,7 @@ export function AdjustLoanModal({
         {loan.status !== 'overdue' && (
           <div className="flex flex-col gap-2">
             <label className="text-white text-lg">Nova data de entrega (dd/mm/aaaa):</label>
+
             <div className="flex gap-2 items-center">
               <input
                 type="text"
@@ -81,18 +117,20 @@ export function AdjustLoanModal({
                 placeholder="dd/mm/aaaa"
                 maxLength={10}
                 value={newDueDate}
-                onChange={(e) => setNewDueDate(e.target.value)}
+                onChange={(e) => setNewDueDate(formatDate(e.target.value))}
                 className="form-input flex-1 text-black p-2 rounded-sm outline-none"
               />
+
               <ActionButton
                 title="Salvar Data"
-                onClick={() => isValidBR(newDueDate) && onChangeDueDate(newDueDate)}
+                onClick={() => isValidBR(newDueDate) && onChangeDueDate(brToIso(newDueDate))}
                 disabled={!isValidBR(newDueDate)}
                 className={`px-4 rounded-sm ${!isValidBR(newDueDate) ? 'opacity-50 cursor-not-allowed' : ''}`}
               />
             </div>
+
             {newDueDate && !isValidBR(newDueDate) && (
-              <span className="text-red-400 text-sm">Formato inválido. Use dd/mm/aaaa.</span>
+              <span className="text-red-400 text-sm">Data inválida. Use o formato dd/mm/aaaa.</span>
             )}
           </div>
         )}
@@ -100,6 +138,7 @@ export function AdjustLoanModal({
         {loan.status === 'overdue' ? (
           <div className="flex flex-col gap-3 border-gray-700 pt-4">
             <label className="text-red-400 font-bold text-lg uppercase tracking-wider">Devolução em Atraso</label>
+
             <p className="text-gray-300 text-sm">
               É obrigatório justificar o motivo do atraso antes de devolver o exemplar:
             </p>
