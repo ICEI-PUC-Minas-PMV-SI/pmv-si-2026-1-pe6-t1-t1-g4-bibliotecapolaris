@@ -246,13 +246,16 @@ As seguintes práticas de segurança foram identificadas como próximos passos p
 
 ## Implantação
 
-[Instruções para implantar a aplicação distribuída em um ambiente de produção.]
+A implantação do front-end da aplicação em ambiente de produção foi realizada conforme os requisitos definidos. Inicialmente, foram estabelecidos os requisitos de software necessários para execução da aplicação, incluindo React, Next.js, TypeScript e Tailwind CSS, além do Node.js para gerenciamento do ambiente e execução do projeto.
 
-1. Defina os requisitos de hardware e software necessários para implantar a aplicação em um ambiente de produção.
-2. Escolha uma plataforma de hospedagem adequada, como um provedor de nuvem ou um servidor dedicado.
-3. Configure o ambiente de implantação, incluindo a instalação de dependências e configuração de variáveis de ambiente.
-4. Faça o deploy da aplicação no ambiente escolhido, seguindo as instruções específicas da plataforma de hospedagem.
-5. Realize testes para garantir que a aplicação esteja funcionando corretamente no ambiente de produção.
+A plataforma escolhida para hospedagem foi o Render
+, devido à sua facilidade de integração com aplicações Next.js, suporte ao deploy contínuo e praticidade na configuração do ambiente de produção.
+
+Durante a configuração do ambiente, foram instaladas as dependências do projeto utilizando o gerenciador de pacotes do Node.js, além da configuração das variáveis de ambiente necessárias para comunicação com a API e demais serviços utilizados pela aplicação. Também foram realizados ajustes nas configurações do Next.js para garantir o correto funcionamento da aplicação em produção.
+
+O processo de deploy foi realizado diretamente no Render através da integração com o repositório do projeto, permitindo a publicação automática da aplicação a cada atualização enviada para a branch principal.
+
+Por fim, foram executados testes de navegação, responsividade e comunicação com o backend para validar o funcionamento da aplicação em ambiente de produção, assegurando que as principais funcionalidades operassem corretamente fora do ambiente local.
 
 ## Testes
 
@@ -298,7 +301,8 @@ Foco em testar o fluxo completo de cadastro de usuários, garantindo a robustez 
 
 A imagem a seguir apresenta a execução dos testes unitários (Jest) da rotina de usuários, evidenciando a cobertura e validação dos cenários mapeados:
 
-<img width="660" height="250" alt="a" src="https://github.com/user-attachments/assets/0532908a-b8b7-4f88-9454-2d2ac39df336" />
+<img width="660" height="250" alt="testes" src="https://github.com/user-attachments/assets/161d05c6-9d9b-4158-a5bf-16ba1d50a16b" />
+
 
 
 # Referências

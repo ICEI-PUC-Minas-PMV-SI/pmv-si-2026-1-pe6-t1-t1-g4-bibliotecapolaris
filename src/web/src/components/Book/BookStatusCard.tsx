@@ -10,6 +10,7 @@ type BookStatusCardProps = {
   status?: string;
   onAdjustClick?: () => void;
   onReviewClick?: () => void;
+  hasReview?: boolean;
 };
 
 export function BookStatusCard({
@@ -19,6 +20,7 @@ export function BookStatusCard({
   status,
   onAdjustClick,
   onReviewClick,
+  hasReview,
 }: BookStatusCardProps) {
   const { config, label, type } = resolveBookStatus(dueDate, status);
 
@@ -50,7 +52,11 @@ export function BookStatusCard({
         {!isPending && (
           <>
             {isReturned ? (
-              <ActionButton className="w-full" title="Avaliar" onClick={onReviewClick} />
+              !hasReview ? (
+                <ActionButton className="w-full" style={{ backgroundColor: '#6b7280' }}title="Avaliar" onClick={onReviewClick} />
+              ) : (
+                <ActionButton className="w-full cursor-not-allowed" style={{ backgroundColor: '#6b7280' }} title="Já avaliado" disabled />
+              )
             ) : (
               <ActionButton
                 className="w-full"

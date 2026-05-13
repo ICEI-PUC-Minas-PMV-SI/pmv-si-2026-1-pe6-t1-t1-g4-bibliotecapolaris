@@ -125,3 +125,11 @@ export async function createReview(data: { loanId: string; rating: number; descr
 
   return res.json();
 }
+
+export async function getReviewsByUserId(userId: string) {
+  const res = await fetch(`${API_URL}/review/user/${userId}`, {
+    cache: 'no-store',
+  });
+  const data = await res.json();
+  return data.data;
+}

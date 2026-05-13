@@ -37,7 +37,12 @@ function ReviewCard({ review }: { review: Review }) {
             <h3 className="flex-1 font-serif text-2xl font-bold tracking-wider uppercase border-b-2 border-(--button-active) line-clamp-1">
               {review.userName}
             </h3>
-            <h3 className="font-serif text-xl font-bold tracking-wider uppercase">{review.date}</h3>
+            <h3 className="font-serif text-xl font-bold tracking-wider uppercase">
+              {(() => {
+                const [year, month, day] = review.date.split('-');
+                return `${day}/${month}/${year.slice(2)}`;
+              })()}
+            </h3>
           </div>
           <StarRating rating={review.rating} />
         </div>
