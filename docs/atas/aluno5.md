@@ -6,17 +6,17 @@
 |:-------:|:---------------:|:--------:|:------------------:|:-------------------:|
 | 09/02 - 15/02 | Gestão de Serviços de TI - Unidade 1 | ✅ | - | - |
 | 16/02 - 22/02 | Gestão de Serviços de TI - Unidade 2 | ✅ | - | - |
-| 23/02 - 01/03 | Arquitetura de Software Distribuído - Unidade 1 e 2 | ✅ | Responsável pela Introdução, Problema e Objetivos | OK |
-| 02/03 - 08/03 | Arquitetura de Software Distribuído - Unidade 3 | ✅ | Revisão da Introdução, Problema e Objetivos | OK |
-| 09/03 - 15/03 | APIs e Web Services - Unidade 1 | ✅ | Desenvolvimento dos Endpoints dos Livros | OK |
-| 16/03 - 22/03 | APIs e Web Services - Unidade 2 | ✅ | Revisão dos Endpoints e schema | OK |
-| 23/03 - 29/03 | APIs e Web Services - Unidade 2 | ✅ | Atualizacão dos Endpoints dos Livros de acordo com novo CRUD | OK |
-| 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ✅ | Criação dos testes com Jest e documentação com Swagger dos Endpoints dos Livros | OK |
-| 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ✅ | Revisão geral da documentação da etapa | OK |
-| 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ⬜ | Pesquisa sobre a implementação do comportamento das capas e dos livros | OK |
-| 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ⬜ | Implementação do comportamento das capas | OK |
-| 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ⬜ | Implementação da adição de livros | OK |
-| 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ⬜ | Ajustes da Landing Page, Categorias, Testes e documentação relacionadas a adição de livros| Ok |
+| 23/02 - 01/03 | Arquitetura de Software Distribuído - Unidade 1 e 2 | ✅ | Responsável pela Introdução, Problema e Objetivos | ✅ |
+| 02/03 - 08/03 | Arquitetura de Software Distribuído - Unidade 3 | ✅ | Revisão da Introdução, Problema e Objetivos | ✅ |
+| 09/03 - 15/03 | APIs e Web Services - Unidade 1 | ✅ | Desenvolvimento dos Endpoints dos Livros | ✅ |
+| 16/03 - 22/03 | APIs e Web Services - Unidade 2 | ✅ | Revisão dos Endpoints e schema | ✅ |
+| 23/03 - 29/03 | APIs e Web Services - Unidade 2 | ✅ | Atualizacão dos Endpoints dos Livros de acordo com novo CRUD | ✅ |
+| 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ✅ | Criação dos testes com Jest e documentação com Swagger dos Endpoints dos Livros | ✅ |
+| 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ✅ | Revisão geral da documentação da etapa | ✅ |
+| 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ✅ | Pesquisa sobre a implementação do comportamento das capas e dos livros | ✅ |
+| 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ✅ | Implementação do comportamento das capas | ✅ |
+| 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ⬜ | Implementação da adição de livros | ✅ |
+| 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ⬜ | Ajustes da Landing Page, Categorias, Testes e documentação relacionadas a adição de livros| ✅ |
 | 11/05 - 17/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ⬜ |  |  |
 | 18/05 - 24/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 1 | ⬜ |  |  |
 | 25/05 - 31/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 2 | ⬜ |  |  |
