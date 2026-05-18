@@ -27,11 +27,19 @@ function formatDate(value: string) {
 }
 
 function brToIso(date: string) {
-  if (date.includes('-')) return date;
+  if (!date) return '';
 
-  const [day, month, year] = date.split('/');
+  if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return date;
+  }
 
-  return `${year}-${month}-${day}`;
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(date)) {
+    const [day, month, year] = date.split('/');
+
+    return `${year}-${month}-${day}`;
+  }
+
+  return '';
 }
 
 function isoToBr(date: string | Date) {

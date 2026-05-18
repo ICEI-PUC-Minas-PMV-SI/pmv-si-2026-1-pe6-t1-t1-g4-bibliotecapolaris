@@ -71,28 +71,28 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
   }, [profileUser?.id]);
 
   useEffect(() => {
-  if (!profileUser?.id || loans.length === 0) return;
+    if (!profileUser?.id || loans.length === 0) return;
 
-  async function loadReviews() {
-    try {
-      const reviews = await getReviewsByUserId(profileUser?.id ?? '');
-      if (!reviews) return;
+    async function loadReviews() {
+      try {
+        const reviews = await getReviewsByUserId(profileUser?.id ?? '');
+        if (!reviews) return;
 
-      const reviewedLoanIds = new Set(reviews.map((r: any) => r.loan?.id));
+        const reviewedLoanIds = new Set(reviews.map((r: any) => r.loan?.id));
 
-      setLoans((prev) =>
-        prev.map((loan) => ({
-          ...loan,
-          hasReview: reviewedLoanIds.has(loan.id),
-        })),
-      );
-    } catch (err) {
-      console.error('Erro ao carregar reviews:', err);
+        setLoans((prev) =>
+          prev.map((loan) => ({
+            ...loan,
+            hasReview: reviewedLoanIds.has(loan.id),
+          })),
+        );
+      } catch (err) {
+        console.error('Erro ao carregar reviews:', err);
+      }
     }
-  }
 
-  loadReviews();
-}, [profileUser?.id, loans.length]);
+    loadReviews();
+  }, [profileUser?.id, loans.length]);
 
   const { wishlist, wishlistSet, toggle, error, setError } = useWishlist(profileUser?.id ?? '');
 
@@ -145,30 +145,30 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
   }
 
   async function handleCreateReview(rating: number, description: string) {
-  if (!selectedLoanForReview) return;
+    if (!selectedLoanForReview) return;
 
-  try {
-    const today = new Date().toISOString().split('T')[0];
+    try {
+      const d = new Date();
 
-    await createReview({
-      loanId: selectedLoanForReview.id,
-      rating,
-      description,
-      date: today,
-    });
+      const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
-    setLoans((prev) =>
-      prev.map((loan) =>
-        loan.id === selectedLoanForReview.id ? { ...loan, hasReview: true } : loan,
-      ),
-    );
+      await createReview({
+        loanId: selectedLoanForReview.id,
+        rating,
+        description,
+        date: today,
+      });
 
-    showSuccess('Avaliação enviada!', 'Obrigada pela sua avaliação!');
-    setIsReviewModalOpen(false);
-  } catch {
-    showError('Erro', 'Não foi possível enviar a avaliação.');
+      setLoans((prev) =>
+        prev.map((loan) => (loan.id === selectedLoanForReview.id ? { ...loan, hasReview: true } : loan)),
+      );
+
+      showSuccess('Avaliação enviada!', 'Obrigada pela sua avaliação!');
+      setIsReviewModalOpen(false);
+    } catch {
+      showError('Erro', 'Não foi possível enviar a avaliação.');
+    }
   }
-}
 
   async function handleChangeDueDate(newDate: string) {
     if (!selectedLoan) return;

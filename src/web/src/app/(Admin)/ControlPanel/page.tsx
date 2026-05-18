@@ -20,11 +20,6 @@ function localDateIso() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-function brToIso(br: string) {
-  const [day, month, year] = br.split('/');
-  return `${year}-${month}-${day}`;
-}
-
 export default function ControlPanel() {
   const [activeView, setActiveView] = useState<ViewMode>('livros');
   const { showConfirmation, showError, showSuccess, ModalComponent } = useAlertModal();
@@ -181,7 +176,7 @@ export default function ControlPanel() {
               isAdmin={true}
               onClose={closeModal}
               onChangeDueDate={async (newDate) => {
-                await updateLoan(modal.data.id, { dueDate: brToIso(newDate), status: modal.data.status });
+                await updateLoan(modal.data.id, { dueDate: newDate, status: modal.data.status });
                 closeModal();
                 load();
               }}
