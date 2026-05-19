@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 export async function addBookToWishlist(studentId: string, bookId: string) {
   const res = await fetch(`${API_URL}/wishlist/register`, {

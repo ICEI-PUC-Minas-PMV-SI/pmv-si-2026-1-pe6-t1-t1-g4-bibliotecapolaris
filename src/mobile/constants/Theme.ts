@@ -10,6 +10,12 @@ export const Colors = {
 
   buttonInactive: 'transparent',
   buttonTextInactive: '#fff7e6',
+
+  statusError: '#e53a41',
+  statusWarning: '#ffaa00',
+  statusSuccess: '#00ff2f',
+  statusInProgress: '#ffaa00',
+  statusCanceled: '#a93226',
 };
 
 export const Fonts = {

@@ -3,8 +3,8 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { router } from 'expo-router';
 
-import { ActionButton } from '../Global/ActionButton';
 import { LikeButton } from './LikeButton';
+import { ActionButton } from '../Global/ActionButton';
 
 import { Colors, Fonts } from '@/constants/Theme';
 
@@ -18,19 +18,15 @@ type BookDisplayProps = {
 };
 
 export function BookDisplay({ bookId, title, description, imageSrc, isFavorite, onToggleFavorite }: BookDisplayProps) {
-  const [img, setImg] = useState(imageSrc);
+  const [error, setError] = useState(false);
+
+  const fallback = require('@/assets/images/mock-book.png');
+  const imgSource = error ? fallback : typeof imageSrc === 'string' ? { uri: imageSrc } : imageSrc;
 
   return (
     <View style={styles.card}>
       <View style={styles.imageContainer}>
-        <Image
-          source={img}
-          style={styles.image}
-          resizeMode="cover"
-          onError={() => {
-            setImg(require('@/assets/images/mock-book.png'));
-          }}
-        />
+        <Image source={imgSource} style={styles.image} resizeMode="cover" onError={() => setError(true)} />
       </View>
 
       <Text style={styles.title} numberOfLines={1}>
@@ -72,7 +68,7 @@ const styles = StyleSheet.create({
 
     borderWidth: 1,
     borderColor: Colors.text,
-    borderRadius: 4,
+    borderRadius: 1,
 
     overflow: 'hidden',
   },
@@ -83,11 +79,12 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    textAlign: 'center',
     fontSize: 20,
     fontWeight: '600',
     color: Colors.text,
+    textAlign: 'center',
     fontFamily: Fonts.serif,
+    textTransform: 'uppercase',
   },
 
   description: {

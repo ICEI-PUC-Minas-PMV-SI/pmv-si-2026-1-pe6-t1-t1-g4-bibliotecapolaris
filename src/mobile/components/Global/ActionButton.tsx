@@ -1,4 +1,4 @@
-import React, { Image, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
+import React, { Image, Pressable, PressableProps, StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 
 import { Colors, Fonts } from '@/constants/Theme';
 
@@ -7,6 +7,7 @@ interface ActionButtonProps extends PressableProps {
   icon?: any;
 
   variant?: 'fill' | 'outline';
+  textStyle?: StyleProp<TextStyle>;
 }
 
 export function ActionButton({
@@ -16,6 +17,7 @@ export function ActionButton({
   disabled,
 
   style,
+  textStyle,
 
   ...props
 }: ActionButtonProps) {
@@ -40,7 +42,7 @@ export function ActionButton({
       {...props}
     >
       {hasTitle && (
-        <Text style={[styles.text, variant === 'fill' ? styles.fillText : styles.outlineText]}>{title}</Text>
+        <Text style={[styles.text, variant === 'fill' ? styles.fillText : styles.outlineText, textStyle]}>{title}</Text>
       )}
 
       {hasIcon && (

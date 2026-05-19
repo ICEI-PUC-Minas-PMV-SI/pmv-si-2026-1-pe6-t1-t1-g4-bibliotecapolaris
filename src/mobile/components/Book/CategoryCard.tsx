@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { Colors, Fonts } from '@/constants/Theme';
@@ -9,6 +9,11 @@ type CategoryCardProps = {
 };
 
 export function CategoryCard({ title = '', imageSrc }: CategoryCardProps) {
+  const [error, setError] = useState(false);
+
+  const fallback = require('@/assets/images/mock-book.png');
+  const imgSource = error ? fallback : typeof imageSrc === 'string' ? { uri: imageSrc } : imageSrc;
+
   return (
     <View style={styles.card}>
       <View style={styles.titleContainer}>
@@ -18,7 +23,7 @@ export function CategoryCard({ title = '', imageSrc }: CategoryCardProps) {
       </View>
 
       <View style={styles.imageContainer}>
-        <Image source={imageSrc} style={styles.image} resizeMode="cover" />
+        <Image source={imgSource} style={styles.image} resizeMode="cover" onError={() => setError(true)} />
       </View>
     </View>
   );
@@ -52,13 +57,14 @@ const styles = StyleSheet.create({
   },
 
   imageContainer: {
-    width: '50%',
-    height: 64,
+    width: '68%',
+    height: 72,
 
     alignSelf: 'center',
 
     borderWidth: 1,
     borderColor: Colors.text,
+    borderRadius: 2,
 
     overflow: 'hidden',
   },

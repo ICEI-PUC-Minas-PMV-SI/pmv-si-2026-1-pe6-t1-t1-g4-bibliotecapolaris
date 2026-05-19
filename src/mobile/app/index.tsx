@@ -1,22 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image, TextInput, View, Text, Pressable, ScrollView } from 'react-native';
 
-import { ActionButton } from '@/components/Global/ActionButton';
-import { Header } from '@/components/Global/Header';
-
-import { styles } from '@/styles/HomeScreen';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { useWishlist } from '@/hooks/useWishlist';
-import { BookDisplay } from '@/components/Book/BookDisplay';
-
-import { books, categories } from '@/util/MockData';
-import { CategoryCard } from '@/components/Book/CategoryCard';
 import { router } from 'expo-router';
 
+import { styles } from '@/styles/HomeScreen';
+
+import { Header } from '@/components/Global/Header';
+import { BookDisplay } from '@/components/Book/BookDisplay';
+import { CategoryCard } from '@/components/Book/CategoryCard';
+import { ActionButton } from '@/components/Global/ActionButton';
+
+import { getBooks, getCategories } from '@/services/Book';
+import { useWishlist } from '@/hooks/useWishlist';
+
 export default function HomeScreen() {
-  const { wishlistSet, toggle } = useWishlist('mock-user');
+  const { wishlistSet, toggle } = useWishlist('31f004de-617e-4990-bc38-f1afd22ab83a');
+
+  const [books, setBooks] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [returnedBooks, returnedCategories] = await Promise.all([getBooks(), getCategories()]);
+
+        setBooks(returnedBooks ?? []);
+        setCategories(returnedCategories ?? []);
+      } catch (err) {
+        console.log('erro load data:', err);
+      }
+    }
+
+    loadData();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,13 +59,12 @@ export default function HomeScreen() {
 
         {books.length > 0 ? (
           <View style={styles.booksSection}>
-            <Text style={styles.booksTitle}>Recém Chegados</Text>
+            <Text style={styles.sectionTitle}>Recém Chegados</Text>
 
             <View style={styles.booksContainer}>
               {books.slice(0, 3).map((book) => (
                 <Pressable key={book.slug} onPress={() => router.push(`/`)}>
                   <BookDisplay
-                    key={book.slug}
                     bookId={book.id}
                     title={book.name}
                     description={book.description}
@@ -66,7 +83,7 @@ export default function HomeScreen() {
         )}
 
         <View style={styles.categoriesSection}>
-          <Text style={styles.categoriesTitle}>Categorias</Text>
+          <Text style={styles.sectionTitle}>Categorias</Text>
 
           <View style={styles.categoriesContainer}>
             {categories.slice(0, 5).map((cat) => (

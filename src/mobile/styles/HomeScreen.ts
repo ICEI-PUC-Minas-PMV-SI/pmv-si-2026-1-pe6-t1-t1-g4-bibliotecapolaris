@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
 
-  booksTitle: {
+  sectionTitle: {
     width: '100%',
     fontSize: 20,
     color: Colors.text,
@@ -78,7 +78,8 @@ export const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
 
-    fontSize: 28,
+    fontSize: 20,
+    color: Colors.text,
     textTransform: 'uppercase',
   },
 
@@ -86,15 +87,6 @@ export const styles = StyleSheet.create({
     gap: 16,
     alignItems: 'center',
     paddingHorizontal: 20,
-  },
-
-  categoriesTitle: {
-    width: '100%',
-    fontSize: 20,
-    textTransform: 'uppercase',
-    letterSpacing: 2,
-    color: Colors.text,
-    fontFamily: Fonts.serif,
   },
 
   categoriesContainer: {

@@ -45,3 +45,4 @@ app-example
 package-lock.json
 
 /.vscode
+.env

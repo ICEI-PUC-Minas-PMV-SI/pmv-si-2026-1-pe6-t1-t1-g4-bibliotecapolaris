@@ -1,7 +1,7 @@
 import React from 'react';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { router } from 'expo-router';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { ActionButton } from './ActionButton';
 
@@ -14,7 +14,19 @@ export function Header() {
         <Image source={require('@/assets/images/logo.png')} style={styles.logo} resizeMode="contain" />
       </Pressable>
 
-      <ActionButton title="Perfil" variant="fill" style={{ flex: 2 }} onPress={() => router.push('/')} />
+      <ActionButton
+        title="Perfil"
+        variant="fill"
+        style={{ flex: 2 }}
+        onPress={() =>
+          router.push({
+            pathname: '/users/[slug]',
+            params: {
+              slug: 'davih',
+            },
+          })
+        }
+      />
     </View>
   );
 }
