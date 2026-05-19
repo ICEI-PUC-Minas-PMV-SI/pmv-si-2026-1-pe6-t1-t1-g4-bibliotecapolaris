@@ -1,4 +1,4 @@
-import { Image, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
+import React, { Image, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 
 import { Colors, Fonts } from '@/constants/Theme';
 
@@ -12,10 +12,10 @@ interface ActionButtonProps extends PressableProps {
 export function ActionButton({
   title = '',
   icon,
-
   variant = 'fill',
-
   disabled,
+
+  style,
 
   ...props
 }: ActionButtonProps) {
@@ -29,7 +29,14 @@ export function ActionButton({
   return (
     <Pressable
       disabled={disabled}
-      style={[styles.container, variantStyle, spacingStyle, disabled && styles.disabled]}
+      style={(state) => [
+        styles.container,
+        variantStyle,
+        spacingStyle,
+        disabled && styles.disabled,
+
+        typeof style === 'function' ? style(state) : style,
+      ]}
       {...props}
     >
       {hasTitle && (
@@ -51,8 +58,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
 
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 4,
+
+    minHeight: 36,
   },
 
   fill: {
@@ -66,23 +75,26 @@ const styles = StyleSheet.create({
   },
 
   withIconAndText: {
-    paddingLeft: 20,
-    paddingRight: 12,
+    paddingLeft: 12,
+    paddingRight: 10,
     paddingVertical: 4,
 
-    gap: 8,
+    gap: 6,
   },
 
   onlyText: {
-    paddingHorizontal: 32,
-    paddingVertical: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
   },
 
   onlyIcon: {
-    padding: 4,
+    padding: 6,
+    minWidth: 36,
+    minHeight: 36,
   },
 
   text: {
+    fontSize: 12,
     fontWeight: 'bold',
     fontFamily: Fonts.serif,
     textTransform: 'uppercase',
@@ -97,12 +109,13 @@ const styles = StyleSheet.create({
   },
 
   iconContainer: {
-    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   image: {
-    width: 64,
-    height: 40,
+    width: 22,
+    height: 22,
   },
 
   disabled: {
