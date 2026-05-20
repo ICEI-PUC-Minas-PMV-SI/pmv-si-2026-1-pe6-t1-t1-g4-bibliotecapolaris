@@ -44,11 +44,12 @@ export const styles = StyleSheet.create({
 
   input: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: Colors.fairground,
 
     paddingHorizontal: 8,
     borderRadius: 2,
-    fontSize: 10,
+
+    fontSize: 13,
   },
 
   booksSection: {
@@ -59,27 +60,28 @@ export const styles = StyleSheet.create({
 
   sectionTitle: {
     width: '100%',
+
     fontSize: 20,
+    letterSpacing: 2,
     color: Colors.text,
     fontFamily: Fonts.serif,
-
     textTransform: 'uppercase',
-    letterSpacing: 2,
   },
 
   booksContainer: {
-    flexDirection: 'row',
     flexWrap: 'wrap',
+    flexDirection: 'row',
     justifyContent: 'center',
+
     gap: 16,
   },
 
   emptyText: {
     width: '100%',
-    textAlign: 'center',
 
     fontSize: 20,
     color: Colors.text,
+    textAlign: 'center',
     textTransform: 'uppercase',
   },
 
@@ -90,9 +92,9 @@ export const styles = StyleSheet.create({
   },
 
   categoriesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
     gap: 16,
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });

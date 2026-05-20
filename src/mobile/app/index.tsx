@@ -14,9 +14,12 @@ import { ActionButton } from '@/components/Global/ActionButton';
 
 import { getBooks, getCategories } from '@/services/Book';
 import { useWishlist } from '@/hooks/useWishlist';
+import { useAlertModal } from '@/hooks/useAlertModal';
+import { AlertModal } from '@/components/Global/AlertModal';
 
 export default function HomeScreen() {
   const { wishlistSet, toggle } = useWishlist('31f004de-617e-4990-bc38-f1afd22ab83a');
+  const { showError, modal, close } = useAlertModal();
 
   const [books, setBooks] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
@@ -35,6 +38,14 @@ export default function HomeScreen() {
 
     loadData();
   }, []);
+
+  async function handleToggle(bookId: string) {
+    const result = await toggle(bookId);
+
+    if (!result.success) {
+      showError('Erro', result.error);
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -70,7 +81,7 @@ export default function HomeScreen() {
                     description={book.description}
                     imageSrc={book.imageSrc}
                     isFavorite={wishlistSet.has(book.id)}
-                    onToggleFavorite={() => toggle(book.id)}
+                    onToggleFavorite={() => handleToggle(book.id)}
                   />
                 </Pressable>
               ))}
@@ -94,6 +105,18 @@ export default function HomeScreen() {
           </View>
         </View>
       </ScrollView>
+
+      <AlertModal
+        visible={modal.visible}
+        type={modal.type}
+        title={modal.title}
+        description={modal.description}
+        onClose={close}
+        onSuccess={() => {
+          close();
+          modal.onSuccess?.();
+        }}
+      />
     </SafeAreaView>
   );
 }

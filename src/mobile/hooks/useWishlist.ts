@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 
 export function useWishlist(userId: string) {
   const [wishlist, setWishlist] = useState<{ books: any[] }>({ books: [] });
-  const [error, setError] = useState<null | string>(null);
 
   useEffect(() => {
     async function load() {
@@ -21,8 +20,6 @@ export function useWishlist(userId: string) {
     const isFavorite = wishlistSet.has(bookId);
 
     try {
-      setError(null);
-
       await toggleWishlist({
         userId,
         bookId,
@@ -31,9 +28,11 @@ export function useWishlist(userId: string) {
       });
 
       return { success: true };
-    } catch (error: any) {
-      setError(error?.message || 'Erro ao atualizar wishlist');
-      return { success: false, error };
+    } catch (err: any) {
+      return {
+        success: false,
+        error: err?.message ?? 'Erro ao atualizar wishlist',
+      };
     }
   }
 
@@ -41,7 +40,5 @@ export function useWishlist(userId: string) {
     wishlist,
     wishlistSet,
     toggle,
-    error,
-    setError,
   };
 }

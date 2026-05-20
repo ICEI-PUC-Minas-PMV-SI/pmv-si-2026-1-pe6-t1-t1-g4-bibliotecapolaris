@@ -1,0 +1,92 @@
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
+
+import { useAlertModal } from '@/hooks/useAlertModal';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { styles } from '@/styles/LoginScreen';
+import { AlertModal } from '@/components/Global/AlertModal';
+import { router } from 'expo-router';
+import { Header } from '@/components/Global/Header';
+
+export default function LoginScreen({ navigation }: any) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { showError, modal, close } = useAlertModal();
+
+  function goToSign() {
+    router.replace('/sign');
+  }
+
+  async function handleLogin() {
+    try {
+      setIsLoading(true);
+
+      if (!email || !password) {
+        throw new Error('Preencha todos os campos');
+      }
+
+      console.log('login...');
+    } catch (err: any) {
+      showError('Erro', err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Header />
+
+      <View style={styles.formContainer}>
+        <Text style={styles.title}>ENTRAR </Text>
+
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          placeholder="JohnDoe@unipolaris.com"
+          placeholderTextColor="#999"
+          style={styles.input}
+          keyboardType="email-address"
+        />
+
+        <TextInput
+          value={password}
+          onChangeText={setPassword}
+          placeholder="••••••••"
+          placeholderTextColor="#999"
+          secureTextEntry
+          style={styles.input}
+        />
+
+        <TouchableOpacity
+          onPress={handleLogin}
+          disabled={isLoading}
+          style={[styles.button, isLoading && { opacity: 0.6 }]}
+        >
+          <Text style={styles.buttonText}>{isLoading ? 'Entrando... ' : 'Entrar '}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>Não tem conta? </Text>
+
+        <Pressable onPress={goToSign}>
+          <Text style={styles.link}>Registre aqui </Text>
+        </Pressable>
+      </View>
+
+      <AlertModal
+        visible={modal.visible}
+        type={modal.type}
+        title={modal.title}
+        description={modal.description}
+        onClose={close}
+        onSuccess={() => {
+          close();
+          modal.onSuccess?.();
+        }}
+      />
+    </SafeAreaView>
+  );
+}
