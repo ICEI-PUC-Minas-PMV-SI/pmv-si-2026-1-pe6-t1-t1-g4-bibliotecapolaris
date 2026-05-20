@@ -31,8 +31,8 @@ router.get('/loans/student/:studentId', requireAuth, (req, res) =>
 );
 router.get('/loans/:id', requireAuth, (req, res) => getLoanByIdControllerById(req.params.id as string, res));
 
-// Autenticado: criar empréstimo
-router.post('/loans', requireAuth, validateBody(LoanCreateSchema), createLoanController);
+// TODO ⚠️ RESTAURAR QUANDO IMPLEMENTARMOS LOGIN NO MOBILE — adicionar requireAuth de volta
+router.post('/loans', validateBody(LoanCreateSchema), createLoanController);
 
 // Autenticado: atualizar (próprio empréstimo ou admin — checagem dentro do controller)
 router.put('/loans/:id', requireAuth, validateBody(LoanUpdateSchema), updateLoanController);

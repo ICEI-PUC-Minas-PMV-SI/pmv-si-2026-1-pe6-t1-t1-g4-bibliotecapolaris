@@ -105,6 +105,14 @@ export default function HomeScreen() {
             ))}
           </View>
         </View>
+
+        {/* ⚠️ APAGAR DEPOIS */}
+        <Pressable
+          style={{ margin: 16, padding: 16, backgroundColor: '#ff0000', borderRadius: 4, alignItems: 'center' }}
+          onPress={() => router.push('/admin')}
+        >
+          <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>⚠️ APAGAR DEPOIS — PAINEL ADMIN</Text>
+        </Pressable>
       </ScrollView>
 
       <AlertModal

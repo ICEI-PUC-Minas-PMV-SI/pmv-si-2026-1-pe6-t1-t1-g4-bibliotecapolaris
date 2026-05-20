@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 
 type BaseInputModalProps = {
@@ -25,7 +25,7 @@ export function BaseInputModal({ open, title, children, onClose }: BaseInputModa
             </View>
           ) : null}
 
-          <ScrollView contentContainerStyle={styles.content}>{children}</ScrollView>
+          <ScrollView contentContainerStyle={styles.content} nestedScrollEnabled>{children}</ScrollView>
         </View>
       </View>
     </Modal>
@@ -47,6 +47,123 @@ export function BaseField({ label, children, style, labelStyle }: BaseFieldProps
     </View>
   );
 }
+
+// ─── SelectInput ──────────────────────────────────────────────────────────────
+
+export type SelectOption = { value: string; label: string };
+
+type SelectInputProps = {
+  value: string;
+  onChange: (val: string) => void;
+  options: SelectOption[];
+  placeholder?: string;
+  loading?: boolean;
+};
+
+export function SelectInput({
+  value,
+  onChange,
+  options,
+  placeholder = 'Selecione...',
+  loading = false,
+}: SelectInputProps) {
+  const [expanded, setExpanded] = useState(false);
+  const selected = options.find((o) => o.value === value);
+
+  return (
+    <View>
+      <Pressable
+        style={selectStyles.trigger}
+        onPress={() => !loading && setExpanded((prev) => !prev)}
+        disabled={loading}
+      >
+        <Text
+          style={[selectStyles.triggerText, !selected && selectStyles.placeholder]}
+          numberOfLines={1}
+        >
+          {loading ? 'Carregando...' : (selected?.label ?? placeholder)}
+        </Text>
+        <Text style={selectStyles.chevron}>{expanded ? '▲' : '▾'}</Text>
+      </Pressable>
+
+      {expanded && (
+        <ScrollView style={selectStyles.dropdown} nestedScrollEnabled>
+          {options.map((item) => (
+            <Pressable
+              key={item.value}
+              style={[selectStyles.option, item.value === value && selectStyles.optionActive]}
+              onPress={() => {
+                onChange(item.value);
+                setExpanded(false);
+              }}
+            >
+              <Text
+                style={[selectStyles.optionText, item.value === value && selectStyles.optionTextActive]}
+              >
+                {item.label}
+              </Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+      )}
+    </View>
+  );
+}
+
+const selectStyles = StyleSheet.create({
+  trigger: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    backgroundColor: '#f9f9f9',
+  },
+  triggerText: {
+    flex: 1,
+    fontSize: 14,
+    color: '#333',
+  },
+  placeholder: {
+    color: '#999',
+  },
+  chevron: {
+    fontSize: 12,
+    color: '#666',
+    marginLeft: 8,
+  },
+  dropdown: {
+    maxHeight: 180,
+    borderWidth: 1,
+    borderTopWidth: 0,
+    borderColor: '#ccc',
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+    backgroundColor: '#fff',
+  },
+  option: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  optionActive: {
+    backgroundColor: '#fff2d6',
+  },
+  optionText: {
+    fontSize: 14,
+    color: '#333',
+  },
+  optionTextActive: {
+    fontWeight: '600',
+    color: '#0b0909',
+  },
+});
+
+// ─── BaseInputModal / BaseField styles ────────────────────────────────────────
 
 const styles = StyleSheet.create({
   backdrop: {
