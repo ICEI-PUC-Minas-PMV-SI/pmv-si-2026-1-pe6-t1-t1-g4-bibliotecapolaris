@@ -8,14 +8,15 @@ import { router } from 'expo-router';
 import { styles } from '@/styles/HomeScreen';
 
 import { Header } from '@/components/Global/Header';
+import { AlertModal } from '@/components/Global/AlertModal';
 import { BookDisplay } from '@/components/Book/BookDisplay';
 import { CategoryCard } from '@/components/Book/CategoryCard';
 import { ActionButton } from '@/components/Global/ActionButton';
 
-import { getBooks, getCategories } from '@/services/Book';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
-import { AlertModal } from '@/components/Global/AlertModal';
+
+import { getBooks, getCategories } from '@/services/Book';
 
 export default function HomeScreen() {
   const { wishlistSet, toggle } = useWishlist('31f004de-617e-4990-bc38-f1afd22ab83a');

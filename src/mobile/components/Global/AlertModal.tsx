@@ -1,6 +1,7 @@
-import { Colors } from '@/constants/Theme';
 import React from 'react';
 import { Modal, View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+
+import { Colors } from '@/constants/Theme';
 
 type AlertModalProps = {
   visible: boolean;

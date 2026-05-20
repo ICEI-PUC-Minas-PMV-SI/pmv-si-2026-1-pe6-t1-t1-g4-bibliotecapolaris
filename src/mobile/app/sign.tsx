@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
+
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { router } from 'expo-router';
+
+import { styles } from '@/styles/LoginScreen';
+
+import { Header } from '@/components/Global/Header';
+import { AlertModal } from '@/components/Global/AlertModal';
 
 import { useAlertModal } from '@/hooks/useAlertModal';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { styles } from '@/styles/LoginScreen';
-import { AlertModal } from '@/components/Global/AlertModal';
-import { router } from 'expo-router';
-import { Header } from '@/components/Global/Header';
 
 export default function SignScreen({ navigation }: any) {
   const [name, setName] = useState('');

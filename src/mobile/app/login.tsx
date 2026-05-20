@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
 
-import { useAlertModal } from '@/hooks/useAlertModal';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { styles } from '@/styles/LoginScreen';
-import { AlertModal } from '@/components/Global/AlertModal';
 import { router } from 'expo-router';
+
+import { styles } from '@/styles/LoginScreen';
+
+import { useAlertModal } from '@/hooks/useAlertModal';
+
 import { Header } from '@/components/Global/Header';
+import { AlertModal } from '@/components/Global/AlertModal';
 
 export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState('');
