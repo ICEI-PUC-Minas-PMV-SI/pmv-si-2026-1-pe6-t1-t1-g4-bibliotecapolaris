@@ -30,8 +30,3 @@ export type LoanForm = {
   loanDate: string;
   returnDate: string;
 };
-
-export type AuthorType = {
-  id: string;
-  name: string;
-};

@@ -6,24 +6,29 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-  },
 
-  scrollContent: {
-    paddingBottom: 32,
+    gap: 20,
   },
 
   section: {
     paddingHorizontal: 16,
-    paddingTop: 20,
     gap: 12,
   },
 
+  flatListStyles: {
+    paddingHorizontal: 16,
+    marginTop: 20,
+  },
+
   title: {
-    fontSize: 22,
+    fontSize: 20,
+    letterSpacing: 2,
     fontWeight: 'bold',
     color: Colors.text,
     fontFamily: Fonts.serif,
     textTransform: 'uppercase',
+
+    width: '100%',
   },
 
   subtitle: {
@@ -32,10 +37,15 @@ export const styles = StyleSheet.create({
     opacity: 0.6,
   },
 
+  buttonsSection: {
+    display: 'flex',
+    flexDirection: 'row',
+
+    gap: 12,
+  },
+
   addButton: {
-    marginHorizontal: 16,
-    marginTop: 16,
-    height: 48,
+    flex: 1,
   },
 
   loansContainer: {
