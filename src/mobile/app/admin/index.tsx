@@ -22,7 +22,7 @@ export default function AdminPanel() {
         </View>
 
         <ActionButton
-          title="+ Adicionar Empréstimo"
+          title="Adicionar Empréstimo"
           variant="fill"
           style={styles.addButton}
           onPress={() => setModalOpen(true)}

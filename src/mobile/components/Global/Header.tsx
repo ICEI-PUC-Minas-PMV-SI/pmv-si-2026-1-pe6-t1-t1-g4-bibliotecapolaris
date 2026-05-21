@@ -11,7 +11,7 @@ export function Header() {
   const isLoggedIn = false;
   const isAdmin = false;
 
-  const showLeft = false;
+  const showLeft = true;
   const showRight = !isLoggedIn;
 
   const label = !isLoggedIn ? 'Entrar' : isAdmin ? 'Painel' : 'Perfil';
@@ -19,7 +19,16 @@ export function Header() {
   return (
     <View style={styles.headerContainer}>
       <View style={styles.left}>
-        {showLeft && <ActionButton title="Sair" variant="outline" style={{ width: 88 }} onPress={() => {}} />}
+        {showLeft && (
+          <ActionButton
+            title="Sair"
+            variant="outline"
+            style={{ width: 88 }}
+            onPress={() => {
+              router.push('/admin');
+            }}
+          />
+        )}
       </View>
 
       <View style={styles.center}>

@@ -91,9 +91,7 @@ export function AddLoanModal({
       const id = String(a?.id ?? a);
       if (!seen.has(id)) seen.set(id, a);
     });
-    return Array.from(seen.values()).sort((a, b) =>
-      String(a?.name ?? a).localeCompare(String(b?.name ?? b)),
-    );
+    return Array.from(seen.values()).sort((a, b) => String(a?.name ?? a).localeCompare(String(b?.name ?? b)));
   }, [books]);
 
   const filteredBooks = useMemo(() => {
@@ -167,14 +165,10 @@ export function AddLoanModal({
         );
       }
 
-      showSuccess(
-        'Sucesso!',
-        isAdmin ? 'Empréstimo criado com sucesso!' : 'Solicitação enviada com sucesso!',
-        () => {
-          onSuccess?.();
-          onClose();
-        },
-      );
+      showSuccess('Sucesso!', isAdmin ? 'Empréstimo criado com sucesso!' : 'Solicitação enviada com sucesso!', () => {
+        onSuccess?.();
+        onClose();
+      });
     } catch (err: any) {
       showError('Erro', err?.message ?? 'Erro ao criar empréstimo');
     } finally {
@@ -192,7 +186,7 @@ export function AddLoanModal({
   return (
     <BaseInputModal open={open} onClose={onClose} title="Adicionar Novo Empréstimo">
       {isAdmin ? (
-        <>
+        <View>
           <BaseField label="Estudante">
             <SelectInput
               value={selectedStudentId}
@@ -228,13 +222,12 @@ export function AddLoanModal({
               value={dueDateDisplay}
               onChangeText={handleDateInput}
               placeholder="Padrão: 7 dias  (dd/mm/aaaa)"
-              placeholderTextColor="#999"
               keyboardType="numeric"
               maxLength={10}
               style={styles.textInput}
             />
           </BaseField>
-        </>
+        </View>
       ) : (
         <>
           <BaseField label="Livro">
@@ -254,9 +247,7 @@ export function AddLoanModal({
                   onPress={() => setDuration(d)}
                   activeOpacity={0.7}
                 >
-                  <Text style={[styles.durationText, duration === d && styles.durationTextActive]}>
-                    {d} dias
-                  </Text>
+                  <Text style={[styles.durationText, duration === d && styles.durationTextActive]}>{d} dias</Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -292,25 +283,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: Colors.text,
     borderRadius: 4,
     fontSize: 14,
-    color: '#333',
-    backgroundColor: '#f9f9f9',
+    color: Colors.background,
+    backgroundColor: Colors.fairground,
   },
 
   readOnly: {
     paddingHorizontal: 10,
     paddingVertical: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: Colors.text,
     borderRadius: 4,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: Colors.fairground,
   },
 
   readOnlyText: {
     fontSize: 14,
-    color: '#555',
+    color: Colors.text,
   },
 
   durationRow: {
@@ -322,10 +313,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: Colors.text,
     borderRadius: 4,
     alignItems: 'center',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: Colors.fairground,
   },
 
   durationChipActive: {
@@ -335,7 +326,7 @@ const styles = StyleSheet.create({
 
   durationText: {
     fontSize: 14,
-    color: '#333',
+    color: Colors.background,
   },
 
   durationTextActive: {
@@ -345,6 +336,5 @@ const styles = StyleSheet.create({
 
   submitButton: {
     height: 48,
-    marginTop: 8,
   },
 });

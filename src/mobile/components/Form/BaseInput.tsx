@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/Theme';
 import React, { useState } from 'react';
 import { Modal, View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 
@@ -25,7 +26,9 @@ export function BaseInputModal({ open, title, children, onClose }: BaseInputModa
             </View>
           ) : null}
 
-          <ScrollView contentContainerStyle={styles.content} nestedScrollEnabled>{children}</ScrollView>
+          <ScrollView contentContainerStyle={styles.content} nestedScrollEnabled>
+            {children}
+          </ScrollView>
         </View>
       </View>
     </Modal>
@@ -77,10 +80,7 @@ export function SelectInput({
         onPress={() => !loading && setExpanded((prev) => !prev)}
         disabled={loading}
       >
-        <Text
-          style={[selectStyles.triggerText, !selected && selectStyles.placeholder]}
-          numberOfLines={1}
-        >
+        <Text style={[selectStyles.triggerText, !selected && selectStyles.placeholder]} numberOfLines={1}>
           {loading ? 'Carregando...' : (selected?.label ?? placeholder)}
         </Text>
         <Text style={selectStyles.chevron}>{expanded ? '▲' : '▾'}</Text>
@@ -97,9 +97,7 @@ export function SelectInput({
                 setExpanded(false);
               }}
             >
-              <Text
-                style={[selectStyles.optionText, item.value === value && selectStyles.optionTextActive]}
-              >
+              <Text style={[selectStyles.optionText, item.value === value && selectStyles.optionTextActive]}>
                 {item.label}
               </Text>
             </Pressable>
@@ -118,31 +116,31 @@ const selectStyles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: Colors.text,
     borderRadius: 4,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: Colors.fairground,
   },
   triggerText: {
     flex: 1,
     fontSize: 14,
-    color: '#333',
+    color: Colors.background,
   },
   placeholder: {
-    color: '#999',
+    color: Colors.background,
   },
   chevron: {
-    fontSize: 12,
-    color: '#666',
+    fontSize: 20,
+    color: Colors.background,
     marginLeft: 8,
   },
   dropdown: {
     maxHeight: 180,
     borderWidth: 1,
     borderTopWidth: 0,
-    borderColor: '#ccc',
+    borderColor: Colors.text,
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.text,
   },
   option: {
     paddingHorizontal: 10,
@@ -151,11 +149,11 @@ const selectStyles = StyleSheet.create({
     borderBottomColor: '#eee',
   },
   optionActive: {
-    backgroundColor: '#fff2d6',
+    backgroundColor: '#fff',
   },
   optionText: {
     fontSize: 14,
-    color: '#333',
+    color: Colors.background,
   },
   optionTextActive: {
     fontWeight: '600',
@@ -181,35 +179,43 @@ const styles = StyleSheet.create({
     width: '85%',
     maxHeight: '90%',
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: Colors.text,
     borderRadius: 6,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.background,
     overflow: 'hidden',
   },
 
   header: {
-    paddingHorizontal: 12,
     paddingVertical: 8,
-    backgroundColor: '#eee',
+    paddingHorizontal: 12,
+
+    backgroundColor: Colors.background,
+
+    borderBottomWidth: 1,
+    borderColor: Colors.text,
   },
 
   title: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '600',
+    color: Colors.text,
+    textTransform: 'uppercase',
   },
 
   content: {
     padding: 16,
+    backgroundColor: Colors.background,
   },
 
   field: {
-    flexDirection: 'column',
     gap: 6,
     marginBottom: 12,
+    flexDirection: 'column',
   },
 
   label: {
     fontSize: 14,
     fontWeight: '500',
+    color: Colors.text,
   },
 });
