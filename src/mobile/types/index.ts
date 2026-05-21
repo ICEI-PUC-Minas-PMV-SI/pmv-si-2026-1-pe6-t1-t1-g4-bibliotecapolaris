@@ -2,6 +2,24 @@ import { BookForm } from './formTypes';
 
 export type BookOptional = Partial<BookForm>;
 
+export type Book = {
+  id: string;
+  isbn: string;
+  name: string;
+  author: {
+    name: string;
+  };
+
+  year: number | '';
+  categories: string;
+  description: string;
+
+  totalQuantity: number;
+  totalAvailable: number;
+
+  imageSrc: string;
+};
+
 export type Loan = {
   id: string;
   studentId: string;
@@ -27,16 +45,7 @@ export type AuthorType = {
   name: string;
 };
 
-export type BookCardType = {
-  name: string;
-  description: string;
-  categories: string;
-  imageSrc: string;
-
-  author: {
-    name: string;
-  };
-};
+export type BookCardType = Omit<Book, 'totalQuantity' | 'totalAvailable'>;
 
 export type RequestCardType = {
   id: string;

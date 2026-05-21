@@ -46,21 +46,18 @@ export function AlertModal({ visible, type = 'error', title, description, onClos
             )}
           </View>
 
-          <View style={styles.footer}>
-            {type === 'confirmation' ? (
-              <>
-                <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-                  <Text style={styles.cancelText}>Cancelar </Text>
-                </TouchableOpacity>
+          {type === 'confirmation' ? (
+            <View style={styles.confirmationFooter}>
+              <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
+                <Text style={styles.cancelText}>Cancelar</Text>
+              </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={[styles.confirmButton, { backgroundColor: buttonColorMap.confirmation }]}
-                  onPress={onSuccess}
-                >
-                  <Text style={styles.confirmText}>Confirmar </Text>
-                </TouchableOpacity>
-              </>
-            ) : (
+              <TouchableOpacity style={styles.confirmButton} onPress={onSuccess}>
+                <Text style={styles.confirmText}>Confirmar</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.singleFooter}>
               <TouchableOpacity
                 style={[styles.singleButton, { backgroundColor: buttonColorMap[type] }]}
                 onPress={() => {
@@ -68,10 +65,10 @@ export function AlertModal({ visible, type = 'error', title, description, onClos
                   else onClose();
                 }}
               >
-                <Text style={styles.singleButtonText}>Fechar </Text>
+                <Text style={styles.singleButtonText}>Fechar</Text>
               </TouchableOpacity>
-            )}
-          </View>
+            </View>
+          )}
         </View>
       </View>
     </Modal>
@@ -132,41 +129,56 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.text,
     textAlign: 'center',
+
+    width: '100%',
   },
 
-  footer: {
+  confirmationFooter: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
 
-    gap: 10,
+    gap: 20,
+    paddingBottom: 12,
+  },
+
+  singleFooter: {
+    alignItems: 'flex-end',
+
     padding: 12,
   },
 
   cancelButton: {
-    flex: 1,
+    width: 140,
     paddingVertical: 8,
     paddingHorizontal: 20,
 
-    borderWidth: 1,
     borderRadius: 4,
-    borderColor: '#333',
+
+    backgroundColor: Colors.statusError,
   },
 
   cancelText: {
     fontSize: 16,
+    fontWeight: '700',
+    textAlign: 'center',
     textTransform: 'uppercase',
   },
 
   confirmButton: {
+    width: 140,
+
     paddingVertical: 8,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
 
     borderRadius: 4,
+
+    backgroundColor: Colors.statusSuccess,
   },
 
   confirmText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
+    textAlign: 'center',
     textTransform: 'uppercase',
   },
 

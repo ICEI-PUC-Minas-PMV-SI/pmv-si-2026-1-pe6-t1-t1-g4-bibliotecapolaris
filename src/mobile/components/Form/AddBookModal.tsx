@@ -42,12 +42,9 @@ export function AddBookModal({
 
   useEffect(() => {
     if (!open) return;
-    const data =
-      mode === 'edit' && initialData
-        ? { ...initialBookForm, ...initialData }
-        : initialBookForm;
+    const data = mode === 'edit' && initialData ? { ...initialBookForm, ...initialData } : initialBookForm;
     setForm(data);
-    setCoverUrl(null);
+    setCoverUrl(data.imageSrc || null);
     setCoverError(false);
   }, [open]);
 
@@ -84,13 +81,14 @@ export function AddBookModal({
   function validate(): string | null {
     if (!form.isbn.trim()) return 'ISBN é obrigatório.';
     if (!form.name.trim()) return 'Nome do livro é obrigatório.';
-    if (!form.author.trim()) return 'Autor é obrigatório.';
+    if (!form.author.name.trim()) return 'Autor é obrigatório.';
     if (!form.year || Number(form.year) <= 0) return 'Ano de publicação é obrigatório e deve ser positivo.';
     if (!form.categories.trim()) return 'Pelo menos uma categoria é obrigatória.';
     if (!form.description.trim()) return 'Descrição é obrigatória.';
     if (!form.totalQuantity || form.totalQuantity <= 0) return 'Quantidade total deve ser maior que 0.';
     if (form.totalAvailable < 0) return 'Cópias disponíveis não pode ser negativo.';
-    if (form.totalAvailable > form.totalQuantity) return 'Cópias disponíveis não pode ser maior que a quantidade total.';
+    if (form.totalAvailable > form.totalQuantity)
+      return 'Cópias disponíveis não pode ser maior que a quantidade total.';
     return null;
   }
 
@@ -109,9 +107,7 @@ export function AddBookModal({
     try {
       const clean = (form.isbn ?? '').replace(/-/g, '').trim();
       const finalCoverUrl =
-        clean.length >= 10
-          ? `https://covers.openlibrary.org/b/isbn/${clean}-L.jpg?default=false`
-          : '';
+        clean.length >= 10 ? `https://covers.openlibrary.org/b/isbn/${clean}-L.jpg?default=false` : '';
 
       if (mode === 'edit') {
         await updateBook(form.id, form);
@@ -145,11 +141,7 @@ export function AddBookModal({
       {/* Preview de capa */}
       <View style={styles.coverWrapper}>
         <Image
-          source={
-            coverUrl && !coverError
-              ? { uri: coverUrl }
-              : require('@/assets/images/mock-book.png')
-          }
+          source={coverUrl && !coverError ? { uri: coverUrl } : require('@/assets/images/mock-book.png')}
           style={styles.coverImage}
           onError={() => setCoverError(true)}
           resizeMode="cover"
@@ -183,8 +175,16 @@ export function AddBookModal({
       {/* Autor */}
       <BaseField label="Autor">
         <TextInput
-          value={form.author}
-          onChangeText={(v) => handleChange('author', v)}
+          value={form.author.name}
+          onChangeText={(v) =>
+            setForm((prev) => ({
+              ...prev,
+              author: {
+                ...prev.author,
+                name: v,
+              },
+            }))
+          }
           placeholder="Stephen Hawking"
           placeholderTextColor={Colors.fairground + '80'}
           style={styles.textInput}

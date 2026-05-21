@@ -1,21 +1,14 @@
-export type BookForm = {
-  id: string;
-  isbn: string;
-  name: string;
-  author: string;
-  year: number | '';
-  categories: string;
-  description: string;
-  totalQuantity: number;
-  totalAvailable: number;
-  imageSrc: string;
-};
+import { Book } from './index';
+
+export type BookForm = Book;
 
 export const initialBookForm = {
   id: '',
   isbn: '',
   name: '',
-  author: '',
+  author: {
+    name: '',
+  },
   year: 2024,
   categories: '',
   description: '',

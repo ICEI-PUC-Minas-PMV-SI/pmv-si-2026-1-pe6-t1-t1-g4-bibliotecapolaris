@@ -15,16 +15,19 @@ import { LoanCard } from '@/components/ControlPanel/LoanCard';
 import { ActionButton } from '@/components/Global/ActionButton';
 import { RequestCard } from '@/components/ControlPanel/RequestCard';
 
-import { getBooks } from '@/services/Book';
+import { deleteBook, getBooks } from '@/services/Book';
 import { type BookForm } from '@/types/formTypes';
+import { useAlertModal } from '@/hooks/useAlertModal';
+import { AlertModal } from '@/components/Global/AlertModal';
 
 export default function AdminPanel() {
   const [modalOpen, setModalOpen] = useState(false);
+  const { modal, close, showConfirmation, showSuccess, showError } = useAlertModal();
+
   const [selectedTab, setSelectedTab] = useState<'books' | 'requests' | 'loans'>('books');
 
   const [books, setBooks] = useState<BookCardType[]>([]);
 
-  // Livro selecionado para edição (null = modo criação)
   const [selectedBook, setSelectedBook] = useState<BookForm | null>(null);
 
   const [loans, setLoans] = useState<LoanCardType[]>([]);
@@ -70,6 +73,29 @@ export default function AdminPanel() {
 
     loadData();
   }, []);
+
+  async function handleDeleteBook(book: BookForm) {
+    showConfirmation(
+      'Excluir livro',
+      `Deseja excluir o livro "${book.name}"?`,
+
+      async () => {
+        try {
+          const result = await deleteBook(book.id ?? '');
+
+          if (result.status === 200 || result.status === 204) {
+            await loadBooks();
+
+            showSuccess('Sucesso', `"${book.name}" foi excluído com sucesso!`);
+          } else {
+            showError('Erro', `Não foi possível excluir "${book.name}".`);
+          }
+        } catch (err) {
+          showError('Erro', `Ocorreu um erro ao excluir "${book.name}".`);
+        }
+      },
+    );
+  }
 
   function openAddModal() {
     setSelectedBook(null);
@@ -139,9 +165,9 @@ export default function AdminPanel() {
                 <BookCard
                   data={item}
                   onPress={() => {
-                    // Abre modal de edição passando os dados do livro selecionado
-                    openEditModal(item as BookForm);
+                    openEditModal(item);
                   }}
+                  onDelete={() => handleDeleteBook(item)}
                 />
               );
 
@@ -157,7 +183,6 @@ export default function AdminPanel() {
         }}
       />
 
-      {/* Modal de livros (criar / editar) */}
       {selectedTab === 'books' && (
         <AddBookModal
           open={modalOpen}
@@ -171,15 +196,21 @@ export default function AdminPanel() {
         />
       )}
 
-      {/* Modal de empréstimos */}
       {selectedTab === 'loans' && (
-        <AddLoanModal
-          role="administrator"
-          open={modalOpen}
-          onClose={closeModal}
-          onSuccess={closeModal}
-        />
+        <AddLoanModal role="administrator" open={modalOpen} onClose={closeModal} onSuccess={closeModal} />
       )}
+
+      <AlertModal
+        visible={modal.visible}
+        type={modal.type}
+        title={modal.title}
+        description={modal.description}
+        onClose={close}
+        onSuccess={() => {
+          close();
+          modal.onSuccess?.();
+        }}
+      />
     </SafeAreaView>
   );
 }
