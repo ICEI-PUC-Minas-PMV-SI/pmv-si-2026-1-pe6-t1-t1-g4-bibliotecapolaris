@@ -9,31 +9,42 @@ import { BookCardType, LoanCardType, RequestCardType } from '@/types/index';
 
 import { Header } from '@/components/Global/Header';
 import { AddLoanModal } from '@/components/Form/AddLoanModal';
+import { AddBookModal } from '@/components/Form/AddBookModal';
 import { BookCard } from '@/components/ControlPanel/BookCard';
 import { LoanCard } from '@/components/ControlPanel/LoanCard';
 import { ActionButton } from '@/components/Global/ActionButton';
 import { RequestCard } from '@/components/ControlPanel/RequestCard';
 
 import { getBooks } from '@/services/Book';
+import { type BookForm } from '@/types/formTypes';
 
 export default function AdminPanel() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState<'books' | 'requests' | 'loans'>('books');
 
   const [books, setBooks] = useState<BookCardType[]>([]);
-  const [selectedBook, setSelectedBook] = useState(null);
+
+  // Livro selecionado para edição (null = modo criação)
+  const [selectedBook, setSelectedBook] = useState<BookForm | null>(null);
 
   const [loans, setLoans] = useState<LoanCardType[]>([]);
   const [requests, setRequests] = useState<RequestCardType[]>([]);
 
   const currentData = selectedTab === 'books' ? books : selectedTab === 'requests' ? requests : loans;
 
+  async function loadBooks() {
+    try {
+      const returnedBooks = await getBooks();
+      setBooks(returnedBooks ?? []);
+    } catch (err) {
+      console.log('erro ao carregar livros:', err);
+    }
+  }
+
   useEffect(() => {
     async function loadData() {
       try {
-        const returnedBooks = await getBooks();
-
-        setBooks(returnedBooks ?? []);
+        await loadBooks();
         setRequests([
           {
             id: '1',
@@ -59,6 +70,21 @@ export default function AdminPanel() {
 
     loadData();
   }, []);
+
+  function openAddModal() {
+    setSelectedBook(null);
+    setModalOpen(true);
+  }
+
+  function openEditModal(book: BookForm) {
+    setSelectedBook(book);
+    setModalOpen(true);
+  }
+
+  function closeModal() {
+    setModalOpen(false);
+    setSelectedBook(null);
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -93,10 +119,7 @@ export default function AdminPanel() {
             title={selectedTab === 'books' ? 'Adicionar Livro' : 'Adicionar Empréstimo'}
             variant="fill"
             style={styles.addButton}
-            onPress={() => {
-              setSelectedBook(null);
-              setModalOpen(true);
-            }}
+            onPress={openAddModal}
           />
         )}
       </View>
@@ -116,7 +139,8 @@ export default function AdminPanel() {
                 <BookCard
                   data={item}
                   onPress={() => {
-                    setSelectedBook(item);
+                    // Abre modal de edição passando os dados do livro selecionado
+                    openEditModal(item as BookForm);
                   }}
                 />
               );
@@ -132,12 +156,30 @@ export default function AdminPanel() {
           }
         }}
       />
-      <AddLoanModal
-        role="administrator"
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSuccess={() => setModalOpen(false)}
-      />
+
+      {/* Modal de livros (criar / editar) */}
+      {selectedTab === 'books' && (
+        <AddBookModal
+          open={modalOpen}
+          onClose={closeModal}
+          mode={selectedBook ? 'edit' : 'create'}
+          initialData={selectedBook ?? undefined}
+          onSuccess={() => {
+            closeModal();
+            loadBooks();
+          }}
+        />
+      )}
+
+      {/* Modal de empréstimos */}
+      {selectedTab === 'loans' && (
+        <AddLoanModal
+          role="administrator"
+          open={modalOpen}
+          onClose={closeModal}
+          onSuccess={closeModal}
+        />
+      )}
     </SafeAreaView>
   );
 }
