@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Pressable } from 'react-native';
 
 import { router } from 'expo-router';
 
 import { styles } from '@/styles/LoginScreen';
 
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { loginUser } from '@/services/User';
 
 import { Header } from '@/components/Global/Header';
 import { AlertModal } from '@/components/Global/AlertModal';
 
-export default function LoginScreen({ navigation }: any) {
+export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -27,13 +28,20 @@ export default function LoginScreen({ navigation }: any) {
     try {
       setIsLoading(true);
 
-      if (!email || !password) {
-        throw new Error('Preencha todos os campos');
+      if (!email.trim() || !password.trim()) {
+        throw new Error('Preencha todos os campos para continuar.');
       }
 
-      console.log('login...');
+      const response = await loginUser(email, password);
+
+      if (response.status !== 200 && response.status !== 201) {
+        throw new Error(response.data?.message || 'E-mail ou senha incorretos.');
+      }
+
+      router.replace('/');
+      
     } catch (err: any) {
-      showError('Erro', err.message);
+      showError('Falha no Login', err.message);
     } finally {
       setIsLoading(false);
     }
@@ -44,7 +52,7 @@ export default function LoginScreen({ navigation }: any) {
       <Header />
 
       <View style={styles.formContainer}>
-        <Text style={styles.title}>ENTRAR </Text>
+        <Text style={styles.title}>ENTRAR</Text>
 
         <TextInput
           value={email}
@@ -53,6 +61,7 @@ export default function LoginScreen({ navigation }: any) {
           placeholderTextColor="#999"
           style={styles.input}
           keyboardType="email-address"
+          autoCapitalize="none"
         />
 
         <TextInput
@@ -69,14 +78,15 @@ export default function LoginScreen({ navigation }: any) {
           disabled={isLoading}
           style={[styles.button, isLoading && { opacity: 0.6 }]}
         >
-          <Text style={styles.buttonText}>{isLoading ? 'Entrando... ' : 'Entrar '}</Text>
+          <Text style={styles.buttonText}>{isLoading ? 'Entrando...' : 'Entrar'}</Text>
         </TouchableOpacity>
       </View>
+      
       <View style={styles.footer}>
         <Text style={styles.footerText}>Não tem conta? </Text>
 
         <Pressable onPress={goToSign}>
-          <Text style={styles.link}>Registre aqui </Text>
+          <Text style={styles.link}>Registre aqui</Text>
         </Pressable>
       </View>
 

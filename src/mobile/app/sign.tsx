@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { router } from 'expo-router';
@@ -11,14 +11,16 @@ import { Header } from '@/components/Global/Header';
 import { AlertModal } from '@/components/Global/AlertModal';
 
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { registerUser } from '@/services/User';
+import { validateRegistration } from '@/util/validators';
 
-export default function SignScreen({ navigation }: any) {
+export default function SignScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const { showError, modal, close } = useAlertModal();
+  const { showError, showSuccess, modal, close } = useAlertModal();
 
   function goToLogin() {
     router.replace('/login');
@@ -28,13 +30,22 @@ export default function SignScreen({ navigation }: any) {
     try {
       setIsLoading(true);
 
-      if (!name || !email || !password) {
-        throw new Error('Preencha todos os campos');
+      validateRegistration(name, email, password);
+
+      const response = await registerUser(name, email, password);
+
+      if (response.status !== 200 && response.status !== 201) {
+        throw new Error(response.data?.message || 'Não foi possível concluir o cadastro.');
       }
 
-      console.log('sign...');
+      showSuccess(
+        'Conta Criada!',
+        'Seu registro foi concluído com sucesso. Faça o login para acessar o acervo.',
+        () => goToLogin()
+      );
+
     } catch (err: any) {
-      showError('Erro', err.message);
+      showError('Atenção', err.message);
     } finally {
       setIsLoading(false);
     }
@@ -45,7 +56,7 @@ export default function SignScreen({ navigation }: any) {
       <Header />
 
       <View style={styles.formContainer}>
-        <Text style={styles.title}>REGISTRAR </Text>
+        <Text style={styles.title}>REGISTRAR</Text>
 
         <TextInput
           value={name}
@@ -62,6 +73,7 @@ export default function SignScreen({ navigation }: any) {
           placeholderTextColor="#999"
           style={styles.input}
           keyboardType="email-address"
+          autoCapitalize="none"
         />
 
         <TextInput
@@ -78,14 +90,15 @@ export default function SignScreen({ navigation }: any) {
           disabled={isLoading}
           style={[styles.button, isLoading && { opacity: 0.6 }]}
         >
-          <Text style={styles.buttonText}>{isLoading ? 'Entrando... ' : 'Entrar '}</Text>
+          <Text style={styles.buttonText}>{isLoading ? 'Registrando...' : 'Registrar'}</Text>
         </TouchableOpacity>
       </View>
+      
       <View style={styles.footer}>
         <Text style={styles.footerText}>Já tem conta? </Text>
 
         <Pressable onPress={goToLogin}>
-          <Text style={styles.link}>Entre aqui </Text>
+          <Text style={styles.link}>Entre aqui</Text>
         </Pressable>
       </View>
 
