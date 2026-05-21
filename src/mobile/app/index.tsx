@@ -74,8 +74,18 @@ export default function HomeScreen() {
             <Text style={styles.sectionTitle}>Recém Chegados</Text>
 
             <View style={styles.booksContainer}>
-              {books.slice(0, 3).map((book) => (
-                <Pressable key={book.slug} onPress={() => router.push(`/`)}>
+              {books.slice(0, 3).map((book: any) => (
+                <Pressable
+                  key={book.slug}
+                  onPress={() =>
+                    router.push({
+                      pathname: '/books/[slug]',
+                      params: {
+                        slug: book.slug,
+                      },
+                    })
+                  }
+                >
                   <BookDisplay
                     bookId={book.id}
                     title={book.name}
