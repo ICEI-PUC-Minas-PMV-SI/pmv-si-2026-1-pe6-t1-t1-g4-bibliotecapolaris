@@ -13,9 +13,13 @@ type RequestCardProps = {
   onPress?: () => void;
 
   onDelete?: () => void;
+
+  onAccept?: () => void;
+
+  onReject?: () => void;
 };
 
-export function RequestCard({ data, onPress, onDelete }: RequestCardProps) {
+export function RequestCard({ data, onPress, onDelete, onAccept, onReject }: RequestCardProps) {
   return (
     <CardBase onPress={onPress}>
       <View style={styles.content}>
@@ -36,8 +40,8 @@ export function RequestCard({ data, onPress, onDelete }: RequestCardProps) {
             {data.loanDate}
           </Text>
           <View style={styles.buttonsSection}>
-            <ActionButton title="Recusar" style={{ backgroundColor: Colors.statusError, flex: 1 }} />
-            <ActionButton title="Aceitar" style={{ backgroundColor: Colors.statusSuccess, flex: 1 }} />
+            <ActionButton title="Recusar" style={{ backgroundColor: Colors.statusError, flex: 1 }} onPress={onReject} />
+            <ActionButton title="Aceitar" style={{ backgroundColor: Colors.statusSuccess, flex: 1 }} onPress={onAccept} />
           </View>
         </View>
       </View>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, Text, View, Image } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -16,6 +16,7 @@ import { ActionButton } from '@/components/Global/ActionButton';
 import { RequestCard } from '@/components/ControlPanel/RequestCard';
 
 import { deleteBook, getBooks } from '@/services/Book';
+import { getLoans, getLoansByStatus, updateLoan, checkOverdueLoans } from '@/services/Loans';
 import { type BookForm } from '@/types/formTypes';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { AlertModal } from '@/components/Global/AlertModal';
@@ -44,35 +45,58 @@ export default function AdminPanel() {
     }
   }
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        await loadBooks();
-        setRequests([
-          {
-            id: '1',
-            bookName: '1984',
-            authorName: 'George Orwell',
-            loanDate: '20/05/2026 - 14:30',
-            imageSrc: 'https://picsum.photos/200/301',
-          },
-        ]);
-        setLoans([
-          {
-            id: '1',
-            bookName: '1984',
-            userName: 'Duque',
-            authorName: 'George Orwell',
-            returnDate: '30/05/2026',
-          },
-        ]);
-      } catch (err) {
-        console.log('erro load data:', err);
-      }
-    }
+  async function loadLoansAndRequests() {
+    try {
+      await checkOverdueLoans();
 
-    loadData();
+      const [pendingLoans, otherLoans] = await Promise.all([
+        getLoansByStatus('pending'),
+        getLoans()
+      ]);
+
+      const filteredOtherLoans = (otherLoans ?? []).filter((l: any) => l.status !== 'pending');
+
+      setRequests(
+        (pendingLoans ?? []).map((loan: any) => ({
+          id: loan.id,
+          bookName: loan.book?.name || 'Desconhecido',
+          authorName: loan.book?.author?.name || 'Desconhecido',
+          loanDate: loan.loanDate || '',
+          imageSrc: loan.book?.imageSrc || Image.resolveAssetSource(require('@/assets/images/mock-book.png')).uri,
+        }))
+      );
+
+      setLoans(
+        filteredOtherLoans.map((loan: any) => ({
+          id: loan.id,
+          bookName: loan.book?.name || 'Desconhecido',
+          userName: loan.student?.name || 'Desconhecido',
+          authorName: loan.book?.author?.name || 'Desconhecido',
+          returnDate: loan.returnDate || loan.dueDate || '',
+        }))
+      );
+    } catch (err) {
+      console.log('erro load loans:', err);
+    }
+  }
+
+  useEffect(() => {
+    async function init() {
+      await loadBooks();
+      await loadLoansAndRequests();
+    }
+    init();
   }, []);
+
+  async function handleLoanAction(id: string, status: string) {
+    try {
+      await updateLoan(id, { status });
+      await loadLoansAndRequests();
+      showSuccess('Sucesso', 'Solicitação atualizada com sucesso!');
+    } catch (error) {
+      showError('Erro', 'Não foi possível atualizar a solicitação.');
+    }
+  }
 
   async function handleDeleteBook(book: BookForm) {
     showConfirmation(
@@ -172,7 +196,13 @@ export default function AdminPanel() {
               );
 
             case 'requests':
-              return <RequestCard data={item} />;
+              return (
+                <RequestCard
+                  data={item}
+                  onAccept={() => handleLoanAction(item.id, 'in_progress')}
+                  onReject={() => handleLoanAction(item.id, 'canceled')}
+                />
+              );
 
             case 'loans':
               return <LoanCard data={item} />;
