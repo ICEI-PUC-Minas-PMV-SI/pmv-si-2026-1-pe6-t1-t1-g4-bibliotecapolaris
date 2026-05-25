@@ -1,6 +1,6 @@
 # 📊 Relatório de Contribuições do Projeto
 
-**Última atualização:** 22/05/2026 00:59
+**Última atualização:** 25/05/2026 01:00
 
 ---
 
@@ -17,38 +17,40 @@
 | Leonardo Guedes       |         3 |       941 |       203 |         36 |              2 |               2 |
 | Leonardo Junior       |        25 |        74 |        76 |          7 |             19 |               3 |
 | Lucas Fonseca         |        33 |      6937 |       880 |         57 |             20 |               4 |
-| github-actions[bot]   |        79 |       751 |       731 |          3 |             79 |               1 |
+| github-actions[bot]   |        80 |       768 |       748 |          3 |             80 |               1 |
 | github-classroom[bot] |         1 |      2152 |         0 |         45 |              1 |              13 |
 | vcrfrancisco          |       112 |      9179 |      1977 |        120 |             21 |               5 |
 
 
 ## 📅 Contribuições Semanais (Todo o Semestre)
 
-**2026-05-15**: Davih Duque: 11, Fabiana: 1, Fabiana Santos Soares: 1, Filipeacacio1: 2, Lucas Fonseca: 2, github-actions[bot]: 4, vcrfrancisco: 1
+**2026-05-18**: Davih Duque: 11, Fabiana: 1, Fabiana Santos Soares: 1, Filipeacacio1: 2, Lucas Fonseca: 1, github-actions[bot]: 3, vcrfrancisco: 1
 
-**2026-05-08**: Davih Duque: 17, Fabiana: 1, Fabiana Santos Soares: 2, Filipeacacio1: 5, Leonardo Guedes: 1, Lucas Fonseca: 3, github-actions[bot]: 9, vcrfrancisco: 18
+**2026-05-11**: Davih Duque: 6, Fabiana Santos Soares: 1, Filipeacacio1: 3, Lucas Fonseca: 1, github-actions[bot]: 5
 
-**2026-05-01**: Davih Duque: 11, Fabiana: 1, Fabiana Santos Soares: 1, Filipe Acacio: 1, Filipeacacio1: 5, Leonardo Guedes: 2, Leonardo Junior: 2, Lucas Fonseca: 4, github-actions[bot]: 11, vcrfrancisco: 5
+**2026-05-04**: Davih Duque: 18, Fabiana: 1, Fabiana Santos Soares: 1, Filipe Acacio: 1, Filipeacacio1: 7, Leonardo Guedes: 3, Leonardo Junior: 2, Lucas Fonseca: 5, github-actions[bot]: 14, vcrfrancisco: 23
 
-**2026-04-24**: Davih Duque: 8, Fabiana: 1, Fabiana Santos Soares: 1, Filipe Acacio: 3, Filipeacacio1: 1, Lucas Fonseca: 1, github-actions[bot]: 4
+**2026-04-27**: Davih Duque: 11, Fabiana: 1, Fabiana Santos Soares: 2, Filipe Acacio: 2, Lucas Fonseca: 2, github-actions[bot]: 3
 
-**2026-04-17**: Davih Duque: 15, Filipeacacio1: 1, github-actions[bot]: 2
+**2026-04-20**: Davih Duque: 6, Fabiana: 1, Filipe Acacio: 1, Filipeacacio1: 2, Lucas Fonseca: 1, github-actions[bot]: 5
 
-**2026-04-10**: Davih Duque: 13, Fabiana: 2, Fabiana Santos Soares: 5, LJ-Leonardo: 3, Leonardo Junior: 2, Lucas Fonseca: 4, github-actions[bot]: 8, vcrfrancisco: 56
+**2026-04-13**: Davih Duque: 15, github-actions[bot]: 1
 
-**2026-04-03**: Davih Duque: 10, Fabiana: 3, Filipeacacio1: 4, LJ-Leonardo: 6, Lucas Fonseca: 2, github-actions[bot]: 6
+**2026-04-06**: Davih Duque: 18, Fabiana: 5, Fabiana Santos Soares: 5, Filipeacacio1: 4, LJ-Leonardo: 9, Leonardo Junior: 2, Lucas Fonseca: 6, github-actions[bot]: 13, vcrfrancisco: 56
 
-**2026-03-27**: Davih Duque: 6, Fabiana: 1, Fabiana Santos Soares: 2, Leonardo Junior: 7, Lucas Fonseca: 4, github-actions[bot]: 4
+**2026-03-30**: Davih Duque: 6, Fabiana: 1, Fabiana Santos Soares: 2, Lucas Fonseca: 2, github-actions[bot]: 3
 
-**2026-03-20**: Davih Duque: 6, Fabiana: 1, Fabiana Santos Soares: 2, Filipeacacio1: 2, LJ-Leonardo: 1, Lucas Fonseca: 2, github-actions[bot]: 6, vcrfrancisco: 22
+**2026-03-23**: Davih Duque: 6, Fabiana: 1, Fabiana Santos Soares: 2, Filipeacacio1: 2, LJ-Leonardo: 1, Leonardo Junior: 7, Lucas Fonseca: 3, github-actions[bot]: 6, vcrfrancisco: 19
 
-**2026-03-13**: Davih Duque: 17, Fabiana: 2, Filipe Acacio: 3, Filipeacacio1: 1, Leonardo Junior: 3, Lucas Fonseca: 3, github-actions[bot]: 5
+**2026-03-16**: Davih Duque: 12, Fabiana: 1, Filipe Acacio: 2, Filipeacacio1: 1, Leonardo Junior: 1, Lucas Fonseca: 4, github-actions[bot]: 7, vcrfrancisco: 3
 
-**2026-03-06**: Davih Duque: 13, Fabiana: 1, Filipeacacio1: 2, Leonardo Junior: 2, Lucas Fonseca: 2, github-actions[bot]: 5, vcrfrancisco: 6
+**2026-03-09**: Davih Duque: 8, Fabiana: 1, Filipe Acacio: 1, Filipeacacio1: 1, Leonardo Junior: 2, Lucas Fonseca: 2, github-actions[bot]: 1, vcrfrancisco: 2
 
-**2026-02-27**: Davih Duque: 9, Fabiana: 5, Filipeacacio1: 4, Leonardo Junior: 9, Lucas Fonseca: 2, github-actions[bot]: 15, vcrfrancisco: 4
+**2026-03-02**: Davih Duque: 16, Fabiana: 1, Filipeacacio1: 2, Leonardo Junior: 11, github-actions[bot]: 19, vcrfrancisco: 4
 
-**2026-02-20**: Davih Duque: 4, Filipeacacio1: 5, Lucas Fonseca: 4, github-classroom[bot]: 1
+**2026-02-23**: Davih Duque: 7, Fabiana: 5, Filipeacacio1: 8, Lucas Fonseca: 6, vcrfrancisco: 4
+
+**2026-02-16**: github-classroom[bot]: 1
 
 
 
