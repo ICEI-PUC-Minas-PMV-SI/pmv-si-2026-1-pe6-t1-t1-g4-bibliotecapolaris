@@ -18,7 +18,7 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const { showError, modal, close } = useAlertModal();
+  const { showError, showSuccess, modal, close } = useAlertModal();
 
   function goToSign() {
     router.replace('/sign');
@@ -38,8 +38,9 @@ export default function LoginScreen() {
         throw new Error(response.data?.message || 'E-mail ou senha incorretos.');
       }
 
-      router.replace('/');
-      
+      showSuccess('Sucesso!', 'Logado com sucesso! Redirecionando você para tela inicial...', () => {
+        router.replace('/');
+      });
     } catch (err: any) {
       showError('Falha no Login', err.message);
     } finally {
@@ -52,7 +53,7 @@ export default function LoginScreen() {
       <Header />
 
       <View style={styles.formContainer}>
-        <Text style={styles.title}>ENTRAR</Text>
+        <Text style={styles.title}>ENTRAR </Text>
 
         <TextInput
           value={email}
@@ -78,7 +79,7 @@ export default function LoginScreen() {
           disabled={isLoading}
           style={[styles.button, isLoading && { opacity: 0.6 }]}
         >
-          <Text style={styles.buttonText}>{isLoading ? 'Entrando...' : 'Entrar'}</Text>
+          <Text style={styles.buttonText}>{isLoading ? 'Entrando... ' : 'Entrar '}</Text>
         </TouchableOpacity>
       </View>
       
@@ -86,7 +87,7 @@ export default function LoginScreen() {
         <Text style={styles.footerText}>Não tem conta? </Text>
 
         <Pressable onPress={goToSign}>
-          <Text style={styles.link}>Registre aqui</Text>
+          <Text style={styles.link}>Registre aqui </Text>
         </Pressable>
       </View>
 

@@ -38,10 +38,8 @@ export default function SignScreen() {
         throw new Error(response.data?.message || 'Não foi possível concluir o cadastro.');
       }
 
-      showSuccess(
-        'Conta Criada!',
-        'Seu registro foi concluído com sucesso. Faça o login para acessar o acervo.',
-        () => goToLogin()
+      showSuccess('Conta Criada!', 'Seu registro foi concluído com sucesso. Faça o login para acessar o acervo.', () =>
+        goToLogin(),
       );
 
     } catch (err: any) {
@@ -56,7 +54,7 @@ export default function SignScreen() {
       <Header />
 
       <View style={styles.formContainer}>
-        <Text style={styles.title}>REGISTRAR</Text>
+        <Text style={styles.title}>REGISTRAR .</Text>
 
         <TextInput
           value={name}
@@ -90,7 +88,7 @@ export default function SignScreen() {
           disabled={isLoading}
           style={[styles.button, isLoading && { opacity: 0.6 }]}
         >
-          <Text style={styles.buttonText}>{isLoading ? 'Registrando...' : 'Registrar'}</Text>
+          <Text style={styles.buttonText}>{isLoading ? 'Registrando... ' : 'Registrar '}</Text>
         </TouchableOpacity>
       </View>
       
@@ -98,7 +96,7 @@ export default function SignScreen() {
         <Text style={styles.footerText}>Já tem conta? </Text>
 
         <Pressable onPress={goToLogin}>
-          <Text style={styles.link}>Entre aqui</Text>
+          <Text style={styles.link}>Entre aqui </Text>
         </Pressable>
       </View>
 

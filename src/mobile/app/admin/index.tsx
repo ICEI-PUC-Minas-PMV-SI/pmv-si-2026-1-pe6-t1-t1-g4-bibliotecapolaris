@@ -227,7 +227,15 @@ export default function AdminPanel() {
       )}
 
       {selectedTab === 'loans' && (
-        <AddLoanModal role="administrator" open={modalOpen} onClose={closeModal} onSuccess={closeModal} />
+        <AddLoanModal
+          role="administrator"
+          open={modalOpen}
+          onClose={closeModal}
+          onSuccess={async () => {
+            closeModal();
+            await loadLoansAndRequests();
+          }}
+        />
       )}
 
       <AlertModal

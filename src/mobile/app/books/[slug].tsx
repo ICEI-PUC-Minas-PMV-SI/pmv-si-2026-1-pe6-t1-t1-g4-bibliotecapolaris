@@ -18,6 +18,7 @@ import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
 
 import { getBookBySlug } from '@/services/Book';
+import { formatCategories } from '@/util/validators';
 
 export default function BookBySlug() {
   const { slug } = useLocalSearchParams();
@@ -77,16 +78,16 @@ export default function BookBySlug() {
           </Text>
 
           <Text style={styles.author} numberOfLines={1}>
-            por {book.author.name}
+            por {book.author?.name}
           </Text>
 
           <Text style={styles.categories} numberOfLines={1}>
-            {book.categories}
+            {formatCategories(book.categories)}
           </Text>
         </View>
 
         <Text style={styles.description} numberOfLines={8}>
-          {`${book.description} ${book.description} ${book.description} ${book.description} ${book.description} ${book.description} ${book.description} ${book.description} ${book.description}  ${book.description} ${book.description} ${book.description} ${book.description} ${book.description} ${book.description} ${book.description} ${book.description} ${book.description}`}
+          {`${book.description}`}
         </Text>
 
         <Text style={styles.available} numberOfLines={1}>

@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.text,
 
-    width: '58%',
+    width: 'auto',
     borderBottomWidth: 4,
     borderBottomColor: Colors.buttonActive,
 

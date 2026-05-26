@@ -73,6 +73,9 @@ function extractErrorMessage(body: any, fallback: string): string {
 export async function addNewBook(book: BookForm) {
   const res = await fetch(`${API_URL}/books/register`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(book),
   });
 
@@ -88,6 +91,9 @@ export async function addNewBook(book: BookForm) {
 export async function updateBook(id: string, book: BookForm) {
   const res = await fetch(`${API_URL}/books/${id}`, {
     method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(book),
   });
 

@@ -5,6 +5,7 @@ import { CardBase } from './CardBase';
 import { Colors, Fonts } from '@/constants/Theme';
 
 import type { BookCardType } from '@/types/index';
+import { formatCategories } from '@/util/validators';
 
 type BookCardProps = {
   data: BookCardType;
@@ -31,7 +32,7 @@ export function BookCard({ data, onPress, onDelete }: BookCardProps) {
             </Text>
           </View>
 
-          <Text style={styles.category}>{data.categories}</Text>
+          <Text style={styles.category}>{formatCategories(data.categories)}</Text>
 
           <Text style={styles.description} numberOfLines={3}>
             {data.description}
