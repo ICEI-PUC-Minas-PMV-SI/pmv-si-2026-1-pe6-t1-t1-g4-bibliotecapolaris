@@ -102,6 +102,7 @@ export default function HomeScreen() {
                   <BookDisplay
                     bookId={book.id}
                     title={book.name}
+                    slug={book.slug}
                     description={book.description}
                     imageSrc={book.imageSrc}
                     isFavorite={wishlistSet.has(book.id)}
@@ -122,7 +123,17 @@ export default function HomeScreen() {
 
           <View style={styles.categoriesContainer}>
             {categories.slice(0, 5).map((cat) => (
-              <Pressable key={cat.name} onPress={() => router.push(`/`)}>
+              <Pressable
+                key={cat.name}
+                onPress={() =>
+                  router.push({
+                    pathname: '/books',
+                    params: {
+                      search: cat.name,
+                    },
+                  })
+                }
+              >
                 <CategoryCard title={cat.name} imageSrc={cat.imageSrc} />
               </Pressable>
             ))}

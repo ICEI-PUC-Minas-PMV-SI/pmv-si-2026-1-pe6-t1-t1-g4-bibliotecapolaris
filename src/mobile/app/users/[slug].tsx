@@ -71,6 +71,7 @@ export default function ProfilePage() {
                   key={book.id}
                   bookId={book.id}
                   title={book.name}
+                  slug={book.slug}
                   description={book.description}
                   imageSrc={book.imageSrc ? { uri: book.imageSrc } : require('@/assets/images/mock-book.png')}
                   isFavorite={wishlistSet.has(book.id)}

@@ -17,7 +17,15 @@ type BookDisplayProps = {
   onToggleFavorite: () => void;
 };
 
-export function BookDisplay({ bookId, title, description, imageSrc, isFavorite, onToggleFavorite }: BookDisplayProps) {
+export function BookDisplay({
+  bookId,
+  title,
+  slug,
+  description,
+  imageSrc,
+  isFavorite,
+  onToggleFavorite,
+}: BookDisplayProps) {
   const [error, setError] = useState(false);
 
   const fallback = require('@/assets/images/mock-book.png');
@@ -38,7 +46,18 @@ export function BookDisplay({ bookId, title, description, imageSrc, isFavorite, 
       </Text>
 
       <View style={styles.buttons}>
-        <ActionButton title="Retirar" style={{ flex: 1 }} onPress={() => router.push('/')} />
+        <ActionButton
+          title="Retirar"
+          style={{ flex: 1 }}
+          onPress={() =>
+            router.push({
+              pathname: '/books/[slug]',
+              params: {
+                slug,
+              },
+            })
+          }
+        />
 
         <LikeButton isFavorite={isFavorite} onToggle={onToggleFavorite} />
       </View>
@@ -63,8 +82,8 @@ const styles = StyleSheet.create({
   imageContainer: {
     alignSelf: 'center',
 
-    width: '50%',
-    height: 80,
+    width: '64%',
+    height: 120,
 
     borderWidth: 1,
     borderColor: Colors.text,
