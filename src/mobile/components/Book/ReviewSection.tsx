@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Colors, Fonts } from '@/constants/Theme';
+import { formatDateBR } from './StatusConfig';
 
 type Review = {
   id: string;
@@ -19,7 +20,13 @@ function StarRating({ rating }: { rating: number }) {
   return (
     <View style={styles.starsContainer}>
       {[1, 2, 3, 4, 5].map((star) => (
-        <Text key={star} style={[styles.star, { color: star <= rating ? Colors.buttonActive : Colors.text, opacity: star <= rating ? 1 : 0.3 }]}>
+        <Text
+          key={star}
+          style={[
+            styles.star,
+            { color: star <= rating ? Colors.buttonActive : Colors.text, opacity: star <= rating ? 1 : 0.3 },
+          ]}
+        >
           ★
         </Text>
       ))}
@@ -32,13 +39,17 @@ function ReviewCard({ review }: { review: Review }) {
     <View style={styles.card}>
       <View style={styles.cardHeader}>
         <View style={styles.cardHeaderLeft}>
-          <Text style={styles.userName} numberOfLines={1}>{review.userName}</Text>
-          <Text style={styles.date}>{review.date}</Text>
+          <Text style={styles.userName} numberOfLines={1}>
+            {review.userName}
+          </Text>
+          <Text style={styles.date}>{formatDateBR(review.date)}</Text>
         </View>
         <StarRating rating={review.rating} />
       </View>
       {review.description && (
-        <Text style={styles.description} numberOfLines={4}>{review.description}</Text>
+        <Text style={styles.description} numberOfLines={4}>
+          {review.description}
+        </Text>
       )}
     </View>
   );
@@ -51,9 +62,7 @@ export function ReviewSection({ reviews }: ReviewSectionProps) {
       {reviews.length === 0 ? (
         <Text style={styles.empty}>NENHUMA AVALIAÇÃO PARA ESSE LIVRO.</Text>
       ) : (
-        reviews.map((review) => (
-          <ReviewCard key={review.id} review={review} />
-        ))
+        reviews.map((review) => <ReviewCard key={review.id} review={review} />)
       )}
     </View>
   );
@@ -62,7 +71,7 @@ export function ReviewSection({ reviews }: ReviewSectionProps) {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    gap: 12,
+    gap: 2,
     paddingTop: 16,
   },
   title: {
@@ -92,12 +101,10 @@ const styles = StyleSheet.create({
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: 8,
+    alignItems: 'flex-start',
   },
   cardHeaderLeft: {
-    flex: 1,
-    gap: 2,
+    gap: 8,
   },
   userName: {
     fontSize: 16,
@@ -110,17 +117,19 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
   },
   date: {
-    fontSize: 12,
+    fontSize: 16,
     color: Colors.text,
     fontFamily: Fonts.serif,
-    opacity: 0.7,
+    opacity: 0.8,
   },
   starsContainer: {
     flexDirection: 'row',
     gap: 2,
   },
   star: {
-    fontSize: 18,
+    fontSize: 24,
+    includeFontPadding: false,
+    textAlignVertical: 'center',
   },
   description: {
     fontSize: 14,
@@ -128,5 +137,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.sans,
     textAlign: 'justify',
     opacity: 0.9,
+
+    minHeight: 52,
   },
 });
