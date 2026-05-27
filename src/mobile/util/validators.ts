@@ -22,3 +22,14 @@ export function validateRegistration(name: string, email: string, password: stri
     throw new Error('A senha precisa de pelo menos um caractere especial (!, @, #, $, etc).');
   }
 }
+
+export function formatCategories(categories?: string): string {
+  if (!categories) return '';
+
+  return categories
+    .split(',')
+    .map((cat) => cat.trim()) // remove espaços
+    .filter(Boolean) // remove vazios
+    .map((cat) => cat.charAt(0).toUpperCase() + cat.slice(1))
+    .join(', ');
+}

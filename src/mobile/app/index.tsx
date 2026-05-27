@@ -22,6 +22,7 @@ export default function HomeScreen() {
   const { wishlistSet, toggle } = useWishlist('31f004de-617e-4990-bc38-f1afd22ab83a');
   const { showError, modal, close } = useAlertModal();
 
+  const [search, setSearch] = useState('');
   const [books, setBooks] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
 
@@ -59,12 +60,24 @@ export default function HomeScreen() {
 
             <View style={styles.searchContainer}>
               <TextInput
+                value={search}
+                onChangeText={setSearch}
                 placeholder="Pesquise pelo Título, Autor ou Categoria."
                 style={styles.input}
                 placeholderTextColor="#999"
               />
 
-              <ActionButton title="Buscar" />
+              <ActionButton
+                title="Buscar"
+                onPress={() =>
+                  router.push({
+                    pathname: '/books',
+                    params: {
+                      search,
+                    },
+                  })
+                }
+              />
             </View>
           </View>
         </View>
@@ -98,7 +111,7 @@ export default function HomeScreen() {
               ))}
             </View>
 
-            <ActionButton title="Ver mais" onPress={() => console.log('livros legais')} />
+            <ActionButton title="Ver mais" onPress={() => router.push('/books')} />
           </View>
         ) : (
           <Text style={styles.emptyText}>Nenhum livro encontrado</Text>

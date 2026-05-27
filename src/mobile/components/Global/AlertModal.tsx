@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 4,
 
-    minWidth: '24%',
+    minWidth: '32%',
   },
 
   singleButtonText: {

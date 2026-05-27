@@ -7,11 +7,21 @@ export function parseDate(input: Date | string): Date {
 
   if (input.includes('/')) {
     const [d, m, y] = input.split('/').map(Number);
+
     return new Date(y, m - 1, d);
   }
 
   if (input.includes('-')) {
-    const [y, m, d] = input.split('-').map(Number);
+    const parts = input.split('-').map(Number);
+
+    if (parts[0] > 1000) {
+      const [y, m, d] = parts;
+
+      return new Date(y, m - 1, d);
+    }
+
+    const [d, m, y] = parts;
+
     return new Date(y, m - 1, d);
   }
 

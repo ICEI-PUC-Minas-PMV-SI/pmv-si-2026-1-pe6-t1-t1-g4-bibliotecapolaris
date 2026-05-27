@@ -16,6 +16,66 @@ function extractZodErrors(obj: any): string[] {
   return msgs;
 }
 
+export async function getLoans() {
+  try {
+    const res = await apiFetch('/loans', { /* auth: true */ });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.data ?? [];
+  } catch (error) {
+    console.error('Error fetching loans:', error);
+    return [];
+  }
+}
+
+export async function getLoansByStatus(status: string) {
+  try {
+    const res = await apiFetch(`/loans/status/${status}`, { /* auth: true */ });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.data ?? [];
+  } catch (error) {
+    console.error('Error fetching loans by status:', error);
+    return [];
+  }
+}
+
+export async function checkOverdueLoans() {
+  try {
+    await apiFetch('/loans/check-overdue', { method: 'POST', /* auth: true */ });
+  } catch {
+    // silently fail
+  }
+}
+
+type LoanUpdate = Partial<LoanForm> & {
+  status: string;
+  dueDate?: string;
+  returnDate?: string;
+  justification?: string;
+};
+
+export async function updateLoan(id: string, data: LoanUpdate) {
+  try {
+    const res = await apiFetch(`/loans/${id}`, {
+      method: 'PUT',
+      /* auth: true, */
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      const error = await res.json().catch(() => null);
+      throw new Error(error?.message || 'Erro ao atualizar empréstimo');
+    }
+
+    const response = await res.json();
+    return response.data;
+  } catch (error) {
+    console.error('Error updating loan:', error);
+    throw error;
+  }
+}
+
 export async function createLoan(loan: LoanForm, origin?: 'student' | 'admin') {
   const { bookId, userId, loanDate, returnDate } = loan;
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -9,9 +9,26 @@ import { BookStatusCard } from '@/components/Book/BookStatusCard';
 import { BookDisplay } from '@/components/Book/BookDisplay';
 
 import { useWishlist } from '@/hooks/useWishlist';
+import { getLoansByUserId } from '@/services/Loans';
+import { Loan } from '@/types';
 
 export default function ProfilePage() {
-  const { wishlist, wishlistSet, toggle } = useWishlist('31f004de-617e-4990-bc38-f1afd22ab83a');
+  const { wishlist, wishlistSet, toggle } = useWishlist('mock-user-id');
+  const [loans, setLoans] = useState<Loan[]>([]);
+
+  useEffect(() => {
+    async function loadLoans() {
+      try {
+        const data = await getLoansByUserId('mock-user-id');
+
+        setLoans(data ?? []);
+      } catch (err) {
+        console.log('Erro ao carregar empréstimos:', err);
+      }
+    }
+
+    loadLoans();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -26,23 +43,21 @@ export default function ProfilePage() {
           <Text style={styles.title}>Livros Emprestados</Text>
 
           <View style={styles.booksContainer}>
-            <BookStatusCard
-              title="The Sudden Stop"
-              imageSrc={require('@/assets/images/mock-book.png')}
-              dueDate={new Date()}
-            />
-
-            <BookStatusCard
-              title="The Sudden Stop"
-              imageSrc={require('@/assets/images/mock-book.png')}
-              dueDate={new Date('2026-04-12')}
-            />
-
-            <BookStatusCard
-              title="The Sudden Stop"
-              imageSrc={require('@/assets/images/mock-book.png')}
-              dueDate={new Date('2026-05-24')}
-            />
+            {loans.length > 0 ? (
+              loans.map((loan) => (
+                <BookStatusCard
+                  key={loan.id}
+                  title={loan.book?.name || 'Livro desconhecido'}
+                  imageSrc={
+                    loan.book?.imageSrc ? { uri: loan.book.imageSrc } : require('@/assets/images/mock-book.png')
+                  }
+                  dueDate={loan.dueDate}
+                  status={loan.status}
+                />
+              ))
+            ) : (
+              <Text style={styles.emptyText}>Nenhum empréstimo ativo.</Text>
+            )}
           </View>
         </View>
 

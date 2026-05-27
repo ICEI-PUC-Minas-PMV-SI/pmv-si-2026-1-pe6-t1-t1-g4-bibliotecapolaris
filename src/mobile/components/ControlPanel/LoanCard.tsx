@@ -5,7 +5,7 @@ import { CardBase } from './CardBase';
 import { Colors, Fonts } from '@/constants/Theme';
 
 import type { LoanCardType } from '@/types/index';
-import { resolveBookStatus } from '../Book/StatusConfig';
+import { formatDateBR, resolveBookStatus } from '../Book/StatusConfig';
 
 type LoanCardProps = {
   data: LoanCardType;
@@ -26,10 +26,6 @@ export function LoanCard({ data, onPress, onDelete }: LoanCardProps) {
             <Text style={styles.title} numberOfLines={1}>
               {data.bookName}
             </Text>
-
-            <Text style={styles.author} numberOfLines={1}>
-              por {data.authorName}
-            </Text>
           </View>
 
           <Text style={styles.title} numberOfLines={1}>
@@ -37,7 +33,7 @@ export function LoanCard({ data, onPress, onDelete }: LoanCardProps) {
           </Text>
 
           <Text style={styles.loanDate} numberOfLines={3}>
-            Data de Retorno: {data.returnDate}
+            Data de Retorno: {formatDateBR(data.returnDate)}
           </Text>
           <View
             style={[

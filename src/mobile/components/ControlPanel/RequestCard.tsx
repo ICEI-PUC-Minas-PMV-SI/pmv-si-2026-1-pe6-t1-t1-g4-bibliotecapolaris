@@ -6,18 +6,19 @@ import { Colors, Fonts } from '@/constants/Theme';
 
 import type { RequestCardType } from '@/types/index';
 import { ActionButton } from '@/components/Global/ActionButton';
+import { formatDateBR } from '../Book/StatusConfig';
 
 type RequestCardProps = {
   data: RequestCardType;
 
-  onPress?: () => void;
+  onAccept?: () => void;
 
-  onDelete?: () => void;
+  onReject?: () => void;
 };
 
-export function RequestCard({ data, onPress, onDelete }: RequestCardProps) {
+export function RequestCard({ data, onAccept, onReject }: RequestCardProps) {
   return (
-    <CardBase onPress={onPress}>
+    <CardBase>
       <View style={styles.content}>
         <Image source={{ uri: data.imageSrc }} style={styles.image} />
 
@@ -26,18 +27,14 @@ export function RequestCard({ data, onPress, onDelete }: RequestCardProps) {
             <Text style={styles.title} numberOfLines={1}>
               {data.bookName}
             </Text>
-
-            <Text style={styles.author} numberOfLines={1}>
-              por {data.authorName}
-            </Text>
           </View>
 
           <Text style={styles.loanDate} numberOfLines={3}>
-            {data.loanDate}
+            Data de Retirada: {formatDateBR(data.loanDate)}
           </Text>
           <View style={styles.buttonsSection}>
-            <ActionButton title="Recusar" style={{ backgroundColor: Colors.statusError, flex: 1 }} />
-            <ActionButton title="Aceitar" style={{ backgroundColor: Colors.statusSuccess, flex: 1 }} />
+            <ActionButton title="Recusar" style={{ backgroundColor: Colors.statusError, flex: 1 }} onPress={onReject} />
+            <ActionButton title="Aceitar" style={{ backgroundColor: Colors.statusSuccess, flex: 1 }} onPress={onAccept} />
           </View>
         </View>
       </View>

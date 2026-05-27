@@ -31,6 +31,8 @@ function mapReviews(apiReviews: any[]) {
   }));
 }
 
+import { formatCategories } from '@/util/validators';
+
 export default function BookBySlug() {
   const { slug } = useLocalSearchParams();
 
@@ -80,9 +82,7 @@ export default function BookBySlug() {
 
   if (!book) return null;
 
-  const imgSource = error
-    ? require('@/assets/images/mock-book.png')
-    : { uri: book.imageSrc };
+  const imgSource = error ? require('@/assets/images/mock-book.png') : { uri: book.imageSrc };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -105,7 +105,7 @@ export default function BookBySlug() {
           </Text>
 
           <Text style={styles.categories} numberOfLines={1}>
-            {book.categories}
+            {formatCategories(book.categories)}
           </Text>
         </View>
 
