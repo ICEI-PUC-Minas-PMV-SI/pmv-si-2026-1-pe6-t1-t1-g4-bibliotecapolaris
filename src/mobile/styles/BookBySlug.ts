@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
 
+    marginBottom: 40,
     paddingHorizontal: 48,
 
     position: 'relative',
