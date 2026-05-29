@@ -91,6 +91,11 @@ export const StatusConfig = {
     color: Colors.statusWarning,
     buttonText: '',
   },
+
+  returned: {
+    color: '#6b7280',
+    buttonText: '',
+  },
 } as const;
 
 export function resolveBookStatus(dueDate: Date | string, status?: string) {
@@ -99,6 +104,14 @@ export function resolveBookStatus(dueDate: Date | string, status?: string) {
       type: 'pending' as BookStatus,
       config: StatusConfig.pending,
       label: 'Pendente',
+    };
+  }
+
+  if (status === 'returned') {
+    return {
+      type: 'returned' as BookStatus,
+      config: StatusConfig.returned,
+      label: `Devolvido - ${formatDateBR(dueDate)}`,
     };
   }
 

@@ -59,10 +59,7 @@ export default function AdminPanel() {
     try {
       await checkOverdueLoans();
 
-      const [pendingLoans, otherLoans] = await Promise.all([
-        getLoansByStatus('pending'),
-        getLoans()
-      ]);
+      const [pendingLoans, otherLoans] = await Promise.all([getLoansByStatus('pending'), getLoans()]);
 
       const filteredOtherLoans = (otherLoans ?? []).filter((l: any) => l.status !== 'pending');
 
@@ -73,7 +70,7 @@ export default function AdminPanel() {
           authorName: loan.book?.author?.name || 'Desconhecido',
           loanDate: loan.loanDate || '',
           imageSrc: loan.book?.imageSrc || Image.resolveAssetSource(require('@/assets/images/mock-book.png')).uri,
-        }))
+        })),
       );
 
       setLoans(
@@ -83,7 +80,8 @@ export default function AdminPanel() {
           userName: loan.student?.name || 'Desconhecido',
           authorName: loan.book?.author?.name || 'Desconhecido',
           returnDate: loan.returnDate || loan.dueDate || '',
-        }))
+          status: loan.status,
+        })),
       );
     } catch (err) {
       console.log('erro load loans:', err);

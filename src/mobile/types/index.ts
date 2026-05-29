@@ -55,10 +55,13 @@ export type RequestCardType = {
   imageSrc: string;
 };
 
+type LoanStatusType = 'pending' | 'in_progress' | 'returned' | 'canceled' | 'overdue';
+
 export type LoanCardType = {
   id: string;
   bookName: string;
   userName: string;
   authorName: string;
   returnDate: string;
+  status: LoanStatusType;
 };

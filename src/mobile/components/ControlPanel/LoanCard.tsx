@@ -16,7 +16,7 @@ type LoanCardProps = {
 };
 
 export function LoanCard({ data, onPress, onDelete }: LoanCardProps) {
-  const { label, config } = resolveBookStatus(data.returnDate);
+  const { label, config } = resolveBookStatus(data.returnDate, data.status);
 
   return (
     <CardBase onPress={onPress}>
