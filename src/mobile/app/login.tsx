@@ -9,6 +9,7 @@ import { styles } from '@/styles/LoginScreen';
 
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { loginUser } from '@/services/User';
+import { useAuth } from '@/context/AuthContext';
 
 import { Header } from '@/components/Global/Header';
 import { AlertModal } from '@/components/Global/AlertModal';
@@ -18,6 +19,7 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const { login } = useAuth();
   const { showError, showSuccess, modal, close } = useAlertModal();
 
   function goToSign() {
@@ -37,6 +39,8 @@ export default function LoginScreen() {
       if (response.status !== 200 && response.status !== 201) {
         throw new Error(response.data?.message || 'E-mail ou senha incorretos.');
       }
+
+      await login(response.data.user, response.data.token);
 
       showSuccess('Sucesso!', 'Logado com sucesso! Redirecionando você para tela inicial...', () => {
         router.replace('/');

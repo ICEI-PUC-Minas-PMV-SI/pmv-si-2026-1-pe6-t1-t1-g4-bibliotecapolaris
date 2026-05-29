@@ -11,13 +11,15 @@ import { ActionButton } from '@/components/Global/ActionButton';
 
 import { useWishlist } from '@/hooks/useWishlist';
 import { getBooks } from '@/services/Book';
+import { useAuth } from '@/context/AuthContext';
 
 export default function BooksScreen() {
   const params = useLocalSearchParams<{ search?: string }>();
   const [search, setSearch] = useState(typeof params.search === 'string' ? params.search : '');
 
+  const { user } = useAuth();
   const [books, setBooks] = useState<any[]>([]);
-  const { wishlistSet, toggle } = useWishlist('4cb002f6-c497-44bc-8bbf-e2b62b9813e4');
+  const { wishlistSet, toggle } = useWishlist(user?.id ?? '');
 
   useEffect(() => {
     async function loadBooks() {

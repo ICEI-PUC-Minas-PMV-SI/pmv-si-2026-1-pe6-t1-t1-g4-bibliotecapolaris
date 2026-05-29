@@ -18,7 +18,7 @@ function extractZodErrors(obj: any): string[] {
 
 export async function getLoans() {
   try {
-    const res = await apiFetch('/loans', { /* auth: true */ });
+    const res = await apiFetch('/loans', { auth: true });
     if (!res.ok) return [];
     const data = await res.json();
     return data.data ?? [];
@@ -30,7 +30,7 @@ export async function getLoans() {
 
 export async function getLoansByStatus(status: string) {
   try {
-    const res = await apiFetch(`/loans/status/${status}`, { /* auth: true */ });
+    const res = await apiFetch(`/loans/status/${status}`, { auth: true });
     if (!res.ok) return [];
     const data = await res.json();
     return data.data ?? [];
@@ -42,7 +42,7 @@ export async function getLoansByStatus(status: string) {
 
 export async function checkOverdueLoans() {
   try {
-    await apiFetch('/loans/check-overdue', { method: 'POST', /* auth: true */ });
+    await apiFetch('/loans/check-overdue', { method: 'POST', auth: true });
   } catch {
     // silently fail
   }
@@ -59,7 +59,7 @@ export async function updateLoan(id: string, data: LoanUpdate) {
   try {
     const res = await apiFetch(`/loans/${id}`, {
       method: 'PUT',
-      /* auth: true, */
+      auth: true,
       body: JSON.stringify(data),
     });
 
@@ -79,10 +79,9 @@ export async function updateLoan(id: string, data: LoanUpdate) {
 export async function createLoan(loan: LoanForm, origin?: 'student' | 'admin') {
   const { bookId, userId, loanDate, returnDate } = loan;
 
-  // TODO ⚠️ RESTAURAR QUANDO IMPLEMENTARMOS LOGIN — remover o comentário de auth: true abaixo
   const res = await apiFetch('/loans', {
     method: 'POST',
-    /* auth: true, */
+    auth: true,
     body: JSON.stringify({
       studentId: userId,
       bookId,
@@ -111,17 +110,15 @@ export async function createLoan(loan: LoanForm, origin?: 'student' | 'admin') {
 }
 
 export async function getLoansByUserId(userId: string) {
-  // TODO ⚠️ RESTAURAR QUANDO IMPLEMENTARMOS LOGIN — remover o comentário de auth: true abaixo
-  const res = await apiFetch(`/loans/student/${userId}`, { /* auth: true */ });
+  const res = await apiFetch(`/loans/student/${userId}`, { auth: true });
   const data = await res.json();
   return data.data || data;
 }
 
 export async function updateLoanDueDate(loanId: string, newDate: string) {
-  // TODO ⚠️ RESTAURAR QUANDO IMPLEMENTARMOS LOGIN — remover o comentário de auth: true abaixo
   const res = await apiFetch(`/loans/${loanId}`, {
     method: 'PUT',
-    /* auth: true, */
+    auth: true,
     body: JSON.stringify({ dueDate: newDate, status: 'in_progress' }),
   });
   if (!res.ok) throw new Error('Erro ao atualizar no banco');
@@ -132,10 +129,9 @@ export async function returnLoanStatus(loanId: string, returnDate: string, justi
   const payload: Record<string, string> = { status: 'returned', returnDate };
   if (justification) payload.justification = justification;
 
-  // TODO ⚠️ RESTAURAR QUANDO IMPLEMENTARMOS LOGIN — remover o comentário de auth: true abaixo
   const res = await apiFetch(`/loans/${loanId}`, {
     method: 'PUT',
-    /* auth: true, */
+    auth: true,
     body: JSON.stringify(payload),
   });
   if (!res.ok) throw new Error('Erro no banco');

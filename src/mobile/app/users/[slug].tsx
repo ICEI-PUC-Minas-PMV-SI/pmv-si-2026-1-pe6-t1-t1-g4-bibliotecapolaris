@@ -7,28 +7,71 @@ import { styles } from '@/styles/UserBySlug';
 import { Header } from '@/components/Global/Header';
 import { BookStatusCard } from '@/components/Book/BookStatusCard';
 import { BookDisplay } from '@/components/Book/BookDisplay';
+import { AlertModal } from '@/components/Global/AlertModal';
+import { ReviewModal } from '@/components/Book/ReviewModal';
 
 import { useWishlist } from '@/hooks/useWishlist';
-import { getLoansByUserId } from '@/services/Loans';
+import { useAlertModal } from '@/hooks/useAlertModal';
+import { getLoansByUserId, returnLoanStatus } from '@/services/Loans';
+import { createReview, getReviewsByUserId } from '@/services/Book';
+import { useAuth } from '@/context/AuthContext';
 import { Loan } from '@/types';
 
 export default function ProfilePage() {
-  const { wishlist, wishlistSet, toggle } = useWishlist('mock-user-id');
+  const { user } = useAuth();
+  const userId = user?.id ?? '';
+  const { isLoading: authLoading } = useAuth();
+  const { wishlist, wishlistSet, toggle } = useWishlist(userId);
   const [loans, setLoans] = useState<Loan[]>([]);
+  const [reviewedLoanIds, setReviewedLoanIds] = useState<Set<string>>(new Set());
+  const [reviewTarget, setReviewTarget] = useState<Loan | null>(null);
+  const { modal, close, showConfirmation, showSuccess, showError } = useAlertModal();
+
+  async function loadLoans() {
+    try {
+      const data = await getLoansByUserId(userId);
+      setLoans(data ?? []);
+    } catch (err) {
+      console.log('Erro ao carregar empréstimos:', err);
+    }
+  }
 
   useEffect(() => {
-    async function loadLoans() {
-      try {
-        const data = await getLoansByUserId('mock-user-id');
+    if (authLoading) return;
+    loadLoans();
+  }, [userId, authLoading]);
 
-        setLoans(data ?? []);
-      } catch (err) {
-        console.log('Erro ao carregar empréstimos:', err);
+  useEffect(() => {
+    if (!userId) return;
+    async function loadReviews() {
+      try {
+        const reviews = await getReviewsByUserId(userId);
+        const ids = new Set<string>((reviews ?? []).map((r: any) => r.loanId));
+        setReviewedLoanIds(ids);
+      } catch {
+        // ignora
       }
     }
+    loadReviews();
+  }, [userId]);
 
-    loadLoans();
-  }, []);
+  function handleAdjustClick(loan: Loan) {
+    showConfirmation(
+      'Antecipar Entrega',
+      `Deseja devolver "${loan.book?.name}" agora?`,
+      async () => {
+        try {
+          const today = new Date();
+          const returnDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+          await returnLoanStatus(loan.id, returnDate);
+          showSuccess('Sucesso', 'Livro devolvido com sucesso!');
+          await loadLoans();
+        } catch (err: any) {
+          showError('Erro', err?.message ?? 'Erro ao devolver livro.');
+        }
+      }
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -36,7 +79,7 @@ export default function ProfilePage() {
         <Header />
 
         <View style={styles.section}>
-          <Text style={styles.title}>Bem vindo de volta, 'Lindão'</Text>
+          <Text style={styles.title}>Bem vindo de volta, {user?.name}</Text>
         </View>
 
         <View style={styles.section}>
@@ -53,6 +96,9 @@ export default function ProfilePage() {
                   }
                   dueDate={loan.dueDate}
                   status={loan.status}
+                  onAdjustClick={() => handleAdjustClick(loan)}
+                  onReviewClick={() => setReviewTarget(loan)}
+                  hasReview={reviewedLoanIds.has(loan.id)}
                 />
               ))
             ) : (
@@ -84,6 +130,36 @@ export default function ProfilePage() {
           )}
         </View>
       </ScrollView>
+
+      <ReviewModal
+        visible={!!reviewTarget}
+        bookTitle={reviewTarget?.book?.name}
+        onClose={() => setReviewTarget(null)}
+        onSubmit={async (rating, description) => {
+          try {
+            const today = new Date();
+            const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            await createReview({ loanId: reviewTarget!.id, rating, description, date });
+            setReviewedLoanIds((prev) => new Set(prev).add(reviewTarget!.id));
+            setReviewTarget(null);
+            showSuccess('Obrigado!', 'Avaliação enviada com sucesso!');
+          } catch (err: any) {
+            showError('Erro', err?.message ?? 'Erro ao enviar avaliação.');
+          }
+        }}
+      />
+
+      <AlertModal
+        visible={modal.visible}
+        type={modal.type}
+        title={modal.title}
+        description={modal.description}
+        onClose={close}
+        onSuccess={() => {
+          close();
+          modal.onSuccess?.();
+        }}
+      />
     </SafeAreaView>
   );
 }

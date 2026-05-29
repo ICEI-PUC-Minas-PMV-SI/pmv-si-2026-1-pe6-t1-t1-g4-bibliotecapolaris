@@ -6,6 +6,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import 'react-native-reanimated';
 
+import { AuthProvider } from '@/context/AuthContext';
+
 export default function RootLayout() {
   const [loaded] = useFonts({
     Inter: require('../assets/fonts/Inter-VariableFont_opsz,wght.ttf'),
@@ -17,7 +19,7 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <AuthProvider>
       <Stack
         screenOptions={{
           headerShown: false,
@@ -26,6 +28,6 @@ export default function RootLayout() {
       />
 
       <StatusBar style="light" backgroundColor={Colors.background} />
-    </>
+    </AuthProvider>
   );
 }

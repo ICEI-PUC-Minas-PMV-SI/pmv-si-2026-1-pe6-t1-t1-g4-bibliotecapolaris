@@ -17,8 +17,11 @@ import { ReviewSection } from '@/components/Book/ReviewSection';
 
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useAuth } from '@/context/AuthContext';
 
 import { getBookBySlug, getReviewsByBookId } from '@/services/Book';
+import { getLoansByUserId } from '@/services/Loans';
+import { AddLoanModal } from '@/components/Form/AddLoanModal';
 
 function mapReviews(apiReviews: any[]) {
   return apiReviews.map((r) => ({
@@ -35,12 +38,15 @@ import { formatCategories } from '@/util/validators';
 
 export default function BookBySlug() {
   const { slug } = useLocalSearchParams();
+  const { user, isLoading: authLoading } = useAuth();
 
   const [book, setBook] = useState<BookOptional | null>(null);
   const [reviews, setReviews] = useState<any[]>([]);
   const [error, setError] = useState(false);
+  const [loanModalOpen, setLoanModalOpen] = useState(false);
+  const [hasActiveLoan, setHasActiveLoan] = useState(false);
 
-  const { wishlistSet, toggle } = useWishlist('31f004de-617e-4990-bc38-f1afd22ab83a');
+  const { wishlistSet, toggle } = useWishlist(user?.id ?? '');
   const { showError, modal, close } = useAlertModal();
 
   async function handleToggle(bookId: string) {
@@ -80,6 +86,24 @@ export default function BookBySlug() {
     loadReviews();
   }, [book?.id]);
 
+  async function checkActiveLoan() {
+    if (!user?.id || !book?.id) return;
+    try {
+      const loans = await getLoansByUserId(user!.id);
+      const active = (loans ?? []).some(
+        (l: any) => l.bookId === book!.id && ['pending', 'in_progress', 'overdue'].includes(l.status)
+      );
+      setHasActiveLoan(active);
+    } catch {
+      // ignora
+    }
+  }
+
+  useEffect(() => {
+    if (authLoading) return;
+    checkActiveLoan();
+  }, [user?.id, book?.id, authLoading]);
+
   if (!book) return null;
 
   const imgSource = error ? require('@/assets/images/mock-book.png') : { uri: book.imageSrc };
@@ -117,10 +141,36 @@ export default function BookBySlug() {
           Cópias Disponíveis: {book.totalAvailable}
         </Text>
 
-        <ActionButton title="Retirar" style={{ width: '100%', minHeight: 48 }} textStyle={{ fontSize: 20 }} />
+        {!hasActiveLoan && (
+          <ActionButton
+            title={user ? 'Retirar' : 'Entre para Retirar'}
+            style={{ width: '100%', minHeight: 48 }}
+            textStyle={{ fontSize: 20 }}
+            onPress={() => {
+              if (!user) {
+                showError('Atenção', 'Faça login para solicitar um empréstimo.');
+                return;
+              }
+              setLoanModalOpen(true);
+            }}
+          />
+        )}
 
         <ReviewSection reviews={reviews} />
       </ScrollView>
+
+      <AddLoanModal
+        role="student"
+        open={loanModalOpen}
+        bookId={book?.id}
+        bookName={book?.name}
+        userId={user?.id}
+        onClose={() => setLoanModalOpen(false)}
+        onSuccess={() => {
+          setLoanModalOpen(false);
+          checkActiveLoan();
+        }}
+      />
 
       <AlertModal
         visible={modal.visible}

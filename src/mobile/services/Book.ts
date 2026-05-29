@@ -1,4 +1,5 @@
 import { BookForm } from '@/types/formTypes';
+import { apiFetch } from '@/util/api';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -71,11 +72,9 @@ function extractErrorMessage(body: any, fallback: string): string {
 }
 
 export async function addNewBook(book: BookForm) {
-  const res = await fetch(`${API_URL}/books/register`, {
+  const res = await apiFetch('/books/register', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    auth: true,
     body: JSON.stringify(book),
   });
 
@@ -89,11 +88,9 @@ export async function addNewBook(book: BookForm) {
 }
 
 export async function updateBook(id: string, book: BookForm) {
-  const res = await fetch(`${API_URL}/books/${id}`, {
+  const res = await apiFetch(`/books/${id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    auth: true,
     body: JSON.stringify(book),
   });
 
@@ -107,8 +104,9 @@ export async function updateBook(id: string, book: BookForm) {
 }
 
 export async function deleteBook(id: string) {
-  const res = await fetch(`${API_URL}/books/${id}`, {
+  const res = await apiFetch(`/books/${id}`, {
     method: 'DELETE',
+    auth: true,
   });
 
   const data = await res.json().catch(() => null);
@@ -120,8 +118,9 @@ export async function deleteBook(id: string) {
 }
 
 export async function createReview(data: { loanId: string; rating: number; description?: string; date: string }) {
-  const res = await fetch(`${API_URL}/review`, {
+  const res = await apiFetch('/review', {
     method: 'POST',
+    auth: true,
     body: JSON.stringify(data),
   });
 

@@ -1,9 +1,9 @@
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
+import { apiFetch } from '@/util/api';
 
 export async function addBookToWishlist(studentId: string, bookId: string) {
-  const res = await fetch(`${API_URL}/wishlist/register`, {
+  const res = await apiFetch('/wishlist/register', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    auth: true,
     body: JSON.stringify({ studentId, bookId }),
   });
 
@@ -17,8 +17,9 @@ export async function addBookToWishlist(studentId: string, bookId: string) {
 }
 
 export async function removeBookFromWishlist(studentId: string, bookId: string) {
-  const res = await fetch(`${API_URL}/wishlist/${studentId}/${bookId}`, {
+  const res = await apiFetch(`/wishlist/${studentId}/${bookId}`, {
     method: 'DELETE',
+    auth: true,
   });
 
   if (!res.ok) {
@@ -31,9 +32,7 @@ export async function removeBookFromWishlist(studentId: string, bookId: string) 
 }
 
 export async function getWishlistByUserId(studentId: string) {
-  const res = await fetch(`${API_URL}/wishlist/${studentId}`, {
-    cache: 'no-store',
-  });
+  const res = await apiFetch(`/wishlist/${studentId}`, { auth: true });
 
   if (!res.ok) {
     const error = await res.json().catch(() => null);

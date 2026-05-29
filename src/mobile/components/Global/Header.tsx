@@ -3,51 +3,57 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { router } from 'expo-router';
 
+import { useAuth } from '@/context/AuthContext';
 import { ActionButton } from './ActionButton';
 
-type UserType = 'guest' | 'user' | 'admin';
-
 export function Header() {
-  const isLoggedIn = false;
-  const isAdmin = false;
+  const { user, logout } = useAuth();
 
-  const showLeft = true;
-  const showRight = !isLoggedIn;
+  const isLoggedIn = !!user;
+  const isAdmin = user?.type === 'administrator';
 
-  const label = !isLoggedIn ? 'Entrar' : isAdmin ? 'Painel' : 'Perfil';
+  const rightLabel = !isLoggedIn ? 'Entrar' : isAdmin ? 'Painel' : 'Perfil';
+
+  function handleRightPress() {
+    if (!isLoggedIn) {
+      router.push('/login');
+    } else if (isAdmin) {
+      router.push('/admin');
+    } else {
+      router.push(`/users/${user!.slug}`);
+    }
+  }
+
+  async function handleLogout() {
+    await logout();
+  }
 
   return (
     <View style={styles.headerContainer}>
       <View style={styles.left}>
-        {showLeft && (
+        {isLoggedIn && (
           <ActionButton
             title="Sair"
             variant="outline"
             style={{ width: 88 }}
-            onPress={() => {
-              router.push('/admin');
-            }}
+            onPress={handleLogout}
           />
         )}
       </View>
 
-      <View style={styles.center}>
+      <View style={styles.center} pointerEvents="box-none">
         <Pressable onPress={() => router.replace('/')}>
           <Image source={require('@/assets/images/logo.png')} style={styles.logo} resizeMode="contain" />
         </Pressable>
       </View>
 
       <View style={styles.right}>
-        {showRight && (
-          <ActionButton
-            title={label}
-            variant="fill"
-            style={{ width: 88 }}
-            onPress={() => {
-              router.push('/login');
-            }}
-          />
-        )}
+        <ActionButton
+          title={rightLabel}
+          variant="fill"
+          style={{ width: 88 }}
+          onPress={handleRightPress}
+        />
       </View>
     </View>
   );

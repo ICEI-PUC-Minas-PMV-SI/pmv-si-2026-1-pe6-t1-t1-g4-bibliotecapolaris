@@ -7,10 +7,10 @@ export async function loginUser(email: string, password: string) {
     method: 'POST',
     body: JSON.stringify({ email, password }),
   });
-  const data = await res.json();
+  const data = await res.json().catch(() => ({ message: `Erro ${res.status}` }));
 
-  if (res.ok && data.data?.token) {
-    setAuthToken(data.data.token);
+  if (res.ok && data.token) {
+    setAuthToken(data.token);
   }
 
   return { status: res.status, data };
@@ -21,7 +21,7 @@ export async function registerUser(name: string, email: string, password: string
     method: 'POST',
     body: JSON.stringify({ name, email, password, type: 'student' }),
   });
-  const data = await res.json();
+  const data = await res.json().catch(() => ({ message: `Erro ${res.status}` }));
   return { status: res.status, data };
 }
 
@@ -32,8 +32,7 @@ export async function getUserBySlug(slug: string) {
 }
 
 export async function getStudents(): Promise<Student[]> {
-  // TODO ⚠️ RESTAURAR QUANDO IMPLEMENTARMOS LOGIN — remover o comentário de auth: true abaixo
-  const res = await apiFetch('/users/students', { /* auth: true */ });
+  const res = await apiFetch('/users/students', { auth: true });
   const data = await res.json();
   return (data.data ?? []) as Student[];
 }

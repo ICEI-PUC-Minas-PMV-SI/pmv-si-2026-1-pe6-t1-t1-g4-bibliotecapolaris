@@ -15,11 +15,13 @@ import { ActionButton } from '@/components/Global/ActionButton';
 
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useAuth } from '@/context/AuthContext';
 
 import { getBooks, getCategories } from '@/services/Book';
 
 export default function HomeScreen() {
-  const { wishlistSet, toggle } = useWishlist('31f004de-617e-4990-bc38-f1afd22ab83a');
+  const { user } = useAuth();
+  const { wishlistSet, toggle } = useWishlist(user?.id ?? '');
   const { showError, modal, close } = useAlertModal();
 
   const [search, setSearch] = useState('');

@@ -20,8 +20,18 @@ import { getLoans, getLoansByStatus, updateLoan, checkOverdueLoans } from '@/ser
 import { type BookForm } from '@/types/formTypes';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { AlertModal } from '@/components/Global/AlertModal';
+import { useAuth } from '@/context/AuthContext';
+import { router } from 'expo-router';
 
 export default function AdminPanel() {
+  const { user, isLoading: authLoading } = useAuth();
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user || user.type !== 'administrator') {
+      router.replace('/');
+    }
+  }, [authLoading, user]);
   const [modalOpen, setModalOpen] = useState(false);
   const { modal, close, showConfirmation, showSuccess, showError } = useAlertModal();
 
@@ -81,12 +91,13 @@ export default function AdminPanel() {
   }
 
   useEffect(() => {
+    if (authLoading) return;
     async function init() {
       await loadBooks();
       await loadLoansAndRequests();
     }
     init();
-  }, []);
+  }, [authLoading]);
 
   async function handleLoanAction(id: string, status: string) {
     try {
@@ -107,7 +118,7 @@ export default function AdminPanel() {
         try {
           const result = await deleteBook(book.id ?? '');
 
-          if (result.status === 200 || result.status === 204) {
+          if (result.status === 200 || result.status === 202 || result.status === 204) {
             await loadBooks();
 
             showSuccess('Sucesso', `"${book.name}" foi excluído com sucesso!`);

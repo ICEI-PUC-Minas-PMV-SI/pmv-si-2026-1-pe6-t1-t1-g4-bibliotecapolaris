@@ -6,9 +6,15 @@ export function useWishlist(userId: string) {
   const [wishlist, setWishlist] = useState<{ books: any[] }>({ books: [] });
 
   useEffect(() => {
+    if (!userId) return;
+
     async function load() {
-      const data = await getWishlistByUserId(userId);
-      setWishlist(data ?? { books: [] });
+      try {
+        const data = await getWishlistByUserId(userId);
+        setWishlist(data ?? { books: [] });
+      } catch {
+        // usuário não autenticado ou sem wishlist — ignora silenciosamente
+      }
     }
 
     load();
@@ -17,6 +23,8 @@ export function useWishlist(userId: string) {
   const wishlistSet = useMemo(() => new Set(wishlist.books.map((b) => b.id)), [wishlist]);
 
   async function toggle(bookId: string) {
+    if (!userId) return { success: false, error: 'Faça login para usar a wishlist' };
+
     const isFavorite = wishlistSet.has(bookId);
 
     try {
