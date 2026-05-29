@@ -89,7 +89,7 @@ export default function HomeScreen() {
             <Text style={styles.sectionTitle}>Recém Chegados</Text>
 
             <View style={styles.booksContainer}>
-              {books.slice(0, 3).map((book: any) => (
+              {books.slice(0, 4).map((book: any) => (
                 <Pressable
                   key={book.slug}
                   onPress={() =>

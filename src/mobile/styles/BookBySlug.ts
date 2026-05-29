@@ -23,8 +23,8 @@ export const styles = StyleSheet.create({
 
   likeButton: {
     position: 'absolute',
-    top: '36.5%',
-    right: '8%',
+    top: '0%',
+    right: '14%',
     zIndex: 10,
   },
 

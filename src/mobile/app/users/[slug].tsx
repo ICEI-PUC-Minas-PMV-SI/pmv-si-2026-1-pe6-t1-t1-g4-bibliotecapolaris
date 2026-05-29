@@ -52,25 +52,22 @@ export default function ProfilePage() {
         // ignora
       }
     }
+
     loadReviews();
   }, [userId]);
 
   function handleAdjustClick(loan: Loan) {
-    showConfirmation(
-      'Antecipar Entrega',
-      `Deseja devolver "${loan.book?.name}" agora?`,
-      async () => {
-        try {
-          const today = new Date();
-          const returnDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-          await returnLoanStatus(loan.id, returnDate);
-          showSuccess('Sucesso', 'Livro devolvido com sucesso!');
-          await loadLoans();
-        } catch (err: any) {
-          showError('Erro', err?.message ?? 'Erro ao devolver livro.');
-        }
+    showConfirmation('Antecipar Entrega', `Deseja devolver "${loan.book?.name}" agora?`, async () => {
+      try {
+        const today = new Date();
+        const returnDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        await returnLoanStatus(loan.id, returnDate);
+        showSuccess('Sucesso', 'Livro devolvido com sucesso!');
+        await loadLoans();
+      } catch (err: any) {
+        showError('Erro', err?.message ?? 'Erro ao devolver livro.');
       }
-    );
+    });
   }
 
   return (

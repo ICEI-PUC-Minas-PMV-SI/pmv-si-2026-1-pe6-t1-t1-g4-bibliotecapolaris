@@ -87,6 +87,7 @@ export default function BooksScreen() {
                 <BookDisplay
                   bookId={book.id}
                   title={book.name}
+                  slug={book.slug}
                   description={book.description}
                   imageSrc={book.imageSrc}
                   isFavorite={wishlistSet.has(book.id)}

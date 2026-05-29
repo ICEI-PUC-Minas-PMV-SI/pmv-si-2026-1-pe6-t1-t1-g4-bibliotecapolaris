@@ -15,7 +15,12 @@ function StarSelector({ rating, onChange }: { rating: number; onChange: (r: numb
     <View style={styles.starsContainer}>
       {[1, 2, 3, 4, 5].map((star) => (
         <TouchableOpacity key={star} onPress={() => onChange(star)}>
-          <Text style={[styles.star, { color: star <= rating ? Colors.buttonActive : Colors.text, opacity: star <= rating ? 1 : 0.3 }]}>
+          <Text
+            style={[
+              styles.star,
+              { color: star <= rating ? Colors.buttonActive : Colors.text, opacity: star <= rating ? 1 : 0.3 },
+            ]}
+          >
             ★
           </Text>
         </TouchableOpacity>
@@ -47,9 +52,7 @@ export function ReviewModal({ visible, bookTitle, onClose, onSubmit }: ReviewMod
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <View style={styles.overlay}>
         <View style={styles.container}>
-          <Text style={styles.title}>
-            AVALIAR LIVRO{bookTitle ? ` - ${bookTitle.toUpperCase()}` : ''}
-          </Text>
+          <Text style={styles.title}>AVALIAR LIVRO{bookTitle ? ` - ${bookTitle.toUpperCase()}` : ''}</Text>
 
           <View style={styles.field}>
             <Text style={styles.label}>NOTA</Text>
@@ -70,16 +73,11 @@ export function ReviewModal({ visible, bookTitle, onClose, onSubmit }: ReviewMod
           </View>
 
           <View style={styles.buttons}>
+            <ActionButton title="Cancelar" variant="outline" onPress={onClose} style={styles.button} />
             <ActionButton
               title={submitting ? 'Enviando...' : 'Enviar'}
               disabled={submitting || rating === 0}
               onPress={handleSubmit}
-              style={styles.button}
-            />
-            <ActionButton
-              title="Cancelar"
-              variant="outline"
-              onPress={onClose}
               style={styles.button}
             />
           </View>

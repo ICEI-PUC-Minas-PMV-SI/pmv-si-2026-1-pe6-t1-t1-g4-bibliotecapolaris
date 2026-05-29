@@ -11,6 +11,7 @@ import { Colors, Fonts } from '@/constants/Theme';
 type BookDisplayProps = {
   bookId: string;
   title: string;
+  slug: string;
   description: string;
   imageSrc: any;
   isFavorite: boolean;
