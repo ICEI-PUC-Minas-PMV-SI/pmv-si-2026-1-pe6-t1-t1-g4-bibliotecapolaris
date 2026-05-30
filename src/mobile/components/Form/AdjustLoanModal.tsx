@@ -31,17 +31,19 @@ export function AdjustLoanModal({ loan, role = 'student', onClose, onSuccess }: 
   let buttonLabel = '';
   let label = '';
   let placeholder = '';
-  let actionType: 'return' | 'extend' | 'justify' | 'read_only' = 'return';
+  let actionType: 'return' | 'extend' | 'justify' | 'read_only' | 'admin_manage' = 'return';
 
   if (role === 'admin') {
-    title = 'Registrar Devolução';
-    label = `Marcar o livro "${loan.book?.name || 'selecionado'}" como entregue?`;
-    buttonLabel = 'Confirmar Entrega';
-    actionType = 'return';
+    title = 'Gerenciar Empréstimo';
+    label = `Livro: "${loan.book?.name || 'selecionado'}"\n`;
     
     if (loan.justification) {
-      label += `\n\nJustificativa do aluno:\n"${loan.justification}"`;
+      label += `\n⚠️ Justificativa do aluno:\n"${loan.justification}"\n`;
     }
+    
+    label += '\nPara renovar, digite a nova data. Ou apenas confirme a devolução:';
+    placeholder = 'Nova Data (DD/MM/AAAA)';
+    actionType = 'admin_manage';
   } 
   else {
     switch (status) {
@@ -79,23 +81,24 @@ export function AdjustLoanModal({ loan, role = 'student', onClose, onSuccess }: 
     setInputValue(display);
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(overrideAction?: 'return' | 'extend') {
     if (!loan || actionType === 'read_only') return;
+    const currentAction = overrideAction || actionType;
 
     setLoading(true);
     try {
       let finalPayload = '';
 
-      if (actionType === 'extend') {
+      if (currentAction === 'extend') {
         if (inputValue.length !== 10) throw new Error('Digite uma data válida (DD/MM/AAAA).');
         const [d, m, y] = inputValue.split('/');
         finalPayload = `${y}-${m}-${d}`;
-      } else if (actionType === 'justify') {
+      } else if (currentAction === 'justify') {
         if (!inputValue.trim()) throw new Error('A justificativa não pode ser vazia.');
         finalPayload = inputValue.trim();
       }
 
-      await onSuccess(loan.id, actionType, finalPayload);
+      await onSuccess(loan.id, currentAction as any, finalPayload);
       setInputValue(''); 
     } catch (err) {
       throw err;
@@ -109,7 +112,7 @@ export function AdjustLoanModal({ loan, role = 'student', onClose, onSuccess }: 
       <View style={styles.content}>
         <Text style={styles.label}>{label}</Text>
 
-        {actionType === 'extend' && (
+        {(actionType === 'extend' || actionType === 'admin_manage') && (
           <TextInput
             value={inputValue}
             onChangeText={handleDateInput}
@@ -129,7 +132,7 @@ export function AdjustLoanModal({ loan, role = 'student', onClose, onSuccess }: 
             multiline
             numberOfLines={4}
             textAlignVertical="top"
-            editable={actionType !== 'read_only'}
+            editable={actionType !== 'read_only'} 
             style={[
               styles.input, 
               styles.textArea,
@@ -138,14 +141,29 @@ export function AdjustLoanModal({ loan, role = 'student', onClose, onSuccess }: 
           />
         )}
 
-        {actionType !== 'read_only' && (
+        {actionType === 'admin_manage' ? (
+          <View style={styles.adminButtons}>
+            <ActionButton
+              title={loading ? '...' : 'Dar Baixa'}
+              onPress={() => handleSubmit('return')}
+              disabled={loading}
+              style={[styles.submitButton, { flex: 1, backgroundColor: Colors.statusSuccess }]}
+            />
+            <ActionButton
+              title={loading ? '...' : 'Renovar'}
+              onPress={() => handleSubmit('extend')}
+              disabled={loading}
+              style={[styles.submitButton, { flex: 1, backgroundColor: Colors.statusWarning }]}
+            />
+          </View>
+        ) : actionType !== 'read_only' ? (
           <ActionButton
             title={loading ? 'Aguarde...' : buttonLabel}
-            onPress={handleSubmit}
+            onPress={() => handleSubmit()}
             disabled={loading}
             style={styles.submitButton}
           />
-        )}
+        ) : null}
       </View>
     </BaseInputModal>
   );
@@ -159,5 +177,6 @@ const styles = StyleSheet.create({
     fontSize: 16, color: Colors.text, backgroundColor: Colors.foreground,
   },
   textArea: { minHeight: 100 },
-  submitButton: { marginTop: 8 }
+  submitButton: { marginTop: 8 },
+  adminButtons: { flexDirection: 'row', gap: 12 }
 });
