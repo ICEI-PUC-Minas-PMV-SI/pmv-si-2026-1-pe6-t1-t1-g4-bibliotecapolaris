@@ -86,13 +86,14 @@ export default function BookBySlug() {
     loadReviews();
   }, [book?.id]);
 
-  async function checkActiveLoan() {
-    if (!user?.id || !book?.id) return;
+  async function checkActiveLoan(userId: string, bookId: string) {
     try {
-      const loans = await getLoansByUserId(user!.id);
+      const loans = await getLoansByUserId(userId);
+
       const active = (loans ?? []).some(
-        (l: any) => l.bookId === book!.id && ['pending', 'in_progress', 'overdue'].includes(l.status)
+        (l: any) => l.bookId === bookId && ['pending', 'in_progress', 'overdue'].includes(l.status),
       );
+
       setHasActiveLoan(active);
     } catch {
       // ignora
@@ -101,12 +102,24 @@ export default function BookBySlug() {
 
   useEffect(() => {
     if (authLoading) return;
-    checkActiveLoan();
+    if (!user?.id || !book?.id) return;
+
+    checkActiveLoan(user.id, book.id);
   }, [user?.id, book?.id, authLoading]);
 
   if (!book) return null;
 
   const imgSource = error ? require('@/assets/images/mock-book.png') : { uri: book.imageSrc };
+
+  const buttonTitle = !user
+    ? 'Entre para Retirar'
+    : hasActiveLoan
+      ? 'Empréstimo Ativo'
+      : book.totalAvailable! > 0
+        ? 'Retirar'
+        : 'Nenhum livro disponível';
+
+  const isDisabled = !user || hasActiveLoan || book.totalAvailable === 0;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -141,20 +154,19 @@ export default function BookBySlug() {
           Cópias Disponíveis: {book.totalAvailable}
         </Text>
 
-        {!hasActiveLoan && (
-          <ActionButton
-            title={user ? 'Retirar' : 'Entre para Retirar'}
-            style={{ width: '100%', minHeight: 48 }}
-            textStyle={{ fontSize: 20 }}
-            onPress={() => {
-              if (!user) {
-                showError('Atenção', 'Faça login para solicitar um empréstimo.');
-                return;
-              }
-              setLoanModalOpen(true);
-            }}
-          />
-        )}
+        <ActionButton
+          title={buttonTitle}
+          style={{ width: '100%', minHeight: 48 }}
+          textStyle={{ fontSize: 20 }}
+          disabled={isDisabled}
+          onPress={() => {
+            if (!user) {
+              showError('Atenção', 'Faça login para solicitar um empréstimo.');
+              return;
+            }
+            setLoanModalOpen(true);
+          }}
+        />
 
         <ReviewSection reviews={reviews} />
       </ScrollView>
@@ -168,7 +180,7 @@ export default function BookBySlug() {
         onClose={() => setLoanModalOpen(false)}
         onSuccess={() => {
           setLoanModalOpen(false);
-          checkActiveLoan();
+          checkActiveLoan(user?.id!, book.id!);
         }}
       />
 

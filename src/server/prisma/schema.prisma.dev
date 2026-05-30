@@ -38,9 +38,9 @@ model Book {
   categories     String
   totalQuantity  Int    @map("total_quantity")
   totalAvailable Int    @map("total_available")
-  imageSrc String @map("image_src")
+  imageSrc       String @map("image_src")
 
-  author    Author     @relation(fields: [authorId], references: [id])
+  author    Author     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   wishlists Wishlist[]
   loans     Loan[]
 
@@ -62,11 +62,11 @@ model Loan {
   loanDate      String     @map("loan_date")
   dueDate       String     @map("due_date")
   returnDate    String?    @map("return_date")
-  justification String?    
+  justification String?
   status        LoanStatus
 
-  student User     @relation(fields: [studentId], references: [id])
-  book    Book     @relation(fields: [bookId], references: [id])
+  student User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  book    Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
   reviews Review[]
 
   @@map("loans")
@@ -98,7 +98,7 @@ model Review {
   description String?
   date        String
 
-  loan Loan @relation(fields: [loanId], references: [id])
+  loan Loan @relation(fields: [loanId], references: [id], onDelete: Cascade)
 
   @@map("reviews")
 }

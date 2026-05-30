@@ -62,6 +62,7 @@ export type LoanCardType = {
   bookName: string;
   userName: string;
   authorName: string;
-  returnDate: string;
+  dueDate: string;
+  loanDate: string;
   status: LoanStatusType;
 };

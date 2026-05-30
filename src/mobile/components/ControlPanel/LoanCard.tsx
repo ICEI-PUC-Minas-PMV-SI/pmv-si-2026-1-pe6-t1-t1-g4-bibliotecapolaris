@@ -9,14 +9,11 @@ import { formatDateBR, resolveBookStatus } from '../Book/StatusConfig';
 
 type LoanCardProps = {
   data: LoanCardType;
-
   onPress?: () => void;
-
-  onDelete?: () => void;
 };
 
-export function LoanCard({ data, onPress, onDelete }: LoanCardProps) {
-  const { label, config } = resolveBookStatus(data.returnDate, data.status);
+export function LoanCard({ data, onPress }: LoanCardProps) {
+  const { label, config } = resolveBookStatus(data.dueDate, data.status);
 
   return (
     <CardBase onPress={onPress}>
@@ -33,7 +30,7 @@ export function LoanCard({ data, onPress, onDelete }: LoanCardProps) {
           </Text>
 
           <Text style={styles.loanDate} numberOfLines={3}>
-            Data de Retorno: {formatDateBR(data.returnDate)}
+            Data do Empréstimo: {formatDateBR(data.loanDate)}
           </Text>
           <View
             style={[

@@ -9,11 +9,11 @@ import { BookStatusCard } from '@/components/Book/BookStatusCard';
 import { BookDisplay } from '@/components/Book/BookDisplay';
 import { AlertModal } from '@/components/Global/AlertModal';
 import { ReviewModal } from '@/components/Book/ReviewModal';
-import { AdjustLoanModal } from '@/components/Form/AdjustLoanModal';
+import { AdjustLoanModal } from '@/components/Form/AdjustLoan/AdjustLoanModal';
 
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
-import { getLoansByUserId, returnLoanStatus, updateLoanDueDate } from '@/services/Loans';
+import { getLoansByUserId, returnLoanStatus, updateLoanDueDate, updateLoan } from '@/services/Loans';
 import { createReview, getReviewsByUserId } from '@/services/Book';
 import { useAuth } from '@/context/AuthContext';
 import { Loan } from '@/types';
@@ -22,13 +22,12 @@ export default function ProfilePage() {
   const { user } = useAuth();
   const userId = user?.id ?? '';
   const { isLoading: authLoading } = useAuth();
-  
+
   const { wishlist, wishlistSet, toggle } = useWishlist(userId);
   const [loans, setLoans] = useState<Loan[]>([]);
   const [reviewedLoanIds, setReviewedLoanIds] = useState<Set<string>>(new Set());
-  
+
   const [reviewTarget, setReviewTarget] = useState<Loan | null>(null);
-  
   const [adjustTarget, setAdjustTarget] = useState<Loan | null>(null);
 
   const { modal, close, showSuccess, showError } = useAlertModal();
@@ -54,10 +53,8 @@ export default function ProfilePage() {
         const reviews = await getReviewsByUserId(userId);
         const ids = new Set<string>((reviews ?? []).map((r: any) => r.loanId));
         setReviewedLoanIds(ids);
-      } catch {
-      }
+      } catch {}
     }
-
     loadReviews();
   }, [userId]);
 
@@ -66,22 +63,18 @@ export default function ProfilePage() {
       const today = new Date();
       const dateIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
-      if (action === 'return') {
-        await returnLoanStatus(loanId, dateIso);
-        showSuccess('Sucesso!', 'Livro devolvido. Agradecemos!');
-      } 
-      else if (action === 'justify') {
-        await returnLoanStatus(loanId, dateIso, payload);
-        showSuccess('Sucesso!', 'Devolução com justificativa registrada.');
-      } 
-      else if (action === 'extend') {
+      if (action === 'extend') {
         await updateLoanDueDate(loanId, payload);
-        showSuccess('Sucesso!', 'A data de devolução foi estendida.');
+        showSuccess('Sucesso!', 'A data de devolução foi atualizada.');
+      } else if (action === 'justify') {
+        await updateLoan(loanId, { status: 'overdue', justification: payload });
+        showSuccess('Justificativa Salva', 'Sua justificativa foi registrada.');
+      } else if (action === 'return') {
+        await returnLoanStatus(loanId, dateIso);
       }
 
       setAdjustTarget(null);
       await loadLoans();
-      
     } catch (err: any) {
       showError('Falha no Ajuste', err?.message ?? 'Ocorreu um erro ao processar sua solicitação.');
       throw err;
@@ -146,11 +139,14 @@ export default function ProfilePage() {
         </View>
       </ScrollView>
 
-      <AdjustLoanModal 
-        loan={adjustTarget} 
-        onClose={() => setAdjustTarget(null)} 
-        onSuccess={handleAdjustSubmit} 
-      />
+      {adjustTarget && (
+        <AdjustLoanModal
+          loan={adjustTarget}
+          role="student"
+          onClose={() => setAdjustTarget(null)}
+          onSuccess={handleAdjustSubmit}
+        />
+      )}
 
       <ReviewModal
         visible={!!reviewTarget}

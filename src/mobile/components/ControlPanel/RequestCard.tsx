@@ -10,9 +10,7 @@ import { formatDateBR } from '../Book/StatusConfig';
 
 type RequestCardProps = {
   data: RequestCardType;
-
   onAccept?: () => void;
-
   onReject?: () => void;
 };
 
@@ -20,7 +18,10 @@ export function RequestCard({ data, onAccept, onReject }: RequestCardProps) {
   return (
     <CardBase>
       <View style={styles.content}>
-        <Image source={{ uri: data.imageSrc }} style={styles.image} />
+        <Image 
+          source={data.imageSrc ? { uri: data.imageSrc } : require('@/assets/images/mock-book.png')} 
+          style={styles.image} 
+        />
 
         <View style={styles.information}>
           <View style={styles.headerInfo}>
