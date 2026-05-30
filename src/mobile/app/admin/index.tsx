@@ -17,7 +17,7 @@ import { RequestCard } from '@/components/ControlPanel/RequestCard';
 import { AdjustLoanModal } from '@/components/Form/AdjustLoanModal';
 
 import { deleteBook, getBooks } from '@/services/Book';
-import { getLoans, getLoansByStatus, updateLoan, checkOverdueLoans, returnLoanStatus, updateLoanDueDate } from '@/services/Loans';
+import { getLoans, getLoansByStatus, updateLoan, checkOverdueLoans, returnLoanStatus, updateLoanDueDate, deleteLoan } from '@/services/Loans';
 import { type BookForm } from '@/types/formTypes';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { AlertModal } from '@/components/Global/AlertModal';
@@ -33,13 +33,13 @@ export default function AdminPanel() {
       router.replace('/');
     }
   }, [authLoading, user]);
+  
   const [modalOpen, setModalOpen] = useState(false);
   const { modal, close, showConfirmation, showSuccess, showError } = useAlertModal();
 
   const [selectedTab, setSelectedTab] = useState<'books' | 'requests' | 'loans'>('books');
 
   const [books, setBooks] = useState<BookCardType[]>([]);
-
   const [selectedBook, setSelectedBook] = useState<BookForm | null>(null);
 
   const [loans, setLoans] = useState<LoanCardType[]>([]);
@@ -63,10 +63,7 @@ export default function AdminPanel() {
     try {
       await checkOverdueLoans();
 
-      const [pendingLoans, otherLoans] = await Promise.all([
-        getLoansByStatus('pending'),
-        getLoans()
-      ]);
+      const [pendingLoans, otherLoans] = await Promise.all([getLoansByStatus('pending'), getLoans()]);
 
       setRawLoans(otherLoans ?? []);
 
@@ -106,9 +103,14 @@ export default function AdminPanel() {
     init();
   }, [authLoading]);
 
-  async function handleLoanAction(id: string, status: string) {
+  async function handleLoanAction(id: string, status: string = 'in_progress') {
     try {
-      await updateLoan(id, { status });
+      if (status === 'canceled') {
+        await deleteLoan(id);
+      } else {
+        await updateLoan(id, { status });
+      }
+
       await loadLoansAndRequests();
       showSuccess('Sucesso', 'Solicitação atualizada com sucesso!');
     } catch (error) {
@@ -120,14 +122,12 @@ export default function AdminPanel() {
     showConfirmation(
       'Excluir livro',
       `Deseja excluir o livro "${book.name}"?`,
-
       async () => {
         try {
           const result = await deleteBook(book.id ?? '');
 
           if (result.status === 200 || result.status === 202 || result.status === 204) {
             await loadBooks();
-
             showSuccess('Sucesso', `"${book.name}" foi excluído com sucesso!`);
           } else {
             showError('Erro', `Não foi possível excluir "${book.name}".`);
@@ -237,7 +237,7 @@ export default function AdminPanel() {
               return (
                 <RequestCard
                   data={item}
-                  onAccept={() => handleLoanAction(item.id, 'in_progress')}
+                  onAccept={() => handleLoanAction(item.id)}
                   onReject={() => handleLoanAction(item.id, 'canceled')}
                 />
               );

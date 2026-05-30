@@ -11,8 +11,7 @@ function extractZodErrors(obj: any): string[] {
   if (!obj || typeof obj !== 'object') return [];
   const msgs: string[] = [];
   if (Array.isArray(obj._errors) && obj._errors.length > 0) msgs.push(...obj._errors);
-  for (const [k, v] of Object.entries(obj))
-    if (k !== '_errors') msgs.push(...extractZodErrors(v));
+  for (const [k, v] of Object.entries(obj)) if (k !== '_errors') msgs.push(...extractZodErrors(v));
   return msgs;
 }
 
@@ -21,7 +20,7 @@ export async function getLoans() {
     const res = await apiFetch('/loans', { auth: true });
     if (!res.ok) return [];
     const data = await res.json();
-    return data.data ?? [];
+    return data.data || (Array.isArray(data) ? data : []);
   } catch (error) {
     console.error('Error fetching loans:', error);
     return [];
@@ -33,7 +32,7 @@ export async function getLoansByStatus(status: string) {
     const res = await apiFetch(`/loans/status/${status}`, { auth: true });
     if (!res.ok) return [];
     const data = await res.json();
-    return data.data ?? [];
+    return data.data || (Array.isArray(data) ? data : []);
   } catch (error) {
     console.error('Error fetching loans by status:', error);
     return [];
@@ -145,4 +144,23 @@ export async function returnLoanStatus(loanId: string, returnDate: string, justi
   });
   if (!res.ok) throw new Error('Erro no banco');
   return res.json();
+}
+
+export async function deleteLoan(id: string) {
+  try {
+    const res = await apiFetch(`/loans/${id}`, {
+      method: 'DELETE',
+      auth: true,
+    });
+
+    const data = await res.json().catch(() => null);
+
+    return {
+      status: res.status,
+      data,
+    };
+  } catch (error) {
+    console.error('Error deleting loan:', error);
+    throw error;
+  }
 }
