@@ -16,7 +16,7 @@ import { ActionButton } from '@/components/Global/ActionButton';
 import { RequestCard } from '@/components/ControlPanel/RequestCard';
 
 import { deleteBook, getBooks } from '@/services/Book';
-import { getLoans, getLoansByStatus, updateLoan, checkOverdueLoans } from '@/services/Loans';
+import { getLoans, getLoansByStatus, updateLoan, checkOverdueLoans, deleteLoan } from '@/services/Loans';
 import { type BookForm } from '@/types/formTypes';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { AlertModal } from '@/components/Global/AlertModal';
@@ -59,10 +59,7 @@ export default function AdminPanel() {
     try {
       await checkOverdueLoans();
 
-      const [pendingLoans, otherLoans] = await Promise.all([
-        getLoansByStatus('pending'),
-        getLoans()
-      ]);
+      const [pendingLoans, otherLoans] = await Promise.all([getLoansByStatus('pending'), getLoans()]);
 
       const filteredOtherLoans = (otherLoans ?? []).filter((l: any) => l.status !== 'pending');
 
@@ -73,7 +70,7 @@ export default function AdminPanel() {
           authorName: loan.book?.author?.name || 'Desconhecido',
           loanDate: loan.loanDate || '',
           imageSrc: loan.book?.imageSrc || Image.resolveAssetSource(require('@/assets/images/mock-book.png')).uri,
-        }))
+        })),
       );
 
       setLoans(
@@ -83,7 +80,7 @@ export default function AdminPanel() {
           userName: loan.student?.name || 'Desconhecido',
           authorName: loan.book?.author?.name || 'Desconhecido',
           returnDate: loan.returnDate || loan.dueDate || '',
-        }))
+        })),
       );
     } catch (err) {
       console.log('erro load loans:', err);
@@ -99,9 +96,14 @@ export default function AdminPanel() {
     init();
   }, [authLoading]);
 
-  async function handleLoanAction(id: string, status: string) {
+  async function handleLoanAction(id: string, status: string = 'in_progress') {
     try {
-      await updateLoan(id, { status });
+      if (status === 'canceled') {
+        await deleteLoan(id);
+      } else {
+        await updateLoan(id, { status });
+      }
+
       await loadLoansAndRequests();
       showSuccess('Sucesso', 'Solicitação atualizada com sucesso!');
     } catch (error) {
@@ -210,7 +212,7 @@ export default function AdminPanel() {
               return (
                 <RequestCard
                   data={item}
-                  onAccept={() => handleLoanAction(item.id, 'in_progress')}
+                  onAccept={() => handleLoanAction(item.id)}
                   onReject={() => handleLoanAction(item.id, 'canceled')}
                 />
               );
