@@ -72,6 +72,10 @@ export default function BooksScreen() {
             contentContainerStyle={{
               gap: 12,
               paddingBottom: 20,
+              flexDirection: 'row',
+              alignItems: 'center',
+
+              flexWrap: 'wrap',
             }}
             renderItem={({ item: book }) => (
               <Pressable
