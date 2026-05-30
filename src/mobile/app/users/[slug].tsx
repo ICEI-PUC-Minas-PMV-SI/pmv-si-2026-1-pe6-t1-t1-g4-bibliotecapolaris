@@ -9,10 +9,11 @@ import { BookStatusCard } from '@/components/Book/BookStatusCard';
 import { BookDisplay } from '@/components/Book/BookDisplay';
 import { AlertModal } from '@/components/Global/AlertModal';
 import { ReviewModal } from '@/components/Book/ReviewModal';
+import { AdjustLoanModal } from '@/components/Form/AdjustLoanModal';
 
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
-import { getLoansByUserId, returnLoanStatus } from '@/services/Loans';
+import { getLoansByUserId, returnLoanStatus, updateLoanDueDate, updateLoan } from '@/services/Loans';
 import { createReview, getReviewsByUserId } from '@/services/Book';
 import { useAuth } from '@/context/AuthContext';
 import { Loan } from '@/types';
@@ -21,11 +22,15 @@ export default function ProfilePage() {
   const { user } = useAuth();
   const userId = user?.id ?? '';
   const { isLoading: authLoading } = useAuth();
+  
   const { wishlist, wishlistSet, toggle } = useWishlist(userId);
   const [loans, setLoans] = useState<Loan[]>([]);
   const [reviewedLoanIds, setReviewedLoanIds] = useState<Set<string>>(new Set());
+  
   const [reviewTarget, setReviewTarget] = useState<Loan | null>(null);
-  const { modal, close, showConfirmation, showSuccess, showError } = useAlertModal();
+  const [adjustTarget, setAdjustTarget] = useState<Loan | null>(null);
+
+  const { modal, close, showSuccess, showError } = useAlertModal();
 
   async function loadLoans() {
     try {
@@ -49,25 +54,36 @@ export default function ProfilePage() {
         const ids = new Set<string>((reviews ?? []).map((r: any) => r.loanId));
         setReviewedLoanIds(ids);
       } catch {
-        // ignora
       }
     }
-
     loadReviews();
   }, [userId]);
 
-  function handleAdjustClick(loan: Loan) {
-    showConfirmation('Antecipar Entrega', `Deseja devolver "${loan.book?.name}" agora?`, async () => {
-      try {
-        const today = new Date();
-        const returnDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-        await returnLoanStatus(loan.id, returnDate);
-        showSuccess('Sucesso', 'Livro devolvido com sucesso!');
-        await loadLoans();
-      } catch (err: any) {
-        showError('Erro', err?.message ?? 'Erro ao devolver livro.');
+  async function handleAdjustSubmit(loanId: string, action: 'return' | 'extend' | 'justify', payload: string) {
+    try {
+      const today = new Date();
+      const dateIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+      if (action === 'extend') {
+        await updateLoanDueDate(loanId, payload);
+        showSuccess('Sucesso!', 'A data de devolução foi estendida.');
+      } 
+      else if (action === 'justify') {
+        await updateLoan(loanId, { status: 'overdue', justification: payload }); 
+        showSuccess('Justificativa Salva', 'Sua justificativa foi registrada.');
       }
-    });
+      else if (action === 'return') {
+        // Isso aqui o Estudante nunca vai chamar por causa da regra no Modal, 
+        await returnLoanStatus(loanId, dateIso);
+      }
+
+      setAdjustTarget(null);
+      await loadLoans();
+      
+    } catch (err: any) {
+      showError('Falha no Ajuste', err?.message ?? 'Ocorreu um erro ao processar sua solicitação.');
+      throw err;
+    }
   }
 
   return (
@@ -93,7 +109,7 @@ export default function ProfilePage() {
                   }
                   dueDate={loan.dueDate}
                   status={loan.status}
-                  onAdjustClick={() => handleAdjustClick(loan)}
+                  onAdjustClick={() => setAdjustTarget(loan)}
                   onReviewClick={() => setReviewTarget(loan)}
                   hasReview={reviewedLoanIds.has(loan.id)}
                 />
@@ -127,6 +143,13 @@ export default function ProfilePage() {
           )}
         </View>
       </ScrollView>
+
+      <AdjustLoanModal 
+        loan={adjustTarget} 
+        role="student"
+        onClose={() => setAdjustTarget(null)} 
+        onSuccess={handleAdjustSubmit} 
+      />
 
       <ReviewModal
         visible={!!reviewTarget}

@@ -44,12 +44,11 @@ export async function checkOverdueLoans() {
   try {
     await apiFetch('/loans/check-overdue', { method: 'POST', auth: true });
   } catch {
-    // silently fail
   }
 }
 
 type LoanUpdate = Partial<LoanForm> & {
-  status: string;
+  status?: string;
   dueDate?: string;
   returnDate?: string;
   justification?: string;
@@ -64,8 +63,18 @@ export async function updateLoan(id: string, data: LoanUpdate) {
     });
 
     if (!res.ok) {
-      const error = await res.json().catch(() => null);
-      throw new Error(error?.message || 'Erro ao atualizar empréstimo');
+      const body = await res.json().catch(() => null);
+      let msg = '';
+      
+      if (body?.details && typeof body.details === 'object') {
+        const zodErrors = extractZodErrors(body.details);
+        if (zodErrors.length > 0) msg = zodErrors.join('\n');
+      }
+      if (!msg) {
+        msg = body?.message || `Erro ${res.status} ao atualizar empréstimo`;
+      }
+      
+      throw new Error(msg);
     }
 
     const response = await res.json();
