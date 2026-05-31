@@ -51,7 +51,7 @@ export default function ProfilePage() {
     async function loadReviews() {
       try {
         const reviews = await getReviewsByUserId(userId);
-        const ids = new Set<string>((reviews ?? []).map((r: any) => r.loanId));
+        const ids = new Set<string>((reviews ?? []).map((r: any) => r.loan?.id));
         setReviewedLoanIds(ids);
       } catch {}
     }
