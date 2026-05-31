@@ -1,15 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Colors, Fonts } from '@/constants/Theme';
-
-type Review = {
-  id: string;
-  userName: string;
-  userSlug: string;
-  rating: number;
-  description?: string;
-  date: string;
-};
+import { Review } from '@/types';
 
 type ReviewSectionProps = {
   reviews: Review[];
@@ -92,7 +84,7 @@ const styles = StyleSheet.create({
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     gap: 8,
   },
   cardHeaderLeft: {
@@ -108,6 +100,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: Colors.buttonActive,
     paddingBottom: 2,
+    alignSelf: 'flex-start',
   },
   date: {
     fontSize: 12,

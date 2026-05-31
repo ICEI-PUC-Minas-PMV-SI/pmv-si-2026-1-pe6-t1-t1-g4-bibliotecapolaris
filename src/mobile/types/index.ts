@@ -62,3 +62,12 @@ export type LoanCardType = {
   authorName: string;
   returnDate: string;
 };
+
+export type Review = {
+  id: string;
+  userName: string;
+  userSlug: string;
+  rating: number;
+  description?: string;
+  date: string;
+};
