@@ -80,9 +80,7 @@ export default function BookBySlug() {
 
   if (!book) return null;
 
-  const imgSource = error
-    ? require('@/assets/images/mock-book.png')
-    : { uri: book.imageSrc };
+  const imgSource = error ? require('@/assets/images/mock-book.png') : { uri: book.imageSrc };
 
   return (
     <SafeAreaView style={styles.container}>
