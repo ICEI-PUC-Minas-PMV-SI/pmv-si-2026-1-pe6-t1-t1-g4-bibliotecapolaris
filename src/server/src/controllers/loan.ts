@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express';
+import { LoanStatus } from '@prisma/client';
 
 import {
   getAllLoans,
@@ -12,7 +13,6 @@ import {
 } from '@/services';
 import { handleError, sendSuccess } from '@/utils';
 import { LoanCreateSchema, LoanUpdateSchema } from '@/services/loan/schema';
-import { LoanStatus } from '@prisma/client';
 
 export async function getAllLoansController(_req: Request, res: Response) {
   try {

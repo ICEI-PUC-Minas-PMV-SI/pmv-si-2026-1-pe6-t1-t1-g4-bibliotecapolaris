@@ -47,7 +47,7 @@ export async function getReviewById(id: string) {
   });
 }
 
-export async function updateReview(id: string, data: any) {
+export async function updateReview(id: string, data: UpdateReviewInput) {
   return prisma.review.update({
     where: { id },
     data: {

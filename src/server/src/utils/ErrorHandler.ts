@@ -7,15 +7,16 @@ import { sendFailure } from '@/utils';
 export function handleError(res: Response, error: unknown, entity = 'Registro') {
   // Zod
   if (error instanceof ZodError) {
-    const fields: Record<string, string[]> = {};
+    const fieldsMap = new Map<string, string[]>();
 
     for (const issue of error.issues) {
       const path = issue.path.join('.');
-      if (!fields[path]) fields[path] = [];
-      fields[path].push(issue.message);
-    }
 
-    return sendFailure(res, 'VALIDATION_ERROR', 'Erro de validação', fields, 400);
+      const messages = fieldsMap.get(path) ?? [];
+      messages.push(issue.message);
+
+      fieldsMap.set(path, messages);
+    }
   }
 
   if (error instanceof Prisma.PrismaClientKnownRequestError) {

@@ -5,6 +5,7 @@ if (process.env.NODE_ENV === 'production') {
 
 import path from 'path';
 import { randomUUID } from 'crypto';
+
 import bcrypt from 'bcrypt';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 
@@ -67,54 +68,59 @@ async function main() {
   // ── Books ─────────────────────────────────────────────────────────────────
   const bookData = [
     {
-      name: "Harry Potter e a Pedra Filosofal",
-      isbn: '9788532511010',
+      name: 'Harry Potter e a Pedra Filosofal',
+      isbn: '9789722365598',
       year: 1997,
       authorName: 'J.K. Rowling',
-      description: 'A história de Harry Potter, um jovem bruxo que descobre seu destino ao ingressar na Escola de Magia e Bruxaria de Hogwarts.',
+      description:
+        'A história de Harry Potter, um jovem bruxo que descobre seu destino ao ingressar na Escola de Magia e Bruxaria de Hogwarts.',
       categories: 'Fantasia,Jovem Adulto',
       totalQuantity: 5,
-      imageSrc: '',
+      imageSrc: 'https://covers.openlibrary.org/b/isbn/9789722365598-L.jpg?default=false',
     },
     {
       name: 'A Game of Thrones',
       isbn: '9780553103540',
       year: 1996,
       authorName: 'George R.R. Martin',
-      description: 'Em Westeros, famílias nobres disputam o Trono de Ferro enquanto uma ameaça antiga se aproxima pelo Norte.',
+      description:
+        'Em Westeros, famílias nobres disputam o Trono de Ferro enquanto uma ameaça antiga se aproxima pelo Norte.',
       categories: 'Fantasia,Épico',
       totalQuantity: 3,
-      imageSrc: '',
+      imageSrc: 'https://covers.openlibrary.org/b/isbn/9780553103540-L.jpg?default=false',
     },
     {
       name: 'O Senhor dos Anéis: A Sociedade do Anel',
-      isbn: '9788533603149',
+      isbn: '9788580631012',
       year: 1954,
       authorName: 'Tolkien, J.R.R.',
-      description: 'Frodo Bolseiro herda um anel mágico e parte em uma perigosa jornada para destruí-lo antes que o Senhor das Trevas o recupere.',
+      description:
+        'Frodo Bolseiro herda um anel mágico e parte em uma perigosa jornada para destruí-lo antes que o Senhor das Trevas o recupere.',
       categories: 'Fantasia,Clássico',
       totalQuantity: 4,
-      imageSrc: '',
+      imageSrc: 'https://covers.openlibrary.org/b/isbn/9788580631012-L.jpg?default=false',
     },
     {
       name: 'Norwegian Wood',
-      isbn: '9780375704024',
+      isbn: '9789025442842',
       year: 1987,
       authorName: 'Haruki Murakami',
-      description: 'Um romance nostálgico sobre amor, perda e amadurecimento no Japão dos anos 1960, narrado pelo jovem Toru Watanabe.',
+      description:
+        'Um romance nostálgico sobre amor, perda e amadurecimento no Japão dos anos 1960, narrado pelo jovem Toru Watanabe.',
       categories: 'Romance,Contemporâneo',
       totalQuantity: 2,
-      imageSrc: '',
+      imageSrc: 'https://covers.openlibrary.org/b/isbn/9789025442842-L.jpg?default=false',
     },
     {
-      name: "Harry Potter e a Câmara Secreta",
-      isbn: '9788532512529',
+      name: 'Harry Potter e a Câmara Secreta',
+      isbn: '9788532530790',
       year: 1998,
       authorName: 'J.K. Rowling',
-      description: 'No segundo ano em Hogwarts, Harry descobre a Câmara Secreta e enfrenta uma criatura mortal que está petrificando os alunos.',
+      description:
+        'No segundo ano em Hogwarts, Harry descobre a Câmara Secreta e enfrenta uma criatura mortal que está petrificando os alunos.',
       categories: 'Fantasia,Jovem Adulto',
       totalQuantity: 5,
-      imageSrc: '',
+      imageSrc: 'https://covers.openlibrary.org/b/isbn/9788532530790-L.jpg?default=false',
     },
   ];
 
@@ -175,6 +181,15 @@ async function main() {
   console.log('\nDone.');
 }
 
-main()
-  .catch((e) => { console.error(e); process.exit(1); })
-  .finally(() => prisma.$disconnect());
+async function run() {
+  try {
+    await main();
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+run();

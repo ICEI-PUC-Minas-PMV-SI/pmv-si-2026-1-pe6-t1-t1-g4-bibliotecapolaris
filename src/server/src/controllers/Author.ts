@@ -82,7 +82,7 @@ export async function deleteAuthorController(req: Request, res: Response) {
   try {
     const { id } = req.params;
 
-    const deletedAuthor = await deleteAuthor(id as string);
+    await deleteAuthor(id as string);
 
     return sendSuccess(res, `Autor deletado com sucesso`, 200);
   } catch (error: unknown) {

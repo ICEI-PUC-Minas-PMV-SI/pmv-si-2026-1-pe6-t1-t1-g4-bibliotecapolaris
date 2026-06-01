@@ -25,10 +25,10 @@ export async function createUserController(req: Request, res: Response) {
     }
 
     const hashedPassword = await hashPassword(data.password);
-    const newUser = await createUser({ ...data, password: hashedPassword });
+    await createUser({ ...data, password: hashedPassword });
 
     return sendSuccess(res, `Usuário criado com sucesso!`, 201);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Usuário');
   }
 }
@@ -44,7 +44,7 @@ export async function getUserByIdController(req: Request, res: Response) {
     const user = await getUserById(id as string);
 
     return sendSuccess(res, user, 200);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Usuário');
   }
 }
@@ -60,7 +60,7 @@ export async function getUserBySlugController(req: Request, res: Response) {
     const user = await getUserBySlug(slug as string);
 
     return sendSuccess(res, user, 200);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Usuário');
   }
 }
@@ -75,8 +75,7 @@ export async function updateUserController(req: Request, res: Response) {
 
     const requestingUser = req.user!;
 
-    // Estudante só pode atualizar o próprio nome
-    let updateData: any;
+    let updateData;
     if (requestingUser.type === 'administrator') {
       updateData = UpdateUserSchema.parse(req.body);
     } else {
@@ -102,7 +101,7 @@ export async function deleteUserController(req: Request, res: Response) {
     await deleteUser(id as string);
 
     return sendSuccess(res, `Usuário deletado com sucesso!`, 202);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Usuário');
   }
 }
@@ -111,7 +110,7 @@ export async function getStudentsController(req: Request, res: Response) {
   try {
     const students = await getStudents();
     return sendSuccess(res, students, 200);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Estudantes');
   }
 }

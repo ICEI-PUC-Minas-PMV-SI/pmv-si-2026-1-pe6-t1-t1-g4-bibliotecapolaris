@@ -18,7 +18,7 @@ export async function createReviewController(req: Request, res: Response) {
     const review = await createReview(data);
 
     return sendSuccess(res, `Livro ${review.loan.book.name} avaliado com a nota ${review.rating}`, 201);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Review');
   }
 }
@@ -27,7 +27,7 @@ export async function getReviewsController(req: Request, res: Response) {
   try {
     const reviews = await getReviews();
     return sendSuccess(res, reviews, 200);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Review');
   }
 }
@@ -42,7 +42,7 @@ export async function getReviewByIdController(req: Request, res: Response) {
 
     const review = await getReviewById(id);
     return sendSuccess(res, review, 200);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Review');
   }
 }
@@ -56,10 +56,10 @@ export async function updateReviewController(req: Request, res: Response) {
     }
 
     const data = UpdateReviewSchema.parse(req.body);
-    const review = await updateReview(id, data);
+    await updateReview(id, data);
 
     return sendSuccess(res, 'Avaliação atualizada com sucesso', 202);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Review');
   }
 }
@@ -74,7 +74,7 @@ export async function deleteReviewController(req: Request, res: Response) {
 
     await deleteReview(id as string);
     return sendSuccess(res, 'Avaliação removida com sucesso', 202);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Review');
   }
 }
@@ -89,7 +89,7 @@ export async function getReviewsByUserIdController(req: Request, res: Response) 
 
     const reviews = await getReviewsByUserId(userId);
     return sendSuccess(res, reviews, 200);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Review');
   }
 }
@@ -104,7 +104,7 @@ export async function getReviewsByBookIdController(req: Request, res: Response) 
 
     const reviews = await getReviewsByBookId(bookId);
     return sendSuccess(res, reviews, 200);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Review');
   }
 }

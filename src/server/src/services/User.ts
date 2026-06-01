@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import type { CreateUserInput } from '@/models/UserModel';
+import type { CreateUserInput, UpdateUserInput } from '@/models/UserModel';
 import { generateSlug, hashPassword, verifyPassword } from '@/utils';
 
 export async function createUser(data: CreateUserInput) {
@@ -31,7 +31,7 @@ export async function getUserBySlug(slug: string) {
   });
 }
 
-export async function updateUser(id: string, data: any) {
+export async function updateUser(id: string, data: UpdateUserInput) {
   const user = await prisma.user.findUniqueOrThrow({ where: { id } });
 
   if (data.password) {

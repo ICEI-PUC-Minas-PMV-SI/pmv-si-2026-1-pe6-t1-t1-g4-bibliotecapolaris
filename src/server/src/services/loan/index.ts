@@ -1,9 +1,9 @@
 import type { z } from 'zod';
+import { LoanStatus } from '@prisma/client';
 
 import { LoanCreateSchema, LoanUpdateSchema } from './schema';
 
 import { prisma } from '@/lib/prisma';
-import { LoanStatus } from '@prisma/client';
 
 type LoanCreateInput = z.infer<typeof LoanCreateSchema>;
 type LoanUpdateInput = z.infer<typeof LoanUpdateSchema>;
@@ -46,7 +46,7 @@ export async function createLoan(data: LoanCreateInput) {
 }
 
 export async function updateLoan(id: string, data: LoanUpdateInput) {
-  const { ...updateData }: any = data;
+  const { ...updateData } = data;
 
   if (data.loanDate) updateData.loanDate = data.loanDate;
   if (data.dueDate) updateData.dueDate = data.dueDate;

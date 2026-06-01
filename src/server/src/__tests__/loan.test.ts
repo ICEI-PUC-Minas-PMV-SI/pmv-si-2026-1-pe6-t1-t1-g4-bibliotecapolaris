@@ -5,7 +5,6 @@ import { prisma } from '../lib/prisma';
 
 import test from './app';
 import { createAuthor, createUser, createBook, MOCK_USER_ID, MOCK_BOOK_ID } from './wishlist.factory';
-import { MOCK_LOAN_ID } from './review.factory';
 
 describe('Loan Tests', () => {
   let createdLoanId: string;

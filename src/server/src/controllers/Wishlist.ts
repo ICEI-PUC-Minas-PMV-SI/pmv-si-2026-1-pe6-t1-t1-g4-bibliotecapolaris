@@ -11,7 +11,7 @@ export async function addBookToWishlistController(req: Request, res: Response) {
     await addBookToWishlist(data);
 
     return sendSuccess(res, `Livro adicionado na sua lista de desejos`, 201);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Lista de Desejos');
   }
 }
@@ -31,7 +31,7 @@ export async function getWishlistByUserIdController(req: Request, res: Response)
     }
 
     return sendSuccess(res, wishlist, 200);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Lista de Desejos');
   }
 }
@@ -47,7 +47,7 @@ export async function deleteBookFromWishlistController(req: Request, res: Respon
     await deleteBookFromWishlist(studentId as string, bookId as string);
 
     return sendSuccess(res, `Livro removido da sua lista de desejos`, 202);
-  } catch (error: any) {
+  } catch (error) {
     return handleError(res, error, 'Lista de Desejos');
   }
 }
