@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image, TextInput, View, Text, Pressable, ScrollView, FlatList } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
