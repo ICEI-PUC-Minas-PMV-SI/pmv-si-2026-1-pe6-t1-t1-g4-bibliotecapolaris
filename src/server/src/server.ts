@@ -18,7 +18,7 @@ const open_api_documents = generateOpenApiDocuments();
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL ?? 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://localhost:8081', 'http://192.168.1.106:8081'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   }),
@@ -40,6 +40,6 @@ app.use((req: import('express').Request, res: import('express').Response) => {
 
 const PORT = Number(process.env.PORT) || 3333;
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server started on port ${PORT} 🚨🚨🚨`);
 });

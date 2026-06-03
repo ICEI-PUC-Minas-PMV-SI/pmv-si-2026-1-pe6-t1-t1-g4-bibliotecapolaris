@@ -17,8 +17,8 @@ const UserRouter = Router();
 UserRouter.post('/users/register', createUserController);
 UserRouter.post('/users/login', loginUserController);
 
-// Autenticadas
-UserRouter.get('/users/students', requireAuth, requireAdmin, getStudentsController);
+// TODO ⚠️ RESTAURAR QUANDO IMPLEMENTARMOS LOGIN NO MOBILE — adicionar requireAuth, requireAdmin de volta
+UserRouter.get('/users/students', getStudentsController);
 UserRouter.get('/users/slug/:slug', getUserBySlugController);
 UserRouter.get('/users/:id', requireAuth, requireSelfOrAdmin, getUserByIdController);
 UserRouter.put('/users/:id', requireAuth, requireSelfOrAdmin, updateUserController);

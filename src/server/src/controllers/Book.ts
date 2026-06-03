@@ -18,7 +18,7 @@ export async function createBookController(req: Request, res: Response) {
   try {
     const { author, ...rest } = req.body;
 
-    const authorId = await findOrCreateAuthor(author);
+    const authorId = await findOrCreateAuthor(author.name);
 
     const data = CreateBookSchema.parse({
       ...rest,
