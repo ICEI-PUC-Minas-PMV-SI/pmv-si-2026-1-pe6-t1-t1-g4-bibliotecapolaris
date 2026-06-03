@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
 
   readOnlyText: {
     fontSize: 14,
-    color: Colors.text,
+    color: Colors.background,
   },
 
   durationRow: {
