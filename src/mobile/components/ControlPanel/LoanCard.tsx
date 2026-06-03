@@ -13,7 +13,7 @@ type LoanCardProps = {
 };
 
 export function LoanCard({ data, onPress }: LoanCardProps) {
-  const { label, config } = resolveBookStatus(data.dueDate, data.status);
+  const { label, config } = resolveBookStatus(data.dueDate, data.status, data.returnDate);
 
   return (
     <CardBase onPress={onPress}>

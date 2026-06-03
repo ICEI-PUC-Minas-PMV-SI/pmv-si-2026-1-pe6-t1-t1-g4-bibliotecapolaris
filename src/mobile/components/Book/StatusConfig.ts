@@ -98,7 +98,7 @@ export const StatusConfig = {
   },
 } as const;
 
-export function resolveBookStatus(dueDate: Date | string, status?: string) {
+export function resolveBookStatus(dueDate: Date | string, status?: string, returnDate?: Date | string) {
   if (status === 'pending') {
     return {
       type: 'pending' as BookStatus,
@@ -109,9 +109,9 @@ export function resolveBookStatus(dueDate: Date | string, status?: string) {
 
   if (status === 'returned') {
     return {
-      type: 'returned' as BookStatus,
+      type: 'returned',
       config: StatusConfig.returned,
-      label: `Devolvido - ${formatDateBR(dueDate)}`,
+      label: `Devolvido - ${formatDateBR(returnDate ?? dueDate)}`,
     };
   }
 
