@@ -183,6 +183,8 @@ Foco em testar de forma isolada a renderização, a lógica interna do formulár
 
 Abaixo, apresenta-se a saída da execução dos testes unitários (Jest) no console da aplicação móvel, evidenciando o sucesso de todos os cenários implementados:
 
+<img width="507" height="311" alt="Captura de tela 2026-06-03 185939" src="https://github.com/user-attachments/assets/5f14ac8d-436d-4d0a-a4f6-f28b449541c9" />
+
 # Referências
 
 Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvolvimento do trabalho.
