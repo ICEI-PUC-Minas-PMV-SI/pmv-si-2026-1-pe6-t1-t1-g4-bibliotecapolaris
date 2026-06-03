@@ -1,6 +1,6 @@
 # 📊 Relatório de Contribuições do Projeto
 
-**Última atualização:** 03/06/2026 14:34
+**Última atualização:** 03/06/2026 14:43
 
 ---
 
@@ -8,7 +8,7 @@
 
 | Aluno                 |   Commits |   Linhas+ |   Linhas- |   Arquivos |   Docs Commits |   Docs Arquivos |
 |-----------------------|-----------|-----------|-----------|------------|----------------|-----------------|
-| Davih Duque           |       160 |     24910 |     10123 |        244 |             40 |               6 |
+| Davih Duque           |       161 |     24911 |     10124 |        244 |             41 |               6 |
 | Fabiana               |        19 |        60 |        33 |          3 |             19 |               3 |
 | Fabiana Santos Soares |        15 |      1724 |       459 |         26 |              0 |               0 |
 | Filipe Acacio         |         9 |      1140 |       374 |         26 |              0 |               0 |
@@ -17,7 +17,7 @@
 | Leonardo Guedes       |         4 |      1337 |       300 |         53 |              2 |               2 |
 | Leonardo Junior       |        25 |        74 |        76 |          7 |             19 |               3 |
 | Lucas Fonseca         |        34 |      7062 |       911 |         59 |             20 |               4 |
-| github-actions[bot]   |        86 |       847 |       822 |          3 |             86 |               1 |
+| github-actions[bot]   |        87 |       862 |       837 |          3 |             87 |               1 |
 | github-classroom[bot] |         1 |      2152 |         0 |         45 |              1 |              13 |
 | vcrfrancisco          |       112 |      9179 |      1977 |        120 |             21 |               5 |
 | vitor.francisco       |         1 |         1 |         1 |          1 |              0 |               0 |
@@ -25,9 +25,9 @@
 
 ## 📅 Contribuições Semanais (Todo o Semestre)
 
-**2026-05-27**: Davih Duque: 17, Fabiana Santos Soares: 1, Filipe Acacio: 2, Filipeacacio1: 3, Leonardo Guedes: 1, github-actions[bot]: 5, vitor.francisco: 1
+**2026-05-27**: Davih Duque: 17, Fabiana Santos Soares: 1, Filipe Acacio: 2, Filipeacacio1: 3, Leonardo Guedes: 1, github-actions[bot]: 6, vitor.francisco: 1
 
-**2026-05-20**: Davih Duque: 7, Fabiana: 1, Fabiana Santos Soares: 1, Filipeacacio1: 2, Lucas Fonseca: 2, github-actions[bot]: 3, vcrfrancisco: 1
+**2026-05-20**: Davih Duque: 8, Fabiana: 1, Fabiana Santos Soares: 1, Filipeacacio1: 2, Lucas Fonseca: 2, github-actions[bot]: 3, vcrfrancisco: 1
 
 **2026-05-13**: Davih Duque: 8, Lucas Fonseca: 1, github-actions[bot]: 3
 
