@@ -140,10 +140,9 @@ O back-end:
 - Retorna respostas estruturadas
 
 ## Tecnologias Utilizadas
-
-React Native – Framework utilizado para o desenvolvimento da aplicação mobile, permitindo a criação de interfaces nativas para diferentes plataformas a partir de uma única base de código, promovendo reutilização e eficiência no desenvolvimento.
-Expo – Plataforma e conjunto de ferramentas que simplificam o desenvolvimento, testes e publicação da aplicação mobile, oferecendo recursos integrados que aceleram o processo de criação e manutenção do projeto.
-TypeScript – Linguagem utilizada para adicionar tipagem estática ao JavaScript, aumentando a segurança, legibilidade e manutenibilidade do código, além de auxiliar na identificação de erros durante o desenvolvimento.
+- React Native – Framework utilizado para o desenvolvimento da aplicação mobile, permitindo a criação de interfaces nativas para diferentes plataformas a partir de uma única base de código, promovendo reutilização e eficiência no desenvolvimento.
+- Expo – Plataforma e conjunto de ferramentas que simplificam o desenvolvimento, testes e publicação da aplicação mobile, oferecendo recursos integrados que aceleram o processo de criação e manutenção do projeto.
+- TypeScript – Linguagem utilizada para adicionar tipagem estática ao JavaScript, aumentando a segurança, legibilidade e manutenibilidade do código, além de auxiliar na identificação de erros durante o desenvolvimento.
 
 ## Considerações de Segurança
 
