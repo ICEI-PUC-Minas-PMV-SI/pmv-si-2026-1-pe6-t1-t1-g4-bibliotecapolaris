@@ -7,6 +7,7 @@ Este projeto consiste no desenvolvimento de uma interface mobile para o sistema 
 O front-end mobile será responsável por consumir os dados fornecidos pela API de back-end, apresentando as informações de maneira organizada, acessível e adaptada às características de smartphones e tablets. Além disso, a aplicação busca proporcionar uma experiência de uso fluida, garantindo navegação eficiente para diferentes perfis de usuários.
 
 ## Projeto da Interface
+
 A interface mobile foi desenvolvida em alinhamento com a identidade visual previamente definida para a Universidade Polaris, utilizando a mesma paleta de cores, tipografia e elementos gráficos adotados nos demais módulos do sistema. Essa abordagem assegura consistência visual e fortalece a identidade da plataforma.
 
 Inspirado no conceito da estrela Polaris, o design da aplicação adota uma estética levemente retrô, combinada com princípios modernos de design para dispositivos móveis. As telas foram projetadas com foco na simplicidade, organização e aproveitamento eficiente do espaço disponível, facilitando a visualização das informações e a interação do usuário.
@@ -16,18 +17,20 @@ As funcionalidades foram estruturadas para oferecer acesso rápido às principai
 ## Wireframes
 
 ## Tela Inicial
+
 <img width="804" height="1694" alt="image" src="https://github.com/user-attachments/assets/e28c16ff-225b-429d-9675-72571808d4ef" />
 
 ## Tela do Livro
+
 <img width="804" height="1618" alt="image" src="https://github.com/user-attachments/assets/ff0ee78f-deb4-4797-8edc-c067dee819b9" />
 
-
 ## Tela de Perfil
+
 <img width="804" height="1362" alt="image" src="https://github.com/user-attachments/assets/f79ac777-96cc-4406-bcdd-719fd44bef65" />
 
 ## Tela de Painel de Controle
-<img width="804" height="1094" alt="image" src="https://github.com/user-attachments/assets/3a806dfe-8cb0-4898-a91d-539777865a42" />
 
+<img width="804" height="1094" alt="image" src="https://github.com/user-attachments/assets/3a806dfe-8cb0-4898-a91d-539777865a42" />
 
 ### Design Visual
 
@@ -140,6 +143,7 @@ O back-end:
 - Retorna respostas estruturadas
 
 ## Tecnologias Utilizadas
+
 - React Native – Framework utilizado para o desenvolvimento da aplicação mobile, permitindo a criação de interfaces nativas para diferentes plataformas a partir de uma única base de código, promovendo reutilização e eficiência no desenvolvimento.
 - Expo – Plataforma e conjunto de ferramentas que simplificam o desenvolvimento, testes e publicação da aplicação mobile, oferecendo recursos integrados que aceleram o processo de criação e manutenção do projeto.
 - TypeScript – Linguagem utilizada para adicionar tipagem estática ao JavaScript, aumentando a segurança, legibilidade e manutenibilidade do código, além de auxiliar na identificação de erros durante o desenvolvimento.
@@ -149,19 +153,35 @@ O back-end:
 [Discuta as considerações de segurança relevantes para a aplicação distribuída, como autenticação, autorização, proteção contra ataques, etc.]
 
 ## Implantação
+
 A aplicação mobile foi desenvolvida utilizando React Native com Expo, plataforma que permitiu a compilação e geração do pacote de instalação para dispositivos Android. Foram realizadas as configurações necessárias para comunicação com a API e com os serviços de back-end do sistema, garantindo o funcionamento das funcionalidades implementadas.
 
 Ao final do desenvolvimento, foi gerado o arquivo APK da aplicação, disponibilizado para download e instalação [aqui](www.google.com).
 
 ## Testes
 
-[Descreva a estratégia de teste, incluindo os tipos de teste a serem realizados (unitários, integração, carga, etc.) e as ferramentas a serem utilizadas.]
+Foram implementados testes automatizados utilizando Jest e React Native Testing Library (RNTL):
 
-1. Crie casos de teste para cobrir todos os requisitos funcionais e não funcionais da aplicação.
-2. Implemente testes unitários para testar unidades individuais de código, como funções e classes.
-3. Realize testes de integração para verificar a interação correta entre os componentes da aplicação.
-4. Execute testes de carga para avaliar o desempenho da aplicação sob carga significativa.
-5. Utilize ferramentas de teste adequadas, como frameworks de teste e ferramentas de automação de teste, para agilizar o processo de teste.
+Os testes podem ser executados via linha de comando dentro do diretório `src/mobile/`:
+
+- **Executar todos os testes:** `npm test`
+
+### 1. Testes Relacionados aos Livros (AddBookModal)
+
+Foco em testar de forma isolada a renderização, a lógica interna do formulário móvel, a validação de campos e a integração com os serviços de salvamento de livros e exibição de alertas.
+
+- **Ferramentas:** Jest (test runner), `@testing-library/react-native` (renderização e interação com componentes nativos), `jest-expo` (configuração do ambiente Expo).
+- **Escopo Implementado:** Testes detalhados para o componente `AddBookModal`.
+- **Cenários Cobertos:**
+  - **Renderização correta:** Valida se o modal e seus inputs (ISBN, Nome, Autor, Ano, Categorias, Descrição) aparecem em tela quando a propriedade `open` é verdadeira.
+  - **Controle de visibilidade:** Garante que o conteúdo do modal permaneça oculto quando `open` é falso.
+  - **Interatividade do formulário:** Assegura que o estado interno do formulário é devidamente atualizado à medida que o usuário digita nos campos.
+  - **Submissão de dados (Criação):** Verifica se a função `addNewBook` é chamada com os dados mapeados após o debounce do ISBN e pressão do botão "Adicionar".
+  - **Submissão de dados (Edição):** Garante que o fluxo de edição invoca corretamente `updateBook` em vez de `addNewBook` e passa os parâmetros corretos do livro preexistente.
+  - **Fluxo de feedback visual (Sucesso):** Valida a chamada do alerta de sucesso (`showSuccess`) ao concluir a inserção ou atualização.
+  - **Tratamento de erros:** Valida se a mensagem de exceção vinda da API é exibida corretamente por meio do modal de erro (`showError`).
+
+Abaixo, apresenta-se a saída da execução dos testes unitários (Jest) no console da aplicação móvel, evidenciando o sucesso de todos os cenários implementados:
 
 # Referências
 
