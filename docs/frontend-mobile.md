@@ -13,7 +13,7 @@ Inspirado no conceito da estrela Polaris, o design da aplicação adota uma est�
 
 As funcionalidades foram estruturadas para oferecer acesso rápido às principais operações do sistema, permitindo que usuários realizem buscas, empréstimos, devoluções e reservas de itens do acervo de maneira simples e intuitiva. A interface também utiliza componentes padronizados e responsivos, promovendo consistência visual, melhorando a usabilidade e facilitando a manutenção e escalabilidade da aplicação.
 
-### Wireframes
+## Wireframes
 
 ## Tela Inicial
 <img width="804" height="1694" alt="image" src="https://github.com/user-attachments/assets/e28c16ff-225b-429d-9675-72571808d4ef" />
