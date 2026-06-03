@@ -32,8 +32,8 @@ export function getModalConfig(
     case 'to_due':
       return {
         title: status === 'far_due' ? 'Antecipar Entrega' : 'Alterar Data de Entrega',
-        label: 'Nova Data (DD/MM/AAAA):',
-        placeholder: 'Ex: 30/12/2026',
+        label: 'Nova Data:',
+        placeholder: `${formatDateBR(loan.dueDate)}`,
         buttonLabel: 'Renovar Empréstimo',
         actionType: 'extend',
       };
