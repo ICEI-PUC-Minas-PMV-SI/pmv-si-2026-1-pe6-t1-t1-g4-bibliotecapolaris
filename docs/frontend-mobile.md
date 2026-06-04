@@ -238,7 +238,7 @@ As seguintes práticas de segurança foram identificadas como próximos passos p
 
 A aplicação mobile foi desenvolvida utilizando React Native com Expo, plataforma que permitiu a compilação e geração do pacote de instalação para dispositivos Android. Foram realizadas as configurações necessárias para comunicação com a API e com os serviços de back-end do sistema, garantindo o funcionamento das funcionalidades implementadas.
 
-Ao final do desenvolvimento, foi gerado o arquivo APK da aplicação, disponibilizado para download e instalação [aqui](www.google.com).
+Ao final do desenvolvimento, foi gerado o arquivo APK da aplicação, disponibilizado para download e instalação [aqui](/src/bibliotecaPolaris.apk).
 
 ## Testes
 
