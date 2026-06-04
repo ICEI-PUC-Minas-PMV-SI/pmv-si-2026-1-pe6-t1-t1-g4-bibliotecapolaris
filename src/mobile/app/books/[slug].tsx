@@ -23,6 +23,8 @@ import { getBookBySlug, getReviewsByBookId } from '@/services/Book';
 import { getLoansByUserId } from '@/services/Loans';
 import { AddLoanModal } from '@/components/Form/AddLoanModal';
 
+import { formatCategories } from '@/util/validators';
+
 function mapReviews(apiReviews: any[]) {
   return apiReviews.map((r) => ({
     id: r.id,
@@ -33,8 +35,6 @@ function mapReviews(apiReviews: any[]) {
     date: r.date,
   }));
 }
-
-import { formatCategories } from '@/util/validators';
 
 export default function BookBySlug() {
   const { slug } = useLocalSearchParams();

@@ -8,11 +8,9 @@ export default defineConfig({
   schema: 'prisma/schema.prisma.dev',
   migrations: {
     path: 'prisma/migrations.dev',
+    seed: 'npx tsx prisma/seed.ts',
   },
   datasource: {
     url: `file:${testDbPath}`,
-  },
-  seed: {
-    run: 'npx tsx prisma/seed.ts',
   },
 });

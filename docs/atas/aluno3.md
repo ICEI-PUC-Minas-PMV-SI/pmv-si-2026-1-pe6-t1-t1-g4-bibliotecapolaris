@@ -17,9 +17,9 @@
 | 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ✅ | Desenvolvimento da **Página de Registro**. Integração do **Front-end** das telas de **Autenticação (Login e Registro)** com a **API** do **Back-end**. | ✅ |
 | 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ✅ | Implementação de **Rota** e **Controller** de **Login** no **Backend**. Criação de **Modal** dinâmico para tratamento de erros de requisição.  | ✅ |
 | 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ✅ | Criação e componentização do **Modal dinâmico** de **Ajuste de Empréstimos**, contemplando regras de negócio para renovação de **Datas** e **Devoluções** em atraso com obrigatoriedade de **Justificativa**. Estruturação inicial da camada de **Serviços** para o consumo da **API REST** | ✅ |
-| 11/05 - 17/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ⬜ |  |  |
-| 18/05 - 24/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 1 | ⬜ |  |  |
-| 25/05 - 31/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 2 | ⬜ |  |  |
+| 11/05 - 17/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ✅ | Apresentação da **Terceira Etapa** | ✅ |
+| 18/05 - 24/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 1 | ⬜ | Implementação da lógica de **Registro** e **Login** para o **Aplicativo Mobile**, integrando as interfaces previamente criadas com a **API do Back-end.** | ✅ |
+| 25/05 - 31/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 2 | ⬜ | Modal de Empréstimos **(AdjustLoanModal)** na plataforma **Mobile**, com regras de negócio por perfil **(Aluno/Administrador)**, **Renovação** e **Justificativa** de atrasos. E ajustes de integração com a **API.** | ✅ |
 | 01/06 - 07/06 |  | ⬜ |  |  |
 | 08/06 - 14/06 |  | ⬜ |  |  |
 

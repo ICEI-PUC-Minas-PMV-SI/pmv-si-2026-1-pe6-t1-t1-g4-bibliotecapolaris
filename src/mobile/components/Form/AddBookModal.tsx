@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, StyleSheet, TextInput, View } from 'react-native';
 
 import { AlertModal } from '@/components/Global/AlertModal';
 import { ActionButton } from '@/components/Global/ActionButton';
@@ -46,7 +46,7 @@ export function AddBookModal({
     setForm(data);
     setCoverUrl(data.imageSrc || null);
     setCoverError(false);
-  }, [open]);
+  }, [initialData, mode, open]);
 
   // ─── Preview de capa com debounce de 500ms ────────────────────────────────
 
