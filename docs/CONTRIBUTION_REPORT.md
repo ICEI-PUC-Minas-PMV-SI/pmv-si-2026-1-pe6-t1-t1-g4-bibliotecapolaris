@@ -1,6 +1,6 @@
 # 📊 Relatório de Contribuições do Projeto
 
-**Última atualização:** 04/06/2026 00:34
+**Última atualização:** 04/06/2026 00:36
 
 ---
 
@@ -15,9 +15,9 @@
 | Filipeacacio1         |        36 |      1440 |       570 |         26 |             26 |               6 |
 | LJ-Leonardo           |        10 |      6250 |       688 |         17 |              3 |               1 |
 | Leonardo Guedes       |         6 |      1428 |       345 |         55 |              3 |               2 |
-| Leonardo Junior       |        25 |        74 |        76 |          7 |             19 |               3 |
+| Leonardo Junior       |        26 |        78 |        80 |          7 |             20 |               3 |
 | Lucas Fonseca         |        39 |      7329 |       935 |         69 |             23 |               5 |
-| github-actions[bot]   |        93 |       911 |       886 |          3 |             93 |               1 |
+| github-actions[bot]   |        94 |       930 |       905 |          3 |             94 |               1 |
 | github-classroom[bot] |         1 |      2152 |         0 |         45 |              1 |              13 |
 | vcrfrancisco          |       112 |      9179 |      1977 |        120 |             21 |               5 |
 | vitor.francisco       |         1 |         1 |         1 |          1 |              0 |               0 |
@@ -25,7 +25,7 @@
 
 ## 📅 Contribuições Semanais (Todo o Semestre)
 
-**2026-05-28**: Davih Duque: 15, Fabiana Santos Soares: 1, Filipe Acacio: 2, Filipeacacio1: 4, Leonardo Guedes: 3, Lucas Fonseca: 5, github-actions[bot]: 12, vitor.francisco: 1
+**2026-05-28**: Davih Duque: 15, Fabiana Santos Soares: 1, Filipe Acacio: 2, Filipeacacio1: 4, Leonardo Guedes: 3, Leonardo Junior: 1, Lucas Fonseca: 5, github-actions[bot]: 13, vitor.francisco: 1
 
 **2026-05-21**: Davih Duque: 11, Fabiana: 1, Fabiana Santos Soares: 1, Filipeacacio1: 2, Lucas Fonseca: 2, github-actions[bot]: 3
 
