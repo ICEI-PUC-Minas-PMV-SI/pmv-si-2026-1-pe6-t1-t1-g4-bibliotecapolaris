@@ -21,7 +21,10 @@
       "edgeToEdgeEnabled": true,
       "usesCleartextTraffic": true,
       "predictiveBackGestureEnabled": false,
-      "permissions": ["INTERNET"]
+      "permissions": [
+        "INTERNET"
+      ],
+      "package": "br.unipolaris.mobile"
     },
     "web": {
       "output": "static",
@@ -45,6 +48,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "9292a978-d222-4dd3-86d8-2c5853083067"
+      }
     }
   }
 }

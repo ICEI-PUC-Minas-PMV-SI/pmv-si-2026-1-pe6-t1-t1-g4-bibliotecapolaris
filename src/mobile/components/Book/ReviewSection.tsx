@@ -72,7 +72,7 @@ export function ReviewSection({ reviews }: ReviewSectionProps) {
     <View style={styles.container}>
       <Text style={styles.title}>AVALIAÇÕES</Text>
       {reviews.length === 0 ? (
-        <Text style={styles.empty}>NENHUMA AVALIAÇÃO PARA ESSE LIVRO.</Text>
+        <Text style={styles.empty}>NENHUMA AVALIAÇÃO CADASTRADA.</Text>
       ) : (
         reviews.map((review) => <ReviewCard key={review.id} review={review} />)
       )}
