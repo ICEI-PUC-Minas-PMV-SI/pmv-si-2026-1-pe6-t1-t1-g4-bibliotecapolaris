@@ -150,7 +150,89 @@ O back-end:
 
 ## Considerações de Segurança
 
-[Discuta as considerações de segurança relevantes para a aplicação distribuída, como autenticação, autorização, proteção contra ataques, etc.]
+A aplicação mobile adota um conjunto de práticas e mecanismos de segurança ao longo da sua camada de cliente, abrangendo desde o gerenciamento da sessão autenticada até a proteção das telas privadas e o tratamento adequado de respostas de erro vindas da API. As seções a seguir detalham cada aspecto implementado e as decisões que os motivaram.
+
+### Autenticação com JWT e Gerenciamento de Sessão
+
+A autenticação é realizada por meio de um **token JWT** emitido pelo backend após a validação das credenciais. O token e os dados do usuário autenticado são persistidos no **AsyncStorage** e disponibilizados globalmente para a aplicação por meio de um **AuthContext**, o que permite manter a sessão ativa entre encerramentos do aplicativo e centralizar o estado de autenticação em um único ponto.
+
+```ts
+// src/mobile/context/AuthContext.tsx
+const [storedUser, storedToken] = await Promise.all([
+  AsyncStorage.getItem(USER_KEY),
+  AsyncStorage.getItem(TOKEN_KEY),
+]);
+
+if (storedUser && storedToken) {
+  const payload = JSON.parse(atob(storedToken.split('.')[1]));
+  const expired = payload.exp && Date.now() / 1000 > payload.exp;
+
+  if (expired) {
+    await AsyncStorage.multiRemove([USER_KEY, TOKEN_KEY]);
+  } else {
+    setUser(JSON.parse(storedUser));
+    setAuthToken(storedToken);
+  }
+}
+```
+
+Ao restaurar a sessão, a expiração do token é verificada antes de considerá-la válida, evitando que o usuário continue navegando com um JWT já vencido. Quando o token expira ou é considerado inválido pelo servidor, a sessão é encerrada automaticamente.
+
+### Proteção de Telas Privadas
+
+Telas que dependem de autenticação verificam o estado do `AuthContext` antes de renderizar conteúdo ou disparar requisições. O painel administrativo, em particular, valida o tipo do usuário logo após o carregamento da sessão e redireciona para a página inicial caso o acesso seja indevido.
+
+```ts
+// src/mobile/app/admin/index.tsx
+useEffect(() => {
+  if (authLoading) return;
+  if (!user || user.type !== 'administrator') {
+    router.replace('/');
+  }
+}, [authLoading, user]);
+```
+
+Esse mecanismo garante que a tela de **Painel de Controle**, restrita a administradores, não seja acessível por contas comuns mesmo via navegação direta pela URL.
+
+### Logout Automático em Respostas Não Autorizadas
+
+Todas as requisições HTTP da aplicação passam por um wrapper centralizado (`apiFetch`), que injeta automaticamente o cabeçalho `Authorization: Bearer <token>` em rotas autenticadas e detecta respostas `401 Unauthorized`. Quando isso ocorre, a sessão é encerrada e o usuário é redirecionado para a tela de login, prevenindo que a interface continue tentando operar com um token inválido.
+
+```ts
+// src/mobile/util/api.ts
+const res = await fetch(`${API_URL}${path}`, { headers: resolvedHeaders, ...rest });
+
+if (res.status === 401 && _onUnauthorized) {
+  _onUnauthorized();
+}
+```
+
+### Controle de Acesso por Papel na Interface
+
+Além da proteção de telas, a interface se adapta dinamicamente ao papel do usuário autenticado. Botões e ações sensíveis — como acesso ao Painel de Controle, exclusão de livros e ajustes administrativos — só são renderizados quando o usuário possui o papel `administrator`. O controle de acesso efetivo é sempre validado pelo backend, evitando que manipulação do cliente conceda privilégios indevidos.
+
+### Validação de Entrada nos Formulários
+
+Os formulários de cadastro, login e ações administrativas validam os campos antes do envio à API, restringindo formato e tamanho mínimo de e-mail, senha e demais dados. A validação definitiva — incluindo regras de negócio — é sempre realizada pelo backend com **Zod**, que retorna erros padronizados (`HTTP 400`) tratados de forma consistente pela interface.
+
+### Tratamento de Erros e Não-Exposição de Dados Sensíveis
+
+As respostas de erro da API são tratadas por um modal de alerta padronizado (`AlertModal`), que apresenta mensagens claras e amigáveis ao usuário sem expor detalhes internos do servidor. Erros silenciosos como falhas na recuperação da _wishlist_ quando o usuário não está autenticado são suprimidos para evitar poluição visual durante a restauração da sessão.
+
+### Variáveis de Ambiente
+
+A URL da API é configurada via variável de ambiente (`EXPO_PUBLIC_API_URL`), permitindo trocar facilmente o destino entre os ambientes de desenvolvimento e produção sem necessidade de alterações no código-fonte. O arquivo `.env` não é rastreado pelo Git, isolando configurações específicas do ambiente local.
+
+### Melhorias Previstas
+
+As seguintes práticas de segurança foram identificadas como próximos passos prioritários para elevar o nível de proteção da camada mobile:
+
+| Melhoria                                   | Descrição                                                                                                                        |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| Armazenamento seguro do token              | Substituir o `AsyncStorage` por soluções como **Expo SecureStore**, que utiliza o _Keychain_ (iOS) e _Keystore_ (Android)        |
+| Refresh Token                              | Adoção de fluxo com tokens de curta duração e _refresh tokens_, reduzindo o impacto de um token comprometido                     |
+| Rate Limiting no cliente                   | Controle de tentativas seguidas de login no front-end como camada complementar à proteção do backend                             |
+| Certificate Pinning                        | Fixação do certificado TLS para evitar ataques de interceptação em redes não confiáveis                                          |
 
 ## Implantação
 
