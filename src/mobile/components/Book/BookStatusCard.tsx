@@ -58,7 +58,7 @@ export function BookStatusCard({
       {!isPending && (
         <>
           {isReturned ? (
-            !hasReview ? (
+            onReviewClick && !hasReview ? (
               <ActionButton
                 title="Avaliar"
                 style={{
@@ -67,7 +67,7 @@ export function BookStatusCard({
                 textStyle={{ fontSize: 10 }}
                 onPress={onReviewClick}
               />
-            ) : (
+            ) : onReviewClick && hasReview ? (
               <ActionButton
                 title="Já avaliado"
                 disabled
@@ -76,7 +76,7 @@ export function BookStatusCard({
                 }}
                 textStyle={{ fontSize: 10 }}
               />
-            )
+            ) : null
           ) : (
             <ActionButton
               title={config.buttonText}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLocalSearchParams } from 'expo-router';
 
 import { styles } from '@/styles/UserBySlug';
 
@@ -15,26 +16,52 @@ import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { getLoansByUserId, returnLoanStatus, updateLoanDueDate, updateLoan } from '@/services/Loans';
 import { createReview, getReviewsByUserId } from '@/services/Book';
+import { getUserBySlug } from '@/services/User';
 import { useAuth } from '@/context/AuthContext';
 import { Loan } from '@/types';
+import { ReviewSection } from '@/components/Book/ReviewSection';
 
 export default function ProfilePage() {
-  const { user } = useAuth();
-  const userId = user?.id ?? '';
-  const { isLoading: authLoading } = useAuth();
+  const { slug } = useLocalSearchParams<{ slug: string }>();
+  const { user, isLoading: authLoading } = useAuth();
 
-  const { wishlist, wishlistSet, toggle } = useWishlist(userId);
+  const slugStr = Array.isArray(slug) ? slug[0] : slug;
+  const isOwnProfile = !!user && user.slug === slugStr;
+
+  const [profileUserId, setProfileUserId] = useState<string | null>(null);
+  const [profileUserName, setProfileUserName] = useState<string>('');
   const [loans, setLoans] = useState<Loan[]>([]);
   const [reviewedLoanIds, setReviewedLoanIds] = useState<Set<string>>(new Set());
-
   const [reviewTarget, setReviewTarget] = useState<Loan | null>(null);
   const [adjustTarget, setAdjustTarget] = useState<Loan | null>(null);
+  const [reviews, setReviews] = useState<{ id: string; userName: string; userSlug: string; rating: number; description?: string; date: string }[]>([]);
 
+  const resolvedUserId = isOwnProfile ? (user?.id ?? '') : (profileUserId ?? '');
+
+  const { wishlist, wishlistSet, toggle } = useWishlist(resolvedUserId);
   const { modal, close, showSuccess, showError } = useAlertModal();
 
+  useEffect(() => {
+    if (!slugStr) return;
+    if (isOwnProfile && user) {
+      setProfileUserId(user.id);
+      setProfileUserName(user.name);
+      return;
+    }
+    async function loadUser() {
+      try {
+        const data = await getUserBySlug(slugStr);
+        setProfileUserId(data?.id ?? null);
+        setProfileUserName(data?.name ?? '');
+      } catch {}
+    }
+    loadUser();
+  }, [slugStr, isOwnProfile]);
+
   async function loadLoans() {
+    if (!resolvedUserId) return;
     try {
-      const data = await getLoansByUserId(userId);
+      const data = await getLoansByUserId(resolvedUserId);
       setLoans(data ?? []);
     } catch (err) {
       console.log('Erro ao carregar empréstimos:', err);
@@ -42,21 +69,32 @@ export default function ProfilePage() {
   }
 
   useEffect(() => {
-    if (authLoading) return;
+    if (authLoading || !resolvedUserId) return;
     loadLoans();
-  }, [userId, authLoading]);
+  }, [resolvedUserId, authLoading]);
 
   useEffect(() => {
-    if (!userId) return;
+    if (!resolvedUserId) return;
     async function loadReviews() {
       try {
-        const reviews = await getReviewsByUserId(userId);
-        const ids = new Set<string>((reviews ?? []).map((r: any) => r.loan?.id));
-        setReviewedLoanIds(ids);
+        const data = await getReviewsByUserId(resolvedUserId);
+        const mapped = (data ?? []).map((r: any) => ({
+          id: r.id,
+          userName: r.loan?.book?.name ?? 'Livro desconhecido',
+          userSlug: '',
+          rating: r.rating,
+          description: r.description,
+          date: r.date,
+        }));
+        setReviews(mapped);
+        if (isOwnProfile) {
+          const ids = new Set<string>((data ?? []).map((r: any) => r.loan?.id));
+          setReviewedLoanIds(ids);
+        }
       } catch {}
     }
     loadReviews();
-  }, [userId]);
+  }, [resolvedUserId, isOwnProfile]);
 
   async function handleAdjustSubmit(loanId: string, action: 'return' | 'extend' | 'justify', payload: string) {
     try {
@@ -81,13 +119,15 @@ export default function ProfilePage() {
     }
   }
 
+  const greeting = isOwnProfile ? `Bem vindo de volta, ${user?.name}` : profileUserName;
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <Header />
 
         <View style={styles.section}>
-          <Text style={styles.title}>Bem vindo de volta, {user?.name}</Text>
+          <Text style={styles.title}>{greeting}</Text>
         </View>
 
         <View style={styles.section}>
@@ -104,8 +144,8 @@ export default function ProfilePage() {
                   }
                   dueDate={loan.dueDate}
                   status={loan.status}
-                  onAdjustClick={() => setAdjustTarget(loan)}
-                  onReviewClick={() => setReviewTarget(loan)}
+                  onAdjustClick={isOwnProfile ? () => setAdjustTarget(loan) : undefined}
+                  onReviewClick={isOwnProfile ? () => setReviewTarget(loan) : undefined}
                   hasReview={reviewedLoanIds.has(loan.id)}
                 />
               ))
@@ -129,7 +169,7 @@ export default function ProfilePage() {
                   description={book.description}
                   imageSrc={book.imageSrc ? { uri: book.imageSrc } : require('@/assets/images/mock-book.png')}
                   isFavorite={wishlistSet.has(book.id)}
-                  onToggleFavorite={() => toggle(book.id)}
+                  onToggleFavorite={isOwnProfile ? () => toggle(book.id) : undefined}
                 />
               ))}
             </View>
@@ -137,9 +177,13 @@ export default function ProfilePage() {
             <Text style={styles.emptyText}>Nenhum livro favoritado, comece agora!</Text>
           )}
         </View>
+
+        <View style={styles.section}>
+          <ReviewSection reviews={reviews} />
+        </View>
       </ScrollView>
 
-      {adjustTarget && (
+      {isOwnProfile && adjustTarget && (
         <AdjustLoanModal
           loan={adjustTarget}
           role="student"
@@ -148,23 +192,25 @@ export default function ProfilePage() {
         />
       )}
 
-      <ReviewModal
-        visible={!!reviewTarget}
-        bookTitle={reviewTarget?.book?.name}
-        onClose={() => setReviewTarget(null)}
-        onSubmit={async (rating, description) => {
-          try {
-            const today = new Date();
-            const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-            await createReview({ loanId: reviewTarget!.id, rating, description, date });
-            setReviewedLoanIds((prev) => new Set(prev).add(reviewTarget!.id));
-            setReviewTarget(null);
-            showSuccess('Obrigado!', 'Avaliação enviada com sucesso!');
-          } catch (err: any) {
-            showError('Erro', err?.message ?? 'Erro ao enviar avaliação.');
-          }
-        }}
-      />
+      {isOwnProfile && (
+        <ReviewModal
+          visible={!!reviewTarget}
+          bookTitle={reviewTarget?.book?.name}
+          onClose={() => setReviewTarget(null)}
+          onSubmit={async (rating, description) => {
+            try {
+              const today = new Date();
+              const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+              await createReview({ loanId: reviewTarget!.id, rating, description, date });
+              setReviewedLoanIds((prev) => new Set(prev).add(reviewTarget!.id));
+              setReviewTarget(null);
+              showSuccess('Obrigado!', 'Avaliação enviada com sucesso!');
+            } catch (err: any) {
+              showError('Erro', err?.message ?? 'Erro ao enviar avaliação.');
+            }
+          }}
+        />
+      )}
 
       <AlertModal
         visible={modal.visible}

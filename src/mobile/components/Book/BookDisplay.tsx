@@ -15,7 +15,7 @@ type BookDisplayProps = {
   description: string;
   imageSrc: any;
   isFavorite: boolean;
-  onToggleFavorite: () => void;
+  onToggleFavorite?: () => void;
 };
 
 export function BookDisplay({
@@ -60,7 +60,7 @@ export function BookDisplay({
           }
         />
 
-        <LikeButton isFavorite={isFavorite} onToggle={onToggleFavorite} />
+        {onToggleFavorite && <LikeButton isFavorite={isFavorite} onToggle={onToggleFavorite} />}
       </View>
     </View>
   );
