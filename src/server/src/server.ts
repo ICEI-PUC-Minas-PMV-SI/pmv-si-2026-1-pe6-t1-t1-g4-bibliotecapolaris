@@ -16,9 +16,16 @@ const app = express();
 
 const open_api_documents = generateOpenApiDocuments();
 
+const defaultOrigins = ['http://localhost:3000', 'http://localhost:8081', 'http://192.168.1.106:8081'];
+const allowedOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(',')
+      .map((origin) => origin.trim())
+      .filter(Boolean)
+  : defaultOrigins;
+
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://localhost:8081', 'http://192.168.1.106:8081'],
+    origin: allowedOrigins,
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   }),

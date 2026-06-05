@@ -17,6 +17,8 @@ export function handleError(res: Response, error: unknown, entity = 'Registro') 
 
       fieldsMap.set(path, messages);
     }
+
+    return sendFailure(res, 'VALIDATION_ERROR', 'Dados inválidos', Object.fromEntries(fieldsMap), 400);
   }
 
   if (error instanceof Prisma.PrismaClientKnownRequestError) {

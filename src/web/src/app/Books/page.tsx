@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -13,7 +13,7 @@ import { useWishlist } from '@/hooks/useWishlist';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useAuth } from '@/context/AuthContext';
 
-export default function Books() {
+function BooksContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -158,5 +158,13 @@ export default function Books() {
 
       <Footer />
     </>
+  );
+}
+
+export default function Books() {
+  return (
+    <Suspense fallback={null}>
+      <BooksContent />
+    </Suspense>
   );
 }
