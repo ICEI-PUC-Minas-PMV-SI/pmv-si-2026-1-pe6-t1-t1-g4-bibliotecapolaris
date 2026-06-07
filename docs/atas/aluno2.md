@@ -13,13 +13,13 @@
 | 23/03 - 29/03 | APIs e Web Services - Unidade 2 | ✅ | Code Review | ✅ |
 | 30/03 - 05/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 1 | ✅ | - | ✅ |
 | 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ✅ | Compensar semana de 23/03 ao fazer implantação do sistema no AWS (RDS e instância do EC2). Também envolveu criar implementações separadas do Prisma pra dev/test e prod e adaptar os testes a elas. Outros bugfixes. Teste da API no geral e documentação desses testes no Postman. | ✅ |
-| 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ⬜ |  |  ✅ |
-| 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ⬜ | Code review |  ✅ |
-| 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ⬜ | Início do Control Panel |  ✅ |
-| 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ⬜ | Control Panel e Modal de empréstimos |  ✅ |
-| 11/05 - 17/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ⬜ |  |  |
-| 18/05 - 24/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 1 | ⬜ |  |  |
-| 25/05 - 31/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 2 | ⬜ |  |  |
+| 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 |  ✅ |  |  ✅ |
+| 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 |  ✅ | Code review |  ✅ |
+| 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 |  ✅ | Início do Control Panel |  ✅ |
+| 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 |  ✅ | Control Panel e Modal de empréstimos |  ✅ |
+| 11/05 - 17/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 |  ✅ | Revisão de código de retirar livro no app |  ✅ |
+| 18/05 - 24/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 1 | ⬜ | Control Panel do aplicativo e modal de adicionar empréstimo |  ✅ |
+| 25/05 - 31/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 2 | ⬜ | Fix do backend em nuvem e hospedagem do Frontend |  ✅ |
 | 01/06 - 07/06 |  | ⬜ |  |  |
 | 08/06 - 14/06 |  | ⬜ |  |  |
 
