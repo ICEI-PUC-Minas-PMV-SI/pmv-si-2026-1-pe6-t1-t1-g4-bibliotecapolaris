@@ -15,11 +15,11 @@
 | 06/04 - 12/04 | Recuperação de Informação na Web e Redes Sociais - Unidade 2 | ✅ | Ficarei responsável pela revisão geral da parte de documentação | ✅ |
 | 13/04 - 19/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 1 | ✅ | Ficarei responsável pela arquitetura inicial do front-end e a criação de alguns componentes gerais | ✅ |
 | 20/04 - 26/04 | Computação Ubíqua e Pervasiva e IoT - Unidade 2 | ✅ | Ficarei responsável pela integração de alguns componentes gerais com o back-end | ✅ |
-| 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 | ⬜ | Ficarei responsável pela revisão geral do sistema do front-end | ✅  |
-| 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ⬜ | Ficarei responsável pela adaptação de comportamentos para o uso geral | ✅ |
-| 11/05 - 17/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 | ⬜ |  |  |
-| 18/05 - 24/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 1 | ⬜ |  |  |
-| 25/05 - 31/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 2 | ⬜ |  |  |
+| 27/04 - 03/05 | Desenvolvimento de Aplicações Móveis - Unidade 1 |  ✅ | Ficarei responsável pela revisão geral do sistema do front-end | ✅  |
+| 04/05 - 10/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 |  ✅ | Ficarei responsável pela adaptação de comportamentos para o uso geral | ✅ |
+| 11/05 - 17/05 | Desenvolvimento de Aplicações Móveis - Unidade 2 |  ✅ |  Ficarei responsável pela criação de novos componentes |  |
+| 18/05 - 24/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 1 |  ✅ | Ficarei responsável pela revisão geral da arquitetura do projeto mobile  |  |
+| 25/05 - 31/05 | Fundamentos de Projeto e Análise de Algoritmos - Unidade 2 |  ✅ | Ficarei responsável pela revisão dos projetos |  |
 | 01/06 - 07/06 |  | ⬜ |  |  |
 | 08/06 - 14/06 |  | ⬜ |  |  |
 
