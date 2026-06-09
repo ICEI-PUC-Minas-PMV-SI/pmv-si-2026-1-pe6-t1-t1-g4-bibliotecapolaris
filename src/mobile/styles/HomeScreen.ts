@@ -44,14 +44,13 @@ export const styles = StyleSheet.create({
   },
 
   input: {
-    flex: 1,
-    backgroundColor: Colors.fairground,
-
-    paddingHorizontal: 8,
-    borderRadius: 2,
-
-    fontSize: 13,
-  },
+  flex: 1,
+  height: 40,
+  backgroundColor: Colors.fairground,
+  paddingHorizontal: 8,
+  borderRadius: 2,
+  fontSize: 13,
+},
 
   booksSection: {
     gap: 16,
