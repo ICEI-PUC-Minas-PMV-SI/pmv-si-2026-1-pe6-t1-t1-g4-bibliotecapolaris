@@ -29,8 +29,19 @@ export function BookDisplay({
 }: BookDisplayProps) {
   const [error, setError] = useState(false);
 
-  const fallback = require('@/assets/images/mock-book.png');
-  const imgSource = error ? fallback : typeof imageSrc === 'string' ? { uri: imageSrc } : imageSrc;
+const fallback = require('@/assets/images/mock-book.png');
+
+const hasImage =
+  typeof imageSrc === 'string'
+    ? imageSrc.trim().length > 0
+    : !!imageSrc;
+
+const imgSource =
+  error || !hasImage
+    ? fallback
+    : typeof imageSrc === 'string'
+      ? { uri: imageSrc }
+      : imageSrc;
 
   return (
     <View style={styles.card}>

@@ -106,10 +106,24 @@ export default function BookBySlug() {
 
     checkActiveLoan(user.id, book.id);
   }, [user?.id, book?.id, authLoading]);
+  
+  useEffect(() => {
+    setError(false);
+  }, [book?.imageSrc]);
 
   if (!book) return null;
 
-  const imgSource = error ? require('@/assets/images/mock-book.png') : { uri: book.imageSrc };
+
+const fallback = require('@/assets/images/mock-book.png');
+
+const hasImage =
+  typeof book.imageSrc === 'string' &&
+  book.imageSrc.trim().length > 0;
+
+const imgSource =
+  error || !hasImage
+    ? fallback
+    : { uri: book.imageSrc };
 
   const buttonTitle = !user
     ? 'Entre para Retirar'

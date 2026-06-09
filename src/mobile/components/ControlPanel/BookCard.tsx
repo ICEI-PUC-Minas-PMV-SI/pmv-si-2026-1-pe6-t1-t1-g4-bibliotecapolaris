@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { CardBase } from './CardBase';
@@ -16,10 +16,28 @@ type BookCardProps = {
 };
 
 export function BookCard({ data, onPress, onDelete }: BookCardProps) {
+
+   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    setError(false);
+  }, [data.imageSrc]);
+
+  const fallback = require('@/assets/images/mock-book.png');
+
+  const hasImage =
+    typeof data.imageSrc === 'string' &&
+    data.imageSrc.trim().length > 0;
+
+  const imgSource =
+    error || !hasImage
+      ? fallback
+      : { uri: data.imageSrc };
+
   return (
     <CardBase onPress={onPress}>
       <View style={styles.content}>
-        <Image source={{ uri: data.imageSrc }} style={styles.image} />
+        <Image   source={imgSource} onError={() => setError(true)} style={styles.image} />
 
         <View style={styles.information}>
           <View style={styles.headerInfo}>
