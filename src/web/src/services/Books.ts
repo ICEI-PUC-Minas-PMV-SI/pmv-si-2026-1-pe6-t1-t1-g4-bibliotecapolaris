@@ -68,8 +68,6 @@ function extractErrorMessage(body: any, fallback: string): string {
 export async function addNewBook(book: BookForm) {
   const { author, ...rest } = book;
 
-  // O backend espera `author` como objeto ({ name }) para resolver/criar o autor
-  // via findOrCreateAuthor(author.name). O formulário guarda o autor como string.
   const res = await apiFetch('/books/register', {
     method: 'POST',
     auth: true,
