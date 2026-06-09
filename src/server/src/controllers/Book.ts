@@ -110,7 +110,15 @@ export async function updateBookController(req: Request, res: Response) {
       throw new Error('ID do livro inválido.');
     }
 
-    const data = UpdateBookSchema.parse(req.body);
+    const { author, ...rest } = req.body;
+
+    const authorName = typeof author === 'string' ? author : author?.name;
+    const authorId = authorName ? await findOrCreateAuthor(authorName) : undefined;
+
+    const data = UpdateBookSchema.parse({
+      ...rest,
+      ...(authorId ? { authorId } : {}),
+    });
 
     await updateBook(id as string, data);
 

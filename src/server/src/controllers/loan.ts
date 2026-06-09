@@ -126,21 +126,11 @@ export async function getLoansByStudentControllerById(studentId: string | undefi
 
     const loans = await getLoansByStudent(studentId);
 
+    const d = new Date();
+    const todayIso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
     const loansWithComputedStatus = loans.map((loan) => {
-      if (loan.status === 'returned') {
-        return loan;
-      }
-
-      const today = new Date();
-
-      const [day, month, year] = loan.dueDate.split('/').map(Number);
-
-      const dueDate = new Date(year, month - 1, day);
-
-      today.setHours(0, 0, 0, 0);
-      dueDate.setHours(0, 0, 0, 0);
-
-      if (dueDate < today) {
+      if (loan.status === 'in_progress' && loan.dueDate < todayIso) {
         return {
           ...loan,
           status: 'overdue',
