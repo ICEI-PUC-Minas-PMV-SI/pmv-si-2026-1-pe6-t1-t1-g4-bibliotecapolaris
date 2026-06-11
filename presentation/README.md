@@ -3,3 +3,5 @@
 Faça uma apresentação de um resumo de todos o processo de desenvolvimento e no final apresente a solução desenvolvida, usando um pequeno vídeo.
 
 https://drive.google.com/file/d/167Xn9_Jpcfpfh9AbUUeFd-2-9VQmRqQa/view?usp=sharing
+
+https://docs.google.com/presentation/d/1hifDCh3kDik_Bno4IFQGHfWxUupwG_piHJNBAX2tZkE/edit?usp=sharing
